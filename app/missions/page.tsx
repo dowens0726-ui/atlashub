@@ -3,6 +3,7 @@
 import { useState } from "react";
 import MissionCard from "../components/MissionCard";
 import SearchBar from "../components/SearchBar";
+import Button from "../components/ui/Button";
 import { missions } from "./data";
 
 export default function MissionsPage() {
@@ -74,15 +75,16 @@ export default function MissionsPage() {
                 Try adjusting your search or category filter.
               </p>
 
-              <button
-                onClick={() => {
-                  setSearchQuery("");
-                  setSelectedCategory("All");
-                }}
-                className="mt-6 rounded-lg bg-white px-4 py-2 text-sm font-medium text-black hover:bg-gray-200"
-              >
-                Clear Filters
-              </button>
+              <div className="mt-6">
+  <Button
+    onClick={() => {
+      setSearchQuery("");
+      setSelectedCategory("All");
+    }}
+  >
+    Clear Filters
+  </Button>
+</div>
             </div>
           ) : (
             <div className="grid gap-6">

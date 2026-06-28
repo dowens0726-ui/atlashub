@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Badge from "./Badge";
+import Card from "./ui/Card";
 import type { Mission } from "../types/mission";
 
 type MissionCardProps = {
