@@ -4,6 +4,7 @@ import { useState } from "react";
 import MissionCard from "../components/MissionCard";
 import SearchBar from "../components/SearchBar";
 import Button from "../components/ui/Button";
+import Container from "../components/ui/Container";
 import { missions } from "./data";
 
 export default function MissionsPage() {
@@ -31,7 +32,7 @@ export default function MissionsPage() {
 
   return (
     <main className="min-h-screen bg-zinc-950 text-white">
-      <section className="mx-auto max-w-6xl px-6 py-16">
+      <<Container className="py-16">>
         <p className="text-sm font-semibold uppercase tracking-[0.3em] text-emerald-400">
           Atlas Companion
         </p>
@@ -94,7 +95,7 @@ export default function MissionsPage() {
             </div>
           )}
         </div>
-      </section>
+      </Container>
     </main>
   );
 }
