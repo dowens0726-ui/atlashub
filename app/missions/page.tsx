@@ -1,7 +1,28 @@
+"use client";
+
+import { useState } from "react";
 import MissionCard from "../components/MissionCard";
+import SearchBar from "../components/SearchBar";
 import { missions } from "./data";
 
 export default function MissionsPage() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
+
+  const filteredMissions = missions.filter((mission) => {
+    const query = searchQuery.toLowerCase();
+
+    const matchesSearch =
+      mission.title.toLowerCase().includes(query) ||
+      mission.description.toLowerCase().includes(query) ||
+      mission.category.toLowerCase().includes(query);
+
+    const matchesCategory =
+      selectedCategory === "All" || mission.category === selectedCategory;
+
+    return matchesSearch && matchesCategory;
+  });
+
   return (
     <main className="min-h-screen bg-zinc-950 text-white">
       <section className="mx-auto max-w-6xl px-6 py-16">
@@ -15,10 +36,56 @@ export default function MissionsPage() {
           Browse every GTA VI mission, walkthrough, rewards, and objectives.
         </p>
 
-        <div className="mt-12 grid gap-6">
-          {missions.map((mission) => (
-            <MissionCard key={mission.slug} mission={mission} />
+        <div className="mt-10">
+          <SearchBar value={searchQuery} onChange={setSearchQuery} />
+        </div>
+
+        <div className="mt-6 flex flex-wrap gap-3">
+          {["All", "Story Mission", "Heist"].map((category) => (
+            <button
+              key={category}
+              onClick={() => setSelectedCategory(category)}
+              className={`rounded-full px-5 py-2 text-sm font-bold transition-all ${
+                selectedCategory === category
+                  ? "bg-emerald-500 text-zinc-950"
+                  : "border border-zinc-700 text-zinc-400 hover:border-emerald-400 hover:text-white"
+              }`}
+            >
+              {category}
+            </button>
           ))}
+        </div>
+
+        <div className="mt-12">
+          {filteredMissions.length === 0 ? (
+            <div className="rounded-xl border border-white/10 bg-white/5 p-10 text-center">
+              <div className="mb-4 text-4xl">🔍</div>
+
+              <h2 className="text-xl font-semibold text-white">
+                No missions found
+              </h2>
+
+              <p className="mt-2 text-sm text-gray-400">
+                Try adjusting your search or category filter.
+              </p>
+
+              <button
+                onClick={() => {
+                  setSearchQuery("");
+                  setSelectedCategory("All");
+                }}
+                className="mt-6 rounded-lg bg-white px-4 py-2 text-sm font-medium text-black hover:bg-gray-200"
+              >
+                Clear Filters
+              </button>
+            </div>
+          ) : (
+            <div className="grid gap-6">
+              {filteredMissions.map((mission) => (
+                <MissionCard key={mission.slug} mission={mission} />
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </main>

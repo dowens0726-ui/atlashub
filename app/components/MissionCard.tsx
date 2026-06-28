@@ -1,13 +1,6 @@
 import Link from "next/link";
-
-type Mission = {
-  slug: string;
-  title: string;
-  description: string;
-  reward: string;
-  difficulty: string;
-  category: string;
-};
+import Badge from "./Badge";
+import type { Mission } from "../types/mission";
 
 type MissionCardProps = {
   mission: Mission;
@@ -30,9 +23,16 @@ export default function MissionCard({ mission }: MissionCardProps) {
             Reward: {mission.reward}
           </p>
 
-          <p className="mt-1 text-sm text-zinc-500">
-            Difficulty: {mission.difficulty}
-          </p>
+          <Badge
+  label={mission.difficulty}
+  variant={
+    mission.difficulty === "Easy"
+      ? "easy"
+      : mission.difficulty === "Medium"
+      ? "medium"
+      : "hard"
+  }
+/>
         </div>
 
         <Link
