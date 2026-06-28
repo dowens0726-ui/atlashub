@@ -9,6 +9,11 @@ export default function MissionsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
 
+  const categories = [
+    "All",
+    ...new Set(missions.map((mission) => mission.category)),
+  ];
+
   const filteredMissions = missions.filter((mission) => {
     const query = searchQuery.toLowerCase();
 
@@ -41,7 +46,7 @@ export default function MissionsPage() {
         </div>
 
         <div className="mt-6 flex flex-wrap gap-3">
-          {["All", "Story Mission", "Heist"].map((category) => (
+          {categories.map((category) => (
             <button
               key={category}
               onClick={() => setSelectedCategory(category)}
