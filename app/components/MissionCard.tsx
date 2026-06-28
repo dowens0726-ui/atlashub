@@ -8,7 +8,7 @@ type MissionCardProps = {
 
 export default function MissionCard({ mission }: MissionCardProps) {
   return (
-    <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6 transition-all duration-200 hover:border-emerald-400 hover:-translate-y-1">
+    <Card className="hover:-translate-y-1">
       <p className="text-sm font-semibold uppercase tracking-wider text-emerald-400">
         {mission.category}
       </p>
@@ -42,6 +42,6 @@ export default function MissionCard({ mission }: MissionCardProps) {
           View Guide →
         </Link>
       </div>
-    </div>
+    </Card>
   );
 }
