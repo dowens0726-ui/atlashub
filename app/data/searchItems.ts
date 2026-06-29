@@ -3,31 +3,35 @@ export type SearchItem = {
   title: string;
   category: string;
   href: string;
+  icon: string;
 };
-
 export const searchItems: SearchItem[] = [
   {
     id: "mission-1",
     title: "Prologue",
     category: "Mission",
     href: "/missions/prologue",
+    icon: "📖",
   },
   {
     id: "mission-2",
     title: "First Heist",
     category: "Mission",
     href: "/missions/first-heist",
+    icon: "🎯",
   },
   {
     id: "vehicle-1",
     title: "Adder",
     category: "Vehicle",
     href: "/vehicles/adder",
+    icon: "🚗",
   },
   {
     id: "weapon-1",
     title: "Combat Pistol",
     category: "Weapon",
     href: "/weapons/combat-pistol",
+    icon: "🔫",
   },
 ];
