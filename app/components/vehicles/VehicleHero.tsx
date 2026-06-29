@@ -1,3 +1,4 @@
+import FeatureChip from "../ui/FeatureChip";
 import Image from "next/image";
 import FeaturedBadge from "./FeaturedBadge";
 import type { Vehicle } from "../../types/vehicle";
@@ -33,6 +34,12 @@ export default function VehicleHero({ vehicle }: VehicleHeroProps) {
         <p className="mt-2 text-xl text-zinc-400">
           {vehicle.manufacturer}
         </p>
+        <div className="mt-5 flex flex-wrap gap-3">
+  <FeatureChip>🏁 {vehicle.class}</FeatureChip>
+  <FeatureChip>⚙ {vehicle.drivetrain}</FeatureChip>
+  <FeatureChip>👥 {vehicle.seats} Seats</FeatureChip>
+  
+</div>
       </div>
     </>
   );

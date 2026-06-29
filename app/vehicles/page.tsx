@@ -61,9 +61,10 @@ const matchesClass =
 
         <DiscoveryPanel>
   <SearchBar
-    value={searchQuery}
-    onChange={setSearchQuery}
-  />
+  value={searchQuery}
+  onChange={setSearchQuery}
+  placeholder="🔍 Search vehicles..."
+/>
 
   <FilterDropdown
     label="Class"

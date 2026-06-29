@@ -1,3 +1,5 @@
+
+import RelatedVehicles from "../../components/vehicles/RelatedVehicles";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { vehicles } from "../../data/vehicles";
@@ -39,6 +41,11 @@ export default async function VehiclePage({ params }: Props) {
         </div>
 
 <VehicleStats vehicle={vehicle} />
+
+<RelatedVehicles
+  vehicle={vehicle}
+  vehicles={vehicles}
+/>
 
       </Container>
     </main>
