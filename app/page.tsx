@@ -1,5 +1,6 @@
 "use client";
-
+import Container from "./components/ui/Container";
+import Button from "./components/ui/Button";
 import { useEffect, useState } from "react";
 import FeatureCard from "./components/FeatureCard";
 
@@ -28,8 +29,8 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-zinc-950 text-white">
-      <section className="mx-auto flex min-h-screen max-w-6xl flex-col px-6 py-8">
-        <nav className="flex items-center justify-between border-b border-zinc-800 pb-6">
+      <Container className="py-16">
+        
   <div>
     <p className="text-xs font-semibold uppercase tracking-[0.4em] text-emerald-400">
       ATLAS
@@ -51,7 +52,7 @@ export default function Home() {
     <a href="/weapons" className="hover:text-white">Weapons</a>
     <a href="/news" className="hover:text-white">News</a>
   </div>
-</nav>
+
 
         <div className="grid flex-1 items-center gap-10 py-16 md:grid-cols-2">
           <div>
@@ -178,14 +179,9 @@ Find missions, vehicles, weapons, collectibles, businesses, and everything elseâ
     description={feature.text}
   />
 ))}
-  </div><footer className="mt-20 border-t border-zinc-800 pt-8 text-center text-sm text-zinc-500">
-  <p>Â© 2026 AtlasHub</p>
-  <p className="mt-2">
-    Spend less time searching. More time playing.
-  </p>
-</footer>
+  </div>
         </section>
-      </section>
+      </Container>
     </main>
   );
 }
