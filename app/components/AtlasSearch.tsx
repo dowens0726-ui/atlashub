@@ -46,11 +46,16 @@ export default function AtlasSearch() {
               href={item.href}
               className="block border-b border-zinc-800 px-4 py-3 transition hover:bg-zinc-800 last:border-b-0"
             >
-              <div className="font-medium text-white">
-  <span className="mr-2">{item.icon}</span>
-  {item.title}
+              <div className="flex items-center justify-between gap-4">
+  <div className="font-medium text-white">
+    <span className="mr-2">{item.icon}</span>
+    {item.title}
+  </div>
+
+  <span className="rounded-full border border-zinc-700 px-3 py-1 text-xs font-semibold text-zinc-400">
+    {item.category}
+  </span>
 </div>
-              <div className="text-sm text-zinc-400">{item.category}</div>
             </Link>
           ))}
         </div>
