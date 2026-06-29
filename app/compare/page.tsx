@@ -9,7 +9,9 @@ type ComparePageProps = {
   }>;
 };
 
-export default async function ComparePage({ searchParams }: ComparePageProps) {
+export default async function ComparePage({
+  searchParams,
+}: ComparePageProps) {
   const { vehicle, compareWith } = await searchParams;
 
   const selectedVehicle = vehicles.find((v) => v.slug === vehicle);
@@ -50,7 +52,12 @@ export default async function ComparePage({ searchParams }: ComparePageProps) {
               label="Price"
               leftValue={`$${selectedVehicle.price.toLocaleString()}`}
               rightValue={`$${comparisonVehicle.price.toLocaleString()}`}
+              leftBarValue={selectedVehicle.price}
+              rightBarValue={comparisonVehicle.price}
+              max={3000000}
+              lowerIsBetter
             />
+
             <ComparisonRow
               label="Top Speed"
               leftValue={selectedVehicle.topSpeed}
