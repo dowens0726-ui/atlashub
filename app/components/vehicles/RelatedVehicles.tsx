@@ -23,7 +23,11 @@ export default function RelatedVehicles({
 
   return (
     <section className="mt-16">
-      <h2 className="text-2xl font-bold">Related Vehicles</h2>
+      <h2 className="text-2xl font-bold">You May Also Like</h2>
+
+<p className="mt-2 text-zinc-400">
+  Similar vehicles based on class and manufacturer.
+</p>
 
       <div className="mt-6 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
         {relatedVehicles.map((relatedVehicle) => (
