@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { missions } from "../../data/missions";
 
@@ -19,9 +20,12 @@ export default async function MissionPage({ params }: Props) {
   return (
     <main className="min-h-screen bg-zinc-950 text-white">
       <section className="mx-auto max-w-5xl px-6 py-16">
-        <a href="/missions" className="text-sm text-zinc-400 hover:text-white">
-          ← Back to Missions
-        </a>
+        <Link
+  href="/missions"
+  className="..."
+>
+  ← Back to Missions
+</Link>
 
         <p className="mt-10 text-sm font-semibold uppercase tracking-[0.3em] text-emerald-400">
           {mission.category}
