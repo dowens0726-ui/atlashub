@@ -6,9 +6,13 @@ export type Vehicle = {
   image: string;
   price: number;
   topSpeed: number;
+  acceleration: number;
+  handling: number;
+  braking: number;
   drivetrain: "RWD" | "FWD" | "AWD";
   seats: number;
   location: string;
   description: string;
   featured: boolean;
+  
 };
