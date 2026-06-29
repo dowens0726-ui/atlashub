@@ -1,0 +1,43 @@
+import type { Vehicle } from "../types/vehicle";
+
+export const vehicles: Vehicle[] = [
+  {
+    slug: "comet-s2",
+    name: "Comet S2",
+    manufacturer: "Pfister",
+    class: "Sports",
+    price: 1878000,
+    topSpeed: 123,
+    drivetrain: "RWD",
+    seats: 2,
+    location: "Legendary Motorsport",
+    description: "A high-performance sports coupe inspired by Porsche.",
+    featured: true,
+  },
+  {
+    slug: "buffalo-stx",
+    name: "Buffalo STX",
+    manufacturer: "Bravado",
+    class: "Muscle",
+    price: 2150000,
+    topSpeed: 126,
+    drivetrain: "AWD",
+    seats: 4,
+    location: "Southern San Andreas Super Autos",
+    description: "Modern American muscle with excellent acceleration.",
+    featured: true,
+  },
+  {
+    slug: "jugular",
+    name: "Jugular",
+    manufacturer: "Ocelot",
+    class: "Sports",
+    price: 1225000,
+    topSpeed: 126,
+    drivetrain: "AWD",
+    seats: 4,
+    location: "Legendary Motorsport",
+    description: "Luxury sports sedan with impressive handling.",
+    featured: false,
+  },
+];
