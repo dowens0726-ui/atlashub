@@ -1,5 +1,7 @@
 "use client";
 
+import DiscoveryPanel from "../components/discovery/DiscoveryPanel";
+import { FilterDropdown, SortDropdown } from "../components/discovery";
 import { useState } from "react";
 import VehicleCard from "../components/VehicleCard";
 import SearchBar from "../components/SearchBar";
@@ -10,16 +12,43 @@ import { vehicles } from "../data/vehicles";
 
 export default function VehiclesPage() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState("name");
+  const [selectedClass, setSelectedClass] = useState("all");
 
-  const filteredVehicles = vehicles.filter((vehicle) => {
-    const query = searchQuery.toLowerCase();
+  const sortOptions = [  
+    { label: "Name", value: "name" },
+    { label: "Price", value: "price" },
+    { label: "Top Speed", value: "topSpeed" },
+  ];
 
-    return (
-      vehicle.name.toLowerCase().includes(query) ||
-      vehicle.manufacturer.toLowerCase().includes(query) ||
-      vehicle.class.toLowerCase().includes(query)
-    );
-  });
+  const classOptions = [
+  { label: "All Classes", value: "all" },
+  ...Array.from(new Set(vehicles.map((vehicle) => vehicle.class))).map(
+    (vehicleClass) => ({
+      label: vehicleClass,
+      value: vehicleClass,
+    })
+  ),
+];
+
+  const filteredVehicles = vehicles
+    .filter((vehicle) => {
+      const query = searchQuery.toLowerCase();
+const matchesClass =
+  selectedClass === "all" || vehicle.class === selectedClass;
+      return (
+  matchesClass &&
+  (vehicle.name.toLowerCase().includes(query) ||
+    vehicle.manufacturer.toLowerCase().includes(query) ||
+    vehicle.class.toLowerCase().includes(query))
+);
+    })
+    .sort((a, b) => {
+      if (sortBy === "price") return a.price - b.price;
+      if (sortBy === "topSpeed") return b.topSpeed - a.topSpeed;
+
+      return a.name.localeCompare(b.name);
+    });
 
   return (
     <main className="min-h-screen bg-zinc-950 text-white">
@@ -30,9 +59,25 @@ export default function VehiclesPage() {
           description="Browse every vehicle, manufacturer, location, and performance stat."
         />
 
-        <div className="mt-10">
-          <SearchBar value={searchQuery} onChange={setSearchQuery} />
-        </div>
+        <DiscoveryPanel>
+  <SearchBar
+    value={searchQuery}
+    onChange={setSearchQuery}
+  />
+
+  <FilterDropdown
+    label="Class"
+    value={selectedClass}
+    options={classOptions}
+    onChange={setSelectedClass}
+  />
+
+  <SortDropdown
+    value={sortBy}
+    options={sortOptions}
+    onChange={setSortBy}
+  />
+</DiscoveryPanel>
 
         <div className="mt-12">
           {filteredVehicles.length === 0 ? (
