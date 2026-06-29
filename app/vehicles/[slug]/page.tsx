@@ -1,4 +1,4 @@
-
+import CompareButton from "../../components/compare/CompareButton";
 import RelatedVehicles from "../../components/vehicles/RelatedVehicles";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -32,7 +32,11 @@ export default async function VehiclePage({ params }: Props) {
 
         <VehicleHero vehicle={vehicle} />
 
-        <div className="mt-10">
+<div className="mt-6">
+  <CompareButton slug={vehicle.slug} />
+</div>
+
+<div className="mt-10">
           <h2 className="text-2xl font-bold">Description</h2>
 
           <p className="mt-3 leading-8 text-zinc-300">
