@@ -6,7 +6,7 @@ import SearchBar from "../components/SearchBar";
 import Button from "../components/ui/Button";
 import Container from "../components/ui/Container";
 import PageHeader from "../components/ui/PageHeader";
-import { missions } from "./data";
+import { missions } from "../data/missions";
 
 export default function MissionsPage() {
   const [searchQuery, setSearchQuery] = useState("");

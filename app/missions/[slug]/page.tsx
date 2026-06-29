@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { missions } from "../data";
+import { missions } from "../../data/missions";
 
 type Props = {
   params: Promise<{

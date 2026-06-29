@@ -1,9 +1,9 @@
 "use client";
 
+import Container from "./components/ui/Container";
+import Button from "./components/ui/Button";
 import AtlasSearch from "./components/AtlasSearch";
 import FeatureCard from "./components/FeatureCard";
-import Button from "./components/ui/Button";
-import Container from "./components/ui/Container";
 
 export default function Home() {
   return (
