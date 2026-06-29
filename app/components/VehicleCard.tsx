@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import Card from "./ui/Card";
 import type { Vehicle } from "../types/vehicle";
@@ -8,7 +9,19 @@ type Props = {
 
 export default function VehicleCard({ vehicle }: Props) {
   return (
-    <Card className="hover:-translate-y-1">
+    <Card>
+      <Image
+        src={vehicle.image}
+        alt={vehicle.name}
+        width={600}
+        height={350}
+        className="mb-5 h-48 w-full rounded-xl object-cover"
+      />
+      {vehicle.featured && (
+  <div className="mb-3 inline-flex rounded-full bg-emerald-500 px-3 py-1 text-xs font-bold uppercase tracking-wide text-zinc-950">
+    ⭐ Featured
+  </div>
+)}
       <p className="text-sm font-semibold uppercase tracking-wider text-emerald-400">
         {vehicle.class}
       </p>

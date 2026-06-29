@@ -3,6 +3,7 @@ export type Vehicle = {
   name: string;
   manufacturer: string;
   class: string;
+  image: string;
   price: number;
   topSpeed: number;
   drivetrain: "RWD" | "FWD" | "AWD";
