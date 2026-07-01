@@ -1,3 +1,4 @@
+import DiscoveryToolbar from "../components/discovery/DiscoveryToolbar";
 import Link from "next/link";
 import Container from "../components/ui/Container";
 import PageHeader from "../components/ui/PageHeader";
@@ -12,6 +13,7 @@ export default function WeaponsPage() {
           title="Weapons"
           description="Browse weapon stats, categories, prices, and performance."
         />
+        <DiscoveryToolbar title="Weapon Database" count={weapons.length} />
 
         <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {weapons.map((weapon) => (
