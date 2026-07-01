@@ -1,5 +1,6 @@
 "use client";
 
+import AtlasDashboard from "./components/home/AtlasDashboard";
 import Container from "./components/ui/Container";
 import Hero from "./components/home/Hero";
 import AtlasStats from "./components/home/AtlasStats";
@@ -18,6 +19,8 @@ export default function Home() {
         </div>
 
         <AtlasStats />
+
+        <AtlasDashboard />
 
         <RecentlyAdded />
 
