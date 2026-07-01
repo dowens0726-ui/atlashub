@@ -1,0 +1,43 @@
+import type { Weapon } from "../types/weapon";
+
+export const weapons: Weapon[] = [
+  {
+    slug: "pistol",
+    name: "Pistol",
+    category: "Pistol",
+    price: 2500,
+    damage: 35,
+    fireRate: 45,
+    accuracy: 60,
+    range: 40,
+    description: "A reliable starter sidearm for close-range encounters.",
+    image: "/images/weapons/pistol.jpg",
+    featured: true,
+  },
+  {
+    slug: "smg",
+    name: "SMG",
+    category: "SMG",
+    price: 8500,
+    damage: 30,
+    fireRate: 80,
+    accuracy: 55,
+    range: 50,
+    description: "A compact automatic weapon built for fast engagements.",
+    image: "/images/weapons/smg.jpg",
+    featured: false,
+  },
+  {
+    slug: "assault-rifle",
+    name: "Assault Rifle",
+    category: "Rifle",
+    price: 14000,
+    damage: 55,
+    fireRate: 65,
+    accuracy: 70,
+    range: 75,
+    description: "A versatile rifle with strong all-around performance.",
+    image: "/images/weapons/assault-rifle.jpg",
+    featured: true,
+  },
+];

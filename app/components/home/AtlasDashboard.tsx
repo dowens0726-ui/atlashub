@@ -1,6 +1,9 @@
+import { missions } from "../../data/missions";
+import { vehicles } from "../../data/vehicles";
+
 const dashboardItems = [
-  { label: "Vehicles", value: "Live", icon: "🚗" },
-  { label: "Missions", value: "Live", icon: "🎯" },
+  { label: "Vehicles", value: vehicles.length, icon: "🚗" },
+  { label: "Missions", value: missions.length, icon: "🎯" },
   { label: "Compare", value: "Ready", icon: "⚖️" },
   { label: "Weapons", value: "Soon", icon: "🔫" },
 ];
