@@ -15,8 +15,51 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AtlasHub",
-  description: "Spend less time searching. More time playing.",
+  title: {
+    default: "Atlas | GTA VI Companion",
+    template: "%s | Atlas",
+  },
+
+  description:
+    "Spend Less Time Searching. More Time Playing. Atlas is the modern companion platform for GTA VI featuring vehicles, weapons, comparisons, guides, and more.",
+
+  keywords: [
+    "GTA VI",
+    "Grand Theft Auto 6",
+    "GTA 6",
+    "Atlas",
+    "AtlasHub",
+    "GTA VI Vehicles",
+    "GTA VI Weapons",
+    "GTA VI Compare",
+    "GTA VI Companion",
+    "GTA VI Guide",
+  ],
+
+  authors: [
+    {
+      name: "Daniel Owens",
+    },
+  ],
+
+  creator: "Daniel Owens",
+
+  metadataBase: new URL("http://localhost:3000"),
+
+  openGraph: {
+    title: "Atlas | GTA VI Companion",
+    description:
+      "Spend Less Time Searching. More Time Playing.",
+    siteName: "Atlas",
+    type: "website",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "Atlas | GTA VI Companion",
+    description:
+      "Spend Less Time Searching. More Time Playing.",
+  },
 };
 
 <Footer />

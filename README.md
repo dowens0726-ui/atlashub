@@ -1,44 +1,72 @@
-# AtlasHub
+<p align="center">
 
-> Spend less time searching. More time playing.
+# 🧭 Atlas
 
-AtlasHub is a GTA VI companion app built to help players quickly find missions, rewards, guides, and gameplay information.
+> Spend Less Time Searching. More Time Playing.
 
-## Current Features
+Atlas is a modern companion platform for GTA VI designed to help players quickly find vehicles, weapons, businesses, missions, collectibles, and more.
 
-- Mission browsing
-- Mission detail pages
-- Search
-- Category filters
-- Empty state with clear filters
-- Shared header and footer
-- Active navigation
-- Project documentation
+Built with performance, simplicity, and player experience in mind.
 
-## Tech Stack
+---
 
-- Next.js 16
+## ✨ Features
+
+- 🚗 Vehicle Database
+- ⚖️ Vehicle Comparison
+- 🔍 Universal Search
+- ⌨️ Command Palette
+- 🔫 Weapon Database
+- 📱 Responsive Design
+- 🌙 Dark Mode
+- ⚡ Fast Navigation
+
+---
+
+## 🛠 Tech Stack
+
+- Next.js
 - React
 - TypeScript
 - Tailwind CSS
-- Vercel
-- GitHub
 
-## Project Structure
+---
 
-```txt
-app/
-├── components/
-├── missions/
-├── types/
-├── globals.css
-├── layout.tsx
-└── page.tsx
+## 🚀 Roadmap
 
-docs/
-├── ARCHITECTURE.md
-├── DECISIONS.md
-├── SESSION_LOG.md
-└── SPRINT.md
+- ✅ Vehicles
+- ✅ Weapons
+- ✅ Compare
+- ✅ Branding
+- 🚧 Missions
+- 🚧 Businesses
+- 🚧 Interactive Map
+- 🚧 Favorites
+- 🚧 User Accounts
 
-PROJECT_CONTEXT.md
+---
+
+## 📷 Screenshots
+
+Coming soon.
+
+---
+
+## 🎯 Vision
+
+Atlas aims to become the fastest, cleanest, and most trustworthy gaming companion platform.
+
+Today:
+
+- GTA VI
+
+Tomorrow:
+
+- Red Dead Redemption
+- Elder Scrolls
+- Cyberpunk
+- Minecraft
+
+---
+
+Built by Daniel Owens.
