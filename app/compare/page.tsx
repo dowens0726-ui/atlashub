@@ -1,6 +1,7 @@
 import Image from "next/image";
 import AtlasVerdict from "../components/compare/AtlasVerdict";
 import ComparisonRow from "../components/compare/ComparisonRow";
+import CompareVehicleSelector from "../components/compare/CompareVehicleSelector";
 import Container from "../components/ui/Container";
 import FeatureChip from "../components/ui/FeatureChip";
 import FeaturedBadge from "../components/vehicles/FeaturedBadge";
@@ -65,6 +66,21 @@ export default async function ComparePage({
         {selectedVehicle && comparisonVehicle && (
           <AtlasVerdict left={selectedVehicle} right={comparisonVehicle} />
         )}
+
+{selectedVehicle && comparisonVehicle && (
+  <div className="mt-8 max-w-sm">
+    <CompareVehicleSelector
+      vehicle={selectedVehicle.slug}
+      compareWith={comparisonVehicle.slug}
+      options={vehicles
+        .filter((item) => item.slug !== selectedVehicle.slug)
+        .map((item) => ({
+          label: item.name,
+          value: item.slug,
+        }))}
+    />
+  </div>
+)}
 
         {selectedVehicle && comparisonVehicle && (
           <div className="mt-10 space-y-6">

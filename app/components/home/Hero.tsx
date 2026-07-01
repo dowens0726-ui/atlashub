@@ -3,12 +3,8 @@ import Button from "../ui/Button";
 
 export default function Hero() {
   return (
-    <section className="rounded-3xl border border-zinc-800 bg-zinc-900/50 p-8 shadow-2xl md:p-10">
-      <p className="mb-4 text-sm font-semibold uppercase tracking-[0.3em] text-emerald-400">
-        Atlas Companion for GTA VI
-      </p>
-
-      <h1 className="text-6xl font-black leading-tight md:text-7xl">
+    <section className="rounded-3xl border border-zinc-800 bg-zinc-900/50 p-6 sm:p-8 md:p-10 shadow-2xl">
+      <h1 className="text-5xl font-black leading-tight sm:text-6xl md:text-7xl">
         ATLAS
       </h1>
 

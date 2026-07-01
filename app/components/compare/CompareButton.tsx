@@ -9,7 +9,9 @@ export default function CompareButton({
 }: CompareButtonProps) {
   return (
     <Link
-      href={`/compare?vehicle=${slug}&compareWith=buffalo-stx`}
+      href={`/compare?vehicle=${slug}&compareWith=${
+  slug === "buffalo-stx" ? "comet-s2" : "buffalo-stx"
+}`}
       className="inline-flex items-center rounded-xl bg-emerald-500 px-5 py-3 font-semibold text-zinc-950 transition hover:bg-emerald-400"
     >
       Compare

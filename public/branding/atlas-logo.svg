@@ -1,0 +1,7 @@
+<svg width="160" height="40" viewBox="0 0 160 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M20 4L36 34H28L20 18L12 34H4L20 4Z" fill="#10B981"/>
+  <path d="M20 22L24 30H16L20 22Z" fill="#F8FAFC"/>
+  <text x="48" y="27" fill="#F8FAFC" font-family="Arial, sans-serif" font-size="24" font-weight="800" letter-spacing="4">
+    ATLAS
+  </text>
+</svg>
