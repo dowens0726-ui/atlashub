@@ -1,5 +1,6 @@
 "use client";
 
+import DiscoveryToolbar from "../components/discovery/DiscoveryToolbar";
 import DiscoveryPanel from "../components/discovery/DiscoveryPanel";
 import { FilterDropdown, SortDropdown } from "../components/discovery";
 import { useState } from "react";
@@ -54,12 +55,17 @@ const matchesClass =
     <main className="min-h-screen bg-zinc-950 text-white">
       <Container className="py-16">
         <PageHeader
-          eyebrow="AtlasHub"
-          title="Vehicles"
-          description="Browse every vehicle, manufacturer, location, and performance stat."
-        />
+  eyebrow="AtlasHub"
+  title="Vehicles"
+  description="Browse every vehicle, manufacturer, location, and performance stat."
+/>
 
-        <DiscoveryPanel>
+<DiscoveryToolbar
+  title="Vehicle Database"
+  count={vehicles.length}
+/>
+
+<DiscoveryPanel>
   <SearchBar
   value={searchQuery}
   onChange={setSearchQuery}
