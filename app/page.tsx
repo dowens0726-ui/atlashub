@@ -1,5 +1,6 @@
 "use client";
 
+import AtlasStats from "./components/home/AtlasStats";
 import Container from "./components/ui/Container";
 import Button from "./components/ui/Button";
 import AtlasSearch from "./components/AtlasSearch";
@@ -81,7 +82,11 @@ export default function Home() {
               ))}
             </div>
           </div>
+        
+
         </div>
+
+        <AtlasStats />
 
         <section className="border-t border-zinc-800 py-20">
           <h2 className="mb-12 text-center text-4xl font-bold">
