@@ -48,3 +48,55 @@
 * Community
 * Premium Membership
 * Mobile App
+
+# Atlas Roadmap
+
+## Sprint 0.5 — Premium UX
+
+- [ ] Homepage redesign
+- [ ] Featured content
+- [ ] Recently added
+- [ ] Footer
+- [ ] Mobile navigation
+- [ ] Better empty states
+
+---
+
+## Sprint 0.6 — Global Search
+
+- [ ] Ctrl + K command palette
+- [ ] Search vehicles
+- [ ] Search missions
+- [ ] Search weapons
+
+---
+
+## Sprint 0.7 — Weapons
+
+- [ ] Weapon database
+- [ ] Weapon detail pages
+- [ ] Weapon comparison
+- [ ] Search & filtering
+
+---
+
+## Sprint 0.8 — Interactive Map
+
+- [ ] Map markers
+- [ ] Filters
+- [ ] Collectibles
+- [ ] Businesses
+
+---
+
+## Sprint 0.9 — Accounts
+
+- [ ] Favorites
+- [ ] Progress tracking
+- [ ] Settings
+
+---
+
+## Version 1.0
+
+Public alpha launch.
