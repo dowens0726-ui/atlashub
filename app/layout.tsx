@@ -3,6 +3,7 @@ import Navbar from "./components/layout/Navbar";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import FeedbackButton from "./components/feedback/FeedbackButton";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -62,8 +63,6 @@ export const metadata: Metadata = {
   },
 };
 
-<Footer />
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -84,6 +83,8 @@ export default function RootLayout({
 
     <Footer />
   </div>
+
+<FeedbackButton />
 </body>
     </html>
   );
