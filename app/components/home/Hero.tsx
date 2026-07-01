@@ -3,22 +3,22 @@ import Button from "../ui/Button";
 
 export default function Hero() {
   return (
-    <section className="py-16">
+    <section className="rounded-3xl border border-zinc-800 bg-zinc-900/50 p-8 shadow-2xl md:p-10">
       <p className="mb-4 text-sm font-semibold uppercase tracking-[0.3em] text-emerald-400">
         Atlas Companion for GTA VI
       </p>
 
       <h1 className="text-6xl font-black leading-tight md:text-7xl">
-        MASTER GTA VI.
+        ATLAS
       </h1>
 
-      <p className="mt-6 max-w-2xl text-xl leading-8 text-zinc-300">
-        <span className="font-semibold text-white">
-          Spend Less Time Searching. More Time Playing.
-        </span>
-        <br />
-        Atlas is your premium companion for missions, vehicles,
-        weapons, collectibles, businesses, and everything else.
+      <p className="mt-4 text-2xl font-bold text-white">
+        Spend Less Time Searching. More Time Playing.
+      </p>
+
+      <p className="mt-5 max-w-2xl text-lg leading-8 text-zinc-300">
+        Your premium companion for missions, vehicles, weapons, collectibles,
+        businesses, maps, comparisons, and everything else.
       </p>
 
       <div className="mt-10">
@@ -26,12 +26,10 @@ export default function Hero() {
       </div>
 
       <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-        <Button href="/missions">
-          Explore Missions
-        </Button>
+        <Button href="/vehicles">Browse Vehicles</Button>
 
-        <Button href="/vehicles" variant="secondary">
-          Browse Vehicles
+        <Button href="/compare" variant="secondary">
+          Compare Vehicles
         </Button>
       </div>
     </section>
