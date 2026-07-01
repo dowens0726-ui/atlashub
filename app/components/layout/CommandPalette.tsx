@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { search } from "../../lib/search";
 
 export default function CommandPalette() {
@@ -9,6 +9,26 @@ export default function CommandPalette() {
   const [query, setQuery] = useState("");
 
   const results = useMemo(() => search(query), [query]);
+
+  useEffect(() => {
+  function handleKeyDown(event: KeyboardEvent) {
+    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
+      event.preventDefault();
+      setOpen((current) => !current);
+    }
+
+    if (event.key === "Escape") {
+      setOpen(false);
+      setQuery("");
+    }
+  }
+
+  window.addEventListener("keydown", handleKeyDown);
+
+  return () => {
+    window.removeEventListener("keydown", handleKeyDown);
+  };
+}, []);
 
   return (
     <>
