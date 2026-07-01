@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import CommandPalette from "./CommandPalette";
 
 const links = [
   { href: "/", label: "Home" },
@@ -24,27 +25,31 @@ export default function Navbar() {
           ATLAS
         </Link>
 
-        <div className="flex items-center gap-2">
-          {links.map((link) => {
-            const active =
-              link.href === "/"
-                ? pathname === "/"
-                : pathname.startsWith(link.href);
+        <div className="flex items-center gap-6">
+          <CommandPalette />
 
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`rounded-lg px-4 py-2 font-medium transition ${
-                  active
-                    ? "bg-emerald-500 text-zinc-950"
-                    : "text-zinc-400 hover:bg-zinc-800 hover:text-white"
-                }`}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
+          <div className="flex items-center gap-2">
+            {links.map((link) => {
+              const active =
+                link.href === "/"
+                  ? pathname === "/"
+                  : pathname.startsWith(link.href);
+
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`rounded-lg px-4 py-2 font-medium transition ${
+                    active
+                      ? "bg-emerald-500 text-zinc-950"
+                      : "text-zinc-400 hover:bg-zinc-800 hover:text-white"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
+          </div>
         </div>
       </nav>
     </header>

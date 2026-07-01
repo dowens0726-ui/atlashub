@@ -1,10 +1,12 @@
 "use client";
 
+import FeaturedContent from "./components/home/FeaturedContent";
 import AtlasStats from "./components/home/AtlasStats";
 import Container from "./components/ui/Container";
 import Button from "./components/ui/Button";
 import AtlasSearch from "./components/AtlasSearch";
 import FeatureCard from "./components/FeatureCard";
+import Features from "./components/home/Features";
 
 export default function Home() {
   return (
@@ -87,6 +89,10 @@ export default function Home() {
         </div>
 
         <AtlasStats />
+        
+        <FeaturedContent />
+
+        <Features />
 
         <section className="border-t border-zinc-800 py-20">
           <h2 className="mb-12 text-center text-4xl font-bold">
