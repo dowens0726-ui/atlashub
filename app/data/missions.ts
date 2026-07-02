@@ -33,4 +33,12 @@ export const missions: Mission[] = [
     difficulty: "Hard",
     category: "Story Mission",
   },
+  {
+    slug: "jewel-job",
+    title: "The Jewel Job",
+    description: "Rob the jewelry store and escape the police.",
+    reward: "$250,000",
+    difficulty: "Hard",
+    category: "Heist",
+  },
 ];
