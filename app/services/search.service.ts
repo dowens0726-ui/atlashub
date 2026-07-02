@@ -33,14 +33,14 @@ export function getSearchIndex(): SearchResult[] {
     })),
 
     ...weapons.map((weapon) => ({
-      id: weapon.id,
-      slug: weapon.slug,
-      type: "weapon" as const,
-      label: weapon.name,
-      description: weapon.description,
-      href: `/weapons/${weapon.slug}`,
-      tags: weapon.tags,
-    })),
+  id: weapon.id,
+  slug: weapon.slug,
+  type: "weapon" as const,
+  label: weapon.name,
+  description: weapon.description,
+  href: `/weapons/${weapon.slug}`,
+  tags: weapon.tags,
+})),
   ];
 }
 

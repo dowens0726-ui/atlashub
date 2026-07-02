@@ -1,30 +1,45 @@
 "use client";
 
-import AtlasDashboard from "./components/home/AtlasDashboard";
-import Container from "./components/ui/Container";
+import AtlasSearchPanel from "./components/search/AtlasSearchPanel";
+
 import Hero from "./components/home/Hero";
-import AtlasStats from "./components/home/AtlasStats";
 import FeaturedContent from "./components/home/FeaturedContent";
+import AtlasDashboard from "./components/home/AtlasDashboard";
+import AtlasStats from "./components/home/AtlasStats";
 import RecentlyAdded from "./components/home/RecentlyAdded";
 import Features from "./components/home/Features";
+
+import Container from "./components/ui/Container";
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-zinc-950 text-white">
       <Container className="py-16">
-        <div className="grid items-start gap-10 py-16 lg:grid-cols-2">
+        <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
           <Hero />
 
+          <AtlasSearchPanel />
+        </div>
+
+        <div className="mt-16">
           <FeaturedContent />
         </div>
 
-        <AtlasStats />
+        <div className="mt-16">
+          <AtlasStats />
+        </div>
 
-        <AtlasDashboard />
+        <div className="mt-16">
+          <AtlasDashboard />
+        </div>
 
-        <RecentlyAdded />
+        <div className="mt-16">
+          <RecentlyAdded />
+        </div>
 
-        <Features />
+        <div className="mt-16">
+          <Features />
+        </div>
       </Container>
     </main>
   );
