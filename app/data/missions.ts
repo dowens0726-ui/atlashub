@@ -1,7 +1,8 @@
-import type { Mission } from "@/app/types/mission";
+import type { Mission } from "@/app/types";
 
 export const missions: Mission[] = [
   {
+    id: "mission_001",
     slug: "first-score",
     title: "First Score",
     description:
@@ -21,9 +22,12 @@ export const missions: Mission[] = [
     relatedMissions: ["street-heat", "clean-getaway"],
     image: "/images/missions/first-score.jpg",
     featured: true,
+    tags: ["story", "beginner"],
+    verified: false,
   },
 
   {
+    id: "mission_002",
     slug: "street-heat",
     title: "Street Heat",
     description:
@@ -43,9 +47,12 @@ export const missions: Mission[] = [
     relatedMissions: ["first-score", "clean-getaway"],
     image: "/images/missions/street-heat.jpg",
     featured: true,
+    tags: ["street", "police"],
+    verified: false,
   },
 
   {
+    id: "mission_003",
     slug: "clean-getaway",
     title: "Clean Getaway",
     description:
@@ -65,9 +72,12 @@ export const missions: Mission[] = [
     relatedMissions: ["first-score", "street-heat"],
     image: "/images/missions/clean-getaway.jpg",
     featured: false,
+    tags: ["escape"],
+    verified: false,
   },
 
   {
+    id: "mission_004",
     slug: "high-stakes",
     title: "High Stakes",
     description:
@@ -87,9 +97,12 @@ export const missions: Mission[] = [
     relatedMissions: ["street-heat", "clean-getaway"],
     image: "/images/missions/high-stakes.jpg",
     featured: true,
+    tags: ["heist", "combat"],
+    verified: false,
   },
 
   {
+    id: "mission_005",
     slug: "final-stand",
     title: "Final Stand",
     description:
@@ -109,5 +122,7 @@ export const missions: Mission[] = [
     relatedMissions: ["high-stakes"],
     image: "/images/missions/final-stand.jpg",
     featured: true,
+    tags: ["finale", "boss"],
+    verified: false,
   },
 ];

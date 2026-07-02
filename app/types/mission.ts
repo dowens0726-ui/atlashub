@@ -1,7 +1,6 @@
-export type Mission = {
-  slug: string;
-  title: string;
-  description: string;
+import type { BaseContent } from "./content";
+
+export type Mission = BaseContent & {
   reward: string;
   difficulty: "Easy" | "Medium" | "Hard" | "Extreme";
   category: string;
@@ -11,6 +10,4 @@ export type Mission = {
   unlocks?: string[];
   atlasTips?: string[];
   relatedMissions?: string[];
-  image?: string;
-  featured?: boolean;
 };
