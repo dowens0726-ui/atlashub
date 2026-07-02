@@ -1,8 +1,12 @@
 import { notFound } from "next/navigation";
-import Container from "../../components/ui/Container";
-import StatBar from "../../components/ui/StatBar";
-import FeatureChip from "../../components/ui/FeatureChip";
-import { weapons } from "../../data/weapons";
+
+import Container from "@/app/components/ui/Container";
+import StatBar from "@/app/components/ui/StatBar";
+import FeatureChip from "@/app/components/ui/FeatureChip";
+import { RecommendedMissions } from "@/app/components/mission";
+
+import { weapons } from "@/app/data/weapons";
+import { getMissionsForWeapon } from "@/app/services/relationships.service";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -16,6 +20,8 @@ export default async function WeaponPage({ params }: Props) {
   if (!weapon) {
     notFound();
   }
+
+  const recommendedMissions = getMissionsForWeapon(weapon.slug);
 
   return (
     <main className="min-h-screen bg-zinc-950 text-white">
@@ -43,6 +49,11 @@ export default async function WeaponPage({ params }: Props) {
           <StatBar label="Accuracy" value={weapon.accuracy} max={100} />
           <StatBar label="Range" value={weapon.range} max={100} />
         </div>
+
+        <RecommendedMissions
+          title="Best Used In"
+          missions={recommendedMissions}
+        />
       </Container>
     </main>
   );
