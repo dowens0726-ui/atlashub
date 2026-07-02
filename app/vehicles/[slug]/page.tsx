@@ -2,14 +2,15 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import CompareButton from "@/app/components/compare/CompareButton";
-import RelatedVehicles from "@/app/components/vehicles/RelatedVehicles";
+import { RecommendedMissions } from "@/app/components/mission";
 import Container from "@/app/components/ui/Container";
 import VehicleHero from "@/app/components/vehicles/VehicleHero";
+import RelatedVehicles from "@/app/components/vehicles/RelatedVehicles";
 import VehicleStats from "@/app/components/vehicles/VehicleStats";
-import { RecommendedMissions } from "@/app/components/mission";
 
 import { vehicles } from "@/app/data/vehicles";
-import { getMissionsForVehicle } from "@/app/services/relationships.service";
+
+import { getMissionsForVehicle } from "@/app/services/atlas-intelligence.service";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -57,7 +58,10 @@ export default async function VehiclePage({ params }: Props) {
           missions={recommendedMissions}
         />
 
-        <RelatedVehicles vehicle={vehicle} vehicles={vehicles} />
+        <RelatedVehicles
+          vehicle={vehicle}
+          vehicles={vehicles}
+        />
       </Container>
     </main>
   );
