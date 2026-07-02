@@ -39,10 +39,15 @@ export default async function ComparePage({
 
         <div className="mt-8">
           <CompareVehicleSelector
-            vehicles={vehicles}
-            leftVehicle={leftVehicle}
-            rightVehicle={rightVehicle}
-          />
+  vehicle={leftVehicle.slug}
+  compareWith={rightVehicle.slug}
+  options={vehicles
+    .filter((item) => item.slug !== leftVehicle.slug)
+    .map((item) => ({
+      label: item.name,
+      value: item.slug,
+    }))}
+/>
         </div>
 
         <div className="mt-12 grid gap-6 md:grid-cols-2">
