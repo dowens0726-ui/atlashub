@@ -6,6 +6,8 @@ import {
   AtlasTips,
   MissionUnlocks,
   RelatedMissions,
+  RecommendedVehicle,
+  RecommendedWeapon,
 } from "@/app/components/mission";
 
 type MissionPageProps = {
@@ -44,6 +46,11 @@ export default async function MissionPage({ params }: MissionPageProps) {
       <AtlasTips tips={mission.atlasTips} />
 
       <MissionUnlocks unlocks={mission.unlocks} />
+
+      <div className="grid gap-6 md:grid-cols-2">
+        <RecommendedVehicle vehicleSlug={mission.recommendedVehicle} />
+        <RecommendedWeapon weaponSlug={mission.recommendedWeapon} />
+      </div>
 
       <RelatedMissions relatedMissions={mission.relatedMissions} />
     </main>

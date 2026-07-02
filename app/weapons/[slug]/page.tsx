@@ -7,7 +7,7 @@ import StatBar from "@/app/components/ui/StatBar";
 
 import { weapons } from "@/app/data/weapons";
 
-import { getMissionsForWeapon } from "@/app/services/atlas-intelligence.service";
+import { getMissionsForWeapon } from "@/app/services"
 
 type Props = {
   params: Promise<{ slug: string }>;

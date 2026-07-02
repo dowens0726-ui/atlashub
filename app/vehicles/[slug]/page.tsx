@@ -10,7 +10,7 @@ import VehicleStats from "@/app/components/vehicles/VehicleStats";
 
 import { vehicles } from "@/app/data/vehicles";
 
-import { getMissionsForVehicle } from "@/app/services/atlas-intelligence.service";
+import { getMissionsForVehicle } from "@/app/services"
 
 type Props = {
   params: Promise<{ slug: string }>;
