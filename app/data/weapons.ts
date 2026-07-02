@@ -1,7 +1,8 @@
-import type { Weapon } from "../types/weapon";
+import type { Weapon } from "@/app/types";
 
 export const weapons: Weapon[] = [
   {
+    id: "weapon_001",
     slug: "pistol",
     name: "Pistol",
     category: "Pistol",
@@ -13,8 +14,11 @@ export const weapons: Weapon[] = [
     description: "A reliable starter sidearm for close-range encounters.",
     image: "/images/weapons/pistol.jpg",
     featured: true,
+    tags: ["starter", "sidearm"],
+    verified: false,
   },
   {
+    id: "weapon_002",
     slug: "smg",
     name: "SMG",
     category: "SMG",
@@ -26,8 +30,11 @@ export const weapons: Weapon[] = [
     description: "A compact automatic weapon built for fast engagements.",
     image: "/images/weapons/smg.jpg",
     featured: false,
+    tags: ["automatic", "close-range"],
+    verified: false,
   },
   {
+    id: "weapon_003",
     slug: "assault-rifle",
     name: "Assault Rifle",
     category: "Rifle",
@@ -39,5 +46,7 @@ export const weapons: Weapon[] = [
     description: "A versatile rifle with strong all-around performance.",
     image: "/images/weapons/assault-rifle.jpg",
     featured: true,
+    tags: ["rifle", "combat"],
+    verified: false,
   },
 ];
