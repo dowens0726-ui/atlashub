@@ -1,52 +1,63 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { missions } from "../../data/missions";
+import { missions } from "@/app/data/missions";
 
-type Props = {
+type MissionPageProps = {
   params: Promise<{
     slug: string;
   }>;
 };
 
-export default async function MissionPage({ params }: Props) {
+export default async function MissionPage({ params }: MissionPageProps) {
   const { slug } = await params;
-
-  const mission = missions.find((m) => m.slug === slug);
+  const mission = missions.find((mission) => mission.slug === slug);
 
   if (!mission) {
     notFound();
   }
 
   return (
-    <main className="min-h-screen bg-zinc-950 text-white">
-      <section className="mx-auto max-w-5xl px-6 py-16">
-        <Link
-  href="/missions"
-  className="..."
->
-  ← Back to Missions
-</Link>
+    <main className="mx-auto max-w-5xl px-4 py-10">
+      <p className="text-sm uppercase tracking-wide text-emerald-400">
+        {mission.category}
+      </p>
 
-        <p className="mt-10 text-sm font-semibold uppercase tracking-[0.3em] text-emerald-400">
-          {mission.category}
-        </p>
+      <h1 className="mt-2 text-4xl font-bold">{mission.title}</h1>
 
-        <h1 className="mt-3 text-6xl font-black">{mission.title}</h1>
+      <p className="mt-4 text-zinc-400">{mission.description}</p>
 
-        <p className="mt-8 text-xl text-zinc-300">{mission.description}</p>
-
-        <div className="mt-12 rounded-2xl border border-zinc-800 bg-zinc-900 p-6">
-          <p className="text-lg">
-            <span className="font-bold text-emerald-400">Reward:</span>{" "}
-            {mission.reward}
-          </p>
-
-          <p className="mt-4 text-lg">
-            <span className="font-bold text-emerald-400">Difficulty:</span>{" "}
-            {mission.difficulty}
-          </p>
+      <div className="mt-8 grid gap-4 md:grid-cols-3">
+        <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5">
+          <p className="text-sm text-zinc-500">Reward</p>
+          <p className="mt-1 font-semibold">{mission.reward}</p>
         </div>
-      </section>
+
+        <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5">
+          <p className="text-sm text-zinc-500">Difficulty</p>
+          <p className="mt-1 font-semibold">{mission.difficulty}</p>
+        </div>
+
+        <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5">
+          <p className="text-sm text-zinc-500">Estimated Time</p>
+          <p className="mt-1 font-semibold">{mission.estimatedTime}</p>
+        </div>
+      </div>
+
+      {mission.atlasTips && (
+        <section className="mt-10">
+          <h2 className="text-2xl font-bold">Atlas Tips</h2>
+
+          <ul className="mt-4 space-y-3">
+            {mission.atlasTips.map((tip) => (
+              <li
+                key={tip}
+                className="rounded-xl border border-zinc-800 bg-zinc-900 p-4 text-zinc-300"
+              >
+                {tip}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </main>
   );
 }

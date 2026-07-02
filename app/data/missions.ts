@@ -1,44 +1,25 @@
-import type { Mission } from "../types/mission";
+import type { Mission } from "@/app/types/mission";
 
 export const missions: Mission[] = [
   {
-    slug: "prologue",
-    title: "Prologue",
-    description: "Begin your journey through Leonida.",
+    slug: "first-score",
+    title: "First Score",
+    description:
+      "A starter mission focused on planning, driving, and quick decision making.",
     reward: "$5,000",
     difficulty: "Easy",
-    category: "Story Mission",
-  },
-  {
-    slug: "high-roller",
-    title: "High Roller",
-    description: "A risky score with a big payout.",
-    reward: "$18,000",
-    difficulty: "Medium",
-    category: "Heist",
-  },
-  {
-    slug: "heat-check",
-    title: "Heat Check",
-    description: "Escape the pressure and lose the cops.",
-    reward: "$7,500",
-    difficulty: "Hard",
-    category: "Story Mission",
-  },
-  {
-    slug: "night-shift",
-    title: "Night Shift",
-    description: "A dangerous undercover operation through Vice City.",
-    reward: "$30,000",
-    difficulty: "Hard",
-    category: "Story Mission",
-  },
-  {
-    slug: "jewel-job",
-    title: "The Jewel Job",
-    description: "Rob the jewelry store and escape the police.",
-    reward: "$250,000",
-    difficulty: "Hard",
-    category: "Heist",
+    category: "Story",
+    estimatedTime: "10–15 min",
+    recommendedVehicle: "bravado-buffalo",
+    recommendedWeapon: "pistol",
+    unlocks: ["Safehouse Access", "Street Contacts"],
+    atlasTips: [
+      "Bring a fast four-door vehicle.",
+      "Avoid unnecessary fights to finish faster.",
+      "Stock armor before starting.",
+    ],
+    relatedMissions: ["street-heat", "clean-getaway"],
+    image: "/images/missions/first-score.jpg",
+    featured: true,
   },
 ];
