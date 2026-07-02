@@ -1,7 +1,8 @@
-import type { Vehicle } from "../types/vehicle";
+import type { Vehicle } from "@/app/types";
 
 export const vehicles: Vehicle[] = [
   {
+    id: "vehicle_001",
     slug: "comet-s2",
     name: "Comet S2",
     manufacturer: "Pfister",
@@ -17,13 +18,16 @@ export const vehicles: Vehicle[] = [
     location: "Legendary Motorsport",
     description: "A high-performance sports coupe inspired by Porsche.",
     featured: true,
+    tags: ["sports", "coupe"],
+    verified: false,
   },
   {
+    id: "vehicle_002",
     slug: "buffalo-stx",
     name: "Buffalo STX",
     manufacturer: "Bravado",
     class: "Muscle",
-    image: "/vehicles/buffalo-stx.jpg",  
+    image: "/vehicles/buffalo-stx.jpg",
     price: 2150000,
     topSpeed: 126,
     acceleration: 82,
@@ -34,8 +38,11 @@ export const vehicles: Vehicle[] = [
     location: "Southern San Andreas Super Autos",
     description: "Modern American muscle with excellent acceleration.",
     featured: true,
+    tags: ["muscle", "sedan"],
+    verified: false,
   },
   {
+    id: "vehicle_003",
     slug: "jugular",
     name: "Jugular",
     manufacturer: "Ocelot",
@@ -51,5 +58,7 @@ export const vehicles: Vehicle[] = [
     location: "Legendary Motorsport",
     description: "Luxury sports sedan with impressive handling.",
     featured: false,
+    tags: ["sports", "sedan"],
+    verified: false,
   },
 ];

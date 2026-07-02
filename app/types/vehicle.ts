@@ -1,9 +1,11 @@
-export type Vehicle = {
-  slug: string;
+import type { BaseEntity } from "./content";
+
+export type Vehicle = BaseEntity & {
   name: string;
   manufacturer: string;
   class: string;
   image: string;
+  featured: boolean;
   price: number;
   topSpeed: number;
   acceleration: number;
@@ -12,7 +14,4 @@ export type Vehicle = {
   drivetrain: "RWD" | "FWD" | "AWD";
   seats: number;
   location: string;
-  description: string;
-  featured: boolean;
-  
 };
