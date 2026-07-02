@@ -1,7 +1,6 @@
-export type BaseContent = {
+export type BaseEntity = {
   id: string;
   slug: string;
-  title: string;
   description: string;
   image?: string;
   featured?: boolean;

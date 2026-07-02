@@ -1,4 +1,4 @@
 export type { Mission } from "./mission";
 export type { Vehicle } from "./vehicle";
 export type { Weapon } from "./weapon";
-export type { BaseContent } from "./content";
+export type { BaseEntity } from "./content";

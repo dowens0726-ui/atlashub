@@ -1,6 +1,7 @@
-import type { BaseContent } from "./content";
+import type { BaseEntity } from "./content";
 
-export type Mission = BaseContent & {
+export type Mission = BaseEntity & {
+  title: string;
   reward: string;
   difficulty: "Easy" | "Medium" | "Hard" | "Extreme";
   category: string;
