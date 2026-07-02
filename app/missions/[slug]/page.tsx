@@ -1,10 +1,12 @@
 import { notFound } from "next/navigation";
 import { missions } from "@/app/data/missions";
 
-import MissionStats from "@/app/components/MissionStats";
-import AtlasTips from "@/app/components/AtlasTips";
-import MissionUnlocks from "@/app/components/MissionUnlocks";
-import RelatedMissions from "@/app/components/RelatedMissions";
+import {
+  MissionStats,
+  AtlasTips,
+  MissionUnlocks,
+  RelatedMissions,
+} from "@/app/components/mission";
 
 type MissionPageProps = {
   params: Promise<{
