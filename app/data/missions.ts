@@ -22,4 +22,92 @@ export const missions: Mission[] = [
     image: "/images/missions/first-score.jpg",
     featured: true,
   },
+
+  {
+    slug: "street-heat",
+    title: "Street Heat",
+    description:
+      "Race through the city while avoiding police attention and completing objectives under pressure.",
+    reward: "$7,500",
+    difficulty: "Medium",
+    category: "Street",
+    estimatedTime: "15–20 min",
+    recommendedVehicle: "pegassi-zentorno",
+    recommendedWeapon: "smg",
+    unlocks: ["Street Racing Contacts"],
+    atlasTips: [
+      "Use a vehicle with strong acceleration.",
+      "Plan your escape before starting.",
+      "Stay off the main roads when wanted.",
+    ],
+    relatedMissions: ["first-score", "clean-getaway"],
+    image: "/images/missions/street-heat.jpg",
+    featured: true,
+  },
+
+  {
+    slug: "clean-getaway",
+    title: "Clean Getaway",
+    description:
+      "Lose the police and safely deliver the target vehicle without unnecessary damage.",
+    reward: "$6,250",
+    difficulty: "Medium",
+    category: "Getaway",
+    estimatedTime: "12–18 min",
+    recommendedVehicle: "bravado-buffalo",
+    recommendedWeapon: "pistol",
+    unlocks: ["Garage Access"],
+    atlasTips: [
+      "Breaking line of sight is more important than speed.",
+      "Use alleys and tunnels whenever possible.",
+      "Avoid unnecessary firefights.",
+    ],
+    relatedMissions: ["first-score", "street-heat"],
+    image: "/images/missions/clean-getaway.jpg",
+    featured: false,
+  },
+
+  {
+    slug: "high-stakes",
+    title: "High Stakes",
+    description:
+      "Infiltrate a guarded location, recover valuable cargo, and escape before reinforcements arrive.",
+    reward: "$15,000",
+    difficulty: "Hard",
+    category: "Heist",
+    estimatedTime: "25–35 min",
+    recommendedVehicle: "insurgent",
+    recommendedWeapon: "carbine-rifle",
+    unlocks: ["Advanced Contracts"],
+    atlasTips: [
+      "Bring body armor.",
+      "Coordinate your entry and exit.",
+      "Conserve ammunition for the final encounter.",
+    ],
+    relatedMissions: ["street-heat", "clean-getaway"],
+    image: "/images/missions/high-stakes.jpg",
+    featured: true,
+  },
+
+  {
+    slug: "final-stand",
+    title: "Final Stand",
+    description:
+      "Defend your position against multiple waves of enemies before making a final escape.",
+    reward: "$20,000",
+    difficulty: "Extreme",
+    category: "Story Finale",
+    estimatedTime: "30–45 min",
+    recommendedVehicle: "insurgent",
+    recommendedWeapon: "combat-mg",
+    unlocks: ["Endgame Content"],
+    atlasTips: [
+      "Use cover constantly.",
+      "Prioritize armored enemies first.",
+      "Save explosives for the last wave.",
+    ],
+    relatedMissions: ["high-stakes"],
+    image: "/images/missions/final-stand.jpg",
+    featured: true,
+  },
 ];
