@@ -25,6 +25,14 @@ export default function MapCanvas({ markers }: MapCanvasProps) {
     weapons: true,
   });
 
+  const counts = useMemo(() => {
+    return {
+      missions: markers.filter((marker) => marker.type === "mission").length,
+      vehicles: markers.filter((marker) => marker.type === "vehicle").length,
+      weapons: markers.filter((marker) => marker.type === "weapon").length,
+    };
+  }, [markers]);
+
   const visibleMarkers = useMemo(() => {
     return markers.filter((marker) => {
       if (marker.type === "mission") return filters.missions;
@@ -44,11 +52,37 @@ export default function MapCanvas({ markers }: MapCanvasProps) {
     setSelectedMarker(null);
   }
 
+  function handleShowAll() {
+    setFilters({
+      missions: true,
+      vehicles: true,
+      weapons: true,
+    });
+
+    setSelectedMarker(null);
+  }
+
+  function handleHideAll() {
+    setFilters({
+      missions: false,
+      vehicles: false,
+      weapons: false,
+    });
+
+    setSelectedMarker(null);
+  }
+
   return (
     <div className="relative min-h-[600px] overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900">
       <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,_#1f2937,_#09090b)]" />
 
-      <MapToolbar filters={filters} onToggle={handleToggle} />
+      <MapToolbar
+        filters={filters}
+        counts={counts}
+        onToggle={handleToggle}
+        onShowAll={handleShowAll}
+        onHideAll={handleHideAll}
+      />
 
       {visibleMarkers.map((marker) => (
         <MapMarker
