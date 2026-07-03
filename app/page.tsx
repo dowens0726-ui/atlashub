@@ -10,6 +10,8 @@ import RecentlyAdded from "./components/home/RecentlyAdded";
 import Features from "./components/home/Features";
 
 import Container from "./components/ui/Container";
+import QuickLaunch from "./components/home/QuickLaunch";
+import ContinueExploring from "./components/home/ContinueExploring";
 
 export default function Home() {
   return (
@@ -18,10 +20,24 @@ export default function Home() {
         <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
           <Hero />
 
+          <div className="mt-16">
+
+<div className="mt-16">
+  <ContinueExploring />
+</div>
+
+  <QuickLaunch />
+</div>
+
           <AtlasSearchPanel />
         </div>
 
         <div className="mt-16">
+
+<div className="mt-16">
+  <ContinueExploring />
+</div>
+
           <FeaturedContent />
         </div>
 
