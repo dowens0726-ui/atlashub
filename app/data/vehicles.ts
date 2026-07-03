@@ -1,1 +1,1 @@
-export { vehicles } from "./vehicles";
+export { vehicles } from "./vehicles/index";

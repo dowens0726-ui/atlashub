@@ -5,7 +5,7 @@ import CompareVehicleSelector from "../components/compare/CompareVehicleSelector
 import Container from "../components/ui/Container";
 import FeatureChip from "../components/ui/FeatureChip";
 import FeaturedBadge from "../components/vehicles/FeaturedBadge";
-import { vehicles } from "../data/vehicles";
+import { vehicles } from "../data";
 
 type ComparePageProps = {
   searchParams: Promise<{
@@ -19,13 +19,15 @@ export default async function ComparePage({
 }: ComparePageProps) {
   const { vehicle, compareWith } = await searchParams;
 
-  const selectedVehicle = vehicles.find((v) => v.slug === vehicle);
-  const comparisonVehicle = vehicles.find((v) => v.slug === compareWith);
+  const selectedVehicle = vehicles.find((item) => item.slug === vehicle);
+  const comparisonVehicle = vehicles.find(
+    (item) => item.slug === compareWith
+  );
 
   const leftVehicle = selectedVehicle ?? vehicles[0];
   const rightVehicle =
     comparisonVehicle ??
-    vehicles.find((v) => v.slug !== leftVehicle.slug) ??
+    vehicles.find((item) => item.slug !== leftVehicle.slug) ??
     vehicles[1];
 
   return (
@@ -39,19 +41,18 @@ export default async function ComparePage({
 
         <div className="mt-8">
           <CompareVehicleSelector
-  vehicle={leftVehicle.slug}
-  compareWith={rightVehicle.slug}
-  options={vehicles
-    .filter((item) => item.slug !== leftVehicle.slug)
-    .map((item) => ({
-      label: item.name,
-      value: item.slug,
-    }))}
-/>
+            vehicle={leftVehicle.slug}
+            compareWith={rightVehicle.slug}
+            options={vehicles
+              .filter((item) => item.slug !== leftVehicle.slug)
+              .map((item) => ({
+                label: item.name,
+                value: item.slug,
+              }))}
+          />
         </div>
 
         <div className="mt-12 grid gap-6 md:grid-cols-2">
-          {/* Left Vehicle */}
           <div className="overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900">
             <Image
               src={leftVehicle.image}
@@ -64,9 +65,7 @@ export default async function ComparePage({
             <div className="p-8">
               <FeaturedBadge featured={leftVehicle.featured} />
 
-              <h2 className="mt-4 text-3xl font-bold">
-                {leftVehicle.name}
-              </h2>
+              <h2 className="mt-4 text-3xl font-bold">{leftVehicle.name}</h2>
 
               <p className="mt-2 text-zinc-400">
                 {leftVehicle.manufacturer}
@@ -79,7 +78,6 @@ export default async function ComparePage({
             </div>
           </div>
 
-          {/* Right Vehicle */}
           <div className="overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900">
             <Image
               src={rightVehicle.image}
@@ -92,9 +90,7 @@ export default async function ComparePage({
             <div className="p-8">
               <FeaturedBadge featured={rightVehicle.featured} />
 
-              <h2 className="mt-4 text-3xl font-bold">
-                {rightVehicle.name}
-              </h2>
+              <h2 className="mt-4 text-3xl font-bold">{rightVehicle.name}</h2>
 
               <p className="mt-2 text-zinc-400">
                 {rightVehicle.manufacturer}
@@ -108,10 +104,7 @@ export default async function ComparePage({
           </div>
         </div>
 
-        <AtlasVerdict
-          left={leftVehicle}
-          right={rightVehicle}
-        />
+        <AtlasVerdict left={leftVehicle} right={rightVehicle} />
 
         <div className="mt-10 space-y-6">
           <ComparisonRow

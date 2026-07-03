@@ -1,8 +1,8 @@
 import type { Vehicle } from "@/app/types";
+import { createVehicle } from "../factories";
 
 export const sportsVehicles: Vehicle[] = [
-  {
-    id: "vehicle_001",
+  createVehicle({
     slug: "comet-s2",
     name: "Comet S2",
     manufacturer: "Pfister",
@@ -19,10 +19,8 @@ export const sportsVehicles: Vehicle[] = [
     description: "A high-performance sports coupe inspired by Porsche.",
     featured: true,
     tags: ["sports", "coupe"],
-    verified: false,
-  },
-  {
-    id: "vehicle_003",
+  }),
+  createVehicle({
     slug: "jugular",
     name: "Jugular",
     manufacturer: "Ocelot",
@@ -39,10 +37,8 @@ export const sportsVehicles: Vehicle[] = [
     description: "Luxury sports sedan with impressive handling.",
     featured: false,
     tags: ["sports", "sedan"],
-    verified: false,
-  },
-  {
-    id: "vehicle_004",
+  }),
+  createVehicle({
     slug: "banshee",
     name: "Banshee",
     manufacturer: "Bravado",
@@ -60,6 +56,5 @@ export const sportsVehicles: Vehicle[] = [
       "A lightweight two-door sports car known for speed, style, and street-racing potential.",
     featured: true,
     tags: ["sports", "coupe", "street-racing"],
-    verified: false,
-  },
+  }),
 ];

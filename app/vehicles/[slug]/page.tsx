@@ -8,9 +8,8 @@ import VehicleHero from "@/app/components/vehicles/VehicleHero";
 import RelatedVehicles from "@/app/components/vehicles/RelatedVehicles";
 import VehicleStats from "@/app/components/vehicles/VehicleStats";
 
-import { vehicles } from "@/app/data/vehicles";
-
-import { getMissionsForVehicle } from "@/app/services"
+import { vehicles } from "@/app/data";
+import { getMissionsForVehicle } from "@/app/services";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -58,10 +57,7 @@ export default async function VehiclePage({ params }: Props) {
           missions={recommendedMissions}
         />
 
-        <RelatedVehicles
-          vehicle={vehicle}
-          vehicles={vehicles}
-        />
+        <RelatedVehicles vehicle={vehicle} vehicles={vehicles} />
       </Container>
     </main>
   );

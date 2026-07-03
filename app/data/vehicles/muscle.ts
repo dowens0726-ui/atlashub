@@ -1,8 +1,8 @@
 import type { Vehicle } from "@/app/types";
+import { createVehicle } from "../factories";
 
 export const muscleVehicles: Vehicle[] = [
-  {
-    id: "vehicle_002",
+  createVehicle({
     slug: "buffalo-stx",
     name: "Buffalo STX",
     manufacturer: "Bravado",
@@ -19,6 +19,5 @@ export const muscleVehicles: Vehicle[] = [
     description: "Modern American muscle with excellent acceleration.",
     featured: true,
     tags: ["muscle", "sedan"],
-    verified: false,
-  },
+  }),
 ];
