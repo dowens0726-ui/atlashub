@@ -7,6 +7,10 @@ type Position = {
   y: number;
 };
 
+const MIN_SCALE = 0.5;
+const MAX_SCALE = 2.5;
+const ZOOM_STEP = 0.1;
+
 export function useExplorerViewport() {
   const [position, setPosition] = useState<Position>({ x: 0, y: 0 });
   const [scale, setScale] = useState(1);
@@ -15,6 +19,7 @@ export function useExplorerViewport() {
 
   function handlePointerDown(event: React.PointerEvent<HTMLDivElement>) {
     setIsDragging(true);
+
     setDragStart({
       x: event.clientX - position.x,
       y: event.clientY - position.y,
@@ -34,14 +39,34 @@ export function useExplorerViewport() {
     setIsDragging(false);
   }
 
+  function handleWheel(event: React.WheelEvent<HTMLDivElement>) {
+    event.preventDefault();
+
+    setScale((current) => {
+      const next =
+        event.deltaY < 0
+          ? current + ZOOM_STEP
+          : current - ZOOM_STEP;
+
+      return Math.min(MAX_SCALE, Math.max(MIN_SCALE, next));
+    });
+  }
+
+  function resetViewport() {
+    setPosition({ x: 0, y: 0 });
+    setScale(1);
+  }
+
   return {
     position,
-    setPosition,
     scale,
-    setScale,
     isDragging,
+
     handlePointerDown,
     handlePointerMove,
     handlePointerUp,
+    handleWheel,
+
+    resetViewport,
   };
 }
