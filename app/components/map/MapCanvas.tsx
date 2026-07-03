@@ -5,34 +5,29 @@ import type { AtlasMapMarker } from "@/app/types";
 import MapMarker from "./MapMarker";
 import MapSidebar from "./MapSidebar";
 import { MapToolbar } from "./toolbar";
+import { useExplorerFilters } from "@/app/hooks/useExplorerFilters";
+import { useExplorerSearch } from "@/app/hooks/useExplorerSearch";
 
 type MapCanvasProps = {
   markers: AtlasMapMarker[];
 };
 
-type MapFilterKey = "missions" | "vehicles" | "weapons";
-
-type MapFiltersState = Record<MapFilterKey, boolean>;
-
 export default function MapCanvas({ markers }: MapCanvasProps) {
   const [selectedMarker, setSelectedMarker] = useState<AtlasMapMarker | null>(
     null
   );
-  const [searchQuery, setSearchQuery] = useState("");
+ const {
+  searchQuery,
+  updateSearchQuery,
+} = useExplorerSearch();
 
-  const [filters, setFilters] = useState<MapFiltersState>({
-    missions: true,
-    vehicles: true,
-    weapons: true,
-  });
-
-  const counts = useMemo(() => {
-    return {
-      missions: markers.filter((marker) => marker.type === "mission").length,
-      vehicles: markers.filter((marker) => marker.type === "vehicle").length,
-      weapons: markers.filter((marker) => marker.type === "weapon").length,
-    };
-  }, [markers]);
+  const {
+    filters,
+    counts,
+    toggleFilter,
+    showAllFilters,
+    hideAllFilters,
+  } = useExplorerFilters(markers);
 
   const visibleMarkers = useMemo(() => {
     const normalizedQuery = searchQuery.trim().toLowerCase();
@@ -54,39 +49,25 @@ export default function MapCanvas({ markers }: MapCanvasProps) {
     });
   }, [markers, filters, searchQuery]);
 
-  function handleToggle(filter: MapFilterKey) {
-    setFilters((currentFilters) => ({
-      ...currentFilters,
-      [filter]: !currentFilters[filter],
-    }));
-
+  function handleToggle(filter: "missions" | "vehicles" | "weapons") {
+    toggleFilter(filter);
     setSelectedMarker(null);
   }
 
   function handleShowAll() {
-    setFilters({
-      missions: true,
-      vehicles: true,
-      weapons: true,
-    });
-
+    showAllFilters();
     setSelectedMarker(null);
   }
 
   function handleHideAll() {
-    setFilters({
-      missions: false,
-      vehicles: false,
-      weapons: false,
-    });
-
+    hideAllFilters();
     setSelectedMarker(null);
   }
 
   function handleSearchChange(value: string) {
-    setSearchQuery(value);
-    setSelectedMarker(null);
-  }
+  updateSearchQuery(value);
+  setSelectedMarker(null);
+}
 
   return (
     <div className="relative min-h-[600px] overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900">
