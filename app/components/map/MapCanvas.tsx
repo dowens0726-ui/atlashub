@@ -9,25 +9,20 @@ import MapMarker from "./MapMarker";
 import MapSidebar from "./MapSidebar";
 import MapViewport from "./MapViewport";
 import { MapToolbar } from "./toolbar";
-import MapStatus from "./MapStatus";
 
 type MapCanvasProps = {
   markers: AtlasMapMarker[];
 };
 
 export default function MapCanvas({ markers }: MapCanvasProps) {
-  const [selectedMarker, setSelectedMarker] =
-    useState<AtlasMapMarker | null>(null);
+  const [selectedMarker, setSelectedMarker] = useState<AtlasMapMarker | null>(
+    null
+  );
 
   const { searchQuery, updateSearchQuery } = useExplorerSearch();
 
-  const {
-    filters,
-    counts,
-    toggleFilter,
-    showAllFilters,
-    hideAllFilters,
-  } = useExplorerFilters(markers);
+  const { filters, counts, toggleFilter, showAllFilters, hideAllFilters } =
+    useExplorerFilters(markers);
 
   const {
     position,
@@ -36,8 +31,6 @@ export default function MapCanvas({ markers }: MapCanvasProps) {
     handlePointerDown,
     handlePointerMove,
     handlePointerUp,
-    handleWheel,
-    resetViewport,
   } = useExplorerViewport();
 
   const visibleMarkers = useMemo(() => {
@@ -89,8 +82,6 @@ export default function MapCanvas({ markers }: MapCanvasProps) {
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
-        onWheel={handleWheel}
-        onReset={resetViewport}
       >
         {visibleMarkers.map((marker) => (
           <MapMarker
@@ -111,11 +102,6 @@ export default function MapCanvas({ markers }: MapCanvasProps) {
         onShowAll={handleShowAll}
         onHideAll={handleHideAll}
       />
-
-      <MapStatus
-  scale={scale}
-  markerCount={visibleMarkers.length}
-/>
 
       <MapSidebar
         marker={selectedMarker}

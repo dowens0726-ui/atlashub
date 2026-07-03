@@ -1,8 +1,5 @@
 "use client";
 
-import MapWorld from "./MapWorld";
-import MapLayer from "./MapLayer";
-
 type MapViewportProps = {
   position: {
     x: number;
@@ -13,8 +10,6 @@ type MapViewportProps = {
   onPointerDown: (event: React.PointerEvent<HTMLDivElement>) => void;
   onPointerMove: (event: React.PointerEvent<HTMLDivElement>) => void;
   onPointerUp: () => void;
-  onWheel: (event: React.WheelEvent<HTMLDivElement>) => void;
-  onReset: () => void;
   children: React.ReactNode;
 };
 
@@ -25,13 +20,11 @@ export default function MapViewport({
   onPointerDown,
   onPointerMove,
   onPointerUp,
-  onWheel,
-  onReset,
   children,
 }: MapViewportProps) {
   return (
     <div
-      className={`absolute inset-0 overflow-hidden touch-none select-none ${
+      className={`absolute inset-0 z-0 touch-none select-none ${
         isDragging ? "cursor-grabbing" : "cursor-grab"
       }`}
       onPointerDown={onPointerDown}
@@ -39,19 +32,17 @@ export default function MapViewport({
       onPointerUp={onPointerUp}
       onPointerCancel={onPointerUp}
       onPointerLeave={onPointerUp}
-      onWheel={onWheel}
-      onDoubleClick={onReset}
     >
-      <MapWorld>
-        <div
-          className="origin-top-left transition-transform duration-100 ease-out"
-          style={{
-            transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
-          }}
-        >
-          <MapLayer>{children}</MapLayer>
-        </div>
-      </MapWorld>
+      <div
+        className="absolute inset-0 origin-center"
+        style={{
+          transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
+        }}
+      >
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_#1f2937,_#09090b)]" />
+
+        {children}
+      </div>
     </div>
   );
 }
