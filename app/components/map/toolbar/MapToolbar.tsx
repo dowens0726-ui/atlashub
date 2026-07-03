@@ -5,6 +5,7 @@ import { MapLegend } from "./";
 type MapToolbarProps = {
   searchQuery: string;
   onSearchChange: (value: string) => void;
+  scale: number;
   filters: {
     missions: boolean;
     vehicles: boolean;
@@ -26,6 +27,7 @@ type MapToolbarProps = {
 export default function MapToolbar({
   searchQuery,
   onSearchChange,
+  scale,
   filters,
   counts,
   onToggle,
@@ -37,15 +39,18 @@ export default function MapToolbar({
 }: MapToolbarProps) {
   return (
     <div className="absolute top-4 left-4 z-20 w-[min(90vw,360px)] rounded-2xl border border-zinc-800 bg-zinc-950/90 p-3 backdrop-blur">
+      {/* Header */}
       <div className="mb-3">
         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-400">
           Atlas Explorer
         </p>
+
         <p className="mt-1 text-sm text-zinc-400">
           Search, filter, drag, and zoom the map.
         </p>
       </div>
 
+      {/* Search */}
       <input
         value={searchQuery}
         onChange={(event) => onSearchChange(event.target.value)}
@@ -53,6 +58,12 @@ export default function MapToolbar({
         className="mb-3 w-full rounded-xl border border-zinc-800 bg-zinc-900 px-4 py-3 text-sm font-semibold text-white outline-none transition placeholder:text-zinc-500 focus:border-emerald-500"
       />
 
+      {/* Zoom Level */}
+      <div className="mb-3 rounded-xl border border-zinc-800 bg-zinc-900 px-4 py-2 text-sm font-semibold text-zinc-300">
+        Zoom: {Math.round(scale * 100)}%
+      </div>
+
+      {/* Filters */}
       <div className="flex flex-wrap gap-2">
         <button
           onClick={() => onToggle("missions")}
@@ -88,6 +99,7 @@ export default function MapToolbar({
         </button>
       </div>
 
+      {/* Controls */}
       <div className="mt-3 flex flex-wrap gap-2">
         <button
           onClick={onShowAll}
@@ -107,25 +119,27 @@ export default function MapToolbar({
           onClick={onZoomIn}
           className="rounded-lg bg-zinc-800 px-3 py-2 text-xs font-semibold text-zinc-300 transition hover:bg-zinc-700"
         >
-          Zoom +
+          ➕ Zoom
         </button>
 
         <button
           onClick={onZoomOut}
           className="rounded-lg bg-zinc-800 px-3 py-2 text-xs font-semibold text-zinc-300 transition hover:bg-zinc-700"
         >
-          Zoom -
+          ➖ Zoom
         </button>
 
         <button
           onClick={onResetView}
-          className="rounded-lg bg-zinc-800 px-3 py-2 text-xs font-semibold text-zinc-300 transition hover:bg-zinc-700"
+          className="rounded-lg bg-emerald-500 px-3 py-2 text-xs font-bold text-zinc-950 transition hover:bg-emerald-400"
         >
-          Reset View
+          ⟳ Reset
         </button>
       </div>
 
-      <MapLegend counts={counts} />
+      <div className="mt-4">
+        <MapLegend counts={counts} />
+      </div>
     </div>
   );
 }

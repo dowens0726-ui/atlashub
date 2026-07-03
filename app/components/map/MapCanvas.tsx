@@ -25,17 +25,17 @@ export default function MapCanvas({ markers }: MapCanvasProps) {
     useExplorerFilters(markers);
 
   const {
-  position,
-  scale,
-  isDragging,
-  handlePointerDown,
-  handlePointerMove,
-  handlePointerUp,
-  handleWheel,
-  zoomIn,
-  zoomOut,
-  resetViewport,
-} = useExplorerViewport();
+    position,
+    scale,
+    isDragging,
+    handlePointerDown,
+    handlePointerMove,
+    handlePointerUp,
+    handleWheel,
+    zoomIn,
+    zoomOut,
+    resetViewport,
+  } = useExplorerViewport();
 
   const visibleMarkers = useMemo(() => {
     const normalizedQuery = searchQuery.trim().toLowerCase();
@@ -100,17 +100,18 @@ export default function MapCanvas({ markers }: MapCanvasProps) {
       </MapViewport>
 
       <MapToolbar
-  searchQuery={searchQuery}
-  onSearchChange={handleSearchChange}
-  filters={filters}
-  counts={counts}
-  onToggle={handleToggle}
-  onShowAll={handleShowAll}
-  onHideAll={handleHideAll}
-  onZoomIn={zoomIn}
-  onZoomOut={zoomOut}
-  onResetView={resetViewport}
-/>
+        searchQuery={searchQuery}
+        onSearchChange={handleSearchChange}
+        scale={scale}
+        filters={filters}
+        counts={counts}
+        onToggle={handleToggle}
+        onShowAll={handleShowAll}
+        onHideAll={handleHideAll}
+        onZoomIn={zoomIn}
+        onZoomOut={zoomOut}
+        onResetView={resetViewport}
+      />
 
       <MapSidebar
         marker={selectedMarker}
