@@ -23,21 +23,38 @@ const featuredItems = [
 
 export default function FeaturedContent() {
   return (
-    <section className="py-16">
-      <h2 className="text-3xl font-black">Featured</h2>
+    <section className="py-10 md:py-16">
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-black md:text-3xl">
+          Featured
+        </h2>
 
-      <div className="mt-6 grid gap-6 md:grid-cols-3">
+        <Link
+          href="/explorer"
+          className="text-sm font-semibold text-emerald-400 hover:text-emerald-300"
+        >
+          View All →
+        </Link>
+      </div>
+
+      <div className="mt-6 grid grid-cols-2 gap-4 xl:grid-cols-3">
         {featuredItems.map((item) => (
           <Link
             key={item.title}
             href={item.href}
-            className="rounded-2xl border border-zinc-800 bg-zinc-900 p-6 transition hover:-translate-y-1 hover:border-emerald-400"
+            className="group rounded-2xl border border-zinc-800 bg-zinc-900 p-4 transition duration-300 hover:-translate-y-1 hover:border-emerald-400"
           >
-            <div className="text-4xl">{item.icon}</div>
+            <div className="text-3xl transition group-hover:scale-110">
+              {item.icon}
+            </div>
 
-            <h3 className="mt-5 text-xl font-bold">{item.title}</h3>
+            <h3 className="mt-4 text-base font-bold md:text-xl">
+              {item.title}
+            </h3>
 
-            <p className="mt-2 text-zinc-400">{item.description}</p>
+            <p className="mt-2 text-sm text-zinc-400">
+              {item.description}
+            </p>
           </Link>
         ))}
       </div>
