@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import CompareButton from "@/app/components/compare/CompareButton";
+import AtlasScoreCard from "@/app/components/intelligence/AtlasScoreCard";
 import { RecommendedMissions } from "@/app/components/mission";
 import Container from "@/app/components/ui/Container";
 import VehicleHero from "@/app/components/vehicles/VehicleHero";
@@ -49,6 +50,8 @@ export default async function VehiclePage({ params }: Props) {
             {vehicle.description}
           </p>
         </div>
+
+        <AtlasScoreCard vehicle={vehicle} />
 
         <VehicleStats vehicle={vehicle} />
 
