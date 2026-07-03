@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import CommandPalette from "./CommandPalette";
+import ReleaseCountdown from "./ReleaseCountdown";
 
 const links = [
   { href: "/", label: "Home" },
@@ -21,19 +22,25 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b border-zinc-800 bg-zinc-950/90 backdrop-blur">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        <Link
-  href="/"
-  className="flex items-center gap-3 transition hover:opacity-80"
-  onClick={() => setMobileOpen(false)}
->
-  <Image
-    src="/branding/atlas-logo.svg"
-    alt="Atlas"
-    width={160}
-    height={40}
-    priority
-  />
-</Link>
+        <div className="flex items-center gap-4">
+          <Link
+            href="/"
+            className="flex items-center gap-3 transition hover:opacity-80"
+            onClick={() => setMobileOpen(false)}
+          >
+            <Image
+              src="/branding/atlas-logo.svg"
+              alt="Atlas"
+              width={160}
+              height={40}
+              priority
+            />
+          </Link>
+
+          <div className="ml-4">
+  <ReleaseCountdown />
+</div>
+        </div>
 
         <div className="hidden items-center gap-6 md:flex">
           <CommandPalette />
@@ -72,6 +79,10 @@ export default function Navbar() {
 
       {mobileOpen && (
         <div className="border-t border-zinc-800 px-6 py-4 md:hidden">
+          <div className="mb-4">
+            <ReleaseCountdown />
+          </div>
+
           <div className="mb-4">
             <CommandPalette />
           </div>
