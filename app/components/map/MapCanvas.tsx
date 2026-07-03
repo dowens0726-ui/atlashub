@@ -35,10 +35,11 @@ export default function MapCanvas({ markers }: MapCanvasProps) {
 
         {visibleMarkers.map((marker) => (
           <MapMarker
-            key={marker.id}
-            marker={marker}
-            onClick={setSelectedMarker}
-          />
+  key={marker.id}
+  marker={marker}
+  active={selectedMarker?.id === marker.id}
+  onClick={setSelectedMarker}
+/>
         ))}
 
         <MapSidebar
