@@ -9,6 +9,7 @@ import MapMarker from "./MapMarker";
 import MapSidebar from "./MapSidebar";
 import MapViewport from "./MapViewport";
 import { MapToolbar } from "./toolbar";
+import MapStatus from "./MapStatus";
 
 type MapCanvasProps = {
   markers: AtlasMapMarker[];
@@ -110,6 +111,11 @@ export default function MapCanvas({ markers }: MapCanvasProps) {
         onShowAll={handleShowAll}
         onHideAll={handleHideAll}
       />
+
+      <MapStatus
+  scale={scale}
+  markerCount={visibleMarkers.length}
+/>
 
       <MapSidebar
         marker={selectedMarker}
