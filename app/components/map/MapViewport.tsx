@@ -1,5 +1,7 @@
 "use client";
 
+import MapLayer from "./MapLayer";
+
 type MapViewportProps = {
   position: {
     x: number;
@@ -45,9 +47,7 @@ export default function MapViewport({
           transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
         }}
       >
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_#1f2937,_#09090b)]" />
-
-        {children}
+        <MapLayer>{children}</MapLayer>
       </div>
     </div>
   );
