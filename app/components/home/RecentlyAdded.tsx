@@ -26,55 +26,45 @@ const items = [
 
 export default function RecentlyAdded() {
   return (
-    <section className="py-16">
-      <div className="mb-8 flex items-center justify-between">
+    <section className="py-10 md:py-16">
+      <div className="mb-6 flex items-end justify-between gap-4">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-widest text-emerald-400">
+          <p className="text-xs font-semibold uppercase tracking-widest text-emerald-400 md:text-sm">
             Latest Updates
           </p>
 
-          <h2 className="mt-2 text-4xl font-black">
+          <h2 className="mt-2 text-2xl font-black md:text-4xl">
             Recently Added
           </h2>
         </div>
 
-        <span className="rounded-full border border-zinc-700 bg-zinc-900 px-4 py-2 text-sm text-zinc-400">
+        <span className="hidden rounded-full border border-zinc-700 bg-zinc-900 px-4 py-2 text-sm text-zinc-400 sm:inline-flex">
           Live Updates
         </span>
       </div>
 
-      <div className="space-y-4">
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
         {items.map((item) => (
           <Link
             key={item.title}
             href={item.href}
-            className="group flex items-center justify-between rounded-2xl border border-zinc-800 bg-zinc-900 p-6 transition-all duration-200 hover:-translate-y-1 hover:border-emerald-400 hover:bg-zinc-800"
+            className="group rounded-2xl border border-zinc-800 bg-zinc-900 p-4 transition-all duration-200 hover:-translate-y-1 hover:border-emerald-400 hover:bg-zinc-800 md:p-6"
           >
-            <div className="flex items-center gap-5">
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-zinc-950 text-3xl">
-                {item.icon}
-              </div>
-
-              <div>
-                <div className="flex items-center gap-3">
-                  <h3 className="text-xl font-bold text-white">
-                    {item.title}
-                  </h3>
-
-                  <span className="rounded-full bg-emerald-500/20 px-3 py-1 text-xs font-bold uppercase tracking-wide text-emerald-400">
-                    {item.badge}
-                  </span>
-                </div>
-
-                <p className="mt-2 text-zinc-400">
-                  {item.description}
-                </p>
-              </div>
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-zinc-950 text-2xl md:h-14 md:w-14 md:text-3xl">
+              {item.icon}
             </div>
 
-            <span className="text-2xl text-zinc-600 transition group-hover:translate-x-1 group-hover:text-emerald-400">
-              →
+            <span className="mt-4 inline-flex rounded-full bg-emerald-500/20 px-2 py-1 text-[10px] font-bold uppercase tracking-wide text-emerald-400 md:px-3 md:text-xs">
+              {item.badge}
             </span>
+
+            <h3 className="mt-3 text-base font-bold text-white md:text-xl">
+              {item.title}
+            </h3>
+
+            <p className="mt-2 text-sm text-zinc-400">
+              {item.description}
+            </p>
           </Link>
         ))}
       </div>
