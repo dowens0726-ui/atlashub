@@ -11,6 +11,10 @@ const MIN_SCALE = 0.5;
 const MAX_SCALE = 2.5;
 const ZOOM_STEP = 0.1;
 
+function clampScale(value: number) {
+  return Math.min(MAX_SCALE, Math.max(MIN_SCALE, value));
+}
+
 export function useExplorerViewport() {
   const [position, setPosition] = useState<Position>({ x: 0, y: 0 });
   const [scale, setScale] = useState(1);
@@ -43,13 +47,17 @@ export function useExplorerViewport() {
     event.preventDefault();
 
     setScale((current) => {
-      const next =
-        event.deltaY < 0
-          ? current + ZOOM_STEP
-          : current - ZOOM_STEP;
-
-      return Math.min(MAX_SCALE, Math.max(MIN_SCALE, next));
+      const next = event.deltaY < 0 ? current + ZOOM_STEP : current - ZOOM_STEP;
+      return clampScale(next);
     });
+  }
+
+  function zoomIn() {
+    setScale((current) => clampScale(current + ZOOM_STEP));
+  }
+
+  function zoomOut() {
+    setScale((current) => clampScale(current - ZOOM_STEP));
   }
 
   function resetViewport() {
@@ -61,12 +69,12 @@ export function useExplorerViewport() {
     position,
     scale,
     isDragging,
-
     handlePointerDown,
     handlePointerMove,
     handlePointerUp,
     handleWheel,
-
+    zoomIn,
+    zoomOut,
     resetViewport,
   };
 }

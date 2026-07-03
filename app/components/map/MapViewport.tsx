@@ -10,6 +10,8 @@ type MapViewportProps = {
   onPointerDown: (event: React.PointerEvent<HTMLDivElement>) => void;
   onPointerMove: (event: React.PointerEvent<HTMLDivElement>) => void;
   onPointerUp: () => void;
+  onWheel: (event: React.WheelEvent<HTMLDivElement>) => void;
+  onDoubleClick: () => void;
   children: React.ReactNode;
 };
 
@@ -20,6 +22,8 @@ export default function MapViewport({
   onPointerDown,
   onPointerMove,
   onPointerUp,
+  onWheel,
+  onDoubleClick,
   children,
 }: MapViewportProps) {
   return (
@@ -32,9 +36,15 @@ export default function MapViewport({
       onPointerUp={onPointerUp}
       onPointerCancel={onPointerUp}
       onPointerLeave={onPointerUp}
+      onWheel={onWheel}
+      onDoubleClick={onDoubleClick}
     >
       <div
-        className="absolute inset-0 origin-center"
+  className={`absolute inset-0 origin-center ${
+    isDragging
+      ? ""
+      : "transition-transform duration-200 ease-out"
+  }`}
         style={{
           transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
         }}

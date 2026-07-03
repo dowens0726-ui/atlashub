@@ -18,6 +18,9 @@ type MapToolbarProps = {
   onToggle: (filter: "missions" | "vehicles" | "weapons") => void;
   onShowAll: () => void;
   onHideAll: () => void;
+  onZoomIn: () => void;
+  onZoomOut: () => void;
+  onResetView: () => void;
 };
 
 export default function MapToolbar({
@@ -28,6 +31,9 @@ export default function MapToolbar({
   onToggle,
   onShowAll,
   onHideAll,
+  onZoomIn,
+  onZoomOut,
+  onResetView,
 }: MapToolbarProps) {
   return (
     <div className="absolute top-4 left-4 z-20 w-[min(90vw,360px)] rounded-2xl border border-zinc-800 bg-zinc-950/90 p-3 backdrop-blur">
@@ -82,7 +88,7 @@ export default function MapToolbar({
         </button>
       </div>
 
-      <div className="mt-3 flex gap-2">
+      <div className="mt-3 flex flex-wrap gap-2">
         <button
           onClick={onShowAll}
           className="rounded-lg bg-zinc-800 px-3 py-2 text-xs font-semibold text-zinc-300 transition hover:bg-zinc-700"
@@ -95,6 +101,27 @@ export default function MapToolbar({
           className="rounded-lg bg-zinc-800 px-3 py-2 text-xs font-semibold text-zinc-300 transition hover:bg-zinc-700"
         >
           Hide All
+        </button>
+
+        <button
+          onClick={onZoomIn}
+          className="rounded-lg bg-zinc-800 px-3 py-2 text-xs font-semibold text-zinc-300 transition hover:bg-zinc-700"
+        >
+          Zoom +
+        </button>
+
+        <button
+          onClick={onZoomOut}
+          className="rounded-lg bg-zinc-800 px-3 py-2 text-xs font-semibold text-zinc-300 transition hover:bg-zinc-700"
+        >
+          Zoom -
+        </button>
+
+        <button
+          onClick={onResetView}
+          className="rounded-lg bg-zinc-800 px-3 py-2 text-xs font-semibold text-zinc-300 transition hover:bg-zinc-700"
+        >
+          Reset View
         </button>
       </div>
 
