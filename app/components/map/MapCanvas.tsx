@@ -15,25 +15,29 @@ type MapCanvasProps = {
 };
 
 export default function MapCanvas({ markers }: MapCanvasProps) {
-  const [selectedMarker, setSelectedMarker] = useState<AtlasMapMarker | null>(
-    null
-  );
+  const [selectedMarker, setSelectedMarker] =
+    useState<AtlasMapMarker | null>(null);
 
   const { searchQuery, updateSearchQuery } = useExplorerSearch();
 
-  const { filters, counts, toggleFilter, showAllFilters, hideAllFilters } =
-    useExplorerFilters(markers);
+  const {
+    filters,
+    counts,
+    toggleFilter,
+    showAllFilters,
+    hideAllFilters,
+  } = useExplorerFilters(markers);
 
   const {
-  position,
-  scale,
-  isDragging,
-  handlePointerDown,
-  handlePointerMove,
-  handlePointerUp,
-  handleWheel,
-  resetViewport,
-} = useExplorerViewport();
+    position,
+    scale,
+    isDragging,
+    handlePointerDown,
+    handlePointerMove,
+    handlePointerUp,
+    handleWheel,
+    resetViewport,
+  } = useExplorerViewport();
 
   const visibleMarkers = useMemo(() => {
     const normalizedQuery = searchQuery.trim().toLowerCase();
@@ -78,15 +82,15 @@ export default function MapCanvas({ markers }: MapCanvasProps) {
   return (
     <div className="relative min-h-[600px] overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900">
       <MapViewport
-  position={position}
-  scale={scale}
-  isDragging={isDragging}
-  onPointerDown={handlePointerDown}
-  onPointerMove={handlePointerMove}
-  onPointerUp={handlePointerUp}
-  onWheel={handleWheel}
-  onReset={resetViewport}
->
+        position={position}
+        scale={scale}
+        isDragging={isDragging}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onWheel={handleWheel}
+        onReset={resetViewport}
+      >
         {visibleMarkers.map((marker) => (
           <MapMarker
             key={marker.id}

@@ -1,5 +1,6 @@
 "use client";
 
+import MapWorld from "./MapWorld";
 import MapLayer from "./MapLayer";
 
 type MapViewportProps = {
@@ -30,7 +31,7 @@ export default function MapViewport({
 }: MapViewportProps) {
   return (
     <div
-      className={`absolute inset-0 z-0 touch-none select-none ${
+      className={`absolute inset-0 overflow-hidden touch-none select-none ${
         isDragging ? "cursor-grabbing" : "cursor-grab"
       }`}
       onPointerDown={onPointerDown}
@@ -41,14 +42,16 @@ export default function MapViewport({
       onWheel={onWheel}
       onDoubleClick={onReset}
     >
-      <div
-        className="absolute inset-0 origin-center transition-transform duration-100 ease-out"
-        style={{
-          transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
-        }}
-      >
-        <MapLayer>{children}</MapLayer>
-      </div>
+      <MapWorld>
+        <div
+          className="origin-top-left transition-transform duration-100 ease-out"
+          style={{
+            transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
+          }}
+        >
+          <MapLayer>{children}</MapLayer>
+        </div>
+      </MapWorld>
     </div>
   );
 }
