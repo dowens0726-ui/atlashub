@@ -31,6 +31,15 @@ export default function MapToolbar({
 }: MapToolbarProps) {
   return (
     <div className="absolute top-4 left-4 z-20 w-[min(90vw,360px)] rounded-2xl border border-zinc-800 bg-zinc-950/90 p-3 backdrop-blur">
+      <div className="mb-3">
+        <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-400">
+          Atlas Explorer
+        </p>
+        <p className="mt-1 text-sm text-zinc-400">
+          Search, filter, drag, and zoom the map.
+        </p>
+      </div>
+
       <input
         value={searchQuery}
         onChange={(event) => onSearchChange(event.target.value)}
