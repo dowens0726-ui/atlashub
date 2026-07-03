@@ -1,3 +1,4 @@
+import SectionHeader from "../ui/SectionHeader";
 import VehicleCard from "../VehicleCard";
 import type { Vehicle } from "../../types/vehicle";
 
@@ -10,28 +11,42 @@ export default function RelatedVehicles({
   vehicle,
   vehicles,
 }: RelatedVehiclesProps) {
-  const relatedVehicles = vehicles
-    .filter(
-      (item) =>
-        item.slug !== vehicle.slug &&
-        (item.class === vehicle.class ||
-          item.manufacturer === vehicle.manufacturer)
-    )
-    .slice(0, 3);
+  const sameClass = vehicles.filter(
+    (item) =>
+      item.slug !== vehicle.slug &&
+      item.class === vehicle.class
+  );
 
-  if (relatedVehicles.length === 0) return null;
+  const sameManufacturer = vehicles.filter(
+    (item) =>
+      item.slug !== vehicle.slug &&
+      item.manufacturer === vehicle.manufacturer &&
+      !sameClass.some((match) => match.slug === item.slug)
+  );
+
+  const relatedVehicles = [
+    ...sameClass,
+    ...sameManufacturer,
+  ].slice(0, 4);
+
+  if (relatedVehicles.length === 0) {
+    return null;
+  }
 
   return (
-    <section className="mt-16">
-      <h2 className="text-2xl font-bold">You May Also Like</h2>
+    <section className="mt-20">
+      <SectionHeader
+        eyebrow="Atlas Intelligence"
+        title="Recommended Vehicles"
+        description="Vehicles selected automatically based on class and manufacturer."
+      />
 
-<p className="mt-2 text-zinc-400">
-  Similar vehicles based on class and manufacturer.
-</p>
-
-      <div className="mt-6 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
         {relatedVehicles.map((relatedVehicle) => (
-          <VehicleCard key={relatedVehicle.slug} vehicle={relatedVehicle} />
+          <VehicleCard
+            key={relatedVehicle.slug}
+            vehicle={relatedVehicle}
+          />
         ))}
       </div>
     </section>

@@ -33,15 +33,37 @@ export function getSearchIndex(): SearchResult[] {
     })),
 
     ...weapons.map((weapon) => ({
-  id: weapon.id,
-  slug: weapon.slug,
-  type: "weapon" as const,
-  label: weapon.name,
-  description: weapon.description,
-  href: `/weapons/${weapon.slug}`,
-  tags: weapon.tags,
-})),
+      id: weapon.id,
+      slug: weapon.slug,
+      type: "weapon" as const,
+      label: weapon.name,
+      description: weapon.description,
+      href: `/weapons/${weapon.slug}`,
+      tags: weapon.tags,
+    })),
   ];
+}
+
+function scoreResult(item: SearchResult, query: string): number {
+  let score = 0;
+
+  const label = item.label.toLowerCase();
+  const description = item.description.toLowerCase();
+  const type = item.type.toLowerCase();
+  const tags = (item.tags ?? []).map((tag) => tag.toLowerCase());
+
+  if (label === query) score += 100;
+  else if (label.startsWith(query)) score += 75;
+  else if (label.includes(query)) score += 50;
+
+  if (tags.some((tag) => tag === query)) score += 40;
+  else if (tags.some((tag) => tag.includes(query))) score += 25;
+
+  if (description.includes(query)) score += 15;
+
+  if (type.includes(query)) score += 10;
+
+  return score;
 }
 
 export function searchAtlas(query: string): SearchResult[] {
@@ -51,16 +73,12 @@ export function searchAtlas(query: string): SearchResult[] {
     return [];
   }
 
-  return getSearchIndex().filter((item) => {
-    const searchableText = [
-      item.label,
-      item.description,
-      item.type,
-      ...(item.tags ?? []),
-    ]
-      .join(" ")
-      .toLowerCase();
-
-    return searchableText.includes(normalizedQuery);
-  });
+  return getSearchIndex()
+    .map((item) => ({
+      item,
+      score: scoreResult(item, normalizedQuery),
+    }))
+    .filter((result) => result.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .map((result) => result.item);
 }
