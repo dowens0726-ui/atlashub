@@ -1,9 +1,15 @@
 import Container from "@/app/components/ui/Container";
 import PageHeader from "@/app/components/ui/PageHeader";
 import { RankingSection } from "@/app/components/rankings";
+import { getAtlasVehicleScore } from "@/app/services/atlas-score.service";
 import {
   getBestAccelerationVehicles,
+  getBestBeginnerVehicles,
+  getBestDailyDriverVehicles,
   getBestHandlingVehicles,
+  getBestOverallVehicles,
+  getBestPerformanceVehicles,
+  getBestValueVehicles,
   getCheapestVehicles,
   getFastestVehicles,
   getMostExpensiveVehicles,
@@ -16,10 +22,53 @@ export default function RankingsPage() {
         <PageHeader
           eyebrow="Atlas Intelligence"
           title="Vehicle Rankings"
-          description="Explore automatically generated vehicle leaderboards powered by Atlas data."
+          description="Explore automatically generated vehicle leaderboards powered by Atlas Score."
         />
 
         <div className="mt-10 grid gap-8">
+          <RankingSection
+            title="🏆 Best Overall"
+            description="Ranked by overall Atlas Score."
+            vehicles={getBestOverallVehicles(10)}
+            metric={(vehicle) =>
+              `${getAtlasVehicleScore(vehicle).overall}/100`
+            }
+          />
+
+          <RankingSection
+            title="🏁 Best Performance"
+            description="Ranked by speed, acceleration, handling, and braking."
+            vehicles={getBestPerformanceVehicles(10)}
+            metric={(vehicle) =>
+              `${getAtlasVehicleScore(vehicle).performance}/100`
+            }
+          />
+
+          <RankingSection
+            title="💰 Best Value"
+            description="Ranked by performance relative to price."
+            vehicles={getBestValueVehicles(10)}
+            metric={(vehicle) => `${getAtlasVehicleScore(vehicle).value}/100`}
+          />
+
+          <RankingSection
+            title="🚗 Best Daily Drivers"
+            description="Ranked by handling, braking, seats, and drivetrain."
+            vehicles={getBestDailyDriverVehicles(10)}
+            metric={(vehicle) =>
+              `${getAtlasVehicleScore(vehicle).dailyDriver}/100`
+            }
+          />
+
+          <RankingSection
+            title="🌱 Best Beginner Vehicles"
+            description="Ranked by affordability, handling, braking, and stability."
+            vehicles={getBestBeginnerVehicles(10)}
+            metric={(vehicle) =>
+              `${getAtlasVehicleScore(vehicle).beginner}/100`
+            }
+          />
+
           <RankingSection
             title="🏎 Fastest Vehicles"
             description="Ranked by top speed."
@@ -49,7 +98,7 @@ export default function RankingsPage() {
           />
 
           <RankingSection
-            title="💰 Cheapest Vehicles"
+            title="💵 Cheapest Vehicles"
             description="Ranked by lowest purchase price."
             vehicles={getCheapestVehicles(10)}
             metric={(vehicle) => `$${vehicle.price.toLocaleString()}`}

@@ -12,13 +12,16 @@
 
 import { vehicles } from "@/app/data";
 import type { Vehicle } from "@/app/types";
+import {
+  getAtlasVehicleScore,
+  getBeginnerScore,
+  getDailyDriverScore,
+  getPerformanceScore,
+  getValueScore,
+} from "./atlas-score.service";
 
-function sortDescending(
-  selector: (vehicle: Vehicle) => number
-): Vehicle[] {
-  return [...vehicles].sort(
-    (a, b) => selector(b) - selector(a)
-  );
+function sortDescending(selector: (vehicle: Vehicle) => number): Vehicle[] {
+  return [...vehicles].sort((a, b) => selector(b) - selector(a));
 }
 
 export function getFastestVehicles(limit = 10): Vehicle[] {
@@ -34,13 +37,38 @@ export function getBestHandlingVehicles(limit = 10): Vehicle[] {
 }
 
 export function getMostExpensiveVehicles(limit = 10): Vehicle[] {
-  return [...vehicles]
-    .sort((a, b) => b.price - a.price)
-    .slice(0, limit);
+  return [...vehicles].sort((a, b) => b.price - a.price).slice(0, limit);
 }
 
 export function getCheapestVehicles(limit = 10): Vehicle[] {
-  return [...vehicles]
-    .sort((a, b) => a.price - b.price)
-    .slice(0, limit);
+  return [...vehicles].sort((a, b) => a.price - b.price).slice(0, limit);
+}
+
+export function getBestOverallVehicles(limit = 10): Vehicle[] {
+  return sortDescending((vehicle) => getAtlasVehicleScore(vehicle).overall).slice(
+    0,
+    limit
+  );
+}
+
+export function getBestPerformanceVehicles(limit = 10): Vehicle[] {
+  return sortDescending((vehicle) => getPerformanceScore(vehicle)).slice(
+    0,
+    limit
+  );
+}
+
+export function getBestValueVehicles(limit = 10): Vehicle[] {
+  return sortDescending((vehicle) => getValueScore(vehicle)).slice(0, limit);
+}
+
+export function getBestDailyDriverVehicles(limit = 10): Vehicle[] {
+  return sortDescending((vehicle) => getDailyDriverScore(vehicle)).slice(
+    0,
+    limit
+  );
+}
+
+export function getBestBeginnerVehicles(limit = 10): Vehicle[] {
+  return sortDescending((vehicle) => getBeginnerScore(vehicle)).slice(0, limit);
 }
