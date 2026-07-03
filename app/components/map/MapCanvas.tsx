@@ -18,6 +18,7 @@ export default function MapCanvas({ markers }: MapCanvasProps) {
   const [selectedMarker, setSelectedMarker] = useState<AtlasMapMarker | null>(
     null
   );
+  const [searchQuery, setSearchQuery] = useState("");
 
   const [filters, setFilters] = useState<MapFiltersState>({
     missions: true,
@@ -34,14 +35,24 @@ export default function MapCanvas({ markers }: MapCanvasProps) {
   }, [markers]);
 
   const visibleMarkers = useMemo(() => {
-    return markers.filter((marker) => {
-      if (marker.type === "mission") return filters.missions;
-      if (marker.type === "vehicle") return filters.vehicles;
-      if (marker.type === "weapon") return filters.weapons;
+    const normalizedQuery = searchQuery.trim().toLowerCase();
 
-      return true;
+    return markers.filter((marker) => {
+      const matchesType =
+        (marker.type === "mission" && filters.missions) ||
+        (marker.type === "vehicle" && filters.vehicles) ||
+        (marker.type === "weapon" && filters.weapons) ||
+        !["mission", "vehicle", "weapon"].includes(marker.type);
+
+      const matchesSearch =
+        normalizedQuery.length === 0 ||
+        marker.title.toLowerCase().includes(normalizedQuery) ||
+        marker.description.toLowerCase().includes(normalizedQuery) ||
+        marker.type.toLowerCase().includes(normalizedQuery);
+
+      return matchesType && matchesSearch;
     });
-  }, [markers, filters]);
+  }, [markers, filters, searchQuery]);
 
   function handleToggle(filter: MapFilterKey) {
     setFilters((currentFilters) => ({
@@ -72,11 +83,18 @@ export default function MapCanvas({ markers }: MapCanvasProps) {
     setSelectedMarker(null);
   }
 
+  function handleSearchChange(value: string) {
+    setSearchQuery(value);
+    setSelectedMarker(null);
+  }
+
   return (
     <div className="relative min-h-[600px] overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900">
       <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,_#1f2937,_#09090b)]" />
 
       <MapToolbar
+        searchQuery={searchQuery}
+        onSearchChange={handleSearchChange}
         filters={filters}
         counts={counts}
         onToggle={handleToggle}

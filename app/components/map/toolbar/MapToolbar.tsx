@@ -3,6 +3,8 @@
 import { MapLegend } from "./";
 
 type MapToolbarProps = {
+  searchQuery: string;
+  onSearchChange: (value: string) => void;
   filters: {
     missions: boolean;
     vehicles: boolean;
@@ -19,6 +21,8 @@ type MapToolbarProps = {
 };
 
 export default function MapToolbar({
+  searchQuery,
+  onSearchChange,
   filters,
   counts,
   onToggle,
@@ -26,7 +30,14 @@ export default function MapToolbar({
   onHideAll,
 }: MapToolbarProps) {
   return (
-    <div className="absolute top-4 left-4 z-20 rounded-2xl border border-zinc-800 bg-zinc-950/90 p-3 backdrop-blur">
+    <div className="absolute top-4 left-4 z-20 w-[min(90vw,360px)] rounded-2xl border border-zinc-800 bg-zinc-950/90 p-3 backdrop-blur">
+      <input
+        value={searchQuery}
+        onChange={(event) => onSearchChange(event.target.value)}
+        placeholder="Search the map..."
+        className="mb-3 w-full rounded-xl border border-zinc-800 bg-zinc-900 px-4 py-3 text-sm font-semibold text-white outline-none transition placeholder:text-zinc-500 focus:border-emerald-500"
+      />
+
       <div className="flex flex-wrap gap-2">
         <button
           onClick={() => onToggle("missions")}
