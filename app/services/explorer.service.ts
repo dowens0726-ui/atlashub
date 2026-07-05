@@ -1,4 +1,4 @@
-import { vehicles, missions, weapons } from "@/app/data";
+import { businesses, missions, vehicles, weapons } from "@/app/data";
 
 export type ExplorerCategory =
   | "vehicle"
@@ -22,7 +22,6 @@ const vehicleMarkers: ExplorerMarker[] = vehicles.map((vehicle, index) => ({
   category: "vehicle",
   slug: vehicle.slug,
 
-  // Temporary demo coordinates
   x: 15 + (index * 8) % 70,
   y: 20 + (index * 11) % 60,
 }));
@@ -47,10 +46,21 @@ const weaponMarkers: ExplorerMarker[] = weapons.map((weapon, index) => ({
   y: 25 + (index * 5) % 55,
 }));
 
+const businessMarkers: ExplorerMarker[] = businesses.map((business, index) => ({
+  id: business.slug,
+  name: business.name,
+  category: "business",
+  slug: business.slug,
+
+  x: 30 + (index * 9) % 60,
+  y: 18 + (index * 8) % 60,
+}));
+
 export function getExplorerMarkers(): ExplorerMarker[] {
   return [
     ...vehicleMarkers,
     ...missionMarkers,
     ...weaponMarkers,
+    ...businessMarkers,
   ];
 }

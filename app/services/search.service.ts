@@ -1,9 +1,9 @@
-import { missions, vehicles, weapons } from "@/app/data";
+import { businesses, missions, vehicles, weapons } from "@/app/data";
 
 export type SearchResult = {
   id: string;
   slug: string;
-  type: "mission" | "vehicle" | "weapon";
+  type: "business" | "mission" | "vehicle" | "weapon";
   label: string;
   description: string;
   href: string;
@@ -12,6 +12,16 @@ export type SearchResult = {
 
 export function getSearchIndex(): SearchResult[] {
   return [
+    ...businesses.map((business) => ({
+      id: business.id,
+      slug: business.slug,
+      type: "business" as const,
+      label: business.name,
+      description: business.description,
+      href: `/businesses/${business.slug}`,
+      tags: business.tags,
+    })),
+
     ...missions.map((mission) => ({
       id: mission.id,
       slug: mission.slug,
