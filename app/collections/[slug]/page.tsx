@@ -1,9 +1,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { CollectionHero, CollectionStats } from "@/app/components/collections";
+import {
+  CollectionHero,
+  CollectionStats,
+} from "@/app/components/collections";
 import VehicleCard from "@/app/components/VehicleCard";
 import Container from "@/app/components/ui/Container";
+
 import { getCollectionBySlug } from "@/app/services/collection.service";
 
 type Props = {
@@ -44,7 +48,10 @@ export default async function CollectionPage({ params }: Props) {
 
           <div className="mt-6 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {collection.vehicles.map((vehicle) => (
-              <VehicleCard key={vehicle.slug} vehicle={vehicle} />
+              <VehicleCard
+                key={vehicle.slug}
+                vehicle={vehicle}
+              />
             ))}
           </div>
         </section>
