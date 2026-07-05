@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import {
   ExplorerCanvas,
@@ -10,6 +10,10 @@ import {
   type ExplorerFilterKey,
   type ExplorerFiltersState,
 } from "@/app/components/explorer";
+import {
+  getExplorerMarkers,
+  type ExplorerMarker,
+} from "@/app/services/explorer.service";
 
 const defaultFilters: ExplorerFiltersState = {
   vehicles: true,
@@ -18,6 +22,15 @@ const defaultFilters: ExplorerFiltersState = {
   businesses: true,
   collectibles: true,
 };
+
+const filterToCategory: Record<ExplorerFilterKey, ExplorerMarker["category"]> =
+  {
+    vehicles: "vehicle",
+    missions: "mission",
+    weapons: "weapon",
+    businesses: "business",
+    collectibles: "collectible",
+  };
 
 export default function ExplorerPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -30,6 +43,23 @@ export default function ExplorerPage() {
       [filter]: !current[filter],
     }));
   }
+
+  const markers = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+
+    return getExplorerMarkers().filter((marker) => {
+      const matchesSearch =
+        query.length === 0 || marker.name.toLowerCase().includes(query);
+
+      const matchingFilter = Object.entries(filterToCategory).find(
+        ([, category]) => category === marker.category
+      )?.[0] as ExplorerFilterKey | undefined;
+
+      const matchesFilter = matchingFilter ? filters[matchingFilter] : true;
+
+      return matchesSearch && matchesFilter;
+    });
+  }, [filters, searchQuery]);
 
   return (
     <main className="min-h-screen bg-zinc-950 text-white">
@@ -62,7 +92,12 @@ export default function ExplorerPage() {
               onToggleFilter={toggleFilter}
             />
           }
-          canvas={<ExplorerCanvas searchQuery={searchQuery} />}
+          canvas={
+            <ExplorerCanvas
+              searchQuery={searchQuery}
+              markers={markers}
+            />
+          }
         />
       </div>
     </main>

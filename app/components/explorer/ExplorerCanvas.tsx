@@ -1,13 +1,17 @@
+import type { ExplorerMarker as ExplorerMarkerType } from "@/app/services/explorer.service";
+import ExplorerMarker from "./ExplorerMarker";
+
 type ExplorerCanvasProps = {
   searchQuery: string;
+  markers: ExplorerMarkerType[];
 };
 
 export default function ExplorerCanvas({
   searchQuery,
+  markers,
 }: ExplorerCanvasProps) {
   return (
     <div className="relative flex h-full min-h-[680px] items-center justify-center overflow-hidden bg-gradient-to-br from-zinc-900 via-zinc-950 to-black">
-      {/* Grid */}
       <div
         className="absolute inset-0 opacity-10"
         style={{
@@ -19,40 +23,25 @@ export default function ExplorerCanvas({
         }}
       />
 
-      {/* Placeholder Marker */}
-      <div className="absolute left-[35%] top-[45%] flex flex-col items-center">
-        <div className="h-5 w-5 rounded-full bg-emerald-400 shadow-lg shadow-emerald-500/50" />
-        <span className="mt-2 rounded-full bg-zinc-900 px-3 py-1 text-xs font-bold text-white">
-          Vice City
-        </span>
+      {markers.map((marker) => (
+        <ExplorerMarker key={marker.id} marker={marker} />
+      ))}
+
+      <div className="pointer-events-none absolute bottom-6 left-6 rounded-2xl border border-zinc-800 bg-zinc-950/90 px-5 py-4">
+        <p className="text-sm text-zinc-400">Visible markers</p>
+        <p className="mt-1 text-2xl font-black text-emerald-400">
+          {markers.length}
+        </p>
       </div>
 
-      {/* Center Content */}
-      <div className="relative z-10 max-w-lg text-center">
-        <p className="text-sm font-semibold uppercase tracking-[0.3em] text-emerald-400">
-          Atlas Explorer
-        </p>
-
-        <h2 className="mt-4 text-5xl font-black text-white">
-          Interactive World
-        </h2>
-
-        <p className="mt-5 leading-8 text-zinc-400">
-          Search, filter, and explore the GTA VI world. Vehicles,
-          missions, collectibles, businesses, and properties will all
-          appear here as Atlas grows.
-        </p>
-
-        {searchQuery && (
-          <div className="mt-8 rounded-2xl border border-emerald-400/30 bg-zinc-900 px-5 py-4">
-            <p className="text-sm text-zinc-400">Searching for</p>
-
-            <p className="mt-1 text-xl font-black text-emerald-400">
-              {searchQuery}
-            </p>
-          </div>
-        )}
-      </div>
+      {searchQuery && (
+        <div className="pointer-events-none absolute right-6 top-6 rounded-2xl border border-emerald-400/30 bg-zinc-950/90 px-5 py-4">
+          <p className="text-sm text-zinc-400">Searching for</p>
+          <p className="mt-1 text-xl font-black text-emerald-400">
+            {searchQuery}
+          </p>
+        </div>
+      )}
     </div>
   );
 }

@@ -8,3 +8,4 @@ export { default as ExplorerSearch } from "./ExplorerSearch";
 export { default as ExplorerSidebar } from "./ExplorerSidebar";
 export { default as ExplorerToolbar } from "./ExplorerToolbar";
 export { default as ExplorerCanvas } from "./ExplorerCanvas";
+export { default as ExplorerMarker } from "./ExplorerMarker";
