@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import CompareButton from "@/app/components/compare/CompareButton";
 import AtlasScoreCard from "@/app/components/intelligence/AtlasScoreCard";
 import { RecommendedMissions } from "@/app/components/mission";
+import { VehicleRecommendations } from "@/app/components/intelligence";
 import Container from "@/app/components/ui/Container";
 import VehicleHero from "@/app/components/vehicles/VehicleHero";
 import RelatedVehicles from "@/app/components/vehicles/RelatedVehicles";
@@ -61,6 +62,7 @@ export default async function VehiclePage({ params }: Props) {
         />
 
         <RelatedVehicles vehicle={vehicle} vehicles={vehicles} />
+      <VehicleRecommendations vehicle={vehicle} />
       </Container>
     </main>
   );
