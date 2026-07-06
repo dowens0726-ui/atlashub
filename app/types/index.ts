@@ -13,3 +13,4 @@ export type { Mission } from "./mission";
 export type { Weapon } from "./weapon";
 export type { AtlasMapMarker } from "./map";
 export type { Business, BusinessCategory } from "./business";
+export type { PlayerPlaystyle, PlayerProfile } from "./profile";
