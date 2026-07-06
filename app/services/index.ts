@@ -4,3 +4,4 @@ export * from "./search.service";
 export * from "./map.service";
 export * from "./business.service";
 export * from "./relationship.service";
+export * from "./scoring.service";

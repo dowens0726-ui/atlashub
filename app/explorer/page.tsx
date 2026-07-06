@@ -4,12 +4,14 @@ import { useMemo, useState } from "react";
 
 import {
   ExplorerCanvas,
+  ExplorerDetailPanel,
   ExplorerLayout,
   ExplorerSidebar,
   ExplorerToolbar,
   type ExplorerFilterKey,
   type ExplorerFiltersState,
 } from "@/app/components/explorer";
+
 import {
   getExplorerMarkers,
   type ExplorerMarker,
@@ -23,17 +25,22 @@ const defaultFilters: ExplorerFiltersState = {
   collectibles: true,
 };
 
-const filterToCategory: Record<ExplorerFilterKey, ExplorerMarker["category"]> =
-  {
-    vehicles: "vehicle",
-    missions: "mission",
-    weapons: "weapon",
-    businesses: "business",
-    collectibles: "collectible",
-  };
+const filterToCategory: Record<
+  ExplorerFilterKey,
+  ExplorerMarker["category"]
+> = {
+  vehicles: "vehicle",
+  missions: "mission",
+  weapons: "weapon",
+  businesses: "business",
+  collectibles: "collectible",
+};
 
 export default function ExplorerPage() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedMarker, setSelectedMarker] =
+    useState<ExplorerMarker | null>(null);
+
   const [filters, setFilters] =
     useState<ExplorerFiltersState>(defaultFilters);
 
@@ -49,13 +56,16 @@ export default function ExplorerPage() {
 
     return getExplorerMarkers().filter((marker) => {
       const matchesSearch =
-        query.length === 0 || marker.name.toLowerCase().includes(query);
+        query.length === 0 ||
+        marker.name.toLowerCase().includes(query);
 
       const matchingFilter = Object.entries(filterToCategory).find(
         ([, category]) => category === marker.category
       )?.[0] as ExplorerFilterKey | undefined;
 
-      const matchesFilter = matchingFilter ? filters[matchingFilter] : true;
+      const matchesFilter = matchingFilter
+        ? filters[matchingFilter]
+        : true;
 
       return matchesSearch && matchesFilter;
     });
@@ -96,7 +106,12 @@ export default function ExplorerPage() {
             <ExplorerCanvas
               searchQuery={searchQuery}
               markers={markers}
+              selectedMarker={selectedMarker}
+              onSelectMarker={setSelectedMarker}
             />
+          }
+          detailPanel={
+            <ExplorerDetailPanel marker={selectedMarker} />
           }
         />
       </div>

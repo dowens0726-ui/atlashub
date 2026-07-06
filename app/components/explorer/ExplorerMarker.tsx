@@ -2,6 +2,8 @@ import type { ExplorerMarker as ExplorerMarkerType } from "@/app/services/explor
 
 type ExplorerMarkerProps = {
   marker: ExplorerMarkerType;
+  selected?: boolean;
+  onSelect: (marker: ExplorerMarkerType) => void;
 };
 
 const markerStyles = {
@@ -20,21 +22,29 @@ const markerIcons = {
   collectible: "📦",
 };
 
-export default function ExplorerMarker({ marker }: ExplorerMarkerProps) {
+export default function ExplorerMarker({
+  marker,
+  selected = false,
+  onSelect,
+}: ExplorerMarkerProps) {
   return (
-    <div
-      className="absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center"
+    <button
+      type="button"
+      onClick={() => onSelect(marker)}
+      className="absolute flex -translate-x-1/2 -translate-y-1/2 flex-col items-center transition hover:scale-110"
       style={{ left: `${marker.x}%`, top: `${marker.y}%` }}
     >
-      <div
-        className={`flex h-9 w-9 items-center justify-center rounded-full text-sm shadow-lg ${markerStyles[marker.category]}`}
+      <span
+        className={`flex h-9 w-9 items-center justify-center rounded-full text-sm shadow-lg ${
+          markerStyles[marker.category]
+        } ${selected ? "ring-4 ring-white/80" : ""}`}
       >
         {markerIcons[marker.category]}
-      </div>
+      </span>
 
       <span className="mt-2 rounded-full bg-zinc-950/90 px-3 py-1 text-xs font-bold text-white">
         {marker.name}
       </span>
-    </div>
+    </button>
   );
 }

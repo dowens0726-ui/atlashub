@@ -9,9 +9,12 @@ import {
 } from "@/app/components/businesses";
 import MissionCard from "@/app/components/MissionCard";
 import VehicleCard from "@/app/components/VehicleCard";
+import AtlasScoreCard from "@/app/components/ui/AtlasScoreCard";
 import Container from "@/app/components/ui/Container";
+
 import {
   getBusiness,
+  getBusinessScore,
   getRelatedBusinesses,
   getRelatedMissions,
   getRelatedVehicles,
@@ -30,6 +33,8 @@ export default async function BusinessPage({ params }: Props) {
     notFound();
   }
 
+  const score = getBusinessScore(business);
+
   const relatedVehicles = getRelatedVehicles(business);
   const relatedMissions = getRelatedMissions(business);
   const relatedBusinesses = getRelatedBusinesses(business);
@@ -39,7 +44,7 @@ export default async function BusinessPage({ params }: Props) {
       <Container className="py-16">
         <Link
           href="/businesses"
-          className="text-emerald-400 hover:text-emerald-300"
+          className="text-emerald-400 transition hover:text-emerald-300"
         >
           ← Back to Businesses
         </Link>
@@ -52,7 +57,13 @@ export default async function BusinessPage({ params }: Props) {
           <BusinessStats business={business} />
         </div>
 
-        <BusinessTips business={business} />
+        <div className="mt-8">
+          <AtlasScoreCard score={score} />
+        </div>
+
+        <div className="mt-8">
+          <BusinessTips business={business} />
+        </div>
 
         {relatedVehicles.length > 0 && (
           <section className="mt-12">
@@ -62,7 +73,10 @@ export default async function BusinessPage({ params }: Props) {
 
             <div className="mt-6 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
               {relatedVehicles.map((vehicle) => (
-                <VehicleCard key={vehicle.slug} vehicle={vehicle} />
+                <VehicleCard
+                  key={vehicle.slug}
+                  vehicle={vehicle}
+                />
               ))}
             </div>
           </section>
@@ -76,7 +90,10 @@ export default async function BusinessPage({ params }: Props) {
 
             <div className="mt-6 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
               {relatedMissions.map((mission) => (
-                <MissionCard key={mission.slug} mission={mission} />
+                <MissionCard
+                  key={mission.slug}
+                  mission={mission}
+                />
               ))}
             </div>
           </section>

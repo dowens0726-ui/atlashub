@@ -4,11 +4,15 @@ import ExplorerMarker from "./ExplorerMarker";
 type ExplorerCanvasProps = {
   searchQuery: string;
   markers: ExplorerMarkerType[];
+  selectedMarker: ExplorerMarkerType | null;
+  onSelectMarker: (marker: ExplorerMarkerType) => void;
 };
 
 export default function ExplorerCanvas({
   searchQuery,
   markers,
+  selectedMarker,
+  onSelectMarker,
 }: ExplorerCanvasProps) {
   return (
     <div className="relative flex h-full min-h-[680px] items-center justify-center overflow-hidden bg-gradient-to-br from-zinc-900 via-zinc-950 to-black">
@@ -24,7 +28,12 @@ export default function ExplorerCanvas({
       />
 
       {markers.map((marker) => (
-        <ExplorerMarker key={marker.id} marker={marker} />
+        <ExplorerMarker
+          key={marker.id}
+          marker={marker}
+          selected={selectedMarker?.id === marker.id}
+          onSelect={onSelectMarker}
+        />
       ))}
 
       <div className="pointer-events-none absolute bottom-6 left-6 rounded-2xl border border-zinc-800 bg-zinc-950/90 px-5 py-4">
