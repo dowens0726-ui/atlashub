@@ -1,3 +1,4 @@
+import { AtlasAdvisor } from "@/app/components/advisor";
 import { PlayerProfile } from "@/app/components/profile";
 import Container from "@/app/components/ui/Container";
 import PageHeader from "@/app/components/ui/PageHeader";
@@ -16,6 +17,8 @@ export default function ProfilePage() {
         <div className="mt-10">
           <PlayerProfile profile={defaultPlayerProfile} />
         </div>
+
+        <AtlasAdvisor profile={defaultPlayerProfile} />
       </Container>
     </main>
   );

@@ -6,3 +6,4 @@ export * from "./business.service";
 export * from "./relationship.service";
 export * from "./scoring.service";
 export * from "./profile.service";
+export * from "./advisor.service";
