@@ -2,6 +2,7 @@ import AtlasAdvisorCard from "./AtlasAdvisorCard";
 import AtlasCoreCard from "./AtlasCoreCard";
 import AtlasDailyObjectivesCard from "./AtlasDailyObjectivesCard";
 import AtlasIntelligenceFeed from "./AtlasIntelligenceFeed";
+import AtlasMemoryCard from "./AtlasMemoryCard";
 import AtlasStatusCard from "./AtlasStatusCard";
 import EmpireForecastCard from "./EmpireForecastCard";
 import EmpireTimelineCard from "./EmpireTimelineCard";
@@ -10,12 +11,14 @@ import { GlowCard } from "@/app/components/ui";
 
 import type {
   AtlasImpact,
+  AtlasMemory,
   AtlasRecommendation,
   AtlasReasoning,
   DailyObjective,
   EmpireForecast,
   EmpireTimelinePoint,
   IntelligenceInsight,
+  MemoryHistoryItem,
   NextAction,
 } from "@/app/intelligence";
 
@@ -26,6 +29,8 @@ type AtlasAIPanelProps = {
   impact: AtlasImpact;
   forecast: EmpireForecast;
   timeline: EmpireTimelinePoint[];
+  memory: AtlasMemory;
+  memoryHistory: MemoryHistoryItem[];
   dailyObjectives: DailyObjective[];
   insights: IntelligenceInsight[];
 };
@@ -37,6 +42,8 @@ export default function AtlasAIPanel({
   impact,
   forecast,
   timeline,
+  memory,
+  memoryHistory,
   dailyObjectives,
   insights,
 }: AtlasAIPanelProps) {
@@ -58,6 +65,8 @@ export default function AtlasAIPanel({
 
       <div className="space-y-6">
         <AtlasCoreCard action={nextAction} impact={impact} />
+
+        <AtlasMemoryCard memory={memory} history={memoryHistory} />
 
         <AtlasDailyObjectivesCard objectives={dailyObjectives} />
 

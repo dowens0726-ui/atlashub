@@ -16,3 +16,4 @@ export { default as AtlasCoreCard } from "./AtlasCoreCard";
 export { default as EmpireForecastCard } from "./EmpireForecastCard";
 export { default as AtlasDailyObjectivesCard } from "./AtlasDailyObjectivesCard";
 export { default as EmpireTimelineCard } from "./EmpireTimelineCard";
+export { default as AtlasMemoryCard } from "./AtlasMemoryCard";

@@ -20,11 +20,13 @@ import {
 
 import {
   buildAtlasImpact,
+  buildAtlasMemory,
   buildAtlasReasoning,
   buildDailyObjectives,
   buildEmpireForecast,
   buildEmpireTimeline,
   buildIntelligenceFeed,
+  buildMemoryHistory,
   buildNextAction,
   buildSessionPlan,
   buildSessionReasoning,
@@ -57,8 +59,7 @@ export default function DashboardClient() {
     atlasRecommendations
   );
 
-  const sessionReasoning =
-    buildSessionReasoning(sessionPlan);
+  const sessionReasoning = buildSessionReasoning(sessionPlan);
 
   // Next Action
   const nextAction = buildNextAction(
@@ -68,43 +69,40 @@ export default function DashboardClient() {
   );
 
   // Impact
-  const atlasImpact =
-    buildAtlasImpact(nextAction.confidence);
+  const atlasImpact = buildAtlasImpact(nextAction.confidence);
 
   // Forecast
-  const empireForecast =
-    buildEmpireForecast(
-      dashboard.profile,
-      dashboard.empire,
-      atlasImpact
-    );
+  const empireForecast = buildEmpireForecast(
+    dashboard.profile,
+    dashboard.empire,
+    atlasImpact
+  );
 
   // Timeline
-  const empireTimeline =
-    buildEmpireTimeline(empireForecast);
+  const empireTimeline = buildEmpireTimeline(empireForecast);
 
   // Objectives
-  const dailyObjectives =
-    buildDailyObjectives(
-      dashboard.profile,
-      nextAction,
-      empireForecast
-    );
+  const dailyObjectives = buildDailyObjectives(
+    dashboard.profile,
+    nextAction,
+    empireForecast
+  );
+
+  // Memory
+  const atlasMemory = buildAtlasMemory(
+  dashboard.profile,
+  nextAction,
+  empireForecast
+);
+
+  const memoryHistory = buildMemoryHistory(atlasMemory);
 
   // Intelligence
-  const intelligenceFeed =
-    buildIntelligenceFeed(
-      dashboard.profile
-    );
+  const intelligenceFeed = buildIntelligenceFeed(dashboard.profile);
 
   return (
     <CommandCenterLayout
-      hero={
-        <CommandCenterHero
-          dashboard={dashboard}
-        />
-      }
-
+      hero={<CommandCenterHero dashboard={dashboard} />}
       overview={
         <div className="space-y-8">
           <LiveEmpireCard profile={dashboard.profile} />
@@ -114,7 +112,6 @@ export default function DashboardClient() {
           <DashboardSummary dashboard={dashboard} />
         </div>
       }
-
       atlas={
         <AtlasAIPanel
           recommendation={atlasRecommendation}
@@ -124,31 +121,20 @@ export default function DashboardClient() {
           forecast={empireForecast}
           timeline={empireTimeline}
           dailyObjectives={dailyObjectives}
+          memory={atlasMemory}
+          memoryHistory={memoryHistory}
           insights={intelligenceFeed}
         />
       }
-
       session={
         <AtlasSessionPlanCard
           plan={sessionPlan}
           reasoning={sessionReasoning}
         />
       }
-
-      insights={
-        <EmpireInsights
-          insights={dashboard.empire.insights}
-        />
-      }
-
-      objectives={
-        <DashboardObjectives
-          objectives={dashboard.objectives}
-        />
-      }
-
+      insights={<EmpireInsights insights={dashboard.empire.insights} />}
+      objectives={<DashboardObjectives objectives={dashboard.objectives} />}
       activity={<ActivityFeed />}
-
       achievements={<AchievementList />}
     />
   );

@@ -13,3 +13,14 @@ export * from "./briefing.engine";
 export * from "./forecast.engine";
 export * from "./daily-objectives.engine";
 export * from "./timeline.engine";
+export * from "./memory.engine";
+export * from "./memory-history.engine";
+export type {
+  AtlasRecommendation,
+  RecommendationCategory,
+  RecommendationPriority,
+} from "./recommendation.engine";
+export {
+  getAtlasAdvisorRecommendations,
+  getPrimaryAtlasRecommendation,
+} from "./advisor.service";
