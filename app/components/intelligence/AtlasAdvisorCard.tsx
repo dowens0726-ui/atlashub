@@ -40,16 +40,10 @@ export default function AtlasAdvisorCard({
         {recommendation.summary}
       </p>
 
-      <div className="mt-6 grid gap-4 sm:grid-cols-4">
-        <Stat
-          label="Confidence"
-          value={`${recommendation.confidence}%`}
-        />
+      <div className="mt-6 grid grid-cols-2 gap-4">
+        <Stat label="Confidence" value={`${recommendation.confidence}%`} />
 
-        <Stat
-          label="Priority"
-          value={recommendation.priority}
-        />
+        <Stat label="Priority" value={recommendation.priority} />
 
         <Stat
           label="Profit"
@@ -75,10 +69,7 @@ export default function AtlasAdvisorCard({
 
           <div className="mt-4 space-y-2">
             {reasoning.reasons.map((reason) => (
-              <p
-                key={reason}
-                className="text-sm text-zinc-300"
-              >
+              <p key={reason} className="text-sm text-zinc-300">
                 ✓ {reason}
               </p>
             ))}
@@ -101,10 +92,7 @@ export default function AtlasAdvisorCard({
 
             <div className="mt-2 space-y-1">
               {reasoning.alternatives.map((alternative) => (
-                <p
-                  key={alternative}
-                  className="text-sm text-zinc-400"
-                >
+                <p key={alternative} className="text-sm text-zinc-400">
                   • {alternative}
                 </p>
               ))}
@@ -135,13 +123,13 @@ function Stat({
   accent?: boolean;
 }) {
   return (
-    <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4">
-      <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-500">
+    <div className="flex min-h-28 flex-col justify-between rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4">
+      <p className="text-[0.65rem] font-bold uppercase tracking-[0.18em] text-zinc-500">
         {label}
       </p>
 
       <p
-        className={`mt-2 text-2xl font-black ${
+        className={`mt-3 break-words text-2xl font-black leading-tight ${
           accent ? "text-emerald-400" : "text-white"
         }`}
       >

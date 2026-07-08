@@ -1,38 +1,41 @@
 import type { DashboardModel } from "@/app/services";
-import { StatCard } from "@/app/components/ui";
+import { GlassPanel, HeroMetrics } from "@/app/components/design-system";
 
 type DashboardSummaryProps = {
   dashboard: DashboardModel;
 };
 
 export default function DashboardSummary({ dashboard }: DashboardSummaryProps) {
+  const metrics = [
+    {
+      label: "Cash",
+      value: `$${dashboard.summary.cash.toLocaleString()}`,
+    },
+    {
+      label: "Stage",
+      value: dashboard.summary.stage,
+    },
+    {
+      label: "Completion",
+      value: `${dashboard.summary.completion}%`,
+    },
+    {
+      label: "Investment Left",
+      value: `$${dashboard.summary.remainingInvestment.toLocaleString()}`,
+    },
+    {
+      label: "Next Steps",
+      value: `${dashboard.progression.steps.length}`,
+    },
+  ];
+
   return (
-    <section className="grid gap-4 md:grid-cols-5">
-      <StatCard
-        label="Cash"
-        value={`$${dashboard.summary.cash.toLocaleString()}`}
-      />
-
-      <StatCard
-        label="Stage"
-        value={dashboard.summary.stage}
-      />
-
-      <StatCard
-        label="Completion"
-        value={`${dashboard.summary.completion}%`}
-        accent="amber"
-      />
-
-      <StatCard
-        label="Investment Left"
-        value={`$${dashboard.summary.remainingInvestment.toLocaleString()}`}
-      />
-
-      <StatCard
-        label="Next Steps"
-        value={`${dashboard.progression.steps.length}`}
-      />
-    </section>
+    <GlassPanel
+      title="Dashboard Summary"
+      subtitle="A quick snapshot of your current progression, available resources, and remaining investment path."
+      className="border-cyan-400/20 bg-cyan-400/[0.03]"
+    >
+      <HeroMetrics metrics={metrics} columns={3} />
+    </GlassPanel>
   );
 }
