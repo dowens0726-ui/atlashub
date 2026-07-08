@@ -2,10 +2,10 @@
 
 ## Current Status
 
-Current milestone: Milestone 5.5 — Architecture Cleanup  
-Last completed milestone: Milestone 5 — Empire Simulator Phase 1  
+Current milestone: Milestone 5.6 — Architecture Review  
+Last completed milestone: Milestone 5.5 — Dashboard Intelligence Orchestrator  
 Build status: Passing  
-Alpha progress: 97%
+Alpha progress: 98%
 
 ---
 
@@ -70,24 +70,41 @@ Completed:
 - Build verification
 - Git checkpoint
 
+### Milestone 5.5 — Dashboard Intelligence Orchestrator
+
+Completed:
+- dashboard-intelligence.engine.ts
+- Intelligence exports updated
+- DashboardClient simplified
+- Dashboard AI orchestration centralized
+- Build verification
+- Git checkpoint
+
 ---
 
 ## Current Milestone
 
-### Milestone 5.5 — Architecture Cleanup
+### Milestone 5.6 — Architecture Review
 
 Goal:
-Clean up the project architecture before adding more AI systems.
+Review AtlasHub architecture before Milestone 6.
 
 Focus areas:
-- AI engine organization
-- Component organization
+- Dashboard orchestration
+- Intelligence engine boundaries
 - Shared type consistency
-- Barrel exports
-- Duplicate logic
+- Service organization
+- Component organization
+- AI pipeline scalability
 - Naming consistency
-- Documentation
-- Technical debt review
+- Future technical debt risks
+
+Expected output:
+- Architecture score
+- What should stay
+- What should improve
+- What can wait until beta
+- Recommendations before Milestone 6
 
 Rules:
 - Full file replacements only for modified files
@@ -182,6 +199,8 @@ Every milestone follows this process:
 
 Player Profile  
 ↓  
+Dashboard Intelligence Orchestrator  
+↓  
 Recommendation Engine  
 ↓  
 Reasoning Engine  
@@ -210,14 +229,15 @@ Atlas AI Panel
 
 ## Technical Debt Watchlist
 
-Review during Milestone 5.5:
+Review during Milestone 5.6:
 - Ensure intelligence exports are not duplicated
 - Confirm recommendation types are centralized
 - Confirm simulator logic does not assume missing business objects
 - Confirm dashboard orchestration remains readable
-- Consider moving dashboard AI assembly into a single hook or service later
 - Review component naming consistency
 - Confirm no circular imports in intelligence engines
+- Consider whether dashboard intelligence should eventually return grouped objects instead of many flat fields
+- Consider whether AtlasAIPanel props should be grouped by domain
 
 ---
 
