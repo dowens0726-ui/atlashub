@@ -18,84 +18,16 @@ import {
   AtlasSessionPlanCard,
 } from "@/app/components/intelligence";
 
-import {
-  buildAtlasImpact,
-  buildAtlasMemory,
-  buildAtlasReasoning,
-  buildDailyObjectives,
-  buildEmpireForecast,
-  buildEmpireSimulation,
-  buildEmpireTimeline,
-  buildIntelligenceFeed,
-  buildMemoryHistory,
-  buildNextAction,
-  buildSessionPlan,
-  buildSessionReasoning,
-  getAtlasAdvisorRecommendations,
-  getPrimaryAtlasRecommendation,
-} from "@/app/intelligence";
-
+import { buildDashboardIntelligence } from "@/app/intelligence";
 import { useDashboard } from "@/app/hooks/useDashboard";
 
 export default function DashboardClient() {
   const dashboard = useDashboard();
 
-  const atlasRecommendations = getAtlasAdvisorRecommendations(
-    dashboard.profile
-  );
-
-  const atlasRecommendation = getPrimaryAtlasRecommendation(
-    dashboard.profile
-  );
-
-  const atlasReasoning = buildAtlasReasoning(
+  const intelligence = buildDashboardIntelligence(
     dashboard.profile,
-    atlasRecommendation
+    dashboard.empire
   );
-
-  const sessionPlan = buildSessionPlan(
-    dashboard.profile,
-    atlasRecommendations
-  );
-
-  const sessionReasoning = buildSessionReasoning(sessionPlan);
-
-  const nextAction = buildNextAction(
-    dashboard.profile,
-    atlasRecommendation,
-    sessionReasoning
-  );
-
-  const atlasImpact = buildAtlasImpact(nextAction.confidence);
-
-  const empireForecast = buildEmpireForecast(
-    dashboard.profile,
-    dashboard.empire,
-    atlasImpact
-  );
-
-  const empireSimulation = buildEmpireSimulation(
-    dashboard.profile,
-    atlasRecommendation
-  );
-
-  const empireTimeline = buildEmpireTimeline(empireForecast);
-
-  const dailyObjectives = buildDailyObjectives(
-    dashboard.profile,
-    nextAction,
-    empireForecast
-  );
-
-  const atlasMemory = buildAtlasMemory(
-    dashboard.profile,
-    nextAction,
-    empireForecast
-  );
-
-  const memoryHistory = buildMemoryHistory(atlasMemory);
-
-  const intelligenceFeed = buildIntelligenceFeed(dashboard.profile);
 
   return (
     <CommandCenterLayout
@@ -111,23 +43,23 @@ export default function DashboardClient() {
       }
       atlas={
         <AtlasAIPanel
-          recommendation={atlasRecommendation}
-          reasoning={atlasReasoning}
-          nextAction={nextAction}
-          impact={atlasImpact}
-          forecast={empireForecast}
-          simulation={empireSimulation}
-          timeline={empireTimeline}
-          memory={atlasMemory}
-          memoryHistory={memoryHistory}
-          dailyObjectives={dailyObjectives}
-          insights={intelligenceFeed}
+          recommendation={intelligence.atlasRecommendation}
+          reasoning={intelligence.atlasReasoning}
+          nextAction={intelligence.nextAction}
+          impact={intelligence.atlasImpact}
+          forecast={intelligence.empireForecast}
+          simulation={intelligence.empireSimulation}
+          timeline={intelligence.empireTimeline}
+          memory={intelligence.atlasMemory}
+          memoryHistory={intelligence.memoryHistory}
+          dailyObjectives={intelligence.dailyObjectives}
+          insights={intelligence.intelligenceFeed}
         />
       }
       session={
         <AtlasSessionPlanCard
-          plan={sessionPlan}
-          reasoning={sessionReasoning}
+          plan={intelligence.sessionPlan}
+          reasoning={intelligence.sessionReasoning}
         />
       }
       insights={<EmpireInsights insights={dashboard.empire.insights} />}
