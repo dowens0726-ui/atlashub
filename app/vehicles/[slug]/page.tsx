@@ -1,17 +1,21 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import CompareButton from "@/app/components/compare/CompareButton";
 import AtlasScoreCard from "@/app/components/intelligence/AtlasScoreCard";
+import {
+  AtlasIntelligenceCard,
+  VehicleRecommendations,
+} from "@/app/components/intelligence";
 import { RecommendedMissions } from "@/app/components/mission";
-import { VehicleRecommendations } from "@/app/components/intelligence";
+import { AppShell } from "@/app/components/layout";
 import Container from "@/app/components/ui/Container";
+import QuickActions from "@/app/components/ui/QuickActions";
 import VehicleHero from "@/app/components/vehicles/VehicleHero";
 import RelatedVehicles from "@/app/components/vehicles/RelatedVehicles";
 import VehicleStats from "@/app/components/vehicles/VehicleStats";
 
 import { vehicles } from "@/app/data";
-import { getMissionsForVehicle } from "@/app/services";
+import { getAtlasVehicleScore, getMissionsForVehicle } from "@/app/services";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -27,13 +31,14 @@ export default async function VehiclePage({ params }: Props) {
   }
 
   const recommendedMissions = getMissionsForVehicle(vehicle.slug);
+  const atlasScore = getAtlasVehicleScore(vehicle);
 
   return (
-    <main className="min-h-screen bg-zinc-950 text-white">
-      <Container className="py-16">
+    <AppShell>
+      <Container className="py-10">
         <Link
           href="/vehicles"
-          className="text-emerald-400 hover:text-emerald-300"
+          className="text-sm font-bold text-amber-400 hover:text-amber-300"
         >
           ← Back to Vehicles
         </Link>
@@ -41,7 +46,56 @@ export default async function VehiclePage({ params }: Props) {
         <VehicleHero vehicle={vehicle} />
 
         <div className="mt-6">
-          <CompareButton slug={vehicle.slug} />
+          <QuickActions
+            actions={[
+              {
+                label: "Compare",
+                href: `/compare?vehicle=${vehicle.slug}`,
+                icon: "⇄",
+              },
+              {
+                label: "View Missions",
+                href: "/missions",
+                icon: "◎",
+              },
+              {
+                label: "Garage Builder",
+                href: "/garage-builder",
+                icon: "▣",
+              },
+              {
+                label: "Back to Vehicles",
+                href: "/vehicles",
+                icon: "◈",
+              },
+            ]}
+          />
+        </div>
+
+        <div className="mt-10">
+          <AtlasIntelligenceCard
+            score={atlasScore.overall}
+            title="Atlas vehicle analysis"
+            summary={`${vehicle.name} has been evaluated across performance, value, daily usability, and beginner friendliness to determine how useful it is across your garage strategy.`}
+            metrics={[
+              {
+                label: "Performance",
+                value: `${atlasScore.performance}/100`,
+              },
+              {
+                label: "Value",
+                value: `${atlasScore.value}/100`,
+              },
+              {
+                label: "Daily Driver",
+                value: `${atlasScore.dailyDriver}/100`,
+              },
+              {
+                label: "Beginner Friendly",
+                value: `${atlasScore.beginner}/100`,
+              },
+            ]}
+          />
         </div>
 
         <div className="mt-10">
@@ -62,8 +116,9 @@ export default async function VehiclePage({ params }: Props) {
         />
 
         <RelatedVehicles vehicle={vehicle} vehicles={vehicles} />
-      <VehicleRecommendations vehicle={vehicle} />
+
+        <VehicleRecommendations vehicle={vehicle} />
       </Container>
-    </main>
+    </AppShell>
   );
 }

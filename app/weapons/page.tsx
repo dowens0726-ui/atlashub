@@ -6,9 +6,10 @@ import { useState } from "react";
 import DiscoveryPanel from "../components/discovery/DiscoveryPanel";
 import DiscoveryToolbar from "../components/discovery/DiscoveryToolbar";
 import { FilterDropdown, SortDropdown } from "../components/discovery";
+import { AppShell } from "../components/layout";
 import SearchBar from "../components/SearchBar";
+import AtlasHero from "../components/ui/AtlasHero";
 import Container from "../components/ui/Container";
-import PageHeader from "../components/ui/PageHeader";
 import { weapons } from "../data/weapons";
 
 export default function WeaponsPage() {
@@ -55,16 +56,52 @@ export default function WeaponsPage() {
       return a.name.localeCompare(b.name);
     });
 
+  const highestDamageWeapon = filteredWeapons.reduce(
+    (best, weapon) =>
+      !best || weapon.damage > best.damage ? weapon : best,
+    null as (typeof weapons)[number] | null
+  );
+
+  const longestRangeWeapon = filteredWeapons.reduce(
+    (best, weapon) =>
+      !best || weapon.range > best.range ? weapon : best,
+    null as (typeof weapons)[number] | null
+  );
+
   return (
-    <main className="min-h-screen bg-zinc-950 text-white">
-      <Container className="py-16">
-        <PageHeader
+    <AppShell>
+      <Container className="py-10">
+        <AtlasHero
           eyebrow="Atlas Armory"
           title="Weapons"
-          description="Browse weapon stats, categories, prices, and performance."
+          description="Browse every weapon, compare firepower, review pricing, and build the perfect loadout."
+          stats={[
+            {
+              label: "Total Weapons",
+              value: weapons.length,
+              detail: "Indexed by Atlas",
+            },
+            {
+              label: "Categories",
+              value: categoryOptions.length - 1,
+              detail: "Weapon classes",
+            },
+            {
+              label: "Top Damage",
+              value: highestDamageWeapon?.name ?? "None",
+              detail: highestDamageWeapon
+                ? `${highestDamageWeapon.damage} damage`
+                : "No match",
+            },
+          ]}
         />
 
-        <DiscoveryToolbar title="Weapon Database" count={filteredWeapons.length} />
+        <div className="mt-10">
+          <DiscoveryToolbar
+            title="Weapon Database"
+            count={filteredWeapons.length}
+          />
+        </div>
 
         <DiscoveryPanel>
           <SearchBar
@@ -87,14 +124,35 @@ export default function WeaponsPage() {
           />
         </DiscoveryPanel>
 
+        <div className="mt-8 grid gap-4 md:grid-cols-3">
+          <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5">
+            <p className="text-sm text-zinc-400">Highest Damage</p>
+            <p className="mt-2 text-xl font-black">
+              {highestDamageWeapon?.name ?? "None"}
+            </p>
+          </div>
+
+          <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5">
+            <p className="text-sm text-zinc-400">Longest Range</p>
+            <p className="mt-2 text-xl font-black">
+              {longestRangeWeapon?.name ?? "None"}
+            </p>
+          </div>
+
+          <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5">
+            <p className="text-sm text-zinc-400">Visible Matches</p>
+            <p className="mt-2 text-xl font-black">{filteredWeapons.length}</p>
+          </div>
+        </div>
+
         <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {filteredWeapons.map((weapon) => (
             <Link
               key={weapon.slug}
               href={`/weapons/${weapon.slug}`}
-              className="block rounded-2xl border border-zinc-800 bg-zinc-900 p-6 transition hover:-translate-y-1 hover:border-emerald-400"
+              className="block rounded-2xl border border-zinc-800 bg-zinc-900 p-6 transition hover:-translate-y-1 hover:border-amber-400"
             >
-              <p className="text-sm font-semibold uppercase tracking-wider text-emerald-400">
+              <p className="text-sm font-semibold uppercase tracking-wider text-amber-400">
                 {weapon.category}
               </p>
 
@@ -109,6 +167,6 @@ export default function WeaponsPage() {
           ))}
         </div>
       </Container>
-    </main>
+    </AppShell>
   );
 }

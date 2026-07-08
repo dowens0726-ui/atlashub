@@ -3,3 +3,17 @@ export { default as DashboardGrid } from "./DashboardGrid";
 export { default as DashboardSection } from "./DashboardSection";
 export { default as QuickAction } from "./QuickAction";
 export { default as WelcomeBanner } from "./WelcomeBanner";
+
+export { default as DashboardClient } from "./DashboardClient";
+export { default as DashboardHeader } from "./DashboardHeader";
+export { default as DashboardStats } from "./DashboardStats";
+export { default as DashboardSummary } from "./DashboardSummary";
+export { default as DashboardRecommendation } from "./DashboardRecommendation";
+export { default as DashboardPlannerPreview } from "./DashboardPlannerPreview";
+export { default as DashboardObjectives } from "./DashboardObjectives";
+export { default as EmpireInsights } from "./EmpireInsights";
+export { default as EmpireScoreCard } from "./EmpireScoreCard";
+export { default as AtlasBriefing } from "./AtlasBriefing";
+export { default as CommandCenterLayout } from "./CommandCenterLayout";
+export { default as CommandCenterHero } from "./CommandCenterHero";
+export { default as LiveEmpireCard } from "./LiveEmpireCard";

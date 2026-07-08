@@ -7,9 +7,10 @@ import { FilterDropdown, SortDropdown } from "../components/discovery";
 import VehicleCard from "../components/VehicleCard";
 import SearchBar from "../components/SearchBar";
 import Container from "../components/ui/Container";
-import PageHeader from "../components/ui/PageHeader";
+import AtlasHero from "../components/ui/AtlasHero";
 import EmptyState from "../components/ui/EmptyState";
 import { vehicles } from "../data";
+import { AppShell } from "../components/layout";
 
 export default function VehiclesPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -168,13 +169,30 @@ export default function VehiclesPage() {
   }
 
   return (
-    <main className="min-h-screen bg-zinc-950 text-white">
-      <Container className="py-16">
-        <PageHeader
-          eyebrow="Atlas Garage"
-          title="Vehicles"
-          description="Browse, filter, compare, and discover every vehicle in Atlas."
-        />
+  <AppShell>
+    <Container className="py-10">
+        <AtlasHero
+  eyebrow="Atlas Garage"
+  title="Vehicles"
+  description="Browse every vehicle, compare performance, discover recommendations, and build the perfect garage."
+  stats={[
+    {
+      label: "Total Vehicles",
+      value: vehicles.length,
+      detail: "Indexed by Atlas",
+    },
+    {
+      label: "Featured",
+      value: vehicles.filter((vehicle) => vehicle.featured).length,
+      detail: "Atlas picks",
+    },
+    {
+      label: "Manufacturers",
+      value: manufacturerOptions.length - 1,
+      detail: "Known brands",
+    },
+  ]}
+/>
 
         <DiscoveryToolbar
           title="Vehicle Browser"
@@ -349,7 +367,7 @@ export default function VehiclesPage() {
             </div>
           )}
         </div>
-      </Container>
-    </main>
-  );
+          </Container>
+  </AppShell>
+);
 }

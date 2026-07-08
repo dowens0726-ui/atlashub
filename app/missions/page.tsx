@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { AppShell } from "../components/layout";
 import MissionCard from "../components/MissionCard";
 import SearchBar from "../components/SearchBar";
 import Button from "../components/ui/Button";
 import Container from "../components/ui/Container";
 import PageHeader from "../components/ui/PageHeader";
 import { missions } from "../data/missions";
+import { useState } from "react";
 
 export default function MissionsPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -32,13 +33,13 @@ export default function MissionsPage() {
   });
 
   return (
-    <main className="min-h-screen bg-zinc-950 text-white">
-      <Container className="py-16">
+    <AppShell>
+      <Container className="py-10">
         <PageHeader
-  eyebrow="AtlasHub"
-  title="Missions"
-  description="Browse every GTA VI mission, walkthrough, rewards, and objectives."
-/>
+          eyebrow="Atlas Missions"
+          title="Missions"
+          description="Browse every GTA VI mission, walkthrough, rewards, and objectives."
+        />
 
         <div className="mt-10">
           <SearchBar value={searchQuery} onChange={setSearchQuery} />
@@ -51,8 +52,8 @@ export default function MissionsPage() {
               onClick={() => setSelectedCategory(category)}
               className={`rounded-full px-5 py-2 text-sm font-bold transition-all ${
                 selectedCategory === category
-                  ? "bg-emerald-500 text-zinc-950"
-                  : "border border-zinc-700 text-zinc-400 hover:border-emerald-400 hover:text-white"
+                  ? "bg-amber-400 text-zinc-950"
+                  : "border border-zinc-700 text-zinc-400 hover:border-amber-400 hover:text-white"
               }`}
             >
               {category}
@@ -74,15 +75,15 @@ export default function MissionsPage() {
               </p>
 
               <div className="mt-6">
-  <Button
-    onClick={() => {
-      setSearchQuery("");
-      setSelectedCategory("All");
-    }}
-  >
-    Clear Filters
-  </Button>
-</div>
+                <Button
+                  onClick={() => {
+                    setSearchQuery("");
+                    setSelectedCategory("All");
+                  }}
+                >
+                  Clear Filters
+                </Button>
+              </div>
             </div>
           ) : (
             <div className="grid gap-6">
@@ -93,6 +94,6 @@ export default function MissionsPage() {
           )}
         </div>
       </Container>
-    </main>
+    </AppShell>
   );
 }
