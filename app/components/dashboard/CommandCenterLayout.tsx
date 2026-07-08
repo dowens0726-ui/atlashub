@@ -22,25 +22,26 @@ export default function CommandCenterLayout({
   achievements,
 }: CommandCenterLayoutProps) {
   return (
-    <div className="space-y-8">
-      {hero}
+    <div className="space-y-10">
+      <section>{hero}</section>
 
-      <div className="grid gap-8 xl:grid-cols-[1.1fr_0.9fr]">
-        {overview}
-        {atlas}
-      </div>
+      <section className="grid gap-8 2xl:grid-cols-[1fr_1.15fr]">
+        <div className="space-y-8">{overview}</div>
 
-      {session}
+        <div className="space-y-8">{atlas}</div>
+      </section>
 
-      <div className="grid gap-8 xl:grid-cols-2">
+      <section>{session}</section>
+
+      <section className="grid gap-8 xl:grid-cols-2">
         {insights}
         {objectives}
-      </div>
+      </section>
 
-      <div className="grid gap-8 xl:grid-cols-2">
+      <section className="grid gap-8 xl:grid-cols-2">
         {activity}
         {achievements}
-      </div>
+      </section>
     </div>
   );
 }
