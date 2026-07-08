@@ -24,6 +24,7 @@ import {
   buildAtlasReasoning,
   buildDailyObjectives,
   buildEmpireForecast,
+  buildEmpireSimulation,
   buildEmpireTimeline,
   buildIntelligenceFeed,
   buildMemoryHistory,
@@ -39,7 +40,6 @@ import { useDashboard } from "@/app/hooks/useDashboard";
 export default function DashboardClient() {
   const dashboard = useDashboard();
 
-  // Recommendation
   const atlasRecommendations = getAtlasAdvisorRecommendations(
     dashboard.profile
   );
@@ -53,7 +53,6 @@ export default function DashboardClient() {
     atlasRecommendation
   );
 
-  // Session
   const sessionPlan = buildSessionPlan(
     dashboard.profile,
     atlasRecommendations
@@ -61,43 +60,41 @@ export default function DashboardClient() {
 
   const sessionReasoning = buildSessionReasoning(sessionPlan);
 
-  // Next Action
   const nextAction = buildNextAction(
     dashboard.profile,
     atlasRecommendation,
     sessionReasoning
   );
 
-  // Impact
   const atlasImpact = buildAtlasImpact(nextAction.confidence);
 
-  // Forecast
   const empireForecast = buildEmpireForecast(
     dashboard.profile,
     dashboard.empire,
     atlasImpact
   );
 
-  // Timeline
+  const empireSimulation = buildEmpireSimulation(
+    dashboard.profile,
+    atlasRecommendation
+  );
+
   const empireTimeline = buildEmpireTimeline(empireForecast);
 
-  // Objectives
   const dailyObjectives = buildDailyObjectives(
     dashboard.profile,
     nextAction,
     empireForecast
   );
 
-  // Memory
   const atlasMemory = buildAtlasMemory(
-  dashboard.profile,
-  nextAction,
-  empireForecast
-);
+    dashboard.profile,
+    nextAction,
+    empireForecast
+  );
 
   const memoryHistory = buildMemoryHistory(atlasMemory);
 
-  // Intelligence
   const intelligenceFeed = buildIntelligenceFeed(dashboard.profile);
 
   return (
@@ -119,10 +116,11 @@ export default function DashboardClient() {
           nextAction={nextAction}
           impact={atlasImpact}
           forecast={empireForecast}
+          simulation={empireSimulation}
           timeline={empireTimeline}
-          dailyObjectives={dailyObjectives}
           memory={atlasMemory}
           memoryHistory={memoryHistory}
+          dailyObjectives={dailyObjectives}
           insights={intelligenceFeed}
         />
       }

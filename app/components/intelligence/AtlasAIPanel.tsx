@@ -5,6 +5,7 @@ import AtlasIntelligenceFeed from "./AtlasIntelligenceFeed";
 import AtlasMemoryCard from "./AtlasMemoryCard";
 import AtlasStatusCard from "./AtlasStatusCard";
 import EmpireForecastCard from "./EmpireForecastCard";
+import EmpireSimulatorCard from "./EmpireSimulatorCard";
 import EmpireTimelineCard from "./EmpireTimelineCard";
 
 import { GlowCard } from "@/app/components/ui";
@@ -16,6 +17,7 @@ import type {
   AtlasReasoning,
   DailyObjective,
   EmpireForecast,
+  EmpireSimulation,
   EmpireTimelinePoint,
   IntelligenceInsight,
   MemoryHistoryItem,
@@ -28,6 +30,7 @@ type AtlasAIPanelProps = {
   nextAction: NextAction;
   impact: AtlasImpact;
   forecast: EmpireForecast;
+  simulation: EmpireSimulation;
   timeline: EmpireTimelinePoint[];
   memory: AtlasMemory;
   memoryHistory: MemoryHistoryItem[];
@@ -41,6 +44,7 @@ export default function AtlasAIPanel({
   nextAction,
   impact,
   forecast,
+  simulation,
   timeline,
   memory,
   memoryHistory,
@@ -67,6 +71,8 @@ export default function AtlasAIPanel({
         <AtlasCoreCard action={nextAction} impact={impact} />
 
         <AtlasMemoryCard memory={memory} history={memoryHistory} />
+
+        <EmpireSimulatorCard simulation={simulation} />
 
         <AtlasDailyObjectivesCard objectives={dailyObjectives} />
 
