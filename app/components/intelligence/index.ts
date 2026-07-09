@@ -1,6 +1,7 @@
 export { default as AtlasAIPanel } from "./AtlasAIPanel";
 
 export { default as AtlasCoreCard } from "./AtlasCoreCard";
+export { default as AtlasStrategyReportCard } from "./AtlasStrategyReportCard";
 export { default as AtlasAdvisorCard } from "./AtlasAdvisorCard";
 export { default as AtlasDailyObjectivesCard } from "./AtlasDailyObjectivesCard";
 export { default as AtlasIntelligenceFeed } from "./AtlasIntelligenceFeed";

@@ -50,6 +50,7 @@ export default function DashboardClient() {
           impact={intelligence.atlasImpact}
           forecast={intelligence.empireForecast}
           simulation={intelligence.empireSimulation}
+          strategyReport={intelligence.strategyReport}
           timeline={intelligence.empireTimeline}
           memory={intelligence.atlasMemory}
           memoryHistory={intelligence.memoryHistory}

@@ -19,6 +19,7 @@ import { buildAtlasMemory } from "./memory.engine";
 import { buildMemoryHistory } from "./memory-history.engine";
 import { buildEmpireSimulation } from "./empire-simulator.engine";
 import { buildIntelligenceFeed } from "./intelligence-feed.engine";
+import { buildAtlasStrategyReport } from "./strategy-report.engine";
 
 export function buildDashboardIntelligence(
   profile: PlayerProfile,
@@ -28,6 +29,11 @@ export function buildDashboardIntelligence(
 
   const atlasRecommendation =
     getPrimaryAtlasRecommendation(profile);
+    
+    console.log(
+  "ATLAS RECOMMENDATION",
+  atlasRecommendation
+);
 
   const personalPicks = getPersonalPicks(profile);
 
@@ -87,6 +93,16 @@ export function buildDashboardIntelligence(
   const intelligenceFeed =
     buildIntelligenceFeed(profile);
 
+    const strategyReport =
+  buildAtlasStrategyReport(
+    atlasRecommendation,
+    atlasReasoning,
+    empireSimulation,
+    empireForecast,
+    atlasMemory,
+    nextAction
+  );
+
   return {
     atlasRecommendations,
     atlasRecommendation,
@@ -103,5 +119,6 @@ export function buildDashboardIntelligence(
     atlasMemory,
     memoryHistory,
     intelligenceFeed,
+    strategyReport,
   };
 }

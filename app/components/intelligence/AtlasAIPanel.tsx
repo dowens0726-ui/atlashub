@@ -4,6 +4,7 @@ import AtlasDailyObjectivesCard from "./AtlasDailyObjectivesCard";
 import AtlasIntelligenceFeed from "./AtlasIntelligenceFeed";
 import AtlasMemoryCard from "./AtlasMemoryCard";
 import AtlasStatusCard from "./AtlasStatusCard";
+import AtlasStrategyReportCard from "./AtlasStrategyReportCard";
 import EmpireForecastCard from "./EmpireForecastCard";
 import EmpireSimulatorCard from "./EmpireSimulatorCard";
 import EmpireTimelineCard from "./EmpireTimelineCard";
@@ -16,6 +17,7 @@ import type {
   AtlasMemory,
   AtlasRecommendation,
   AtlasReasoning,
+  AtlasStrategyReport,
   DailyObjective,
   EmpireForecast,
   EmpireSimulation,
@@ -33,6 +35,7 @@ type AtlasAIPanelProps = {
   impact: AtlasImpact;
   forecast: EmpireForecast;
   simulation: EmpireSimulation;
+  strategyReport: AtlasStrategyReport;
   timeline: EmpireTimelinePoint[];
   memory: AtlasMemory;
   memoryHistory: MemoryHistoryItem[];
@@ -48,6 +51,7 @@ export default function AtlasAIPanel({
   impact,
   forecast,
   simulation,
+  strategyReport,
   timeline,
   memory,
   memoryHistory,
@@ -73,16 +77,23 @@ export default function AtlasAIPanel({
       <div className="space-y-10">
 
         <section>
+          <AtlasStrategyReportCard
+            report={strategyReport}
+          />
+        </section>
+
+
+        <section>
           <p className="mb-4 text-xs font-black uppercase tracking-[0.3em] text-violet-400">
             Strategic Decision
           </p>
 
           <AtlasCoreCard
-  action={nextAction}
-  impact={impact}
-  recommendation={recommendation}
-  reasoning={reasoning}
-/>
+            action={nextAction}
+            impact={impact}
+            recommendation={recommendation}
+            reasoning={reasoning}
+          />
         </section>
 
 

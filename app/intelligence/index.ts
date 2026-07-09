@@ -11,6 +11,7 @@ export * from "./impact.engine";
 export * from "./greeting.engine";
 export * from "./briefing.engine";
 export * from "./forecast.engine";
+export * from "./strategy-report.engine";
 export * from "./daily-objectives.engine";
 export * from "./timeline.engine";
 export * from "./memory.engine";
