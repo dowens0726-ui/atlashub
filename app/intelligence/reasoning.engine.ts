@@ -15,27 +15,59 @@ export function buildAtlasReasoning(
 ): AtlasReasoning {
   const reasons: string[] = [];
 
-  if (profile.cash > 1_000_000) {
-    reasons.push("You have enough cash to make this purchase.");
+  if (recommendation.category === "business") {
+    reasons.push(
+      "This improves your long-term empire income potential."
+    );
+  }
+
+  if (recommendation.category === "vehicle") {
+    reasons.push(
+      "This vehicle aligns with your current progression path."
+    );
+  }
+
+  if (profile.cash >= 1_000_000) {
+    reasons.push(
+      "Your current cash position supports this investment."
+    );
   }
 
   if (profile.playstyle === "solo") {
-    reasons.push("This recommendation works well for solo players.");
+    reasons.push(
+      "This fits a solo-focused strategy and efficient progression."
+    );
   }
 
-  if (profile.ownedBusinesses.length === 0) {
-    reasons.push("Building your first business creates long-term income.");
+  if (profile.ownedBusinesses.length > 0) {
+    reasons.push(
+      "Your existing assets make this a strategic next step."
+    );
+  }
+
+  if (reasons.length === 0) {
+    reasons.push(
+      "Atlas identified this as the strongest available progression option."
+    );
   }
 
   return {
     recommendationId: recommendation.id,
-    confidence: 92,
+
+    confidence: recommendation.confidence,
+
     reasons,
+
     expectedOutcome:
-      "Increase long-term income and unlock additional progression opportunities.",
+      recommendation.category === "business"
+        ? "Increase passive income, strengthen your empire, and unlock additional progression opportunities."
+        : recommendation.category === "vehicle"
+          ? "Improve your capabilities and expand future mission options."
+          : "Improve your overall progression efficiency.",
+
     alternatives: [
-      "Save additional cash before purchasing.",
-      "Complete higher-paying missions first.",
+      "Continue saving resources before investing.",
+      "Complete higher-value activities to accelerate progression.",
     ],
   };
 }

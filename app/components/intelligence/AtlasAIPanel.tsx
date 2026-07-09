@@ -56,7 +56,7 @@ export default function AtlasAIPanel({
 }: AtlasAIPanelProps) {
   return (
     <GlowCard accent="cyan">
-      <div className="mb-6">
+      <div className="mb-8">
         <p className="text-xs font-black uppercase tracking-[0.35em] text-cyan-400">
           Atlas Intelligence
         </p>
@@ -70,48 +70,75 @@ export default function AtlasAIPanel({
         </p>
       </div>
 
-      <div className="space-y-6">
-        <AtlasCoreCard
-          action={nextAction}
-          impact={impact}
-          recommendation={recommendation}
-        />
+      <div className="space-y-10">
 
-        <PersonalPicksCard
-          picks={personalPicks}
-        />
+        <section>
+          <p className="mb-4 text-xs font-black uppercase tracking-[0.3em] text-violet-400">
+            Strategic Decision
+          </p>
 
-        <AtlasMemoryCard
-          memory={memory}
-          history={memoryHistory}
-        />
+          <AtlasCoreCard
+  action={nextAction}
+  impact={impact}
+  recommendation={recommendation}
+  reasoning={reasoning}
+/>
+        </section>
 
-        <EmpireSimulatorCard
-          simulation={simulation}
-        />
 
-        <AtlasDailyObjectivesCard
-          objectives={dailyObjectives}
-        />
+        <section>
+          <p className="mb-4 text-xs font-black uppercase tracking-[0.3em] text-emerald-400">
+            Empire Strategy
+          </p>
 
-        <EmpireForecastCard
-          forecast={forecast}
-        />
+          <div className="space-y-6">
+            <PersonalPicksCard
+              picks={personalPicks}
+            />
 
-        <EmpireTimelineCard
-          points={timeline}
-        />
+            <EmpireSimulatorCard
+              simulation={simulation}
+            />
 
-        <AtlasStatusCard />
+            <EmpireForecastCard
+              forecast={forecast}
+            />
 
-        <AtlasAdvisorCard
-          recommendation={recommendation}
-          reasoning={reasoning}
-        />
+            <EmpireTimelineCard
+              points={timeline}
+            />
+          </div>
+        </section>
 
-        <AtlasIntelligenceFeed
-          insights={insights}
-        />
+
+        <section>
+          <p className="mb-4 text-xs font-black uppercase tracking-[0.3em] text-amber-400">
+            Player Intelligence
+          </p>
+
+          <div className="space-y-6">
+            <AtlasMemoryCard
+              memory={memory}
+              history={memoryHistory}
+            />
+
+            <AtlasDailyObjectivesCard
+              objectives={dailyObjectives}
+            />
+
+            <AtlasStatusCard />
+
+            <AtlasAdvisorCard
+              recommendation={recommendation}
+              reasoning={reasoning}
+            />
+
+            <AtlasIntelligenceFeed
+              insights={insights}
+            />
+          </div>
+        </section>
+
       </div>
     </GlowCard>
   );
