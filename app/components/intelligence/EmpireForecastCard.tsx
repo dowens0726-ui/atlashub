@@ -26,33 +26,77 @@ export default function EmpireForecastCard({
         Projected Impact
       </h2>
 
+
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
         <Stat
           label="Empire Score"
           value={`${forecast.currentScore} → ${forecast.projectedScore}`}
         />
+
         <Stat
           label="Cash Forecast"
           value={`${formatCurrency(forecast.currentCash)} → ${formatCurrency(
             forecast.projectedCash
           )}`}
         />
-        <Stat label="Income Gain" value={formatCurrency(forecast.incomeGain)} />
-        <Stat label="Unlocks" value={`+${forecast.unlocks}`} />
-        <Stat label="Risk" value={forecast.risk} />
+
+        <Stat
+          label="Income Gain"
+          value={formatCurrency(forecast.incomeGain)}
+        />
+
+        <Stat
+          label="Unlocks"
+          value={`+${forecast.unlocks}`}
+        />
+
+        <Stat
+          label="Risk"
+          value={forecast.risk}
+        />
+      </div>
+
+
+      <div className="mt-6 rounded-2xl border border-sky-400/20 bg-sky-400/[0.04] p-5">
+        <p className="text-xs font-black uppercase tracking-[0.25em] text-sky-400">
+          Outlook
+        </p>
+
+        <p className="mt-3 text-sm leading-6 text-zinc-300">
+          {forecast.outlook}
+        </p>
+      </div>
+
+
+      <div className="mt-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5">
+        <p className="text-xs font-black uppercase tracking-[0.25em] text-zinc-500">
+          Atlas Strategy
+        </p>
+
+        <p className="mt-3 text-sm leading-6 text-zinc-300">
+          {forecast.strategy}
+        </p>
       </div>
     </section>
   );
 }
 
-function Stat({ label, value }: { label: string; value: string }) {
+function Stat({
+  label,
+  value,
+}: {
+  label: string;
+  value: string;
+}) {
   return (
     <div className="min-w-0 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4">
       <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-500">
         {label}
       </p>
 
-      <p className="mt-2 truncate text-xl font-black text-white">{value}</p>
+      <p className="mt-2 truncate text-xl font-black text-white">
+        {value}
+      </p>
     </div>
   );
 }
