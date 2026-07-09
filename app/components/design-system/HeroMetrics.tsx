@@ -30,7 +30,7 @@ export default function HeroMetrics({
             {metric.label}
           </p>
 
-          <p className="mt-3 truncate text-2xl font-black text-white">
+          <p className="mt-3 break-words text-2xl font-black leading-tight text-white">
             {metric.value}
           </p>
         </div>
