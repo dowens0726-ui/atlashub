@@ -5,6 +5,8 @@ import {
   getPrimaryAtlasRecommendation,
 } from "./advisor.service";
 
+import { getPersonalPicks } from "./personal-picks.engine";
+
 import { buildAtlasReasoning } from "./reasoning.engine";
 import { buildSessionPlan } from "./session.engine";
 import { buildSessionReasoning } from "./session-reasoning.engine";
@@ -24,7 +26,10 @@ export function buildDashboardIntelligence(
 ) {
   const atlasRecommendations = getAtlasAdvisorRecommendations(profile);
 
-  const atlasRecommendation = getPrimaryAtlasRecommendation(profile);
+  const atlasRecommendation =
+    getPrimaryAtlasRecommendation(profile);
+
+  const personalPicks = getPersonalPicks(profile);
 
   const atlasReasoning = buildAtlasReasoning(
     profile,
@@ -36,7 +41,9 @@ export function buildDashboardIntelligence(
     atlasRecommendations
   );
 
-  const sessionReasoning = buildSessionReasoning(sessionPlan);
+  const sessionReasoning = buildSessionReasoning(
+    sessionPlan
+  );
 
   const nextAction = buildNextAction(
     profile,
@@ -44,7 +51,9 @@ export function buildDashboardIntelligence(
     sessionReasoning
   );
 
-  const atlasImpact = buildAtlasImpact(nextAction.confidence);
+  const atlasImpact = buildAtlasImpact(
+    nextAction.confidence
+  );
 
   const empireForecast = buildEmpireForecast(
     profile,
@@ -57,7 +66,8 @@ export function buildDashboardIntelligence(
     atlasRecommendation
   );
 
-  const empireTimeline = buildEmpireTimeline(empireForecast);
+  const empireTimeline =
+    buildEmpireTimeline(empireForecast);
 
   const dailyObjectives = buildDailyObjectives(
     profile,
@@ -71,13 +81,16 @@ export function buildDashboardIntelligence(
     empireForecast
   );
 
-  const memoryHistory = buildMemoryHistory(atlasMemory);
+  const memoryHistory =
+    buildMemoryHistory(atlasMemory);
 
-  const intelligenceFeed = buildIntelligenceFeed(profile);
+  const intelligenceFeed =
+    buildIntelligenceFeed(profile);
 
   return {
     atlasRecommendations,
     atlasRecommendation,
+    personalPicks,
     atlasReasoning,
     sessionPlan,
     sessionReasoning,

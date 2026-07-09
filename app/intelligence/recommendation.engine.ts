@@ -1,4 +1,8 @@
-export type RecommendationPriority = "low" | "medium" | "high" | "critical";
+export type RecommendationPriority =
+  | "low"
+  | "medium"
+  | "high"
+  | "critical";
 
 export type RecommendationCategory =
   | "business"
@@ -11,10 +15,27 @@ export type AtlasRecommendation = {
   id: string;
   title: string;
   summary: string;
+
   category: RecommendationCategory;
   priority: RecommendationPriority;
+
   confidence: number;
+
+  match?: {
+    overall: number;
+
+    factors: {
+      performance: number;
+      budget: number;
+      playstyle: number;
+      progression: number;
+    };
+
+    reasons: string[];
+  };
+
   estimatedProfit?: number;
   estimatedTimeMinutes?: number;
+
   href?: string;
 };

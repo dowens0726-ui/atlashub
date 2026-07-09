@@ -5,7 +5,7 @@ import Container from "@/app/components/ui/Container";
 export default function DashboardPage() {
   return (
     <AppShell>
-      <Container className="py-10">
+      <Container size="wide" className="py-10">
         <DashboardClient />
       </Container>
     </AppShell>

@@ -7,6 +7,7 @@ import AtlasStatusCard from "./AtlasStatusCard";
 import EmpireForecastCard from "./EmpireForecastCard";
 import EmpireSimulatorCard from "./EmpireSimulatorCard";
 import EmpireTimelineCard from "./EmpireTimelineCard";
+import PersonalPicksCard from "./PersonalPicksCard";
 
 import { GlowCard } from "@/app/components/ui";
 
@@ -26,6 +27,7 @@ import type {
 
 type AtlasAIPanelProps = {
   recommendation: AtlasRecommendation;
+  personalPicks: AtlasRecommendation[];
   reasoning: AtlasReasoning;
   nextAction: NextAction;
   impact: AtlasImpact;
@@ -40,6 +42,7 @@ type AtlasAIPanelProps = {
 
 export default function AtlasAIPanel({
   recommendation,
+  personalPicks,
   reasoning,
   nextAction,
   impact,
@@ -68,17 +71,36 @@ export default function AtlasAIPanel({
       </div>
 
       <div className="space-y-6">
-        <AtlasCoreCard action={nextAction} impact={impact} />
+        <AtlasCoreCard
+          action={nextAction}
+          impact={impact}
+          recommendation={recommendation}
+        />
 
-        <AtlasMemoryCard memory={memory} history={memoryHistory} />
+        <PersonalPicksCard
+          picks={personalPicks}
+        />
 
-        <EmpireSimulatorCard simulation={simulation} />
+        <AtlasMemoryCard
+          memory={memory}
+          history={memoryHistory}
+        />
 
-        <AtlasDailyObjectivesCard objectives={dailyObjectives} />
+        <EmpireSimulatorCard
+          simulation={simulation}
+        />
 
-        <EmpireForecastCard forecast={forecast} />
+        <AtlasDailyObjectivesCard
+          objectives={dailyObjectives}
+        />
 
-        <EmpireTimelineCard points={timeline} />
+        <EmpireForecastCard
+          forecast={forecast}
+        />
+
+        <EmpireTimelineCard
+          points={timeline}
+        />
 
         <AtlasStatusCard />
 
@@ -87,7 +109,9 @@ export default function AtlasAIPanel({
           reasoning={reasoning}
         />
 
-        <AtlasIntelligenceFeed insights={insights} />
+        <AtlasIntelligenceFeed
+          insights={insights}
+        />
       </div>
     </GlowCard>
   );

@@ -44,6 +44,7 @@ export default function DashboardClient() {
       atlas={
         <AtlasAIPanel
           recommendation={intelligence.atlasRecommendation}
+          personalPicks={intelligence.personalPicks}
           reasoning={intelligence.atlasReasoning}
           nextAction={intelligence.nextAction}
           impact={intelligence.atlasImpact}

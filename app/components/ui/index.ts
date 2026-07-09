@@ -10,3 +10,4 @@ export { default as AtlasHero } from "./AtlasHero";
 export { default as QuickActions } from "./QuickActions";
 export { default as AnimatedNumber } from "./AnimatedNumber";
 export { default as GlowCard } from "./GlowCard";
+export { default as AtlasImage } from "./AtlasImage";

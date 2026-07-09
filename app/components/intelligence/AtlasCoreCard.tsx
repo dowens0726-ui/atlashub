@@ -1,9 +1,15 @@
 import Link from "next/link";
-import type { AtlasImpact, NextAction } from "@/app/intelligence";
+
+import type {
+  AtlasImpact,
+  AtlasRecommendation,
+  NextAction,
+} from "@/app/intelligence";
 
 type AtlasCoreCardProps = {
   action: NextAction;
   impact: AtlasImpact;
+  recommendation: AtlasRecommendation;
 };
 
 function formatCurrency(value: number) {
@@ -18,6 +24,7 @@ function formatCurrency(value: number) {
 export default function AtlasCoreCard({
   action,
   impact,
+  recommendation,
 }: AtlasCoreCardProps) {
   return (
     <section className="rounded-[2rem] border border-violet-400/30 bg-gradient-to-br from-violet-500/10 via-zinc-950 to-zinc-950 p-6">
@@ -33,16 +40,76 @@ export default function AtlasCoreCard({
         {action.reason}
       </p>
 
-      <div className="mt-6 grid gap-4 sm:grid-cols-2">
-        <Stat label="Confidence" value={`${action.confidence}%`} />
-        <Stat label="Risk" value={impact.risk} />
-        <Stat label="Empire Gain" value={`+${impact.empireScoreGain}`} />
-        <Stat label="Income Gain" value={formatCurrency(impact.estimatedIncomeGain)} />
+      <div className="mt-6 rounded-2xl border border-cyan-400/20 bg-cyan-400/[0.04] p-5">
+        <p className="text-xs font-black uppercase tracking-[0.25em] text-cyan-400">
+          Atlas Match
+        </p>
+
+        <h3 className="mt-3 text-3xl font-black text-white">
+          {recommendation.confidence}% Match
+        </h3>
+
+        <p className="mt-3 text-sm text-zinc-400">
+          Atlas selected this route based on your empire position,
+          resources, and progression path.
+        </p>
+
+        {recommendation.summary ? (
+          <p className="mt-4 text-sm leading-6 text-zinc-300">
+            {recommendation.summary}
+          </p>
+        ) : null}
+
+        {recommendation.match?.reasons &&
+        recommendation.match.reasons.length > 0 ? (
+          <div className="mt-5 rounded-xl border border-zinc-800 bg-zinc-950/60 p-4">
+            <p className="text-xs font-black uppercase tracking-[0.25em] text-cyan-400">
+              Why Atlas Chose This
+            </p>
+
+            <div className="mt-3 space-y-2">
+              {recommendation.match.reasons.map(
+                (reason) => (
+                  <p
+                    key={reason}
+                    className="text-sm text-zinc-300"
+                  >
+                    ✓ {reason}
+                  </p>
+                )
+              )}
+            </div>
+          </div>
+        ) : null}
       </div>
 
-      {action.href ? (
+      <div className="mt-6 grid gap-4 sm:grid-cols-2">
+        <Stat
+          label="Confidence"
+          value={`${action.confidence}%`}
+        />
+
+        <Stat
+          label="Risk"
+          value={impact.risk}
+        />
+
+        <Stat
+          label="Empire Gain"
+          value={`+${impact.empireScoreGain}`}
+        />
+
+        <Stat
+          label="Income Gain"
+          value={formatCurrency(
+            impact.estimatedIncomeGain
+          )}
+        />
+      </div>
+
+      {recommendation.href ? (
         <Link
-          href={action.href}
+          href={recommendation.href}
           className="mt-6 inline-flex rounded-xl bg-violet-400 px-5 py-3 text-sm font-black text-zinc-950 transition hover:bg-violet-300"
         >
           {action.actionLabel} →
@@ -52,13 +119,22 @@ export default function AtlasCoreCard({
   );
 }
 
-function Stat({ label, value }: { label: string; value: string }) {
+function Stat({
+  label,
+  value,
+}: {
+  label: string;
+  value: string;
+}) {
   return (
     <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4">
       <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-500">
         {label}
       </p>
-      <p className="mt-2 text-2xl font-black text-white">{value}</p>
+
+      <p className="mt-2 text-2xl font-black text-white">
+        {value}
+      </p>
     </div>
   );
 }

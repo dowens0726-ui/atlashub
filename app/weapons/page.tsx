@@ -1,15 +1,24 @@
 "use client";
 
-import Link from "next/link";
-import { useState } from "react";
+import WeaponCard from "../components/WeaponCard";
+import { useMemo, useState } from "react";
+
+import {
+  HeroBanner,
+  HeroMetrics,
+} from "../components/design-system";
 
 import DiscoveryPanel from "../components/discovery/DiscoveryPanel";
 import DiscoveryToolbar from "../components/discovery/DiscoveryToolbar";
-import { FilterDropdown, SortDropdown } from "../components/discovery";
+import {
+  FilterDropdown,
+  SortDropdown,
+} from "../components/discovery";
+
 import { AppShell } from "../components/layout";
 import SearchBar from "../components/SearchBar";
-import AtlasHero from "../components/ui/AtlasHero";
 import Container from "../components/ui/Container";
+
 import { weapons } from "../data/weapons";
 
 export default function WeaponsPage() {
@@ -17,91 +26,129 @@ export default function WeaponsPage() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [sortBy, setSortBy] = useState("name");
 
-  const categoryOptions = [
-    { label: "All Categories", value: "all" },
-    ...Array.from(new Set(weapons.map((weapon) => weapon.category))).map(
-      (category) => ({
+  const categoryOptions = useMemo(
+    () => [
+      {
+        label: "All Categories",
+        value: "all",
+      },
+      ...Array.from(
+        new Set(weapons.map((weapon) => weapon.category))
+      ).map((category) => ({
         label: category,
         value: category,
-      })
-    ),
-  ];
+      })),
+    ],
+    []
+  );
 
   const sortOptions = [
-    { label: "Name", value: "name" },
-    { label: "Price", value: "price" },
-    { label: "Damage", value: "damage" },
-    { label: "Range", value: "range" },
+    {
+      label: "Name",
+      value: "name",
+    },
+    {
+      label: "Price",
+      value: "price",
+    },
+    {
+      label: "Damage",
+      value: "damage",
+    },
+    {
+      label: "Range",
+      value: "range",
+    },
   ];
 
-  const filteredWeapons = weapons
-    .filter((weapon) => {
-      const query = searchQuery.toLowerCase();
+  const filteredWeapons = useMemo(() => {
+    return weapons
+      .filter((weapon) => {
+        const query = searchQuery.toLowerCase();
 
-      const matchesCategory =
-        selectedCategory === "all" || weapon.category === selectedCategory;
+        const matchesCategory =
+          selectedCategory === "all" ||
+          weapon.category === selectedCategory;
 
-      return (
-        matchesCategory &&
-        (weapon.name.toLowerCase().includes(query) ||
+        const matchesSearch =
+          weapon.name.toLowerCase().includes(query) ||
           weapon.category.toLowerCase().includes(query) ||
-          weapon.description.toLowerCase().includes(query))
-      );
-    })
-    .sort((a, b) => {
-      if (sortBy === "price") return a.price - b.price;
-      if (sortBy === "damage") return b.damage - a.damage;
-      if (sortBy === "range") return b.range - a.range;
+          weapon.description.toLowerCase().includes(query);
 
-      return a.name.localeCompare(b.name);
-    });
+        return matchesCategory && matchesSearch;
+      })
+      .sort((a, b) => {
+        if (sortBy === "price") {
+          return a.price - b.price;
+        }
+
+        if (sortBy === "damage") {
+          return b.damage - a.damage;
+        }
+
+        if (sortBy === "range") {
+          return b.range - a.range;
+        }
+
+        return a.name.localeCompare(b.name);
+      });
+  }, [
+    searchQuery,
+    selectedCategory,
+    sortBy,
+  ]);
 
   const highestDamageWeapon = filteredWeapons.reduce(
     (best, weapon) =>
-      !best || weapon.damage > best.damage ? weapon : best,
+      !best || weapon.damage > best.damage
+        ? weapon
+        : best,
     null as (typeof weapons)[number] | null
   );
 
   const longestRangeWeapon = filteredWeapons.reduce(
     (best, weapon) =>
-      !best || weapon.range > best.range ? weapon : best,
+      !best || weapon.range > best.range
+        ? weapon
+        : best,
     null as (typeof weapons)[number] | null
   );
 
   return (
     <AppShell>
-      <Container className="py-10">
-        <AtlasHero
+      <Container size="wide" className="py-10">
+        <HeroBanner
           eyebrow="Atlas Armory"
-          title="Weapons"
-          description="Browse every weapon, compare firepower, review pricing, and build the perfect loadout."
-          stats={[
-            {
-              label: "Total Weapons",
-              value: weapons.length,
-              detail: "Indexed by Atlas",
-            },
-            {
-              label: "Categories",
-              value: categoryOptions.length - 1,
-              detail: "Weapon classes",
-            },
-            {
-              label: "Top Damage",
-              value: highestDamageWeapon?.name ?? "None",
-              detail: highestDamageWeapon
-                ? `${highestDamageWeapon.damage} damage`
-                : "No match",
-            },
-          ]}
-        />
-
-        <div className="mt-10">
-          <DiscoveryToolbar
-            title="Weapon Database"
-            count={filteredWeapons.length}
+          title="Weapon Intelligence"
+          subtitle="Browse every weapon, compare firepower, analyze performance, and build the perfect loadout."
+        >
+          <HeroMetrics
+            metrics={[
+              {
+                label: "Total Weapons",
+                value: weapons.length.toString(),
+              },
+              {
+                label: "Categories",
+                value: (
+                  categoryOptions.length - 1
+                ).toString(),
+              },
+              {
+                label: "Top Damage",
+                value:
+                  highestDamageWeapon?.name ??
+                  "None",
+              },
+            ]}
+            columns={3}
           />
-        </div>
+        </HeroBanner>
+
+        <DiscoveryToolbar
+          title="Weapon Database"
+          count={filteredWeapons.length}
+        />
 
         <DiscoveryPanel>
           <SearchBar
@@ -125,48 +172,57 @@ export default function WeaponsPage() {
         </DiscoveryPanel>
 
         <div className="mt-8 grid gap-4 md:grid-cols-3">
-          <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5">
-            <p className="text-sm text-zinc-400">Highest Damage</p>
-            <p className="mt-2 text-xl font-black">
-              {highestDamageWeapon?.name ?? "None"}
-            </p>
-          </div>
+          <StatCard
+            label="Highest Damage"
+            value={
+              highestDamageWeapon?.name ??
+              "None"
+            }
+          />
 
-          <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5">
-            <p className="text-sm text-zinc-400">Longest Range</p>
-            <p className="mt-2 text-xl font-black">
-              {longestRangeWeapon?.name ?? "None"}
-            </p>
-          </div>
+          <StatCard
+            label="Longest Range"
+            value={
+              longestRangeWeapon?.name ??
+              "None"
+            }
+          />
 
-          <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5">
-            <p className="text-sm text-zinc-400">Visible Matches</p>
-            <p className="mt-2 text-xl font-black">{filteredWeapons.length}</p>
-          </div>
+          <StatCard
+            label="Visible Matches"
+            value={filteredWeapons.length.toString()}
+          />
         </div>
 
-        <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {filteredWeapons.map((weapon) => (
-            <Link
-              key={weapon.slug}
-              href={`/weapons/${weapon.slug}`}
-              className="block rounded-2xl border border-zinc-800 bg-zinc-900 p-6 transition hover:-translate-y-1 hover:border-amber-400"
-            >
-              <p className="text-sm font-semibold uppercase tracking-wider text-amber-400">
-                {weapon.category}
-              </p>
-
-              <h2 className="mt-2 text-2xl font-bold">{weapon.name}</h2>
-
-              <p className="mt-3 text-zinc-400">{weapon.description}</p>
-
-              <div className="mt-6 text-sm text-zinc-400">
-                Price: ${weapon.price.toLocaleString()}
-              </div>
-            </Link>
-          ))}
-        </div>
+       <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+  {filteredWeapons.map((weapon) => (
+    <WeaponCard
+      key={weapon.slug}
+      weapon={weapon}
+    />
+  ))}
+</div> 
       </Container>
     </AppShell>
+  );
+}
+
+function StatCard({
+  label,
+  value,
+}: {
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5">
+      <p className="text-sm text-zinc-400">
+        {label}
+      </p>
+
+      <p className="mt-2 text-xl font-black text-white">
+        {value}
+      </p>
+    </div>
   );
 }

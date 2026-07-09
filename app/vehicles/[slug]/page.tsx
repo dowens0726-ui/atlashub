@@ -16,6 +16,9 @@ import VehicleStats from "@/app/components/vehicles/VehicleStats";
 
 import { vehicles } from "@/app/data";
 import { getAtlasVehicleScore, getMissionsForVehicle } from "@/app/services";
+import AtlasMatchCard from "@/app/components/intelligence/AtlasMatchCard";
+import { getVehicleMatch } from "@/app/intelligence";
+import { defaultPlayerProfile } from "@/app/services/profile.service";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -32,6 +35,10 @@ export default async function VehiclePage({ params }: Props) {
 
   const recommendedMissions = getMissionsForVehicle(vehicle.slug);
   const atlasScore = getAtlasVehicleScore(vehicle);
+  const atlasMatch = getVehicleMatch(
+  defaultPlayerProfile,
+  vehicle
+);
 
   return (
     <AppShell>
@@ -107,6 +114,8 @@ export default async function VehiclePage({ params }: Props) {
         </div>
 
         <AtlasScoreCard vehicle={vehicle} />
+
+<AtlasMatchCard match={atlasMatch} />
 
         <VehicleStats vehicle={vehicle} />
 

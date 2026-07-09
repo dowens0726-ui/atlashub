@@ -8,6 +8,8 @@ import {
   NavigationSection,
 } from "@/app/components/layout";
 
+import { GlassPanel } from "@/app/components/design-system";
+
 import { useDashboard } from "@/app/hooks/useDashboard";
 
 export default function Sidebar() {
@@ -19,64 +21,61 @@ export default function Sidebar() {
   }, []);
 
   return (
-    <aside className="hidden min-h-screen w-72 shrink-0 border-r border-zinc-800 bg-zinc-950/95 p-5 lg:block">
+    <aside className="hidden min-h-screen w-80 shrink-0 border-r border-white/10 bg-zinc-950/90 p-6 backdrop-blur-xl lg:block">
       <Logo />
 
       {mounted ? (
-        <div className="mt-8 rounded-3xl border border-amber-400/20 bg-gradient-to-br from-zinc-900 to-zinc-950 p-5">
-          <p className="text-xs font-black uppercase tracking-[0.3em] text-zinc-500">
-            Empire Score
-          </p>
+        <div className="mt-8">
+          <GlassPanel
+            title="Empire Score"
+            subtitle="Live overview of your current empire position."
+            className="border-amber-400/20 bg-amber-400/[0.03]"
+          >
+            <div className="flex items-end gap-3">
+              <p className="text-6xl font-black text-white">
+                {dashboard.empire.overallScore}
+              </p>
 
-          <div className="mt-3 flex items-end gap-2">
-            <p className="text-5xl font-black text-white">
-              {dashboard.empire.overallScore}
-            </p>
-
-            <p className="pb-1 text-sm font-bold text-amber-400">
-              Grade {dashboard.empire.overallGrade}
-            </p>
-          </div>
-
-          <div className="mt-5 space-y-2 text-sm">
-            <div className="flex items-center justify-between">
-              <span className="text-zinc-500">Cash</span>
-              <span className="font-bold text-white">
-                ${dashboard.summary.cash.toLocaleString()}
-              </span>
+              <p className="pb-2 text-sm font-black uppercase tracking-wider text-amber-400">
+                Grade {dashboard.empire.overallGrade}
+              </p>
             </div>
 
-            <div className="flex items-center justify-between">
-              <span className="text-zinc-500">Businesses</span>
-              <span className="font-bold text-white">
-                {dashboard.profile.ownedBusinesses.length}
-              </span>
+            <div className="mt-6 space-y-3">
+              <SidebarStat
+                label="Cash"
+                value={`$${dashboard.summary.cash.toLocaleString()}`}
+              />
+
+              <SidebarStat
+                label="Businesses"
+                value={dashboard.profile.ownedBusinesses.length.toString()}
+              />
+
+              <SidebarStat
+                label="Playstyle"
+                value={dashboard.profile.playstyle}
+                accent
+              />
             </div>
 
-            <div className="flex items-center justify-between">
-              <span className="text-zinc-500">Playstyle</span>
-              <span className="font-bold text-amber-400">
-                {dashboard.profile.playstyle}
-              </span>
+            <div className="mt-6 rounded-2xl border border-cyan-400/20 bg-cyan-400/5 p-4">
+              <p className="text-xs font-black uppercase tracking-[0.25em] text-cyan-400">
+                Today's Mission
+              </p>
+
+              <p className="mt-3 text-sm font-bold leading-6 text-white">
+                {dashboard.recommendation?.title ??
+                  "Continue building your empire"}
+              </p>
             </div>
-          </div>
-
-          <div className="mt-6 rounded-2xl border border-amber-400/10 bg-amber-400/5 p-3">
-            <p className="text-xs font-bold uppercase tracking-[0.25em] text-amber-400">
-              Today's Mission
-            </p>
-
-            <p className="mt-2 text-sm font-semibold text-white">
-              {dashboard.recommendation?.title ??
-                "Continue building your empire"}
-            </p>
-          </div>
+          </GlassPanel>
         </div>
       ) : (
-        <div className="mt-8 h-[330px] rounded-3xl border border-zinc-800 bg-zinc-900/50" />
+        <div className="mt-8 h-[360px] rounded-3xl border border-white/10 bg-white/[0.03]" />
       )}
 
-      <nav className="mt-8 space-y-8">
+      <nav className="mt-10 space-y-8">
         <NavigationSection title="My Empire">
           <NavigationItem href="/dashboard" label="Empire Command" icon="⌂" />
           <NavigationItem href="/profile" label="Empire" icon="◇" />
@@ -106,5 +105,29 @@ export default function Sidebar() {
         </NavigationSection>
       </nav>
     </aside>
+  );
+}
+
+function SidebarStat({
+  label,
+  value,
+  accent = false,
+}: {
+  label: string;
+  value: string;
+  accent?: boolean;
+}) {
+  return (
+    <div className="flex items-center justify-between">
+      <span className="text-sm text-zinc-500">{label}</span>
+
+      <span
+        className={`text-sm font-black ${
+          accent ? "text-cyan-400" : "text-white"
+        }`}
+      >
+        {value}
+      </span>
+    </div>
   );
 }

@@ -1,18 +1,26 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import AtlasMatchCard from "@/app/components/intelligence/AtlasMatchCard";
+
 import {
   BusinessCard,
   BusinessHero,
   BusinessStats,
   BusinessTips,
 } from "@/app/components/businesses";
+
 import MissionCard from "@/app/components/MissionCard";
 import VehicleCard from "@/app/components/VehicleCard";
 import AtlasScoreCard from "@/app/components/ui/AtlasScoreCard";
 import Container from "@/app/components/ui/Container";
 
 import {
+  getBusinessMatch,
+} from "@/app/intelligence";
+
+import {
+  defaultPlayerProfile,
   getBusiness,
   getBusinessScore,
   getRelatedBusinesses,
@@ -20,11 +28,15 @@ import {
   getRelatedVehicles,
 } from "@/app/services";
 
+
 type Props = {
   params: Promise<{ slug: string }>;
 };
 
-export default async function BusinessPage({ params }: Props) {
+
+export default async function BusinessPage({
+  params,
+}: Props) {
   const { slug } = await params;
 
   const business = getBusiness(slug);
@@ -33,37 +45,64 @@ export default async function BusinessPage({ params }: Props) {
     notFound();
   }
 
-  const score = getBusinessScore(business);
 
-  const relatedVehicles = getRelatedVehicles(business);
-  const relatedMissions = getRelatedMissions(business);
-  const relatedBusinesses = getRelatedBusinesses(business);
+  const score =
+    getBusinessScore(business);
+
+
+  const atlasMatch =
+    getBusinessMatch(
+      defaultPlayerProfile,
+      business
+    );
+
+
+  const relatedVehicles =
+    getRelatedVehicles(business);
+
+  const relatedMissions =
+    getRelatedMissions(business);
+
+  const relatedBusinesses =
+    getRelatedBusinesses(business);
+
 
   return (
     <main className="min-h-screen bg-zinc-950 text-white">
       <Container className="py-16">
+
         <Link
-          href="/businesses"
+          href="/data/businesses"
           className="text-emerald-400 transition hover:text-emerald-300"
         >
           ← Back to Businesses
         </Link>
 
+
         <div className="mt-8">
           <BusinessHero business={business} />
         </div>
+
 
         <div className="mt-8">
           <BusinessStats business={business} />
         </div>
 
+
         <div className="mt-8">
           <AtlasScoreCard score={score} />
         </div>
 
+
+        <AtlasMatchCard
+          match={atlasMatch}
+        />
+
+
         <div className="mt-8">
           <BusinessTips business={business} />
         </div>
+
 
         {relatedVehicles.length > 0 && (
           <section className="mt-12">
@@ -82,6 +121,7 @@ export default async function BusinessPage({ params }: Props) {
           </section>
         )}
 
+
         {relatedMissions.length > 0 && (
           <section className="mt-12">
             <h2 className="text-3xl font-black text-white">
@@ -99,6 +139,7 @@ export default async function BusinessPage({ params }: Props) {
           </section>
         )}
 
+
         {relatedBusinesses.length > 0 && (
           <section className="mt-12">
             <h2 className="text-3xl font-black text-white">
@@ -115,6 +156,7 @@ export default async function BusinessPage({ params }: Props) {
             </div>
           </section>
         )}
+
       </Container>
     </main>
   );

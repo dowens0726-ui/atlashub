@@ -70,7 +70,41 @@ export default function EmpireScoreCard({
           </div>
         </div>
 
-        <HeroMetrics metrics={metrics} columns={2} />
+        <HeroMetrics
+          metrics={metrics}
+          columns={2}
+        />
+
+        {empire.insights.length > 0 && (
+          <div className="rounded-3xl border border-cyan-400/15 bg-cyan-400/[0.04] p-6">
+            <p className="text-xs font-black uppercase tracking-[0.35em] text-cyan-400">
+              Atlas Intelligence
+            </p>
+
+            <div className="mt-5 space-y-4">
+              {empire.insights.map((insight) => (
+                <div
+                  key={insight.id}
+                  className="rounded-2xl border border-zinc-800 bg-zinc-950/60 p-4"
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <h3 className="font-black text-white">
+                      {insight.title}
+                    </h3>
+
+                    <span className="text-xs font-bold uppercase tracking-wider text-amber-400">
+                      {insight.priority}
+                    </span>
+                  </div>
+
+                  <p className="mt-2 text-sm leading-6 text-zinc-400">
+                    {insight.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </GlassPanel>
   );

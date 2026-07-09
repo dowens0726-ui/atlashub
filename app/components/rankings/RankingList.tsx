@@ -1,20 +1,37 @@
-import type { Vehicle } from "@/app/types";
 import RankingCard from "./RankingCard";
 
-type RankingListProps = {
-  vehicles: Vehicle[];
-  metric: (vehicle: Vehicle) => string;
+type RankingListProps<T> = {
+  items: T[];
+  metric: (item: T) => string;
+  getKey: (item: T) => string;
+  getHref: (item: T) => string;
+  getTitle: (item: T) => string;
+  getSubtitle?: (item: T) => string;
 };
 
-export default function RankingList({ vehicles, metric }: RankingListProps) {
+export default function RankingList<T>({
+  items,
+  metric,
+  getKey,
+  getHref,
+  getTitle,
+  getSubtitle,
+}: RankingListProps<T>) {
   return (
     <div className="space-y-3">
-      {vehicles.map((vehicle, index) => (
+      {items.map((item, index) => (
         <RankingCard
-          key={vehicle.slug}
+          key={getKey(item)}
           rank={index + 1}
-          vehicle={vehicle}
-          metric={metric(vehicle)}
+          item={item}
+          metric={metric(item)}
+          href={getHref(item)}
+          title={getTitle(item)}
+          subtitle={
+            getSubtitle
+              ? getSubtitle(item)
+              : undefined
+          }
         />
       ))}
     </div>

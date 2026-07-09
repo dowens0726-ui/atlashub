@@ -11,7 +11,7 @@ export default function PlannerSummary({
   plan,
 }: PlannerSummaryProps) {
   return (
-    <section className="grid gap-4 md:grid-cols-4">
+    <section className="grid gap-4 md:grid-cols-5">
       <StatCard
         label="Stage"
         value={plan.stage}
@@ -23,7 +23,10 @@ export default function PlannerSummary({
         value={`${plan.completion}%`}
         accent="amber"
         footer={
-          <ProgressBar value={plan.completion} showValue={false} />
+          <ProgressBar
+            value={plan.completion}
+            showValue={false}
+          />
         }
       />
 
@@ -37,6 +40,17 @@ export default function PlannerSummary({
         label="Remaining Investment"
         value={`$${plan.totalInvestment.toLocaleString()}`}
         helper="Estimated cost to complete this roadmap."
+      />
+
+      <StatCard
+        label="Next Action"
+        value={plan.nextStep?.title ?? "Complete Profile"}
+        helper={
+          plan.nextStep
+            ? `$${plan.nextStep.estimatedCost.toLocaleString()} investment`
+            : "No recommendations available."
+        }
+        accent="emerald"
       />
     </section>
   );

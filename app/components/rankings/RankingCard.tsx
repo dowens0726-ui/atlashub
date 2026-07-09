@@ -1,20 +1,25 @@
 import Link from "next/link";
-import type { Vehicle } from "@/app/types";
 
-type RankingCardProps = {
+type RankingCardProps<T> = {
   rank: number;
-  vehicle: Vehicle;
+  item: T;
   metric: string;
+  href: string;
+  title: string;
+  subtitle?: string;
 };
 
-export default function RankingCard({
+export default function RankingCard<T>({
   rank,
-  vehicle,
+  item: _item,
   metric,
-}: RankingCardProps) {
+  href,
+  title,
+  subtitle,
+}: RankingCardProps<T>) {
   return (
     <Link
-      href={`/vehicles/${vehicle.slug}`}
+      href={href}
       className="group flex items-center justify-between rounded-2xl border border-zinc-800 bg-zinc-900 p-5 text-white transition hover:-translate-y-1 hover:border-emerald-400"
     >
       <div className="flex items-center gap-4">
@@ -23,15 +28,21 @@ export default function RankingCard({
         </div>
 
         <div>
-          <h3 className="font-bold text-white">{vehicle.name}</h3>
+          <h3 className="font-bold text-white">
+            {title}
+          </h3>
 
-          <p className="text-sm text-zinc-400">
-            {vehicle.manufacturer} · {vehicle.class}
-          </p>
+          {subtitle ? (
+            <p className="text-sm text-zinc-400">
+              {subtitle}
+            </p>
+          ) : null}
         </div>
       </div>
 
-      <p className="font-bold text-emerald-400">{metric}</p>
+      <p className="font-bold text-emerald-400">
+        {metric}
+      </p>
     </Link>
   );
 }

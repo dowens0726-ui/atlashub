@@ -17,3 +17,6 @@ export * from "./memory.engine";
 export * from "./memory-history.engine";
 export * from "./empire-simulator.engine";
 export * from "./dashboard-intelligence.engine";
+export * from "./personal-picks.engine";
+export * from "./ranking.engine";
+export * from "./match.engine";

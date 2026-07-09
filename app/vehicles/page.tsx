@@ -1,16 +1,27 @@
 "use client";
 
 import { useMemo, useState } from "react";
+
+import { AppShell } from "../components/layout";
+import {
+  HeroBanner,
+  HeroMetrics,
+} from "../components/design-system";
+
 import DiscoveryToolbar from "../components/discovery/DiscoveryToolbar";
 import DiscoveryPanel from "../components/discovery/DiscoveryPanel";
-import { FilterDropdown, SortDropdown } from "../components/discovery";
+import {
+  FilterDropdown,
+  SortDropdown,
+} from "../components/discovery";
+
 import VehicleCard from "../components/VehicleCard";
 import SearchBar from "../components/SearchBar";
+
 import Container from "../components/ui/Container";
-import AtlasHero from "../components/ui/AtlasHero";
 import EmptyState from "../components/ui/EmptyState";
+
 import { vehicles } from "../data";
-import { AppShell } from "../components/layout";
 
 export default function VehiclesPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -57,12 +68,12 @@ export default function VehiclesPage() {
   const drivetrainOptions = useMemo(
     () => [
       { label: "All Drivetrains", value: "all" },
-      ...Array.from(new Set(vehicles.map((vehicle) => vehicle.drivetrain))).map(
-        (drivetrain) => ({
-          label: drivetrain,
-          value: drivetrain,
-        })
-      ),
+      ...Array.from(
+        new Set(vehicles.map((vehicle) => vehicle.drivetrain))
+      ).map((drivetrain) => ({
+        label: drivetrain,
+        value: drivetrain,
+      })),
     ],
     []
   );
@@ -91,10 +102,13 @@ export default function VehiclesPage() {
           vehicle.manufacturer.toLowerCase().includes(query) ||
           vehicle.class.toLowerCase().includes(query) ||
           vehicle.location.toLowerCase().includes(query) ||
-          vehicle.tags?.some((tag) => tag.toLowerCase().includes(query));
+          vehicle.tags?.some((tag) =>
+            tag.toLowerCase().includes(query)
+          );
 
         const matchesClass =
-          selectedClass === "all" || vehicle.class === selectedClass;
+          selectedClass === "all" ||
+          vehicle.class === selectedClass;
 
         const matchesManufacturer =
           selectedManufacturer === "all" ||
@@ -105,9 +119,11 @@ export default function VehiclesPage() {
           vehicle.drivetrain === selectedDrivetrain;
 
         const matchesSeats =
-          selectedSeats === "all" || String(vehicle.seats) === selectedSeats;
+          selectedSeats === "all" ||
+          String(vehicle.seats) === selectedSeats;
 
-        const matchesFeatured = !featuredOnly || vehicle.featured;
+        const matchesFeatured =
+          !featuredOnly || vehicle.featured;
 
         return (
           matchesSearch &&
@@ -120,8 +136,10 @@ export default function VehiclesPage() {
       })
       .sort((a, b) => {
         if (sortBy === "price") return a.price - b.price;
-        if (sortBy === "topSpeed") return b.topSpeed - a.topSpeed;
-        if (sortBy === "acceleration") return b.acceleration - a.acceleration;
+        if (sortBy === "topSpeed")
+          return b.topSpeed - a.topSpeed;
+        if (sortBy === "acceleration")
+          return b.acceleration - a.acceleration;
 
         return a.name.localeCompare(b.name);
       });
@@ -137,13 +155,17 @@ export default function VehiclesPage() {
 
   const fastestVehicle = filteredVehicles.reduce(
     (fastest, vehicle) =>
-      !fastest || vehicle.topSpeed > fastest.topSpeed ? vehicle : fastest,
+      !fastest || vehicle.topSpeed > fastest.topSpeed
+        ? vehicle
+        : fastest,
     null as (typeof vehicles)[number] | null
   );
 
   const cheapestVehicle = filteredVehicles.reduce(
     (cheapest, vehicle) =>
-      !cheapest || vehicle.price < cheapest.price ? vehicle : cheapest,
+      !cheapest || vehicle.price < cheapest.price
+        ? vehicle
+        : cheapest,
     null as (typeof vehicles)[number] | null
   );
 
@@ -169,30 +191,35 @@ export default function VehiclesPage() {
   }
 
   return (
-  <AppShell>
-    <Container className="py-10">
-        <AtlasHero
-  eyebrow="Atlas Garage"
-  title="Vehicles"
-  description="Browse every vehicle, compare performance, discover recommendations, and build the perfect garage."
-  stats={[
-    {
-      label: "Total Vehicles",
-      value: vehicles.length,
-      detail: "Indexed by Atlas",
-    },
-    {
-      label: "Featured",
-      value: vehicles.filter((vehicle) => vehicle.featured).length,
-      detail: "Atlas picks",
-    },
-    {
-      label: "Manufacturers",
-      value: manufacturerOptions.length - 1,
-      detail: "Known brands",
-    },
-  ]}
-/>
+    <AppShell>
+      <Container size="wide" className="py-10">
+        <HeroBanner
+          eyebrow="Atlas Garage"
+          title="Vehicle Intelligence"
+          subtitle="Browse every vehicle, compare performance, discover recommendations, and build the perfect garage."
+        >
+          <HeroMetrics
+            metrics={[
+              {
+                label: "Total Vehicles",
+                value: vehicles.length.toString(),
+              },
+              {
+                label: "Featured",
+                value: vehicles.filter(
+                  (vehicle) => vehicle.featured
+                ).length.toString(),
+              },
+              {
+                label: "Manufacturers",
+                value: (
+                  manufacturerOptions.length - 1
+                ).toString(),
+              },
+            ]}
+            columns={3}
+          />
+        </HeroBanner>
 
         <DiscoveryToolbar
           title="Vehicle Browser"
@@ -242,7 +269,9 @@ export default function VehiclesPage() {
 
           <button
             type="button"
-            onClick={() => setFeaturedOnly((current) => !current)}
+            onClick={() =>
+              setFeaturedOnly((current) => !current)
+            }
             className={`rounded-xl px-4 py-3 text-sm font-bold transition ${
               featuredOnly
                 ? "bg-emerald-500 text-zinc-950"
@@ -254,94 +283,29 @@ export default function VehiclesPage() {
         </DiscoveryPanel>
 
         <div className="mt-8 grid gap-4 md:grid-cols-3">
-          <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5">
-            <p className="text-sm text-zinc-400">Fastest Match</p>
-            <p className="mt-2 text-xl font-black">
-              {fastestVehicle?.name ?? "None"}
-            </p>
-          </div>
+          <StatCard
+            label="Fastest Match"
+            value={fastestVehicle?.name ?? "None"}
+          />
 
-          <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5">
-            <p className="text-sm text-zinc-400">Best Budget Match</p>
-            <p className="mt-2 text-xl font-black">
-              {cheapestVehicle?.name ?? "None"}
-            </p>
-          </div>
+          <StatCard
+            label="Best Budget Match"
+            value={cheapestVehicle?.name ?? "None"}
+          />
 
-          <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5">
-            <p className="text-sm text-zinc-400">Featured Matches</p>
-            <p className="mt-2 text-xl font-black">{featuredCount}</p>
-          </div>
+          <StatCard
+            label="Featured Matches"
+            value={featuredCount.toString()}
+          />
         </div>
 
         {hasActiveFilters && (
           <div className="mt-6 flex flex-wrap items-center gap-3">
             <span className="text-sm font-semibold text-zinc-400">
-              Active filters:
+              Active filters
             </span>
 
-            {searchQuery.trim() && (
-              <button
-                type="button"
-                onClick={() => setSearchQuery("")}
-                className="rounded-full bg-zinc-800 px-3 py-1 text-sm text-zinc-300"
-              >
-                Search: {searchQuery} ×
-              </button>
-            )}
-
-            {selectedClass !== "all" && (
-              <button
-                type="button"
-                onClick={() => setSelectedClass("all")}
-                className="rounded-full bg-zinc-800 px-3 py-1 text-sm text-zinc-300"
-              >
-                {selectedClass} ×
-              </button>
-            )}
-
-            {selectedManufacturer !== "all" && (
-              <button
-                type="button"
-                onClick={() => setSelectedManufacturer("all")}
-                className="rounded-full bg-zinc-800 px-3 py-1 text-sm text-zinc-300"
-              >
-                {selectedManufacturer} ×
-              </button>
-            )}
-
-            {selectedDrivetrain !== "all" && (
-              <button
-                type="button"
-                onClick={() => setSelectedDrivetrain("all")}
-                className="rounded-full bg-zinc-800 px-3 py-1 text-sm text-zinc-300"
-              >
-                {selectedDrivetrain} ×
-              </button>
-            )}
-
-            {selectedSeats !== "all" && (
-              <button
-                type="button"
-                onClick={() => setSelectedSeats("all")}
-                className="rounded-full bg-zinc-800 px-3 py-1 text-sm text-zinc-300"
-              >
-                {selectedSeats} seats ×
-              </button>
-            )}
-
-            {featuredOnly && (
-              <button
-                type="button"
-                onClick={() => setFeaturedOnly(false)}
-                className="rounded-full bg-zinc-800 px-3 py-1 text-sm text-zinc-300"
-              >
-                Featured ×
-              </button>
-            )}
-
             <button
-              type="button"
               onClick={clearFilters}
               className="rounded-full bg-emerald-500 px-3 py-1 text-sm font-bold text-zinc-950"
             >
@@ -362,12 +326,33 @@ export default function VehiclesPage() {
           ) : (
             <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
               {filteredVehicles.map((vehicle) => (
-                <VehicleCard key={vehicle.slug} vehicle={vehicle} />
+                <VehicleCard
+                  key={vehicle.slug}
+                  vehicle={vehicle}
+                />
               ))}
             </div>
           )}
         </div>
-          </Container>
-  </AppShell>
-);
+      </Container>
+    </AppShell>
+  );
+}
+
+function StatCard({
+  label,
+  value,
+}: {
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-5">
+      <p className="text-sm text-zinc-400">{label}</p>
+
+      <p className="mt-2 text-xl font-black text-white">
+        {value}
+      </p>
+    </div>
+  );
 }

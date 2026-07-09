@@ -1,17 +1,11 @@
 /**
  * ============================================================
  * Atlas Design System (ADS)
- * ------------------------------------------------------------
- * Public exports
- *
- * Components should import from:
- *
- * import { AtlasTheme, AtlasColors } from "@/app/design-system";
- *
- * instead of individual files.
+ * Public API
  * ============================================================
  */
 
 export * from "./colors";
 export * from "./gradients";
 export * from "./theme";
+export * from "./icons";
