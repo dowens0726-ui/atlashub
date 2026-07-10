@@ -24,4 +24,5 @@ export * from "./match.engine";
 export * from "./decision-history.engine";
 export * from "./learning.engine";
 export * from "./outcome.engine";
+export * from "./action-tracker.engine";
 export * from "./strategy-report.engine";

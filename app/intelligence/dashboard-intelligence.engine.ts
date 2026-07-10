@@ -17,6 +17,10 @@ import {
   buildAtlasOutcome,
 } from "./outcome.engine";
 
+import {
+  buildPlayerAction,
+} from "./action-tracker.engine";
+
 import { getPersonalPicks } from "./personal-picks.engine";
 
 import { buildAtlasReasoning } from "./reasoning.engine";
@@ -41,11 +45,6 @@ export function buildDashboardIntelligence(
 
   const atlasRecommendation =
     getPrimaryAtlasRecommendation(profile);
-    
-    console.log(
-  "ATLAS RECOMMENDATION",
-  atlasRecommendation
-);
 
   const personalPicks = getPersonalPicks(profile);
 
@@ -120,6 +119,11 @@ const outcome =
     decisionHistory
   );
 
+const playerAction =
+  buildPlayerAction(
+    decisionHistory
+  );
+
     const strategyReport =
   buildAtlasStrategyReport(
     atlasRecommendation,
@@ -150,5 +154,6 @@ const outcome =
     decisionHistory,
     learningProfile,
     outcome,
+    playerAction,
   };
 }
