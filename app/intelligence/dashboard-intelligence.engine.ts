@@ -21,6 +21,10 @@ import {
   buildPlayerAction,
 } from "./action-tracker.engine";
 
+import {
+  buildOutcomeValidation,
+} from "./outcome-validation.engine";
+
 import { getPersonalPicks } from "./personal-picks.engine";
 
 import { buildAtlasReasoning } from "./reasoning.engine";
@@ -124,6 +128,12 @@ const playerAction =
     decisionHistory
   );
 
+const outcomeValidation =
+  buildOutcomeValidation(
+    playerAction,
+    outcome
+  );
+
     const strategyReport =
   buildAtlasStrategyReport(
     atlasRecommendation,
@@ -155,5 +165,6 @@ const playerAction =
     learningProfile,
     outcome,
     playerAction,
+    outcomeValidation,
   };
 }

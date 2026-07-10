@@ -9,6 +9,7 @@ export { default as AtlasMemoryCard } from "./AtlasMemoryCard";
 export { default as AtlasEvolutionCard } from "./AtlasEvolutionCard";
 export { default as AtlasOutcomeCard } from "./AtlasOutcomeCard";
 export { default as AtlasActionTrackerCard } from "./AtlasActionTrackerCard";
+export { default as AtlasValidationCard } from "./AtlasValidationCard";
 export { default as AtlasStatusCard } from "./AtlasStatusCard";
 
 export { default as EmpireForecastCard } from "./EmpireForecastCard";

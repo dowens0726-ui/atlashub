@@ -4,6 +4,7 @@ import AtlasCoreCard from "./AtlasCoreCard";
 import AtlasDailyObjectivesCard from "./AtlasDailyObjectivesCard";
 import AtlasEvolutionCard from "./AtlasEvolutionCard";
 import AtlasOutcomeCard from "./AtlasOutcomeCard";
+import AtlasValidationCard from "./AtlasValidationCard";
 import AtlasIntelligenceFeed from "./AtlasIntelligenceFeed";
 import AtlasMemoryCard from "./AtlasMemoryCard";
 import AtlasStatusCard from "./AtlasStatusCard";
@@ -21,6 +22,7 @@ import type {
   AtlasMemory,
   AtlasOutcome,
   AtlasPlayerAction,
+  AtlasValidatedOutcome,
   AtlasRecommendation,
   AtlasReasoning,
   AtlasStrategyReport,
@@ -49,6 +51,7 @@ type AtlasAIPanelProps = {
   learningProfile: AtlasLearningProfile;
   outcome: AtlasOutcome;
   playerAction: AtlasPlayerAction;
+  outcomeValidation: AtlasValidatedOutcome;
 
   timeline: EmpireTimelinePoint[];
 
@@ -72,6 +75,7 @@ export default function AtlasAIPanel({
   learningProfile,
   outcome,
   playerAction,
+  outcomeValidation,
   timeline,
   memory,
   memoryHistory,
@@ -104,16 +108,20 @@ export default function AtlasAIPanel({
 
           <div className="space-y-6">
             <AtlasEvolutionCard
-              learning={learningProfile}
-            />
+  learning={learningProfile}
+/>
 
-            <AtlasActionTrackerCard
-              action={playerAction}
-            />
+<AtlasActionTrackerCard
+  action={playerAction}
+/>
 
-            <AtlasOutcomeCard
-              outcome={outcome}
-            />
+<AtlasOutcomeCard
+  outcome={outcome}
+/>
+
+<AtlasValidationCard
+  validation={outcomeValidation}
+/>
           </div>
         </section>
 

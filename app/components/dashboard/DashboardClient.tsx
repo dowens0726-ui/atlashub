@@ -54,6 +54,7 @@ export default function DashboardClient() {
   learningProfile={intelligence.learningProfile}
   playerAction={intelligence.playerAction}
   outcome={intelligence.outcome}
+  outcomeValidation={intelligence.outcomeValidation}
   timeline={intelligence.empireTimeline}
   memory={intelligence.atlasMemory}
   memoryHistory={intelligence.memoryHistory}
