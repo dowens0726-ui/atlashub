@@ -15,6 +15,7 @@ export * from "./strategy-report.engine";
 export * from "./daily-objectives.engine";
 export * from "./timeline.engine";
 export * from "./memory.engine";
+export * from "./memory-insight.engine";
 export * from "./memory-history.engine";
 export * from "./empire-simulator.engine";
 export * from "./dashboard-intelligence.engine";

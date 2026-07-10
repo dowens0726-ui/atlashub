@@ -85,6 +85,10 @@ import {
 } from "./memory-history.engine";
 
 import {
+  buildMemoryInsight,
+} from "./memory-insight.engine";
+
+import {
   buildEmpireSimulation,
 } from "./empire-simulator.engine";
 
@@ -114,9 +118,7 @@ export function buildDashboardIntelligence(
 
 
   const playerIdentity =
-    buildPlayerIdentity(
-      profile
-    );
+    buildPlayerIdentity(profile);
 
 
   const identityAdvisor =
@@ -203,12 +205,6 @@ export function buildDashboardIntelligence(
     );
 
 
-  const intelligenceFeed =
-    buildIntelligenceFeed(
-      profile
-    );
-
-
   const decisionHistory =
     buildDecisionHistory(
       atlasRecommendation
@@ -245,6 +241,13 @@ export function buildDashboardIntelligence(
     );
 
 
+  const memoryInsight =
+    buildMemoryInsight(
+      atlasMemory,
+      learningProfile
+    );
+
+
   const recommendationPrediction =
     buildRecommendationPrediction(
       atlasRecommendation,
@@ -265,6 +268,12 @@ export function buildDashboardIntelligence(
     prediction:
       recommendationPrediction,
   };
+
+
+  const intelligenceFeed =
+    buildIntelligenceFeed(
+      profile
+    );
 
 
   const strategyReport =
@@ -307,6 +316,7 @@ export function buildDashboardIntelligence(
 
     atlasMemory,
     memoryHistory,
+    memoryInsight,
 
     intelligenceFeed,
 

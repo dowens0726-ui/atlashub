@@ -8,6 +8,7 @@ import AtlasOutcomeCard from "./AtlasOutcomeCard";
 import AtlasValidationCard from "./AtlasValidationCard";
 import AtlasIntelligenceFeed from "./AtlasIntelligenceFeed";
 import AtlasMemoryCard from "./AtlasMemoryCard";
+import AtlasMemoryInsightCard from "./AtlasMemoryInsightCard";
 import AtlasStatusCard from "./AtlasStatusCard";
 import AtlasStrategyReportCard from "./AtlasStrategyReportCard";
 import EmpireForecastCard from "./EmpireForecastCard";
@@ -21,6 +22,7 @@ import type {
   AtlasImpact,
   AtlasLearningProfile,
   AtlasMemory,
+  AtlasMemoryInsight,
   AtlasOutcome,
   AtlasPlayerAction,
   AtlasPlayerIdentity,
@@ -73,6 +75,8 @@ type AtlasAIPanelProps = {
 
   memoryHistory: MemoryHistoryItem[];
 
+  memoryInsight: AtlasMemoryInsight;
+
   dailyObjectives: DailyObjective[];
 
   insights: IntelligenceInsight[];
@@ -97,6 +101,7 @@ export default function AtlasAIPanel({
   timeline,
   memory,
   memoryHistory,
+  memoryInsight,
   dailyObjectives,
   insights,
 }: AtlasAIPanelProps) {
@@ -219,6 +224,10 @@ export default function AtlasAIPanel({
             <AtlasMemoryCard
               memory={memory}
               history={memoryHistory}
+            />
+
+            <AtlasMemoryInsightCard
+              insight={memoryInsight}
             />
 
             <AtlasDailyObjectivesCard

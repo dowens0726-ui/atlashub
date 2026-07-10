@@ -47,7 +47,6 @@ export default function DashboardClient() {
 
       atlas={
         <AtlasAIPanel
-
           recommendation={
             intelligence.atlasRecommendation
           }
@@ -104,6 +103,10 @@ export default function DashboardClient() {
             intelligence.identityAdvisor
           }
 
+          memoryInsight={
+            intelligence.memoryInsight
+          }
+
           timeline={
             intelligence.empireTimeline
           }
@@ -123,7 +126,6 @@ export default function DashboardClient() {
           insights={
             intelligence.intelligenceFeed
           }
-
         />
       }
 
@@ -153,7 +155,6 @@ export default function DashboardClient() {
       achievements={
         <AchievementList />
       }
-
     />
   );
 }
