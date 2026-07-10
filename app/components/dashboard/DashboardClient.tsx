@@ -47,6 +47,7 @@ export default function DashboardClient() {
 
       atlas={
         <AtlasAIPanel
+
           recommendation={
             intelligence.atlasRecommendation
           }
@@ -99,6 +100,10 @@ export default function DashboardClient() {
             intelligence.playerIdentity
           }
 
+          identityAdvisor={
+            intelligence.identityAdvisor
+          }
+
           timeline={
             intelligence.empireTimeline
           }
@@ -118,6 +123,7 @@ export default function DashboardClient() {
           insights={
             intelligence.intelligenceFeed
           }
+
         />
       }
 
@@ -129,11 +135,15 @@ export default function DashboardClient() {
       }
 
       insights={
-        <EmpireInsights insights={dashboard.empire.insights} />
+        <EmpireInsights
+          insights={dashboard.empire.insights}
+        />
       }
 
       objectives={
-        <DashboardObjectives objectives={dashboard.objectives} />
+        <DashboardObjectives
+          objectives={dashboard.objectives}
+        />
       }
 
       activity={
@@ -143,6 +153,7 @@ export default function DashboardClient() {
       achievements={
         <AchievementList />
       }
+
     />
   );
 }

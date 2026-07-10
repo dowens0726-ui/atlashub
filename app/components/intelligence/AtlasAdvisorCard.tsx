@@ -1,16 +1,19 @@
 import type {
   AtlasRecommendation,
   AtlasReasoning,
+  IdentityAdvisorResult,
 } from "@/app/intelligence";
 
 type AtlasAdvisorCardProps = {
   recommendation: AtlasRecommendation;
   reasoning?: AtlasReasoning;
+  identityAdvisor: IdentityAdvisorResult;
 };
 
 export default function AtlasAdvisorCard({
   recommendation,
   reasoning,
+  identityAdvisor,
 }: AtlasAdvisorCardProps) {
   return (
     <section className="relative overflow-hidden rounded-[2rem] border border-amber-400/20 bg-gradient-to-br from-zinc-900 via-zinc-950 to-zinc-950 p-6">
@@ -28,6 +31,32 @@ export default function AtlasAdvisorCard({
         Atlas has analyzed your resources, strategy, and progression path to
         explain the reasoning behind this decision.
       </p>
+
+
+      <div className="mt-6 rounded-2xl border border-emerald-400/20 bg-emerald-400/[0.04] p-5">
+        <p className="text-xs font-black uppercase tracking-[0.25em] text-emerald-400">
+          Identity Alignment
+        </p>
+
+        <h3 className="mt-3 text-3xl font-black text-white">
+          {identityAdvisor.identityMatch}% Match
+        </h3>
+
+        <p className="mt-3 text-sm leading-6 text-zinc-300">
+          {identityAdvisor.summary}
+        </p>
+
+        <div className="mt-4 space-y-2">
+          {identityAdvisor.reasons.map((reason) => (
+            <p
+              key={reason}
+              className="text-sm text-zinc-300"
+            >
+              ✓ {reason}
+            </p>
+          ))}
+        </div>
+      </div>
 
 
       {recommendation.match ? (

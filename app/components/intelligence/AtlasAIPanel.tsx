@@ -32,6 +32,7 @@ import type {
   EmpireForecast,
   EmpireSimulation,
   EmpireTimelinePoint,
+  IdentityAdvisorResult,
   IntelligenceInsight,
   MemoryHistoryItem,
   NextAction,
@@ -64,6 +65,8 @@ type AtlasAIPanelProps = {
 
   playerIdentity: AtlasPlayerIdentity;
 
+  identityAdvisor: IdentityAdvisorResult;
+
   timeline: EmpireTimelinePoint[];
 
   memory: AtlasMemory;
@@ -90,6 +93,7 @@ export default function AtlasAIPanel({
   playerAction,
   outcomeValidation,
   playerIdentity,
+  identityAdvisor,
   timeline,
   memory,
   memoryHistory,
@@ -226,6 +230,7 @@ export default function AtlasAIPanel({
             <AtlasAdvisorCard
               recommendation={recommendation}
               reasoning={reasoning}
+              identityAdvisor={identityAdvisor}
             />
 
             <AtlasIntelligenceFeed

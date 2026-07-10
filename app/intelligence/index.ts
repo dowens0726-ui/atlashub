@@ -28,4 +28,5 @@ export * from "./outcome-validation.engine";
 export * from "./action-tracker.engine";
 export * from "./prediction.engine";
 export * from "./player-identity.engine";
+export * from "./identity-advisor.engine";
 export * from "./strategy-report.engine";

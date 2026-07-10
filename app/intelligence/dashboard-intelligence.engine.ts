@@ -37,6 +37,10 @@ import {
 } from "./player-identity.engine";
 
 import {
+  buildIdentityAdvisor,
+} from "./identity-advisor.engine";
+
+import {
   getPersonalPicks,
 } from "./personal-picks.engine";
 
@@ -112,6 +116,13 @@ export function buildDashboardIntelligence(
   const playerIdentity =
     buildPlayerIdentity(
       profile
+    );
+
+
+  const identityAdvisor =
+    buildIdentityAdvisor(
+      playerIdentity,
+      atlasRecommendation
     );
 
 
@@ -276,6 +287,8 @@ export function buildDashboardIntelligence(
     personalPicks,
 
     playerIdentity,
+
+    identityAdvisor,
 
     atlasReasoning,
 
