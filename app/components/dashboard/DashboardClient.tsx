@@ -43,20 +43,21 @@ export default function DashboardClient() {
       }
       atlas={
         <AtlasAIPanel
-          recommendation={intelligence.atlasRecommendation}
-          personalPicks={intelligence.personalPicks}
-          reasoning={intelligence.atlasReasoning}
-          nextAction={intelligence.nextAction}
-          impact={intelligence.atlasImpact}
-          forecast={intelligence.empireForecast}
-          simulation={intelligence.empireSimulation}
-          strategyReport={intelligence.strategyReport}
-          timeline={intelligence.empireTimeline}
-          memory={intelligence.atlasMemory}
-          memoryHistory={intelligence.memoryHistory}
-          dailyObjectives={intelligence.dailyObjectives}
-          insights={intelligence.intelligenceFeed}
-        />
+  recommendation={intelligence.atlasRecommendation}
+  personalPicks={intelligence.personalPicks}
+  reasoning={intelligence.atlasReasoning}
+  nextAction={intelligence.nextAction}
+  impact={intelligence.atlasImpact}
+  forecast={intelligence.empireForecast}
+  simulation={intelligence.empireSimulation}
+  strategyReport={intelligence.strategyReport}
+  learningProfile={intelligence.learningProfile}
+  timeline={intelligence.empireTimeline}
+  memory={intelligence.atlasMemory}
+  memoryHistory={intelligence.memoryHistory}
+  dailyObjectives={intelligence.dailyObjectives}
+  insights={intelligence.intelligenceFeed}
+/>
       }
       session={
         <AtlasSessionPlanCard

@@ -5,6 +5,14 @@ import {
   getPrimaryAtlasRecommendation,
 } from "./advisor.service";
 
+import {
+  buildDecisionHistory,
+} from "./decision-history.engine";
+
+import {
+  buildAtlasLearning,
+} from "./learning.engine";
+
 import { getPersonalPicks } from "./personal-picks.engine";
 
 import { buildAtlasReasoning } from "./reasoning.engine";
@@ -93,6 +101,16 @@ export function buildDashboardIntelligence(
   const intelligenceFeed =
     buildIntelligenceFeed(profile);
 
+    const decisionHistory =
+  buildDecisionHistory(
+    atlasRecommendation
+  );
+
+const learningProfile =
+  buildAtlasLearning([
+    decisionHistory,
+  ]);
+
     const strategyReport =
   buildAtlasStrategyReport(
     atlasRecommendation,
@@ -120,5 +138,7 @@ export function buildDashboardIntelligence(
     memoryHistory,
     intelligenceFeed,
     strategyReport,
+    decisionHistory,
+    learningProfile,
   };
 }

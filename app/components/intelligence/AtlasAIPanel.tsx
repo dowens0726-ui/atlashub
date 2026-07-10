@@ -1,6 +1,7 @@
 import AtlasAdvisorCard from "./AtlasAdvisorCard";
 import AtlasCoreCard from "./AtlasCoreCard";
 import AtlasDailyObjectivesCard from "./AtlasDailyObjectivesCard";
+import AtlasEvolutionCard from "./AtlasEvolutionCard";
 import AtlasIntelligenceFeed from "./AtlasIntelligenceFeed";
 import AtlasMemoryCard from "./AtlasMemoryCard";
 import AtlasStatusCard from "./AtlasStatusCard";
@@ -14,6 +15,7 @@ import { GlowCard } from "@/app/components/ui";
 
 import type {
   AtlasImpact,
+  AtlasLearningProfile,
   AtlasMemory,
   AtlasRecommendation,
   AtlasReasoning,
@@ -30,16 +32,25 @@ import type {
 type AtlasAIPanelProps = {
   recommendation: AtlasRecommendation;
   personalPicks: AtlasRecommendation[];
+
   reasoning: AtlasReasoning;
+
   nextAction: NextAction;
   impact: AtlasImpact;
+
   forecast: EmpireForecast;
   simulation: EmpireSimulation;
   strategyReport: AtlasStrategyReport;
+
+  learningProfile: AtlasLearningProfile;
+
   timeline: EmpireTimelinePoint[];
+
   memory: AtlasMemory;
   memoryHistory: MemoryHistoryItem[];
+
   dailyObjectives: DailyObjective[];
+
   insights: IntelligenceInsight[];
 };
 
@@ -52,6 +63,7 @@ export default function AtlasAIPanel({
   forecast,
   simulation,
   strategyReport,
+  learningProfile,
   timeline,
   memory,
   memoryHistory,
@@ -70,13 +82,29 @@ export default function AtlasAIPanel({
         </h2>
 
         <p className="mt-2 text-zinc-400">
-          Atlas is analyzing your empire and optimizing your next move.
+          Atlas is analyzing your empire and adapting to your decisions.
         </p>
       </div>
+
 
       <div className="space-y-10">
 
         <section>
+          <p className="mb-4 text-xs font-black uppercase tracking-[0.3em] text-emerald-400">
+            Atlas Evolution
+          </p>
+
+          <AtlasEvolutionCard
+            learning={learningProfile}
+          />
+        </section>
+
+
+        <section>
+          <p className="mb-4 text-xs font-black uppercase tracking-[0.3em] text-violet-400">
+            Strategic Overview
+          </p>
+
           <AtlasStrategyReportCard
             report={strategyReport}
           />
@@ -84,7 +112,7 @@ export default function AtlasAIPanel({
 
 
         <section>
-          <p className="mb-4 text-xs font-black uppercase tracking-[0.3em] text-violet-400">
+          <p className="mb-4 text-xs font-black uppercase tracking-[0.3em] text-cyan-400">
             Strategic Decision
           </p>
 

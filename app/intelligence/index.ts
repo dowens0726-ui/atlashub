@@ -21,3 +21,6 @@ export * from "./dashboard-intelligence.engine";
 export * from "./personal-picks.engine";
 export * from "./ranking.engine";
 export * from "./match.engine";
+export * from "./decision-history.engine";
+export * from "./learning.engine";
+export * from "./strategy-report.engine";
