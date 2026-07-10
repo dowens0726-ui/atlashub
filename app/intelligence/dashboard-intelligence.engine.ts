@@ -1,4 +1,7 @@
-import type { EmpireModel, PlayerProfile } from "@/app/types";
+import type {
+  EmpireModel,
+  PlayerProfile,
+} from "@/app/types";
 
 import {
   getAtlasAdvisorRecommendations,
@@ -29,21 +32,66 @@ import {
   buildRecommendationPrediction,
 } from "./prediction.engine";
 
-import { getPersonalPicks } from "./personal-picks.engine";
+import {
+  buildPlayerIdentity,
+} from "./player-identity.engine";
 
-import { buildAtlasReasoning } from "./reasoning.engine";
-import { buildSessionPlan } from "./session.engine";
-import { buildSessionReasoning } from "./session-reasoning.engine";
-import { buildNextAction } from "./next-action.engine";
-import { buildAtlasImpact } from "./impact.engine";
-import { buildEmpireForecast } from "./forecast.engine";
-import { buildEmpireTimeline } from "./timeline.engine";
-import { buildDailyObjectives } from "./daily-objectives.engine";
-import { buildAtlasMemory } from "./memory.engine";
-import { buildMemoryHistory } from "./memory-history.engine";
-import { buildEmpireSimulation } from "./empire-simulator.engine";
-import { buildIntelligenceFeed } from "./intelligence-feed.engine";
-import { buildAtlasStrategyReport } from "./strategy-report.engine";
+import {
+  getPersonalPicks,
+} from "./personal-picks.engine";
+
+import {
+  buildAtlasReasoning,
+} from "./reasoning.engine";
+
+import {
+  buildSessionPlan,
+} from "./session.engine";
+
+import {
+  buildSessionReasoning,
+} from "./session-reasoning.engine";
+
+import {
+  buildNextAction,
+} from "./next-action.engine";
+
+import {
+  buildAtlasImpact,
+} from "./impact.engine";
+
+import {
+  buildEmpireForecast,
+} from "./forecast.engine";
+
+import {
+  buildEmpireTimeline,
+} from "./timeline.engine";
+
+import {
+  buildDailyObjectives,
+} from "./daily-objectives.engine";
+
+import {
+  buildAtlasMemory,
+} from "./memory.engine";
+
+import {
+  buildMemoryHistory,
+} from "./memory-history.engine";
+
+import {
+  buildEmpireSimulation,
+} from "./empire-simulator.engine";
+
+import {
+  buildIntelligenceFeed,
+} from "./intelligence-feed.engine";
+
+import {
+  buildAtlasStrategyReport,
+} from "./strategy-report.engine";
+
 
 export function buildDashboardIntelligence(
   profile: PlayerProfile,
@@ -59,6 +107,12 @@ export function buildDashboardIntelligence(
 
   const personalPicks =
     getPersonalPicks(profile);
+
+
+  const playerIdentity =
+    buildPlayerIdentity(
+      profile
+    );
 
 
   const atlasReasoning =
@@ -220,6 +274,8 @@ export function buildDashboardIntelligence(
       predictedRecommendation,
 
     personalPicks,
+
+    playerIdentity,
 
     atlasReasoning,
 

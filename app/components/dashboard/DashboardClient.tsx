@@ -31,7 +31,10 @@ export default function DashboardClient() {
 
   return (
     <CommandCenterLayout
-      hero={<CommandCenterHero dashboard={dashboard} />}
+      hero={
+        <CommandCenterHero dashboard={dashboard} />
+      }
+
       overview={
         <div className="space-y-8">
           <LiveEmpireCard profile={dashboard.profile} />
@@ -41,37 +44,105 @@ export default function DashboardClient() {
           <DashboardSummary dashboard={dashboard} />
         </div>
       }
+
       atlas={
         <AtlasAIPanel
-  recommendation={intelligence.atlasRecommendation}
-  personalPicks={intelligence.personalPicks}
-  reasoning={intelligence.atlasReasoning}
-  nextAction={intelligence.nextAction}
-  impact={intelligence.atlasImpact}
-  forecast={intelligence.empireForecast}
-  simulation={intelligence.empireSimulation}
-  strategyReport={intelligence.strategyReport}
-  learningProfile={intelligence.learningProfile}
-  playerAction={intelligence.playerAction}
-  outcome={intelligence.outcome}
-  outcomeValidation={intelligence.outcomeValidation}
-  timeline={intelligence.empireTimeline}
-  memory={intelligence.atlasMemory}
-  memoryHistory={intelligence.memoryHistory}
-  dailyObjectives={intelligence.dailyObjectives}
-  insights={intelligence.intelligenceFeed}
-/>
+          recommendation={
+            intelligence.atlasRecommendation
+          }
+
+          personalPicks={
+            intelligence.personalPicks
+          }
+
+          reasoning={
+            intelligence.atlasReasoning
+          }
+
+          nextAction={
+            intelligence.nextAction
+          }
+
+          impact={
+            intelligence.atlasImpact
+          }
+
+          forecast={
+            intelligence.empireForecast
+          }
+
+          simulation={
+            intelligence.empireSimulation
+          }
+
+          strategyReport={
+            intelligence.strategyReport
+          }
+
+          learningProfile={
+            intelligence.learningProfile
+          }
+
+          playerAction={
+            intelligence.playerAction
+          }
+
+          outcome={
+            intelligence.outcome
+          }
+
+          outcomeValidation={
+            intelligence.outcomeValidation
+          }
+
+          playerIdentity={
+            intelligence.playerIdentity
+          }
+
+          timeline={
+            intelligence.empireTimeline
+          }
+
+          memory={
+            intelligence.atlasMemory
+          }
+
+          memoryHistory={
+            intelligence.memoryHistory
+          }
+
+          dailyObjectives={
+            intelligence.dailyObjectives
+          }
+
+          insights={
+            intelligence.intelligenceFeed
+          }
+        />
       }
+
       session={
         <AtlasSessionPlanCard
           plan={intelligence.sessionPlan}
           reasoning={intelligence.sessionReasoning}
         />
       }
-      insights={<EmpireInsights insights={dashboard.empire.insights} />}
-      objectives={<DashboardObjectives objectives={dashboard.objectives} />}
-      activity={<ActivityFeed />}
-      achievements={<AchievementList />}
+
+      insights={
+        <EmpireInsights insights={dashboard.empire.insights} />
+      }
+
+      objectives={
+        <DashboardObjectives objectives={dashboard.objectives} />
+      }
+
+      activity={
+        <ActivityFeed />
+      }
+
+      achievements={
+        <AchievementList />
+      }
     />
   );
 }

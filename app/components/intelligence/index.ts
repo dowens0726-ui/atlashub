@@ -7,6 +7,7 @@ export { default as AtlasDailyObjectivesCard } from "./AtlasDailyObjectivesCard"
 export { default as AtlasIntelligenceFeed } from "./AtlasIntelligenceFeed";
 export { default as AtlasMemoryCard } from "./AtlasMemoryCard";
 export { default as AtlasEvolutionCard } from "./AtlasEvolutionCard";
+export { default as AtlasIdentityCard } from "./AtlasIdentityCard";
 export { default as AtlasOutcomeCard } from "./AtlasOutcomeCard";
 export { default as AtlasActionTrackerCard } from "./AtlasActionTrackerCard";
 export { default as AtlasValidationCard } from "./AtlasValidationCard";

@@ -3,6 +3,7 @@ import AtlasActionTrackerCard from "./AtlasActionTrackerCard";
 import AtlasCoreCard from "./AtlasCoreCard";
 import AtlasDailyObjectivesCard from "./AtlasDailyObjectivesCard";
 import AtlasEvolutionCard from "./AtlasEvolutionCard";
+import AtlasIdentityCard from "./AtlasIdentityCard";
 import AtlasOutcomeCard from "./AtlasOutcomeCard";
 import AtlasValidationCard from "./AtlasValidationCard";
 import AtlasIntelligenceFeed from "./AtlasIntelligenceFeed";
@@ -22,10 +23,11 @@ import type {
   AtlasMemory,
   AtlasOutcome,
   AtlasPlayerAction,
-  AtlasValidatedOutcome,
+  AtlasPlayerIdentity,
   AtlasRecommendation,
   AtlasReasoning,
   AtlasStrategyReport,
+  AtlasValidatedOutcome,
   DailyObjective,
   EmpireForecast,
   EmpireSimulation,
@@ -37,31 +39,42 @@ import type {
 
 type AtlasAIPanelProps = {
   recommendation: AtlasRecommendation;
+
   personalPicks: AtlasRecommendation[];
 
   reasoning: AtlasReasoning;
 
   nextAction: NextAction;
+
   impact: AtlasImpact;
 
   forecast: EmpireForecast;
+
   simulation: EmpireSimulation;
+
   strategyReport: AtlasStrategyReport;
 
   learningProfile: AtlasLearningProfile;
+
   outcome: AtlasOutcome;
+
   playerAction: AtlasPlayerAction;
+
   outcomeValidation: AtlasValidatedOutcome;
+
+  playerIdentity: AtlasPlayerIdentity;
 
   timeline: EmpireTimelinePoint[];
 
   memory: AtlasMemory;
+
   memoryHistory: MemoryHistoryItem[];
 
   dailyObjectives: DailyObjective[];
 
   insights: IntelligenceInsight[];
 };
+
 
 export default function AtlasAIPanel({
   recommendation,
@@ -76,6 +89,7 @@ export default function AtlasAIPanel({
   outcome,
   playerAction,
   outcomeValidation,
+  playerIdentity,
   timeline,
   memory,
   memoryHistory,
@@ -101,27 +115,40 @@ export default function AtlasAIPanel({
 
       <div className="space-y-10">
 
-   <section>
+        <section>
+          <p className="mb-4 text-xs font-black uppercase tracking-[0.3em] text-cyan-400">
+            Player Identity
+          </p>
+
+          <AtlasIdentityCard
+            identity={playerIdentity}
+          />
+        </section>
+
+
+        <section>
           <p className="mb-4 text-xs font-black uppercase tracking-[0.3em] text-emerald-400">
             Atlas Evolution
           </p>
 
           <div className="space-y-6">
+
             <AtlasEvolutionCard
-  learning={learningProfile}
-/>
+              learning={learningProfile}
+            />
 
-<AtlasActionTrackerCard
-  action={playerAction}
-/>
+            <AtlasActionTrackerCard
+              action={playerAction}
+            />
 
-<AtlasOutcomeCard
-  outcome={outcome}
-/>
+            <AtlasOutcomeCard
+              outcome={outcome}
+            />
 
-<AtlasValidationCard
-  validation={outcomeValidation}
-/>
+            <AtlasValidationCard
+              validation={outcomeValidation}
+            />
+
           </div>
         </section>
 
@@ -157,6 +184,7 @@ export default function AtlasAIPanel({
           </p>
 
           <div className="space-y-6">
+
             <PersonalPicksCard
               picks={personalPicks}
             />
@@ -172,6 +200,7 @@ export default function AtlasAIPanel({
             <EmpireTimelineCard
               points={timeline}
             />
+
           </div>
         </section>
 
@@ -182,6 +211,7 @@ export default function AtlasAIPanel({
           </p>
 
           <div className="space-y-6">
+
             <AtlasMemoryCard
               memory={memory}
               history={memoryHistory}
@@ -201,6 +231,7 @@ export default function AtlasAIPanel({
             <AtlasIntelligenceFeed
               insights={insights}
             />
+
           </div>
         </section>
 
