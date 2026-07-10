@@ -26,4 +26,5 @@ export * from "./learning.engine";
 export * from "./outcome.engine";
 export * from "./outcome-validation.engine";
 export * from "./action-tracker.engine";
+export * from "./prediction.engine";
 export * from "./strategy-report.engine";

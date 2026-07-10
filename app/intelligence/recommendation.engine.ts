@@ -34,8 +34,14 @@ export type AtlasRecommendation = {
     reasons: string[];
   };
 
-  estimatedProfit?: number;
+    estimatedProfit?: number;
   estimatedTimeMinutes?: number;
+
+  prediction?: {
+    confidenceBoost: number;
+    reason: string;
+    matchesLearning: boolean;
+  };
 
   href?: string;
 };

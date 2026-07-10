@@ -25,6 +25,10 @@ import {
   buildPlayerAction,
 } from "./action-tracker.engine";
 
+import {
+  buildRecommendationPrediction,
+} from "./prediction.engine";
+
 import { getPersonalPicks } from "./personal-picks.engine";
 
 import { buildAtlasReasoning } from "./reasoning.engine";
@@ -47,6 +51,7 @@ export function buildDashboardIntelligence(
 ) {
   const atlasRecommendations =
     getAtlasAdvisorRecommendations(profile);
+
 
   const atlasRecommendation =
     getPrimaryAtlasRecommendation(profile);
@@ -175,9 +180,31 @@ export function buildDashboardIntelligence(
     );
 
 
+  const recommendationPrediction =
+    buildRecommendationPrediction(
+      atlasRecommendation,
+      learningProfile
+    );
+
+
+  const predictedRecommendation = {
+    ...atlasRecommendation,
+
+    confidence:
+      Math.min(
+        100,
+        atlasRecommendation.confidence +
+          recommendationPrediction.confidenceBoost
+      ),
+
+    prediction:
+      recommendationPrediction,
+  };
+
+
   const strategyReport =
     buildAtlasStrategyReport(
-      atlasRecommendation,
+      predictedRecommendation,
       atlasReasoning,
       empireSimulation,
       empireForecast,
@@ -188,7 +215,9 @@ export function buildDashboardIntelligence(
 
   return {
     atlasRecommendations,
-    atlasRecommendation,
+
+    atlasRecommendation:
+      predictedRecommendation,
 
     personalPicks,
 
@@ -217,9 +246,13 @@ export function buildDashboardIntelligence(
     decisionHistory,
 
     playerAction,
+
     outcome,
+
     outcomeValidation,
 
     learningProfile,
+
+    recommendationPrediction,
   };
 }
