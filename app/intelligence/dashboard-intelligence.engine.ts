@@ -41,6 +41,10 @@ import {
 } from "./identity-advisor.engine";
 
 import {
+  buildAdaptiveStrategy,
+} from "./adaptive-strategy.engine";
+
+import {
   getPersonalPicks,
 } from "./personal-picks.engine";
 
@@ -270,6 +274,15 @@ export function buildDashboardIntelligence(
   };
 
 
+  const adaptiveStrategy =
+    buildAdaptiveStrategy(
+      predictedRecommendation,
+      playerIdentity,
+      memoryInsight,
+      learningProfile
+    );
+
+
   const intelligenceFeed =
     buildIntelligenceFeed(
       profile
@@ -298,6 +311,8 @@ export function buildDashboardIntelligence(
     playerIdentity,
 
     identityAdvisor,
+
+    adaptiveStrategy,
 
     atlasReasoning,
 

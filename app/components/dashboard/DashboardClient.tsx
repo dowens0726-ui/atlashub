@@ -107,6 +107,10 @@ export default function DashboardClient() {
             intelligence.memoryInsight
           }
 
+          adaptiveStrategy={
+            intelligence.adaptiveStrategy
+          }
+
           timeline={
             intelligence.empireTimeline
           }

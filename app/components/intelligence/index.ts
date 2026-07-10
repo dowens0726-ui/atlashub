@@ -6,12 +6,14 @@ export { default as AtlasAdvisorCard } from "./AtlasAdvisorCard";
 export { default as AtlasDailyObjectivesCard } from "./AtlasDailyObjectivesCard";
 export { default as AtlasIntelligenceFeed } from "./AtlasIntelligenceFeed";
 export { default as AtlasMemoryCard } from "./AtlasMemoryCard";
+export { default as AtlasMemoryInsightCard } from "./AtlasMemoryInsightCard";
 export { default as AtlasEvolutionCard } from "./AtlasEvolutionCard";
 export { default as AtlasIdentityCard } from "./AtlasIdentityCard";
 export { default as AtlasOutcomeCard } from "./AtlasOutcomeCard";
 export { default as AtlasActionTrackerCard } from "./AtlasActionTrackerCard";
 export { default as AtlasValidationCard } from "./AtlasValidationCard";
 export { default as AtlasStatusCard } from "./AtlasStatusCard";
+export { default as AtlasStrategyInsightCard } from "./AtlasStrategyInsightCard";
 
 export { default as EmpireForecastCard } from "./EmpireForecastCard";
 export { default as EmpireSimulatorCard } from "./EmpireSimulatorCard";

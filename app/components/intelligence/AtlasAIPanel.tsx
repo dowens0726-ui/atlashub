@@ -11,6 +11,7 @@ import AtlasMemoryCard from "./AtlasMemoryCard";
 import AtlasMemoryInsightCard from "./AtlasMemoryInsightCard";
 import AtlasStatusCard from "./AtlasStatusCard";
 import AtlasStrategyReportCard from "./AtlasStrategyReportCard";
+import AtlasStrategyInsightCard from "./AtlasStrategyInsightCard";
 import EmpireForecastCard from "./EmpireForecastCard";
 import EmpireSimulatorCard from "./EmpireSimulatorCard";
 import EmpireTimelineCard from "./EmpireTimelineCard";
@@ -19,6 +20,7 @@ import PersonalPicksCard from "./PersonalPicksCard";
 import { GlowCard } from "@/app/components/ui";
 
 import type {
+  AtlasAdaptiveStrategy,
   AtlasImpact,
   AtlasLearningProfile,
   AtlasMemory,
@@ -57,6 +59,8 @@ type AtlasAIPanelProps = {
 
   strategyReport: AtlasStrategyReport;
 
+  adaptiveStrategy: AtlasAdaptiveStrategy;
+
   learningProfile: AtlasLearningProfile;
 
   outcome: AtlasOutcome;
@@ -92,6 +96,7 @@ export default function AtlasAIPanel({
   forecast,
   simulation,
   strategyReport,
+  adaptiveStrategy,
   learningProfile,
   outcome,
   playerAction,
@@ -167,9 +172,17 @@ export default function AtlasAIPanel({
             Strategic Overview
           </p>
 
-          <AtlasStrategyReportCard
-            report={strategyReport}
-          />
+          <div className="space-y-6">
+
+            <AtlasStrategyReportCard
+              report={strategyReport}
+            />
+
+            <AtlasStrategyInsightCard
+              strategy={adaptiveStrategy}
+            />
+
+          </div>
         </section>
 
 
