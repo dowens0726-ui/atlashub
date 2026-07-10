@@ -2,6 +2,7 @@ import AtlasAdvisorCard from "./AtlasAdvisorCard";
 import AtlasCoreCard from "./AtlasCoreCard";
 import AtlasDailyObjectivesCard from "./AtlasDailyObjectivesCard";
 import AtlasEvolutionCard from "./AtlasEvolutionCard";
+import AtlasOutcomeCard from "./AtlasOutcomeCard";
 import AtlasIntelligenceFeed from "./AtlasIntelligenceFeed";
 import AtlasMemoryCard from "./AtlasMemoryCard";
 import AtlasStatusCard from "./AtlasStatusCard";
@@ -17,6 +18,7 @@ import type {
   AtlasImpact,
   AtlasLearningProfile,
   AtlasMemory,
+  AtlasOutcome,
   AtlasRecommendation,
   AtlasReasoning,
   AtlasStrategyReport,
@@ -43,6 +45,7 @@ type AtlasAIPanelProps = {
   strategyReport: AtlasStrategyReport;
 
   learningProfile: AtlasLearningProfile;
+  outcome: AtlasOutcome;
 
   timeline: EmpireTimelinePoint[];
 
@@ -64,6 +67,7 @@ export default function AtlasAIPanel({
   simulation,
   strategyReport,
   learningProfile,
+  outcome,
   timeline,
   memory,
   memoryHistory,
@@ -90,14 +94,20 @@ export default function AtlasAIPanel({
       <div className="space-y-10">
 
         <section>
-          <p className="mb-4 text-xs font-black uppercase tracking-[0.3em] text-emerald-400">
-            Atlas Evolution
-          </p>
+  <p className="mb-4 text-xs font-black uppercase tracking-[0.3em] text-emerald-400">
+    Atlas Evolution
+  </p>
 
-          <AtlasEvolutionCard
-            learning={learningProfile}
-          />
-        </section>
+  <div className="space-y-6">
+    <AtlasEvolutionCard
+      learning={learningProfile}
+    />
+
+    <AtlasOutcomeCard
+      outcome={outcome}
+    />
+  </div>
+</section>
 
 
         <section>

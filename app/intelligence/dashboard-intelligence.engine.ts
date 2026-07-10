@@ -13,6 +13,10 @@ import {
   buildAtlasLearning,
 } from "./learning.engine";
 
+import {
+  buildAtlasOutcome,
+} from "./outcome.engine";
+
 import { getPersonalPicks } from "./personal-picks.engine";
 
 import { buildAtlasReasoning } from "./reasoning.engine";
@@ -111,6 +115,11 @@ const learningProfile =
     decisionHistory,
   ]);
 
+const outcome =
+  buildAtlasOutcome(
+    decisionHistory
+  );
+
     const strategyReport =
   buildAtlasStrategyReport(
     atlasRecommendation,
@@ -140,5 +149,6 @@ const learningProfile =
     strategyReport,
     decisionHistory,
     learningProfile,
+    outcome,
   };
 }
