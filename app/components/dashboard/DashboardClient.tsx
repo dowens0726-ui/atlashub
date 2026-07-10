@@ -111,6 +111,10 @@ export default function DashboardClient() {
             intelligence.adaptiveStrategy
           }
 
+          strategyFeedback={
+            intelligence.strategyFeedback
+          }
+
           timeline={
             intelligence.empireTimeline
           }

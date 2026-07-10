@@ -14,6 +14,7 @@ export { default as AtlasActionTrackerCard } from "./AtlasActionTrackerCard";
 export { default as AtlasValidationCard } from "./AtlasValidationCard";
 export { default as AtlasStatusCard } from "./AtlasStatusCard";
 export { default as AtlasStrategyInsightCard } from "./AtlasStrategyInsightCard";
+export { default as AtlasStrategyFeedbackCard } from "./AtlasStrategyFeedbackCard";
 
 export { default as EmpireForecastCard } from "./EmpireForecastCard";
 export { default as EmpireSimulatorCard } from "./EmpireSimulatorCard";
