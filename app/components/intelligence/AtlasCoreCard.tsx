@@ -63,6 +63,41 @@ export default function AtlasCoreCard({
         ) : null}
       </div>
 
+
+      {recommendation.prediction ? (
+        <div className="mt-6 rounded-2xl border border-emerald-400/20 bg-emerald-400/[0.04] p-5">
+          <p className="text-xs font-black uppercase tracking-[0.25em] text-emerald-400">
+            Predictive Insight
+          </p>
+
+          <div className="mt-4 space-y-3">
+            <div>
+              <p className="text-xs uppercase tracking-wide text-zinc-500">
+                Learning Impact
+              </p>
+
+              <p className="mt-1 text-2xl font-black text-white">
+                +
+                {recommendation.prediction.confidenceBoost}
+                %
+                Confidence
+              </p>
+            </div>
+
+            <p className="text-sm leading-6 text-zinc-300">
+              {recommendation.prediction.reason}
+            </p>
+
+            {recommendation.prediction.matchesLearning ? (
+              <p className="text-sm font-bold text-emerald-400">
+                ✓ Matches your validated strategy patterns
+              </p>
+            ) : null}
+          </div>
+        </div>
+      ) : null}
+
+
       {reasoning ? (
         <>
           <div className="mt-6 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5">
@@ -94,6 +129,7 @@ export default function AtlasCoreCard({
         </>
       ) : null}
 
+
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
         <Stat
           label="Confidence"
@@ -118,6 +154,7 @@ export default function AtlasCoreCard({
         />
       </div>
 
+
       {recommendation.href ? (
         <Link
           href={recommendation.href}
@@ -129,6 +166,7 @@ export default function AtlasCoreCard({
     </section>
   );
 }
+
 
 function Stat({
   label,
