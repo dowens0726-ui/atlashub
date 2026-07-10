@@ -1,9 +1,22 @@
 import type { AtlasDecisionHistoryItem } from "./decision-history.engine";
+import type { AtlasValidatedOutcome } from "./outcome-validation.engine";
+
+export type AtlasLearningStage =
+  | "Observing"
+  | "Recognizing"
+  | "Validated"
+  | "Predictive";
 
 export type AtlasLearningProfile = {
   title: string;
 
   patterns: string[];
+
+  validatedPatterns: string[];
+
+  successfulActions: number;
+
+  learningStage: AtlasLearningStage;
 
   confidence: number;
 
@@ -12,17 +25,36 @@ export type AtlasLearningProfile = {
 
 
 export function buildAtlasLearning(
-  history: AtlasDecisionHistoryItem[]
+  history: AtlasDecisionHistoryItem[],
+  validations: AtlasValidatedOutcome[]
 ): AtlasLearningProfile {
   const patterns: string[] = [];
+  const validatedPatterns: string[] = [];
+
+  const successfulActions =
+    validations.filter(
+      (validation) =>
+        validation.status === "confirmed" &&
+        validation.successScore > 0
+    ).length;
+
 
   if (history.length === 0) {
     return {
       title: "Atlas Learning",
+
       patterns: [
         "Atlas is still learning your decision patterns.",
       ],
+
+      validatedPatterns: [],
+
+      successfulActions: 0,
+
+      learningStage: "Observing",
+
       confidence: 0,
+
       summary:
         "Complete more strategic actions to help Atlas understand your playstyle.",
     };
@@ -65,10 +97,43 @@ export function buildAtlasLearning(
   }
 
 
+  if (
+    successfulActions > 0
+  ) {
+    validatedPatterns.push(
+      "Confirmed: Successful strategic actions are improving Atlas recommendations."
+    );
+  }
+
+
+  if (
+    successfulActions >= 3
+  ) {
+    validatedPatterns.push(
+      "Confirmed: You consistently execute profitable strategies."
+    );
+  }
+
+
   if (patterns.length === 0) {
     patterns.push(
       "Atlas is still refining your strategic profile."
     );
+  }
+
+
+  let learningStage: AtlasLearningStage =
+    "Recognizing";
+
+
+  if (
+    successfulActions >= 3
+  ) {
+    learningStage = "Predictive";
+  } else if (
+    successfulActions > 0
+  ) {
+    learningStage = "Validated";
   }
 
 
@@ -77,13 +142,23 @@ export function buildAtlasLearning(
 
     patterns,
 
+    validatedPatterns,
+
+    successfulActions,
+
+    learningStage,
+
     confidence:
       Math.min(
         100,
-        60 + history.length * 10
+        50 +
+          history.length * 10 +
+          successfulActions * 10
       ),
 
     summary:
-      "Atlas is adapting future recommendations based on your previous strategic choices.",
+      successfulActions > 0
+        ? "Atlas is improving recommendations using validated player outcomes."
+        : "Atlas is adapting future recommendations based on previous strategic choices.",
   };
 }

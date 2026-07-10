@@ -18,12 +18,12 @@ import {
 } from "./outcome.engine";
 
 import {
-  buildPlayerAction,
-} from "./action-tracker.engine";
-
-import {
   buildOutcomeValidation,
 } from "./outcome-validation.engine";
+
+import {
+  buildPlayerAction,
+} from "./action-tracker.engine";
 
 import { getPersonalPicks } from "./personal-picks.engine";
 
@@ -45,126 +45,181 @@ export function buildDashboardIntelligence(
   profile: PlayerProfile,
   empire: EmpireModel
 ) {
-  const atlasRecommendations = getAtlasAdvisorRecommendations(profile);
+  const atlasRecommendations =
+    getAtlasAdvisorRecommendations(profile);
 
   const atlasRecommendation =
     getPrimaryAtlasRecommendation(profile);
 
-  const personalPicks = getPersonalPicks(profile);
 
-  const atlasReasoning = buildAtlasReasoning(
-    profile,
-    atlasRecommendation
-  );
+  const personalPicks =
+    getPersonalPicks(profile);
 
-  const sessionPlan = buildSessionPlan(
-    profile,
-    atlasRecommendations
-  );
 
-  const sessionReasoning = buildSessionReasoning(
-    sessionPlan
-  );
+  const atlasReasoning =
+    buildAtlasReasoning(
+      profile,
+      atlasRecommendation
+    );
 
-  const nextAction = buildNextAction(
-    profile,
-    atlasRecommendation,
-    sessionReasoning
-  );
 
-  const atlasImpact = buildAtlasImpact(
-    nextAction.confidence
-  );
+  const sessionPlan =
+    buildSessionPlan(
+      profile,
+      atlasRecommendations
+    );
 
-  const empireForecast = buildEmpireForecast(
-    profile,
-    empire,
-    atlasImpact
-  );
 
-  const empireSimulation = buildEmpireSimulation(
-    profile,
-    atlasRecommendation
-  );
+  const sessionReasoning =
+    buildSessionReasoning(
+      sessionPlan
+    );
+
+
+  const nextAction =
+    buildNextAction(
+      profile,
+      atlasRecommendation,
+      sessionReasoning
+    );
+
+
+  const atlasImpact =
+    buildAtlasImpact(
+      nextAction.confidence
+    );
+
+
+  const empireForecast =
+    buildEmpireForecast(
+      profile,
+      empire,
+      atlasImpact
+    );
+
+
+  const empireSimulation =
+    buildEmpireSimulation(
+      profile,
+      atlasRecommendation
+    );
+
 
   const empireTimeline =
-    buildEmpireTimeline(empireForecast);
+    buildEmpireTimeline(
+      empireForecast
+    );
 
-  const dailyObjectives = buildDailyObjectives(
-    profile,
-    nextAction,
-    empireForecast
-  );
 
-  const atlasMemory = buildAtlasMemory(
-    profile,
-    nextAction,
-    empireForecast
-  );
+  const dailyObjectives =
+    buildDailyObjectives(
+      profile,
+      nextAction,
+      empireForecast
+    );
+
+
+  const atlasMemory =
+    buildAtlasMemory(
+      profile,
+      nextAction,
+      empireForecast
+    );
+
 
   const memoryHistory =
-    buildMemoryHistory(atlasMemory);
+    buildMemoryHistory(
+      atlasMemory
+    );
+
 
   const intelligenceFeed =
-    buildIntelligenceFeed(profile);
+    buildIntelligenceFeed(
+      profile
+    );
 
-    const decisionHistory =
-  buildDecisionHistory(
-    atlasRecommendation
-  );
 
-const learningProfile =
-  buildAtlasLearning([
-    decisionHistory,
-  ]);
+  const decisionHistory =
+    buildDecisionHistory(
+      atlasRecommendation
+    );
 
-const outcome =
-  buildAtlasOutcome(
-    decisionHistory
-  );
 
-const playerAction =
-  buildPlayerAction(
-    decisionHistory
-  );
+  const outcome =
+    buildAtlasOutcome(
+      decisionHistory
+    );
 
-const outcomeValidation =
-  buildOutcomeValidation(
-    playerAction,
-    outcome
-  );
 
-    const strategyReport =
-  buildAtlasStrategyReport(
-    atlasRecommendation,
-    atlasReasoning,
-    empireSimulation,
-    empireForecast,
-    atlasMemory,
-    nextAction
-  );
+  const playerAction =
+    buildPlayerAction(
+      decisionHistory
+    );
+
+
+  const outcomeValidation =
+    buildOutcomeValidation(
+      playerAction,
+      outcome
+    );
+
+
+  const learningProfile =
+    buildAtlasLearning(
+      [
+        decisionHistory,
+      ],
+      [
+        outcomeValidation,
+      ]
+    );
+
+
+  const strategyReport =
+    buildAtlasStrategyReport(
+      atlasRecommendation,
+      atlasReasoning,
+      empireSimulation,
+      empireForecast,
+      atlasMemory,
+      nextAction
+    );
+
 
   return {
     atlasRecommendations,
     atlasRecommendation,
+
     personalPicks,
+
     atlasReasoning,
+
     sessionPlan,
     sessionReasoning,
+
     nextAction,
+
     atlasImpact,
+
     empireForecast,
     empireSimulation,
     empireTimeline,
+
     dailyObjectives,
+
     atlasMemory,
     memoryHistory,
+
     intelligenceFeed,
+
     strategyReport,
+
     decisionHistory,
-    learningProfile,
-    outcome,
+
     playerAction,
+    outcome,
     outcomeValidation,
+
+    learningProfile,
   };
 }
