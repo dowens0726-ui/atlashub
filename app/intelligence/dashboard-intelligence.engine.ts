@@ -320,7 +320,8 @@ export function buildDashboardIntelligence(
     buildMissionStrategy(
       getAllMissions(),
       predictedRecommendation,
-      playerIdentity
+      playerIdentity,
+      profile
     );
 
 

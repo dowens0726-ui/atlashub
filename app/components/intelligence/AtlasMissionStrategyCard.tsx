@@ -18,6 +18,7 @@ export default function AtlasMissionStrategyCard({
         Mission Intelligence
       </p>
 
+
       <h3 className="mt-3 text-2xl font-black text-white">
         {strategy.title}
       </h3>
@@ -25,6 +26,7 @@ export default function AtlasMissionStrategyCard({
 
       {strategy.mission ? (
         <>
+
           <div className="mt-5 rounded-2xl border border-zinc-800 bg-zinc-950 p-5">
 
             <p className="text-xs font-black uppercase tracking-wider text-zinc-500">
@@ -45,8 +47,8 @@ export default function AtlasMissionStrategyCard({
           <div className="mt-5 grid gap-4 sm:grid-cols-2">
 
             <Stat
-              label="Difficulty"
-              value={strategy.mission.difficulty}
+              label="Mission Score"
+              value={`${strategy.rankingScore}/100`}
             />
 
             <Stat
@@ -55,13 +57,63 @@ export default function AtlasMissionStrategyCard({
             />
 
             <Stat
-              label="Vehicle"
-              value={strategy.vehicleRecommendation}
+              label="Difficulty"
+              value={strategy.mission.difficulty}
             />
 
             <Stat
-              label="Weapon"
-              value={strategy.weaponRecommendation}
+              label="Time"
+              value={strategy.mission.estimatedTime}
+            />
+
+          </div>
+
+
+          <div className="mt-5 rounded-2xl border border-zinc-800 bg-zinc-950 p-5">
+
+            <p className="text-xs font-black uppercase tracking-wider text-cyan-400">
+              Why Atlas Chose This
+            </p>
+
+
+            <div className="mt-3 space-y-2">
+
+              {strategy.rankingReasons.map(
+                (reason) => (
+                  <p
+                    key={reason}
+                    className="text-sm text-zinc-300"
+                  >
+                    • {reason}
+                  </p>
+                )
+              )}
+
+            </div>
+
+          </div>
+
+
+          <div className="mt-5 grid gap-4 sm:grid-cols-2">
+
+            <Score
+              label="Reward"
+              value={strategy.rankingBreakdown.rewardFit}
+            />
+
+            <Score
+              label="Progression"
+              value={strategy.rankingBreakdown.progressionFit}
+            />
+
+            <Score
+              label="Equipment"
+              value={strategy.rankingBreakdown.equipmentFit}
+            />
+
+            <Score
+              label="Playstyle"
+              value={strategy.rankingBreakdown.playstyleFit}
             />
 
           </div>
@@ -107,6 +159,29 @@ function Stat({
 
       <p className="mt-2 text-sm font-bold text-white">
         {value}
+      </p>
+
+    </div>
+  );
+}
+
+
+function Score({
+  label,
+  value,
+}: {
+  label: string;
+  value: number;
+}) {
+  return (
+    <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-4">
+
+      <p className="text-xs font-bold uppercase tracking-wider text-zinc-500">
+        {label}
+      </p>
+
+      <p className="mt-2 text-lg font-black text-amber-400">
+        {value}%
       </p>
 
     </div>
