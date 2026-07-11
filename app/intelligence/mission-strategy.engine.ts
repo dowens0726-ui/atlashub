@@ -22,6 +22,11 @@ import {
   type AtlasMissionLoadout,
 } from "./mission-loadout.engine";
 
+import {
+  buildMissionExecution,
+  type AtlasMissionExecution,
+} from "./mission-execution.engine";
+
 
 export type AtlasMissionStrategy = {
   title: string;
@@ -53,6 +58,8 @@ export type AtlasMissionStrategy = {
   };
 
   loadout: AtlasMissionLoadout;
+
+  execution: AtlasMissionExecution;
 };
 
 
@@ -76,6 +83,20 @@ export function buildMissionStrategy(
 
   const mission =
     topMission?.mission ?? null;
+
+
+  const emptyMission: Mission = {
+    id: "none",
+    slug: "none",
+    title: "No Mission",
+    description: "",
+    reward: "$0",
+    difficulty: "Easy",
+    category: "Unknown",
+    estimatedTime: "Unknown",
+    featured: false,
+    tags: [],
+  };
 
 
   if (!mission || !topMission) {
@@ -120,18 +141,15 @@ export function buildMissionStrategy(
 
       loadout:
         buildMissionLoadout(
-          {
-            id: "none",
-            slug: "none",
-            title: "No Mission",
-            description: "",
-            reward: "$0",
-            difficulty: "Easy",
-            category: "Unknown",
-            estimatedTime: "Unknown",
-          },
+          emptyMission,
           vehicles,
           weapons,
+          profile
+        ),
+
+      execution:
+        buildMissionExecution(
+          emptyMission,
           profile
         ),
     };
@@ -143,6 +161,13 @@ export function buildMissionStrategy(
       mission,
       vehicles,
       weapons,
+      profile
+    );
+
+
+  const execution =
+    buildMissionExecution(
+      mission,
       profile
     );
 
@@ -217,5 +242,7 @@ export function buildMissionStrategy(
 
 
     loadout,
+
+    execution,
   };
 }

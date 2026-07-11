@@ -114,12 +114,57 @@ export default function AtlasMissionStrategyCard({
           </div>
 
 
+          <ExecutionSection
+            title="Preparation"
+            items={strategy.execution.preparationSteps}
+          />
+
+
+          <ExecutionSection
+            title="Objectives"
+            items={strategy.execution.objectives}
+          />
+
+
+          <ExecutionSection
+            title="Risk Factors"
+            items={strategy.execution.riskFactors}
+          />
+
+
+          <ExecutionSection
+            title="Efficiency Tips"
+            items={strategy.execution.efficiencyTips}
+          />
+
+
+          <div className="mt-5 grid gap-5 md:grid-cols-2">
+
+            <InfoCard
+              title="Reward Optimization"
+              value={
+                strategy.execution.rewardOptimization
+              }
+            />
+
+
+            <InfoCard
+              title="Completion Strategy"
+              value={
+                strategy.execution.completionStrategy
+              }
+            />
+
+          </div>
+
+
           {strategy.loadout.missingEquipment.length > 0 && (
             <div className="mt-5 rounded-2xl border border-red-400/20 bg-red-400/5 p-5">
 
               <p className="text-xs font-black uppercase tracking-wider text-red-400">
                 Missing Equipment
               </p>
+
 
               <div className="mt-3 space-y-2">
 
@@ -210,6 +255,64 @@ export default function AtlasMissionStrategyCard({
       )}
 
     </section>
+  );
+}
+
+
+function ExecutionSection({
+  title,
+  items,
+}: {
+  title: string;
+  items: string[];
+}) {
+  return (
+    <div className="mt-5 rounded-2xl border border-zinc-800 bg-zinc-950 p-5">
+
+      <p className="text-xs font-black uppercase tracking-wider text-amber-400">
+        {title}
+      </p>
+
+
+      <div className="mt-3 space-y-2">
+
+        {items.map(
+          (item) => (
+            <p
+              key={item}
+              className="text-sm text-zinc-300"
+            >
+              • {item}
+            </p>
+          )
+        )}
+
+      </div>
+
+    </div>
+  );
+}
+
+
+function InfoCard({
+  title,
+  value,
+}: {
+  title: string;
+  value: string;
+}) {
+  return (
+    <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-5">
+
+      <p className="text-xs font-black uppercase tracking-wider text-zinc-500">
+        {title}
+      </p>
+
+      <p className="mt-3 text-sm leading-6 text-zinc-300">
+        {value}
+      </p>
+
+    </div>
   );
 }
 
