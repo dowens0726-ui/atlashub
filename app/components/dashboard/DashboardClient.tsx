@@ -112,6 +112,14 @@ export default function DashboardClient() {
             intelligence.missionLearning
           }
 
+          missionOutcome={
+            intelligence.missionOutcome
+          }
+
+          missionLearningUpdate={
+            intelligence.missionLearningUpdate
+          }
+
           learningProfile={
             intelligence.learningProfile
           }

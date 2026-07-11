@@ -19,6 +19,7 @@ import EmpireForecastCard from "./EmpireForecastCard";
 import EmpireSimulatorCard from "./EmpireSimulatorCard";
 import EmpireTimelineCard from "./EmpireTimelineCard";
 import PersonalPicksCard from "./PersonalPicksCard";
+import AtlasMissionEvolutionCard from "./AtlasMissionEvolutionCard";
 
 import { GlowCard } from "@/app/components/ui";
 
@@ -29,6 +30,8 @@ import type {
   AtlasMemory,
   AtlasMemoryInsight,
   AtlasMissionLearning,
+  AtlasMissionOutcome,
+  AtlasMissionLearningUpdate,
   AtlasMissionStrategy,
   AtlasOutcome,
   AtlasPlayerAction,
@@ -77,6 +80,10 @@ type AtlasAIPanelProps = {
 
   missionLearning: AtlasMissionLearning | null;
 
+  missionOutcome: AtlasMissionOutcome | null;
+
+  missionLearningUpdate: AtlasMissionLearningUpdate | null;
+
   learningProfile: AtlasLearningProfile;
 
   outcome: AtlasOutcome;
@@ -117,6 +124,8 @@ export default function AtlasAIPanel({
   strategicPlan,
   missionStrategy,
   missionLearning,
+  missionOutcome,
+  missionLearningUpdate,
   learningProfile,
   outcome,
   playerAction,
@@ -211,9 +220,17 @@ export default function AtlasAIPanel({
             />
 
             <AtlasMissionStrategyCard
-              strategy={missionStrategy}
-              missionLearning={missionLearning}
-            />
+  strategy={missionStrategy}
+  missionLearning={missionLearning}
+/>
+
+{missionLearning && (
+  <AtlasMissionEvolutionCard
+    learning={missionLearning}
+    outcome={missionOutcome}
+    update={missionLearningUpdate}
+  />
+)}
 
           </div>
         </section>
