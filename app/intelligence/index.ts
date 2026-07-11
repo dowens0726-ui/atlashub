@@ -36,3 +36,6 @@ export * from "./strategy-feedback.engine";
 export * from "./planning.engine";
 export * from "./mission-strategy.engine";
 export * from "./mission-learning.engine";
+export * from "./mission-feedback.engine";
+export * from "./mission-outcome.engine";
+export * from "./mission-learning-update.engine";

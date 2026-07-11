@@ -121,6 +121,18 @@ import {
 } from "./mission-learning.engine";
 
 import {
+  buildMissionFeedback,
+} from "./mission-feedback.engine";
+
+import {
+  buildMissionOutcome,
+} from "./mission-outcome.engine";
+
+import {
+  buildMissionLearningUpdate,
+} from "./mission-learning-update.engine";
+
+import {
   getAllMissions,
 } from "@/app/services";
 
@@ -340,6 +352,40 @@ export function buildDashboardIntelligence(
       : null;
 
 
+  const missionFeedback =
+    missionStrategy.mission
+      ? buildMissionFeedback(
+          missionStrategy.mission.id,
+          missionStrategy.mission.title,
+          "recommended",
+          {
+            selectedVehicle:
+              missionStrategy.loadout.vehicle?.name,
+
+            selectedWeapon:
+              missionStrategy.loadout.weapon?.name,
+          }
+        )
+      : null;
+
+
+  const missionOutcome =
+    missionFeedback
+      ? buildMissionOutcome(
+          missionFeedback
+        )
+      : null;
+
+
+  const missionLearningUpdate =
+    missionLearning && missionOutcome
+      ? buildMissionLearningUpdate(
+          missionOutcome,
+          missionLearning
+        )
+      : null;
+
+
   const intelligenceFeed =
     buildIntelligenceFeed(
       profile
@@ -379,6 +425,12 @@ export function buildDashboardIntelligence(
 
     missionLearning,
 
+    missionFeedback,
+
+    missionOutcome,
+
+    missionLearningUpdate,
+
     atlasReasoning,
 
     sessionPlan,
@@ -406,9 +458,9 @@ export function buildDashboardIntelligence(
 
     playerAction,
 
-    outcome,
-
     outcomeValidation,
+
+    outcome,
 
     learningProfile,
 
