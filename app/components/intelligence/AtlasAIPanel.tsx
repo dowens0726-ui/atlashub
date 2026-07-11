@@ -13,6 +13,7 @@ import AtlasStatusCard from "./AtlasStatusCard";
 import AtlasStrategyReportCard from "./AtlasStrategyReportCard";
 import AtlasStrategyInsightCard from "./AtlasStrategyInsightCard";
 import AtlasStrategyFeedbackCard from "./AtlasStrategyFeedbackCard";
+import AtlasStrategicPlanCard from "./AtlasStrategicPlanCard";
 import EmpireForecastCard from "./EmpireForecastCard";
 import EmpireSimulatorCard from "./EmpireSimulatorCard";
 import EmpireTimelineCard from "./EmpireTimelineCard";
@@ -31,6 +32,7 @@ import type {
   AtlasPlayerIdentity,
   AtlasRecommendation,
   AtlasReasoning,
+  AtlasStrategicPlan,
   AtlasStrategyFeedback,
   AtlasStrategyReport,
   AtlasValidatedOutcome,
@@ -64,6 +66,8 @@ type AtlasAIPanelProps = {
   adaptiveStrategy: AtlasAdaptiveStrategy;
 
   strategyFeedback: AtlasStrategyFeedback;
+
+  strategicPlan: AtlasStrategicPlan;
 
   learningProfile: AtlasLearningProfile;
 
@@ -102,6 +106,7 @@ export default function AtlasAIPanel({
   strategyReport,
   adaptiveStrategy,
   strategyFeedback,
+  strategicPlan,
   learningProfile,
   outcome,
   playerAction,
@@ -188,6 +193,10 @@ export default function AtlasAIPanel({
 
             <AtlasStrategyFeedbackCard
               feedback={strategyFeedback}
+            />
+
+            <AtlasStrategicPlanCard
+              plan={strategicPlan}
             />
 
           </div>

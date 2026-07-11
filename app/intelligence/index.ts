@@ -33,3 +33,4 @@ export * from "./identity-advisor.engine";
 export * from "./strategy-report.engine";
 export * from "./adaptive-strategy.engine";
 export * from "./strategy-feedback.engine";
+export * from "./planning.engine";

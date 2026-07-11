@@ -49,6 +49,10 @@ import {
 } from "./strategy-feedback.engine";
 
 import {
+  buildAtlasStrategicPlan,
+} from "./planning.engine";
+
+import {
   getPersonalPicks,
 } from "./personal-picks.engine";
 
@@ -296,6 +300,15 @@ export function buildDashboardIntelligence(
     );
 
 
+  const strategicPlan =
+    buildAtlasStrategicPlan(
+      profile,
+      adaptiveStrategy,
+      strategyFeedback,
+      memoryInsight
+    );
+
+
   const intelligenceFeed =
     buildIntelligenceFeed(
       profile
@@ -328,6 +341,8 @@ export function buildDashboardIntelligence(
     adaptiveStrategy,
 
     strategyFeedback,
+
+    strategicPlan,
 
     atlasReasoning,
 
