@@ -27,6 +27,11 @@ import {
   type AtlasMissionExecution,
 } from "./mission-execution.engine";
 
+import {
+  buildMissionImpact,
+  type AtlasMissionImpact,
+} from "./mission-impact.engine";
+
 
 export type AtlasMissionStrategy = {
   title: string;
@@ -60,6 +65,8 @@ export type AtlasMissionStrategy = {
   loadout: AtlasMissionLoadout;
 
   execution: AtlasMissionExecution;
+
+  impact: AtlasMissionImpact;
 };
 
 
@@ -152,6 +159,12 @@ export function buildMissionStrategy(
           emptyMission,
           profile
         ),
+
+      impact:
+        buildMissionImpact(
+          emptyMission,
+          profile
+        ),
     };
   }
 
@@ -167,6 +180,13 @@ export function buildMissionStrategy(
 
   const execution =
     buildMissionExecution(
+      mission,
+      profile
+    );
+
+
+  const impact =
+    buildMissionImpact(
       mission,
       profile
     );
@@ -244,5 +264,7 @@ export function buildMissionStrategy(
     loadout,
 
     execution,
+
+    impact,
   };
 }

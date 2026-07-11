@@ -99,6 +99,78 @@ export default function AtlasMissionStrategyCard({
               }
             />
 
+                      <div className="mt-5 rounded-2xl border border-violet-400/20 bg-violet-400/5 p-5">
+
+            <p className="text-xs font-black uppercase tracking-wider text-violet-400">
+              Empire Impact
+            </p>
+
+
+            <div className="mt-4 grid gap-4 md:grid-cols-2">
+
+              <InfoCard
+                title="Reward Value"
+                value={
+                  strategy.impact.rewardValue
+                }
+              />
+
+
+              <InfoCard
+                title="Completion Priority"
+                value={
+                  strategy.impact.completionPriority
+                }
+              />
+
+
+              <InfoCard
+                title="Financial Impact"
+                value={
+                  strategy.impact.financialImpact
+                }
+              />
+
+
+              <InfoCard
+                title="Next Milestone"
+                value={
+                  strategy.impact.nextMilestone
+                }
+              />
+
+            </div>
+
+
+            <div className="mt-5 rounded-xl border border-zinc-800 bg-zinc-950 p-4">
+
+              <p className="text-xs font-black uppercase tracking-wider text-zinc-500">
+                Recommended Action
+              </p>
+
+
+              <p className="mt-3 text-sm leading-6 text-zinc-300">
+                {strategy.impact.recommendedAction}
+              </p>
+
+            </div>
+
+
+            <div className="mt-4">
+
+              <p className="text-xs font-black uppercase tracking-wider text-zinc-500">
+                Atlas Confidence
+              </p>
+
+
+              <p className="mt-2 text-2xl font-black text-white">
+                {strategy.impact.confidence}%
+              </p>
+
+            </div>
+
+          </div>
+
 
             <LoadoutCard
               title="Recommended Weapon"
