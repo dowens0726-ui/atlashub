@@ -108,6 +108,10 @@ export default function DashboardClient() {
             intelligence.missionStrategy
           }
 
+          missionLearning={
+            intelligence.missionLearning
+          }
+
           learningProfile={
             intelligence.learningProfile
           }

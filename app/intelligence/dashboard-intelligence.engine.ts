@@ -117,6 +117,10 @@ import {
 } from "./mission-strategy.engine";
 
 import {
+  buildMissionLearning,
+} from "./mission-learning.engine";
+
+import {
   getAllMissions,
 } from "@/app/services";
 
@@ -316,6 +320,7 @@ export function buildDashboardIntelligence(
       memoryInsight
     );
 
+
   const missionStrategy =
     buildMissionStrategy(
       getAllMissions(),
@@ -323,6 +328,16 @@ export function buildDashboardIntelligence(
       playerIdentity,
       profile
     );
+
+
+  const missionLearning =
+    missionStrategy.mission
+      ? buildMissionLearning(
+          missionStrategy.mission,
+          profile,
+          learningProfile
+        )
+      : null;
 
 
   const intelligenceFeed =
@@ -361,6 +376,8 @@ export function buildDashboardIntelligence(
     strategicPlan,
 
     missionStrategy,
+
+    missionLearning,
 
     atlasReasoning,
 

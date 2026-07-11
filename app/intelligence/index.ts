@@ -35,3 +35,4 @@ export * from "./adaptive-strategy.engine";
 export * from "./strategy-feedback.engine";
 export * from "./planning.engine";
 export * from "./mission-strategy.engine";
+export * from "./mission-learning.engine";

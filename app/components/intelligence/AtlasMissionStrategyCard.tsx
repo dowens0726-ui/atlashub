@@ -1,15 +1,19 @@
 import type {
+  AtlasMissionLearning,
   AtlasMissionStrategy,
 } from "@/app/intelligence";
 
 
 type AtlasMissionStrategyCardProps = {
   strategy: AtlasMissionStrategy;
+
+  missionLearning: AtlasMissionLearning | null;
 };
 
 
 export default function AtlasMissionStrategyCard({
   strategy,
+  missionLearning,
 }: AtlasMissionStrategyCardProps) {
   return (
     <section className="rounded-3xl border border-amber-400/20 bg-amber-400/5 p-6">
@@ -69,6 +73,50 @@ export default function AtlasMissionStrategyCard({
           </div>
 
 
+          {missionLearning && (
+            <div className="mt-6 rounded-2xl border border-purple-400/20 bg-purple-400/5 p-5">
+
+              <p className="text-xs font-black uppercase tracking-wider text-purple-400">
+                Atlas Mission Learning
+              </p>
+
+
+              <p className="mt-3 text-2xl font-black text-white">
+                {missionLearning.confidence}%
+              </p>
+
+
+              <div className="mt-4 space-y-3">
+
+                <InfoCard
+                  title="Difficulty Preference"
+                  value={
+                    missionLearning.difficultyPreference
+                  }
+                />
+
+
+                <InfoCard
+                  title="Efficiency Profile"
+                  value={
+                    missionLearning.efficiencyProfile
+                  }
+                />
+
+
+                <InfoCard
+                  title="Recommendation Adjustment"
+                  value={
+                    missionLearning.recommendationAdjustment
+                  }
+                />
+
+              </div>
+
+            </div>
+          )}
+
+
           <div className="mt-6 rounded-2xl border border-emerald-400/20 bg-emerald-400/5 p-5">
 
             <p className="text-xs font-black uppercase tracking-wider text-emerald-400">
@@ -98,78 +146,6 @@ export default function AtlasMissionStrategyCard({
                 strategy.loadout.vehicleReason
               }
             />
-
-                      <div className="mt-5 rounded-2xl border border-violet-400/20 bg-violet-400/5 p-5">
-
-            <p className="text-xs font-black uppercase tracking-wider text-violet-400">
-              Empire Impact
-            </p>
-
-
-            <div className="mt-4 grid gap-4 md:grid-cols-2">
-
-              <InfoCard
-                title="Reward Value"
-                value={
-                  strategy.impact.rewardValue
-                }
-              />
-
-
-              <InfoCard
-                title="Completion Priority"
-                value={
-                  strategy.impact.completionPriority
-                }
-              />
-
-
-              <InfoCard
-                title="Financial Impact"
-                value={
-                  strategy.impact.financialImpact
-                }
-              />
-
-
-              <InfoCard
-                title="Next Milestone"
-                value={
-                  strategy.impact.nextMilestone
-                }
-              />
-
-            </div>
-
-
-            <div className="mt-5 rounded-xl border border-zinc-800 bg-zinc-950 p-4">
-
-              <p className="text-xs font-black uppercase tracking-wider text-zinc-500">
-                Recommended Action
-              </p>
-
-
-              <p className="mt-3 text-sm leading-6 text-zinc-300">
-                {strategy.impact.recommendedAction}
-              </p>
-
-            </div>
-
-
-            <div className="mt-4">
-
-              <p className="text-xs font-black uppercase tracking-wider text-zinc-500">
-                Atlas Confidence
-              </p>
-
-
-              <p className="mt-2 text-2xl font-black text-white">
-                {strategy.impact.confidence}%
-              </p>
-
-            </div>
-
-          </div>
 
 
             <LoadoutCard
@@ -230,31 +206,42 @@ export default function AtlasMissionStrategyCard({
           </div>
 
 
-          {strategy.loadout.missingEquipment.length > 0 && (
-            <div className="mt-5 rounded-2xl border border-red-400/20 bg-red-400/5 p-5">
+          <div className="mt-5 rounded-2xl border border-violet-400/20 bg-violet-400/5 p-5">
 
-              <p className="text-xs font-black uppercase tracking-wider text-red-400">
-                Missing Equipment
-              </p>
+            <p className="text-xs font-black uppercase tracking-wider text-violet-400">
+              Empire Impact
+            </p>
 
+            <div className="mt-4 grid gap-4 md:grid-cols-2">
 
-              <div className="mt-3 space-y-2">
+              <InfoCard
+                title="Reward Value"
+                value={strategy.impact.rewardValue}
+              />
 
-                {strategy.loadout.missingEquipment.map(
-                  (item) => (
-                    <p
-                      key={item}
-                      className="text-sm text-zinc-300"
-                    >
-                      • {item}
-                    </p>
-                  )
-                )}
+              <InfoCard
+                title="Completion Priority"
+                value={strategy.impact.completionPriority}
+              />
 
-              </div>
+              <InfoCard
+                title="Financial Impact"
+                value={strategy.impact.financialImpact}
+              />
+
+              <InfoCard
+                title="Next Milestone"
+                value={strategy.impact.nextMilestone}
+              />
 
             </div>
-          )}
+
+
+            <p className="mt-4 text-sm text-zinc-300">
+              {strategy.impact.recommendedAction}
+            </p>
+
+          </div>
 
 
           <div className="mt-5 rounded-2xl border border-zinc-800 bg-zinc-950 p-5">
@@ -262,7 +249,6 @@ export default function AtlasMissionStrategyCard({
             <p className="text-xs font-black uppercase tracking-wider text-cyan-400">
               Why Atlas Chose This
             </p>
-
 
             <div className="mt-3 space-y-2">
 
@@ -278,31 +264,6 @@ export default function AtlasMissionStrategyCard({
               )}
 
             </div>
-
-          </div>
-
-
-          <div className="mt-5 grid gap-4 sm:grid-cols-2">
-
-            <Score
-              label="Reward"
-              value={strategy.rankingBreakdown.rewardFit}
-            />
-
-            <Score
-              label="Progression"
-              value={strategy.rankingBreakdown.progressionFit}
-            />
-
-            <Score
-              label="Equipment"
-              value={strategy.rankingBreakdown.equipmentFit}
-            />
-
-            <Score
-              label="Playstyle"
-              value={strategy.rankingBreakdown.playstyleFit}
-            />
 
           </div>
 
@@ -344,7 +305,6 @@ function ExecutionSection({
       <p className="text-xs font-black uppercase tracking-wider text-amber-400">
         {title}
       </p>
-
 
       <div className="mt-3 space-y-2">
 
@@ -412,29 +372,6 @@ function Stat({
 }
 
 
-function Score({
-  label,
-  value,
-}: {
-  label: string;
-  value: number;
-}) {
-  return (
-    <div className="rounded-xl border border-zinc-800 bg-zinc-950 p-4">
-
-      <p className="text-xs font-bold uppercase tracking-wider text-zinc-500">
-        {label}
-      </p>
-
-      <p className="mt-2 text-lg font-black text-amber-400">
-        {value}%
-      </p>
-
-    </div>
-  );
-}
-
-
 function LoadoutCard({
   title,
   value,
@@ -445,7 +382,7 @@ function LoadoutCard({
   reason: string;
 }) {
   return (
-    <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-5">
+    <div className="rounded-2xl border border-zinc-800 bg-zinc_950 p-5">
 
       <p className="text-xs font-black uppercase tracking-wider text-zinc-500">
         {title}

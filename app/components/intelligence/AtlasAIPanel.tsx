@@ -28,6 +28,7 @@ import type {
   AtlasLearningProfile,
   AtlasMemory,
   AtlasMemoryInsight,
+  AtlasMissionLearning,
   AtlasMissionStrategy,
   AtlasOutcome,
   AtlasPlayerAction,
@@ -74,6 +75,8 @@ type AtlasAIPanelProps = {
 
   missionStrategy: AtlasMissionStrategy;
 
+  missionLearning: AtlasMissionLearning | null;
+
   learningProfile: AtlasLearningProfile;
 
   outcome: AtlasOutcome;
@@ -113,6 +116,7 @@ export default function AtlasAIPanel({
   strategyFeedback,
   strategicPlan,
   missionStrategy,
+  missionLearning,
   learningProfile,
   outcome,
   playerAction,
@@ -208,6 +212,7 @@ export default function AtlasAIPanel({
 
             <AtlasMissionStrategyCard
               strategy={missionStrategy}
+              missionLearning={missionLearning}
             />
 
           </div>
