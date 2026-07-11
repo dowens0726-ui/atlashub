@@ -112,6 +112,14 @@ import {
   buildAtlasStrategyReport,
 } from "./strategy-report.engine";
 
+import {
+  buildMissionStrategy,
+} from "./mission-strategy.engine";
+
+import {
+  getAllMissions,
+} from "@/app/services";
+
 
 export function buildDashboardIntelligence(
   profile: PlayerProfile,
@@ -308,6 +316,13 @@ export function buildDashboardIntelligence(
       memoryInsight
     );
 
+  const missionStrategy =
+    buildMissionStrategy(
+      getAllMissions(),
+      predictedRecommendation,
+      playerIdentity
+    );
+
 
   const intelligenceFeed =
     buildIntelligenceFeed(
@@ -343,6 +358,8 @@ export function buildDashboardIntelligence(
     strategyFeedback,
 
     strategicPlan,
+
+    missionStrategy,
 
     atlasReasoning,
 

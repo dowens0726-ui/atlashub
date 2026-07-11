@@ -21,6 +21,7 @@ import {
 import { buildDashboardIntelligence } from "@/app/intelligence";
 import { useDashboard } from "@/app/hooks/useDashboard";
 
+
 export default function DashboardClient() {
   const dashboard = useDashboard();
 
@@ -29,24 +30,36 @@ export default function DashboardClient() {
     dashboard.empire
   );
 
+
   return (
     <CommandCenterLayout
       hero={
         <CommandCenterHero dashboard={dashboard} />
       }
 
+
       overview={
         <div className="space-y-8">
-          <LiveEmpireCard profile={dashboard.profile} />
 
-          <EmpireScoreCard empire={dashboard.empire} />
+          <LiveEmpireCard
+            profile={dashboard.profile}
+          />
 
-          <DashboardSummary dashboard={dashboard} />
+          <EmpireScoreCard
+            empire={dashboard.empire}
+          />
+
+          <DashboardSummary
+            dashboard={dashboard}
+          />
+
         </div>
       }
 
+
       atlas={
         <AtlasAIPanel
+
           recommendation={
             intelligence.atlasRecommendation
           }
@@ -79,6 +92,22 @@ export default function DashboardClient() {
             intelligence.strategyReport
           }
 
+          adaptiveStrategy={
+            intelligence.adaptiveStrategy
+          }
+
+          strategyFeedback={
+            intelligence.strategyFeedback
+          }
+
+          strategicPlan={
+            intelligence.strategicPlan
+          }
+
+          missionStrategy={
+            intelligence.missionStrategy
+          }
+
           learningProfile={
             intelligence.learningProfile
           }
@@ -107,20 +136,8 @@ export default function DashboardClient() {
             intelligence.memoryInsight
           }
 
-          strategicPlan={
-            intelligence.strategicPlan
-          }
-
           timeline={
             intelligence.empireTimeline
-          }
-
-          adaptiveStrategy={
-            intelligence.adaptiveStrategy
-          }
-
-          strategyFeedback={
-            intelligence.strategyFeedback
           }
 
           memory={
@@ -138,8 +155,10 @@ export default function DashboardClient() {
           insights={
             intelligence.intelligenceFeed
           }
+
         />
       }
+
 
       session={
         <AtlasSessionPlanCard
@@ -148,11 +167,13 @@ export default function DashboardClient() {
         />
       }
 
+
       insights={
         <EmpireInsights
           insights={dashboard.empire.insights}
         />
       }
+
 
       objectives={
         <DashboardObjectives
@@ -160,13 +181,16 @@ export default function DashboardClient() {
         />
       }
 
+
       activity={
         <ActivityFeed />
       }
 
+
       achievements={
         <AchievementList />
       }
+
     />
   );
 }
