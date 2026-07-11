@@ -69,6 +69,77 @@ export default function AtlasMissionStrategyCard({
           </div>
 
 
+          <div className="mt-6 rounded-2xl border border-emerald-400/20 bg-emerald-400/5 p-5">
+
+            <p className="text-xs font-black uppercase tracking-wider text-emerald-400">
+              Mission Readiness
+            </p>
+
+            <p className="mt-3 text-3xl font-black text-white">
+              {strategy.loadout.readinessScore}%
+            </p>
+
+            <p className="mt-2 text-sm text-zinc-400">
+              Atlas confidence that your current equipment setup is prepared for this mission.
+            </p>
+
+          </div>
+
+
+          <div className="mt-5 grid gap-5 md:grid-cols-2">
+
+            <LoadoutCard
+              title="Recommended Vehicle"
+              value={
+                strategy.loadout.vehicle?.name ??
+                "No vehicle found"
+              }
+              reason={
+                strategy.loadout.vehicleReason
+              }
+            />
+
+
+            <LoadoutCard
+              title="Recommended Weapon"
+              value={
+                strategy.loadout.weapon?.name ??
+                "No weapon found"
+              }
+              reason={
+                strategy.loadout.weaponReason
+              }
+            />
+
+          </div>
+
+
+          {strategy.loadout.missingEquipment.length > 0 && (
+            <div className="mt-5 rounded-2xl border border-red-400/20 bg-red-400/5 p-5">
+
+              <p className="text-xs font-black uppercase tracking-wider text-red-400">
+                Missing Equipment
+              </p>
+
+              <div className="mt-3 space-y-2">
+
+                {strategy.loadout.missingEquipment.map(
+                  (item) => (
+                    <p
+                      key={item}
+                      className="text-sm text-zinc-300"
+                    >
+                      • {item}
+                    </p>
+                  )
+                )}
+
+              </div>
+
+            </div>
+          )}
+
+
           <div className="mt-5 rounded-2xl border border-zinc-800 bg-zinc-950 p-5">
 
             <p className="text-xs font-black uppercase tracking-wider text-cyan-400">
@@ -182,6 +253,35 @@ function Score({
 
       <p className="mt-2 text-lg font-black text-amber-400">
         {value}%
+      </p>
+
+    </div>
+  );
+}
+
+
+function LoadoutCard({
+  title,
+  value,
+  reason,
+}: {
+  title: string;
+  value: string;
+  reason: string;
+}) {
+  return (
+    <div className="rounded-2xl border border-zinc-800 bg-zinc-950 p-5">
+
+      <p className="text-xs font-black uppercase tracking-wider text-zinc-500">
+        {title}
+      </p>
+
+      <p className="mt-2 text-lg font-black text-white">
+        {value}
+      </p>
+
+      <p className="mt-3 text-sm leading-6 text-zinc-400">
+        {reason}
       </p>
 
     </div>

@@ -9,8 +9,18 @@ import type {
 } from "@/app/intelligence";
 
 import {
+  vehicles,
+  weapons,
+} from "@/app/data";
+
+import {
   rankMissions,
 } from "./mission-ranking.engine";
+
+import {
+  buildMissionLoadout,
+  type AtlasMissionLoadout,
+} from "./mission-loadout.engine";
 
 
 export type AtlasMissionStrategy = {
@@ -41,6 +51,8 @@ export type AtlasMissionStrategy = {
     equipmentFit: number;
     playstyleFit: number;
   };
+
+  loadout: AtlasMissionLoadout;
 };
 
 
@@ -105,8 +117,34 @@ export function buildMissionStrategy(
         equipmentFit: 0,
         playstyleFit: 0,
       },
+
+      loadout:
+        buildMissionLoadout(
+          {
+            id: "none",
+            slug: "none",
+            title: "No Mission",
+            description: "",
+            reward: "$0",
+            difficulty: "Easy",
+            category: "Unknown",
+            estimatedTime: "Unknown",
+          },
+          vehicles,
+          weapons,
+          profile
+        ),
     };
   }
+
+
+  const loadout =
+    buildMissionLoadout(
+      mission,
+      vehicles,
+      weapons,
+      profile
+    );
 
 
   const confidence =
@@ -176,5 +214,8 @@ export function buildMissionStrategy(
       playstyleFit:
         topMission.playstyleFit,
     },
+
+
+    loadout,
   };
 }
