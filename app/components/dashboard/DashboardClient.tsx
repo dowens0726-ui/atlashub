@@ -1,13 +1,15 @@
 "use client";
 
+import { useMemo } from "react";
+
 import { ActivityFeed } from "@/app/components/activity";
 import { AchievementList } from "@/app/components/achievements";
 
 import {
   CommandCenterHero,
   CommandCenterLayout,
-  DashboardSummary,
   DashboardObjectives,
+  DashboardSummary,
   EmpireInsights,
   EmpireScoreCard,
   LiveEmpireCard,
@@ -18,23 +20,32 @@ import {
   AtlasSessionPlanCard,
 } from "@/app/components/intelligence";
 
-import { buildDashboardIntelligence } from "@/app/intelligence";
 import { useDashboard } from "@/app/hooks/useDashboard";
+import { buildAtlasBrain } from "@/app/intelligence";
 
 
 export default function DashboardClient() {
   const dashboard = useDashboard();
 
-  const intelligence = buildDashboardIntelligence(
-    dashboard.profile,
-    dashboard.empire
+  const intelligence = useMemo(
+    () =>
+      buildAtlasBrain({
+        profile: dashboard.profile,
+        empire: dashboard.empire,
+      }),
+    [
+      dashboard.profile,
+      dashboard.empire,
+    ]
   );
 
 
   return (
     <CommandCenterLayout
       hero={
-        <CommandCenterHero dashboard={dashboard} />
+        <CommandCenterHero
+          dashboard={dashboard}
+        />
       }
 
 
@@ -59,7 +70,6 @@ export default function DashboardClient() {
 
       atlas={
         <AtlasAIPanel
-
           recommendation={
             intelligence.atlasRecommendation
           }
@@ -167,7 +177,6 @@ export default function DashboardClient() {
           insights={
             intelligence.intelligenceFeed
           }
-
         />
       }
 
@@ -202,7 +211,6 @@ export default function DashboardClient() {
       achievements={
         <AchievementList />
       }
-
     />
   );
 }

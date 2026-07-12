@@ -1,8 +1,8 @@
 import {
+  AtlasPlannerStrategy,
   PlannerHeader,
   PlannerSummary,
   PlannerTimeline,
-  AtlasPlannerStrategy,
 } from "@/app/components/planner";
 
 import { AppShell } from "@/app/components/layout";
@@ -16,7 +16,7 @@ import {
 } from "@/app/services";
 
 import {
-  buildDashboardIntelligence,
+  buildAtlasBrain,
 } from "@/app/intelligence";
 
 
@@ -24,19 +24,16 @@ export default function PlannerPage() {
   const profile =
     defaultPlayerProfile;
 
-
   const empire =
     getEmpireModel(
       profile
     );
 
-
   const intelligence =
-    buildDashboardIntelligence(
+    buildAtlasBrain({
       profile,
-      empire
-    );
-
+      empire,
+    });
 
   const progressionPlan =
     getProgressionPlan(

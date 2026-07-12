@@ -30,7 +30,6 @@ export * from "./action-tracker.engine";
 export * from "./prediction.engine";
 export * from "./player-identity.engine";
 export * from "./identity-advisor.engine";
-export * from "./strategy-report.engine";
 export * from "./adaptive-strategy.engine";
 export * from "./strategy-feedback.engine";
 export * from "./planning.engine";

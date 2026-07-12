@@ -4,6 +4,10 @@ import type {
 } from "@/app/types";
 
 import {
+  getAllMissions,
+} from "@/app/services";
+
+import {
   getAtlasAdvisorRecommendations,
   getPrimaryAtlasRecommendation,
 } from "./advisor.service";
@@ -132,30 +136,28 @@ import {
   buildMissionLearningUpdate,
 } from "./mission-learning-update.engine";
 
-import {
-  getAllMissions,
-} from "@/app/services";
+
+export type AtlasBrainInput = {
+  profile: PlayerProfile;
+  empire: EmpireModel;
+};
 
 
-export function buildDashboardIntelligence(
-  profile: PlayerProfile,
-  empire: EmpireModel
-) {
+export function buildAtlasBrain({
+  profile,
+  empire,
+}: AtlasBrainInput) {
   const atlasRecommendations =
     getAtlasAdvisorRecommendations(profile);
-
 
   const atlasRecommendation =
     getPrimaryAtlasRecommendation(profile);
 
-
   const personalPicks =
     getPersonalPicks(profile);
 
-
   const playerIdentity =
     buildPlayerIdentity(profile);
-
 
   const identityAdvisor =
     buildIdentityAdvisor(
@@ -163,13 +165,11 @@ export function buildDashboardIntelligence(
       atlasRecommendation
     );
 
-
   const atlasReasoning =
     buildAtlasReasoning(
       profile,
       atlasRecommendation
     );
-
 
   const sessionPlan =
     buildSessionPlan(
@@ -177,12 +177,10 @@ export function buildDashboardIntelligence(
       atlasRecommendations
     );
 
-
   const sessionReasoning =
     buildSessionReasoning(
       sessionPlan
     );
-
 
   const nextAction =
     buildNextAction(
@@ -191,12 +189,10 @@ export function buildDashboardIntelligence(
       sessionReasoning
     );
 
-
   const atlasImpact =
     buildAtlasImpact(
       nextAction.confidence
     );
-
 
   const empireForecast =
     buildEmpireForecast(
@@ -205,19 +201,16 @@ export function buildDashboardIntelligence(
       atlasImpact
     );
 
-
   const empireSimulation =
     buildEmpireSimulation(
       profile,
       atlasRecommendation
     );
 
-
   const empireTimeline =
     buildEmpireTimeline(
       empireForecast
     );
-
 
   const dailyObjectives =
     buildDailyObjectives(
@@ -226,7 +219,6 @@ export function buildDashboardIntelligence(
       empireForecast
     );
 
-
   const atlasMemory =
     buildAtlasMemory(
       profile,
@@ -234,37 +226,31 @@ export function buildDashboardIntelligence(
       empireForecast
     );
 
-
   const memoryHistory =
     buildMemoryHistory(
       atlasMemory
     );
-
 
   const decisionHistory =
     buildDecisionHistory(
       atlasRecommendation
     );
 
-
   const outcome =
     buildAtlasOutcome(
       decisionHistory
     );
-
 
   const playerAction =
     buildPlayerAction(
       decisionHistory
     );
 
-
   const outcomeValidation =
     buildOutcomeValidation(
       playerAction,
       outcome
     );
-
 
   const learningProfile =
     buildAtlasLearning(
@@ -276,20 +262,17 @@ export function buildDashboardIntelligence(
       ]
     );
 
-
   const memoryInsight =
     buildMemoryInsight(
       atlasMemory,
       learningProfile
     );
 
-
   const recommendationPrediction =
     buildRecommendationPrediction(
       atlasRecommendation,
       learningProfile
     );
-
 
   const predictedRecommendation = {
     ...atlasRecommendation,
@@ -305,7 +288,6 @@ export function buildDashboardIntelligence(
       recommendationPrediction,
   };
 
-
   const adaptiveStrategy =
     buildAdaptiveStrategy(
       predictedRecommendation,
@@ -313,7 +295,6 @@ export function buildDashboardIntelligence(
       memoryInsight,
       learningProfile
     );
-
 
   const strategyFeedback =
     buildStrategyFeedback(
@@ -323,7 +304,6 @@ export function buildDashboardIntelligence(
       learningProfile
     );
 
-
   const strategicPlan =
     buildAtlasStrategicPlan(
       profile,
@@ -331,7 +311,6 @@ export function buildDashboardIntelligence(
       strategyFeedback,
       memoryInsight
     );
-
 
   const missionStrategy =
     buildMissionStrategy(
@@ -341,7 +320,6 @@ export function buildDashboardIntelligence(
       profile
     );
 
-
   const missionLearning =
     missionStrategy.mission
       ? buildMissionLearning(
@@ -350,7 +328,6 @@ export function buildDashboardIntelligence(
           learningProfile
         )
       : null;
-
 
   const missionFeedback =
     missionStrategy.mission
@@ -368,14 +345,12 @@ export function buildDashboardIntelligence(
         )
       : null;
 
-
   const missionOutcome =
     missionFeedback
       ? buildMissionOutcome(
           missionFeedback
         )
       : null;
-
 
   const missionLearningUpdate =
     missionLearning && missionOutcome
@@ -385,12 +360,10 @@ export function buildDashboardIntelligence(
         )
       : null;
 
-
   const intelligenceFeed =
     buildIntelligenceFeed(
       profile
     );
-
 
   const strategyReport =
     buildAtlasStrategyReport(
@@ -401,7 +374,6 @@ export function buildDashboardIntelligence(
       atlasMemory,
       nextAction
     );
-
 
   return {
     atlasRecommendations,
@@ -467,3 +439,7 @@ export function buildDashboardIntelligence(
     recommendationPrediction,
   };
 }
+
+
+export type AtlasBrainModel =
+  ReturnType<typeof buildAtlasBrain>;
