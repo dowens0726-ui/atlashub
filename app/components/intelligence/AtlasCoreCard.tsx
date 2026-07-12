@@ -1,11 +1,14 @@
 import Link from "next/link";
 
+import AtlasDecisionControls from "./AtlasDecisionControls";
+
 import type {
   AtlasImpact,
   AtlasReasoning,
   AtlasRecommendation,
   NextAction,
 } from "@/app/intelligence";
+
 
 type AtlasCoreCardProps = {
   action: NextAction;
@@ -14,14 +17,21 @@ type AtlasCoreCardProps = {
   reasoning?: AtlasReasoning;
 };
 
-function formatCurrency(value: number) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    notation: "compact",
-    maximumFractionDigits: 1,
-  }).format(value);
+
+function formatCurrency(
+  value: number
+) {
+  return new Intl.NumberFormat(
+    "en-US",
+    {
+      style: "currency",
+      currency: "USD",
+      notation: "compact",
+      maximumFractionDigits: 1,
+    }
+  ).format(value);
 }
+
 
 export default function AtlasCoreCard({
   action,
@@ -46,6 +56,7 @@ export default function AtlasCoreCard({
       <p className="mt-3 leading-7 text-zinc-400">
         {action.reason}
       </p>
+
 
       <div className="mt-6 rounded-2xl border border-cyan-400/20 bg-cyan-400/[0.04] p-5">
         <p className="text-xs font-black uppercase tracking-[0.25em] text-cyan-400">
@@ -78,14 +89,21 @@ export default function AtlasCoreCard({
 
               <p className="mt-1 text-2xl font-black text-white">
                 +
-                {recommendation.prediction.confidenceBoost}
-                %
-                Confidence
+                {
+                  recommendation
+                    .prediction
+                    .confidenceBoost
+                }
+                % Confidence
               </p>
             </div>
 
             <p className="text-sm leading-6 text-zinc-300">
-              {recommendation.prediction.reason}
+              {
+                recommendation
+                  .prediction
+                  .reason
+              }
             </p>
 
             {recommendation.prediction.matchesLearning ? (
@@ -106,14 +124,16 @@ export default function AtlasCoreCard({
             </p>
 
             <div className="mt-4 space-y-2">
-              {reasoning.reasons.map((reason) => (
-                <p
-                  key={reason}
-                  className="text-sm text-zinc-300"
-                >
-                  ✓ {reason}
-                </p>
-              ))}
+              {reasoning.reasons.map(
+                (reason) => (
+                  <p
+                    key={reason}
+                    className="text-sm text-zinc-300"
+                  >
+                    ✓ {reason}
+                  </p>
+                )
+              )}
             </div>
           </div>
 
@@ -123,7 +143,10 @@ export default function AtlasCoreCard({
             </p>
 
             <p className="mt-3 text-sm leading-6 text-zinc-300">
-              {reasoning.expectedOutcome}
+              {
+                reasoning
+                  .expectedOutcome
+              }
             </p>
           </div>
         </>
@@ -148,17 +171,26 @@ export default function AtlasCoreCard({
 
         <Stat
           label="Income Gain"
-          value={formatCurrency(
-            impact.estimatedIncomeGain
-          )}
+          value={
+            formatCurrency(
+              impact.estimatedIncomeGain
+            )
+          }
         />
       </div>
+
+
+      <AtlasDecisionControls
+        recommendation={
+          recommendation
+        }
+      />
 
 
       {recommendation.href ? (
         <Link
           href={recommendation.href}
-          className="mt-6 inline-flex rounded-xl bg-violet-400 px-5 py-3 text-sm font-black text-zinc-950 transition hover:bg-violet-300"
+          className="mt-6 inline-flex rounded-xl border border-zinc-700 bg-zinc-900 px-5 py-3 text-sm font-black text-white transition hover:border-violet-400 hover:text-violet-300"
         >
           {action.actionLabel} →
         </Link>

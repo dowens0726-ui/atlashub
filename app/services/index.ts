@@ -1,4 +1,5 @@
 export * from "./advisor.service";
+export * from "./atlas-decision.service";
 export * from "./atlas-intelligence.service";
 export * from "./atlas-score.service";
 export * from "./business.service";
@@ -22,6 +23,7 @@ export * from "./empire.service";
 export {
   vehicleRankingAdapter,
 } from "./ranking-adapter.service";
+
 export * from "./business-ranking.service";
 
 export {

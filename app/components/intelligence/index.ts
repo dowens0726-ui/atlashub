@@ -32,3 +32,4 @@ export { default as PersonalPicksCard } from "./PersonalPicksCard";
 */
 export { default as AtlasIntelligenceCard } from "./AtlasIntelligenceCard";
 export { default as VehicleRecommendations } from "./VehicleRecommendations";
+export { default as AtlasDecisionControls } from "./AtlasDecisionControls";
