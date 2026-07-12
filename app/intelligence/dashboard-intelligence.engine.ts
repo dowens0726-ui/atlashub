@@ -14,6 +14,7 @@ import {
 
 import {
   buildDecisionHistory,
+  type AtlasDecisionHistoryItem,
 } from "./decision-history.engine";
 
 import {
@@ -22,14 +23,17 @@ import {
 
 import {
   buildAtlasOutcome,
+  type AtlasOutcome,
 } from "./outcome.engine";
 
 import {
   buildOutcomeValidation,
+  type AtlasValidatedOutcome,
 } from "./outcome-validation.engine";
 
 import {
   buildPlayerAction,
+  type AtlasPlayerAction,
 } from "./action-tracker.engine";
 
 import {
@@ -137,27 +141,124 @@ import {
 } from "./mission-learning-update.engine";
 
 
+export type AtlasBrainHistory = {
+  decisions: AtlasDecisionHistoryItem[];
+
+  actions: AtlasPlayerAction[];
+
+  outcomes: AtlasOutcome[];
+
+  validations: AtlasValidatedOutcome[];
+};
+
+
 export type AtlasBrainInput = {
   profile: PlayerProfile;
+
   empire: EmpireModel;
+
+  history?: AtlasBrainHistory;
 };
+
+
+const emptyAtlasBrainHistory:
+  AtlasBrainHistory = {
+    decisions: [],
+
+    actions: [],
+
+    outcomes: [],
+
+    validations: [],
+  };
+
+
+function getLatestDecision(
+  history: AtlasBrainHistory,
+  fallbackDecision: AtlasDecisionHistoryItem
+): AtlasDecisionHistoryItem {
+  return (
+    history.decisions[0] ??
+    fallbackDecision
+  );
+}
+
+
+function getActionForDecision(
+  history: AtlasBrainHistory,
+  decision: AtlasDecisionHistoryItem,
+  fallbackAction: AtlasPlayerAction
+): AtlasPlayerAction {
+  return (
+    history.actions.find(
+      (action) =>
+        action.decisionId ===
+        decision.id
+    ) ??
+    fallbackAction
+  );
+}
+
+
+function getOutcomeForDecision(
+  history: AtlasBrainHistory,
+  decision: AtlasDecisionHistoryItem,
+  fallbackOutcome: AtlasOutcome
+): AtlasOutcome {
+  return (
+    history.outcomes.find(
+      (outcome) =>
+        outcome.decisionId ===
+        decision.id
+    ) ??
+    fallbackOutcome
+  );
+}
+
+
+function getValidationForAction(
+  history: AtlasBrainHistory,
+  action: AtlasPlayerAction,
+  outcome: AtlasOutcome,
+  fallbackValidation: AtlasValidatedOutcome
+): AtlasValidatedOutcome {
+  return (
+    history.validations.find(
+      (validation) =>
+        validation.actionId ===
+          action.id ||
+        validation.outcomeId ===
+          outcome.id
+    ) ??
+    fallbackValidation
+  );
+}
 
 
 export function buildAtlasBrain({
   profile,
   empire,
+  history = emptyAtlasBrainHistory,
 }: AtlasBrainInput) {
   const atlasRecommendations =
-    getAtlasAdvisorRecommendations(profile);
+    getAtlasAdvisorRecommendations(
+      profile
+    );
 
   const atlasRecommendation =
-    getPrimaryAtlasRecommendation(profile);
+    getPrimaryAtlasRecommendation(
+      profile
+    );
 
   const personalPicks =
-    getPersonalPicks(profile);
+    getPersonalPicks(
+      profile
+    );
 
   const playerIdentity =
-    buildPlayerIdentity(profile);
+    buildPlayerIdentity(
+      profile
+    );
 
   const identityAdvisor =
     buildIdentityAdvisor(
@@ -231,35 +332,74 @@ export function buildAtlasBrain({
       atlasMemory
     );
 
-  const decisionHistory =
+
+  /*
+   * These fallback models preserve the existing dashboard contract when
+   * no persisted lifecycle record exists yet.
+   *
+   * They are display previews only. They are not supplied to the learning
+   * engine unless they exist in persisted history.
+   */
+  const fallbackDecision =
     buildDecisionHistory(
       atlasRecommendation
     );
 
-  const outcome =
-    buildAtlasOutcome(
-      decisionHistory
+  const decisionHistory =
+    getLatestDecision(
+      history,
+      fallbackDecision
     );
 
-  const playerAction =
+  const fallbackPlayerAction =
     buildPlayerAction(
       decisionHistory
     );
 
-  const outcomeValidation =
+  const playerAction =
+    getActionForDecision(
+      history,
+      decisionHistory,
+      fallbackPlayerAction
+    );
+
+  const fallbackOutcome =
+    buildAtlasOutcome(
+      decisionHistory
+    );
+
+  const outcome =
+    getOutcomeForDecision(
+      history,
+      decisionHistory,
+      fallbackOutcome
+    );
+
+  const fallbackOutcomeValidation =
     buildOutcomeValidation(
       playerAction,
       outcome
     );
 
+  const outcomeValidation =
+    getValidationForAction(
+      history,
+      playerAction,
+      outcome,
+      fallbackOutcomeValidation
+    );
+
+
+  /*
+   * Learning uses persisted history only.
+   *
+   * Generated fallback models are intentionally excluded so Atlas does not
+   * learn from recommendations or outcomes that the player never confirmed.
+   */
   const learningProfile =
     buildAtlasLearning(
-      [
-        decisionHistory,
-      ],
-      [
-        outcomeValidation,
-      ]
+      history.decisions,
+      history.validations
     );
 
   const memoryInsight =
@@ -337,10 +477,16 @@ export function buildAtlasBrain({
           "recommended",
           {
             selectedVehicle:
-              missionStrategy.loadout.vehicle?.name,
+              missionStrategy
+                .loadout
+                .vehicle
+                ?.name,
 
             selectedWeapon:
-              missionStrategy.loadout.weapon?.name,
+              missionStrategy
+                .loadout
+                .weapon
+                ?.name,
           }
         )
       : null;
@@ -353,7 +499,8 @@ export function buildAtlasBrain({
       : null;
 
   const missionLearningUpdate =
-    missionLearning && missionOutcome
+    missionLearning &&
+    missionOutcome
       ? buildMissionLearningUpdate(
           missionOutcome,
           missionLearning
@@ -374,6 +521,7 @@ export function buildAtlasBrain({
       atlasMemory,
       nextAction
     );
+
 
   return {
     atlasRecommendations,
@@ -406,6 +554,7 @@ export function buildAtlasBrain({
     atlasReasoning,
 
     sessionPlan,
+
     sessionReasoning,
 
     nextAction,
@@ -413,13 +562,17 @@ export function buildAtlasBrain({
     atlasImpact,
 
     empireForecast,
+
     empireSimulation,
+
     empireTimeline,
 
     dailyObjectives,
 
     atlasMemory,
+
     memoryHistory,
+
     memoryInsight,
 
     intelligenceFeed,
@@ -437,6 +590,8 @@ export function buildAtlasBrain({
     learningProfile,
 
     recommendationPrediction,
+
+    history,
   };
 }
 

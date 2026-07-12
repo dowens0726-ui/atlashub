@@ -20,24 +20,61 @@ import {
   AtlasSessionPlanCard,
 } from "@/app/components/intelligence";
 
-import { useDashboard } from "@/app/hooks/useDashboard";
-import { buildAtlasBrain } from "@/app/intelligence";
+import {
+  useAtlasIntelligence,
+} from "@/app/hooks/useAtlasIntelligence";
+
+import {
+  useDashboard,
+} from "@/app/hooks/useDashboard";
+
+import {
+  buildAtlasBrain,
+} from "@/app/intelligence";
 
 
 export default function DashboardClient() {
-  const dashboard = useDashboard();
+  const dashboard =
+    useDashboard();
 
-  const intelligence = useMemo(
-    () =>
-      buildAtlasBrain({
-        profile: dashboard.profile,
-        empire: dashboard.empire,
-      }),
-    [
-      dashboard.profile,
-      dashboard.empire,
-    ]
-  );
+  const {
+    decisions,
+    actions,
+    outcomes,
+    validations,
+  } =
+    useAtlasIntelligence();
+
+
+  const intelligence =
+    useMemo(
+      () =>
+        buildAtlasBrain({
+          profile:
+            dashboard.profile,
+
+          empire:
+            dashboard.empire,
+
+          history: {
+            decisions,
+
+            actions,
+
+            outcomes,
+
+            validations,
+          },
+        }),
+      [
+        dashboard.profile,
+        dashboard.empire,
+        decisions,
+        actions,
+        outcomes,
+        validations,
+      ]
+    );
 
 
   return (
@@ -71,111 +108,138 @@ export default function DashboardClient() {
       atlas={
         <AtlasAIPanel
           recommendation={
-            intelligence.atlasRecommendation
+            intelligence
+              .atlasRecommendation
           }
 
           personalPicks={
-            intelligence.personalPicks
+            intelligence
+              .personalPicks
           }
 
           reasoning={
-            intelligence.atlasReasoning
+            intelligence
+              .atlasReasoning
           }
 
           nextAction={
-            intelligence.nextAction
+            intelligence
+              .nextAction
           }
 
           impact={
-            intelligence.atlasImpact
+            intelligence
+              .atlasImpact
           }
 
           forecast={
-            intelligence.empireForecast
+            intelligence
+              .empireForecast
           }
 
           simulation={
-            intelligence.empireSimulation
+            intelligence
+              .empireSimulation
           }
 
           strategyReport={
-            intelligence.strategyReport
+            intelligence
+              .strategyReport
           }
 
           adaptiveStrategy={
-            intelligence.adaptiveStrategy
+            intelligence
+              .adaptiveStrategy
           }
 
           strategyFeedback={
-            intelligence.strategyFeedback
+            intelligence
+              .strategyFeedback
           }
 
           strategicPlan={
-            intelligence.strategicPlan
+            intelligence
+              .strategicPlan
           }
 
           missionStrategy={
-            intelligence.missionStrategy
+            intelligence
+              .missionStrategy
           }
 
           missionLearning={
-            intelligence.missionLearning
+            intelligence
+              .missionLearning
           }
 
           missionOutcome={
-            intelligence.missionOutcome
+            intelligence
+              .missionOutcome
           }
 
           missionLearningUpdate={
-            intelligence.missionLearningUpdate
+            intelligence
+              .missionLearningUpdate
           }
 
           learningProfile={
-            intelligence.learningProfile
+            intelligence
+              .learningProfile
           }
 
           playerAction={
-            intelligence.playerAction
+            intelligence
+              .playerAction
           }
 
           outcome={
-            intelligence.outcome
+            intelligence
+              .outcome
           }
 
           outcomeValidation={
-            intelligence.outcomeValidation
+            intelligence
+              .outcomeValidation
           }
 
           playerIdentity={
-            intelligence.playerIdentity
+            intelligence
+              .playerIdentity
           }
 
           identityAdvisor={
-            intelligence.identityAdvisor
+            intelligence
+              .identityAdvisor
           }
 
           memoryInsight={
-            intelligence.memoryInsight
+            intelligence
+              .memoryInsight
           }
 
           timeline={
-            intelligence.empireTimeline
+            intelligence
+              .empireTimeline
           }
 
           memory={
-            intelligence.atlasMemory
+            intelligence
+              .atlasMemory
           }
 
           memoryHistory={
-            intelligence.memoryHistory
+            intelligence
+              .memoryHistory
           }
 
           dailyObjectives={
-            intelligence.dailyObjectives
+            intelligence
+              .dailyObjectives
           }
 
           insights={
-            intelligence.intelligenceFeed
+            intelligence
+              .intelligenceFeed
           }
         />
       }
@@ -183,22 +247,35 @@ export default function DashboardClient() {
 
       session={
         <AtlasSessionPlanCard
-          plan={intelligence.sessionPlan}
-          reasoning={intelligence.sessionReasoning}
+          plan={
+            intelligence
+              .sessionPlan
+          }
+
+          reasoning={
+            intelligence
+              .sessionReasoning
+          }
         />
       }
 
 
       insights={
         <EmpireInsights
-          insights={dashboard.empire.insights}
+          insights={
+            dashboard
+              .empire
+              .insights
+          }
         />
       }
 
 
       objectives={
         <DashboardObjectives
-          objectives={dashboard.objectives}
+          objectives={
+            dashboard.objectives
+          }
         />
       }
 
