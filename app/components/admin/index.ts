@@ -11,5 +11,9 @@ export {
 } from "./GeneratedCode";
 
 export {
+  default as GeneratedFile,
+} from "./GeneratedFile";
+
+export {
   default as VehicleGenerator,
 } from "./VehicleGenerator";

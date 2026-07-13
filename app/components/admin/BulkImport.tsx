@@ -13,7 +13,7 @@ import type {
   VehicleDrivetrain,
 } from "@/app/types";
 
-import GeneratedCode from "./GeneratedCode";
+import GeneratedFile from "./GeneratedFile";
 
 
 type ImportFormat =
@@ -24,35 +24,20 @@ type ImportFormat =
 
 type VehicleImportCandidate = {
   slug: string;
-
   name: string;
-
   manufacturer: string;
-
   class: string;
-
   image: string;
-
   price: number;
-
   topSpeed: number;
-
   acceleration: number;
-
   handling: number;
-
   braking: number;
-
   drivetrain: VehicleDrivetrain;
-
   seats: number;
-
   location: string;
-
   description: string;
-
   featured: boolean;
-
   tags: string[];
 };
 
@@ -69,6 +54,15 @@ type VehicleImportRow = {
 };
 
 
+type GeneratedVehicleFile = {
+  filename: string;
+  exportName: string;
+  manufacturer: string;
+  code: string;
+  vehicleCount: number;
+};
+
+
 type ParsedImport = {
   format: ImportFormat;
 
@@ -77,21 +71,6 @@ type ParsedImport = {
   fatalError:
     string | null;
 };
-
-
-const REQUIRED_FIELDS = [
-  "name",
-  "manufacturer",
-  "class",
-  "price",
-  "topSpeed",
-  "acceleration",
-  "handling",
-  "braking",
-  "seats",
-  "location",
-  "description",
-] as const;
 
 
 const VALID_DRIVETRAINS:
@@ -105,7 +84,8 @@ const VALID_DRIVETRAINS:
 
 const CSV_TEMPLATE = `name,manufacturer,class,price,topSpeed,acceleration,handling,braking,drivetrain,seats,location,description,featured,tags
 Banshee,Bravado,Sports,105000,117,80,75,70,RWD,2,Legendary Motorsport,"An iconic American sports car famous for street racing.",true,"sports,street-racing,iconic"
-Buffalo,Bravado,Sports,35000,112,75,72,68,RWD,4,Southern San Andreas Super Autos,"A practical four-door performance sedan.",false,"sports,sedan,bravado"`;
+Buffalo,Bravado,Sports,35000,112,75,72,68,RWD,4,Southern San Andreas Super Autos,"A practical four-door performance sedan.",false,"sports,sedan,bravado"
+Elegy RH8,Annis,Sports,95000,118,82,81,74,AWD,2,Legendary Motorsport,"A legendary tuner car with exceptional grip and balance.",true,"sports,tuner,awd"`;
 
 
 const JSON_TEMPLATE = `[
@@ -124,8 +104,41 @@ const JSON_TEMPLATE = `[
     "description": "An iconic American sports car famous for street racing.",
     "featured": true,
     "tags": ["sports", "street-racing", "iconic"]
+  },
+  {
+    "name": "Elegy RH8",
+    "manufacturer": "Annis",
+    "class": "Sports",
+    "price": 95000,
+    "topSpeed": 118,
+    "acceleration": 82,
+    "handling": 81,
+    "braking": 74,
+    "drivetrain": "AWD",
+    "seats": 2,
+    "location": "Legendary Motorsport",
+    "description": "A legendary tuner car with exceptional grip and balance.",
+    "featured": true,
+    "tags": ["sports", "tuner", "awd"]
   }
 ]`;
+
+
+function isRecord(
+  value: unknown
+): value is Record<
+  string,
+  unknown
+> {
+  return (
+    typeof value ===
+      "object" &&
+    value !== null &&
+    !Array.isArray(
+      value
+    )
+  );
+}
 
 
 function slugify(
@@ -147,6 +160,59 @@ function slugify(
       /^-+|-+$/g,
       ""
     );
+}
+
+
+function toIdentifier(
+  value: string
+): string {
+  const words =
+    value
+      .normalize("NFD")
+      .replace(
+        /[\u0300-\u036f]/g,
+        ""
+      )
+      .replace(
+        /[^a-zA-Z0-9]+/g,
+        " "
+      )
+      .trim()
+      .split(
+        /\s+/
+      )
+      .filter(
+        Boolean
+      );
+
+  if (
+    words.length ===
+    0
+  ) {
+    return "unknown";
+  }
+
+  const [
+    firstWord,
+    ...remainingWords
+  ] =
+    words;
+
+  const identifier =
+    firstWord.toLowerCase() +
+    remainingWords
+      .map(
+        (word) =>
+          word.charAt(0).toUpperCase() +
+          word.slice(1).toLowerCase()
+      )
+      .join("");
+
+  return /^\d/.test(
+    identifier
+  )
+    ? `manufacturer${identifier}`
+    : identifier;
 }
 
 
@@ -194,10 +260,10 @@ function parseCsv(
   const rows:
     string[][] = [];
 
-  let row:
+  let currentRow:
     string[] = [];
 
-  let field =
+  let currentField =
     "";
 
   let insideQuotes =
@@ -223,7 +289,8 @@ function parseCsv(
         insideQuotes &&
         nextCharacter === '"'
       ) {
-        field += '"';
+        currentField +=
+          '"';
 
         index += 1;
       } else {
@@ -239,11 +306,11 @@ function parseCsv(
       character === "," &&
       !insideQuotes
     ) {
-      row.push(
-        field.trim()
+      currentRow.push(
+        currentField.trim()
       );
 
-      field =
+      currentField =
         "";
 
       continue;
@@ -264,48 +331,50 @@ function parseCsv(
         index += 1;
       }
 
-      row.push(
-        field.trim()
+      currentRow.push(
+        currentField.trim()
       );
 
       if (
-        row.some(
+        currentRow.some(
           (value) =>
-            value.length > 0
+            value.length >
+            0
         )
       ) {
         rows.push(
-          row
+          currentRow
         );
       }
 
-      row =
+      currentRow =
         [];
 
-      field =
+      currentField =
         "";
 
       continue;
     }
 
 
-    field +=
+    currentField +=
       character;
   }
 
 
-  row.push(
-    field.trim()
+  currentRow.push(
+    currentField.trim()
   );
 
   if (
-    row.some(
+    currentRow.some(
       (value) =>
-        value.length > 0
+        value.length >
+        0
     )
   ) {
     rows.push(
-      row
+      currentRow
     );
   }
 
@@ -316,17 +385,21 @@ function parseCsv(
 
 function csvRowsToRecords(
   input: string
-): Record<string, unknown>[] {
+): Record<
+  string,
+  unknown
+>[] {
   const rows =
     parseCsv(
       input
     );
 
   if (
-    rows.length < 2
+    rows.length <
+    2
   ) {
     throw new Error(
-      "CSV input must contain a header row and at least one vehicle row."
+      "CSV input must include a header row and at least one vehicle row."
     );
   }
 
@@ -342,7 +415,10 @@ function csvRowsToRecords(
     .map(
       (row) => {
         const record:
-          Record<string, unknown> = {};
+          Record<
+            string,
+            unknown
+          > = {};
 
         headers.forEach(
           (
@@ -363,11 +439,15 @@ function csvRowsToRecords(
 
 function jsonToRecords(
   input: string
-): Record<string, unknown>[] {
+): Record<
+  string,
+  unknown
+>[] {
   const parsedValue:
-    unknown = JSON.parse(
-      input
-    );
+    unknown =
+      JSON.parse(
+        input
+      );
 
 
   if (
@@ -436,28 +516,20 @@ function jsonToRecords(
 
 
   throw new Error(
-    "JSON input must be an object, an array of objects, or an object containing a vehicles array."
+    "JSON input must be a vehicle object, an array of vehicle objects, or an object containing a vehicles array."
   );
 }
 
 
-function isRecord(
-  value: unknown
-): value is Record<string, unknown> {
-  return (
-    typeof value ===
-      "object" &&
-    value !== null &&
-    !Array.isArray(
-      value
-    )
-  );
-}
-
-
-function normalizedRecord(
-  record: Record<string, unknown>
-): Record<string, unknown> {
+function normalizeRecord(
+  record: Record<
+    string,
+    unknown
+  >
+): Record<
+  string,
+  unknown
+> {
   return Object.fromEntries(
     Object.entries(
       record
@@ -479,7 +551,10 @@ function normalizedRecord(
 
 
 function getValue(
-  record: Record<string, unknown>,
+  record: Record<
+    string,
+    unknown
+  >,
   keys: string[]
 ): unknown {
   for (
@@ -639,10 +714,13 @@ function parseDrivetrain(
 
 function buildCandidate(
   sourceRecord:
-    Record<string, unknown>
+    Record<
+      string,
+      unknown
+    >
 ): VehicleImportCandidate {
   const record =
-    normalizedRecord(
+    normalizeRecord(
       sourceRecord
     );
 
@@ -860,63 +938,65 @@ function validateCandidate(
     string[] = [];
 
 
-  for (
-    const field of
-      REQUIRED_FIELDS
-  ) {
-    const value =
-      vehicle[field];
-
-    if (
-      typeof value ===
-        "string" &&
-      !value.trim()
-    ) {
-      errors.push(
-        `Missing required field: ${field}.`
-      );
-    }
-
-    if (
-      typeof value ===
-        "number" &&
-      !Number.isFinite(
-        value
-      )
-    ) {
-      errors.push(
-        `Invalid numeric field: ${field}.`
-      );
-    }
+  if (!vehicle.name) {
+    errors.push(
+      "Vehicle name is required."
+    );
   }
 
-
   if (
-    !vehicle.slug
+    !vehicle.manufacturer
   ) {
+    errors.push(
+      "Manufacturer is required."
+    );
+  }
+
+  if (!vehicle.class) {
+    errors.push(
+      "Vehicle class is required."
+    );
+  }
+
+  if (!vehicle.slug) {
     errors.push(
       "A slug could not be generated."
     );
   }
 
-
   if (
-    vehicle.seats < 1
+    !vehicle.location
   ) {
     errors.push(
-      "Seats must be at least 1."
+      "Location is required."
     );
   }
 
+  if (
+    !vehicle.description
+  ) {
+    errors.push(
+      "Description is required."
+    );
+  }
 
   if (
-    vehicle.price < 0
+    vehicle.price <
+    0
   ) {
     errors.push(
       "Price cannot be negative."
     );
   }
 
+  if (
+    vehicle.seats <
+    1
+  ) {
+    errors.push(
+      "Seats must be at least 1."
+    );
+  }
 
   if (
     seenSlugs.has(
@@ -932,30 +1012,28 @@ function validateCandidate(
     );
   }
 
-
   if (
     existingSlugs.has(
       vehicle.slug
     )
   ) {
     warnings.push(
-      `A vehicle with slug "${vehicle.slug}" already exists in Atlas.`
+      `Atlas already contains a vehicle with slug "${vehicle.slug}".`
     );
   }
-
 
   if (
     vehicle.tags.length ===
     0
   ) {
     warnings.push(
-      "No tags were provided."
+      "No tags were supplied."
     );
   }
 
-
   if (
-    vehicle.topSpeed === 0
+    vehicle.topSpeed ===
+    0
   ) {
     warnings.push(
       "Top speed is set to 0."
@@ -1004,7 +1082,8 @@ function parseImport(
 
   try {
     const records =
-      format === "json"
+      format ===
+      "json"
         ? jsonToRecords(
             trimmedInput
           )
@@ -1101,9 +1180,54 @@ function formatVehicleCode(
 }
 
 
-function buildGeneratedCode(
+function buildManufacturerFile(
+  manufacturer: string,
+  manufacturerVehicles:
+    VehicleImportCandidate[]
+): GeneratedVehicleFile {
+  const filename =
+    `${slugify(
+      manufacturer
+    )}.ts`;
+
+  const exportName =
+    `${toIdentifier(
+      manufacturer
+    )}Vehicles`;
+
+  const code = `import type { Vehicle } from "@/app/types";
+import { createVehicle } from "../factories";
+
+export const ${exportName}: Vehicle[] = [
+${manufacturerVehicles
+  .map(
+    formatVehicleCode
+  )
+  .join(
+    "\n\n"
+  )}
+];
+`;
+
+
+  return {
+    filename,
+
+    exportName,
+
+    manufacturer,
+
+    code,
+
+    vehicleCount:
+      manufacturerVehicles.length,
+  };
+}
+
+
+function buildManufacturerFiles(
   rows: VehicleImportRow[]
-): string {
+): GeneratedVehicleFile[] {
   const validVehicles =
     rows
       .filter(
@@ -1119,25 +1243,105 @@ function buildGeneratedCode(
       );
 
 
+  const groupedVehicles =
+    new Map<
+      string,
+      VehicleImportCandidate[]
+    >();
+
+
+  validVehicles.forEach(
+    (vehicle) => {
+      const currentGroup =
+        groupedVehicles.get(
+          vehicle.manufacturer
+        ) ??
+        [];
+
+      groupedVehicles.set(
+        vehicle.manufacturer,
+        [
+          ...currentGroup,
+          vehicle,
+        ]
+      );
+    }
+  );
+
+
+  return Array.from(
+    groupedVehicles.entries()
+  )
+    .sort(
+      (
+        [
+          firstManufacturer,
+        ],
+        [
+          secondManufacturer,
+        ]
+      ) =>
+        firstManufacturer.localeCompare(
+          secondManufacturer
+        )
+    )
+    .map(
+      (
+        [
+          manufacturer,
+          manufacturerVehicles,
+        ]
+      ) =>
+        buildManufacturerFile(
+          manufacturer,
+          manufacturerVehicles
+        )
+    );
+}
+
+
+function buildIndexCode(
+  generatedFiles:
+    GeneratedVehicleFile[]
+): string {
   if (
-    validVehicles.length ===
+    generatedFiles.length ===
     0
   ) {
-    return "// Add valid CSV or JSON vehicle data to generate Atlas vehicle objects.";
+    return "// Import valid vehicles to generate an index suggestion.";
   }
 
 
-  return `import type { Vehicle } from "@/app/types";
-import { createVehicle } from "../factories";
+  const imports =
+    generatedFiles
+      .map(
+        (file) =>
+          `import { ${file.exportName} } from "./${file.filename.replace(
+            /\.ts$/,
+            ""
+          )}";`
+      )
+      .join(
+        "\n"
+      );
 
-export const importedVehicles: Vehicle[] = [
-${validVehicles
-  .map(
-    formatVehicleCode
-  )
-  .join(
-    "\n\n"
-  )}
+  const arrayEntries =
+    generatedFiles
+      .map(
+        (file) =>
+          `  ...${file.exportName},`
+      )
+      .join(
+        "\n"
+      );
+
+
+  return `import type { Vehicle } from "@/app/types";
+
+${imports}
+
+export const manufacturerVehicles: Vehicle[] = [
+${arrayEntries}
 ];
 `;
 }
@@ -1179,10 +1383,38 @@ export default function BulkImport() {
     );
 
 
-  const generatedCode =
+  const validRows =
     useMemo(
       () =>
-        buildGeneratedCode(
+        parsedImport.rows.filter(
+          (row) =>
+            row.errors.length ===
+            0
+        ),
+      [
+        parsedImport.rows,
+      ]
+    );
+
+
+  const invalidRows =
+    useMemo(
+      () =>
+        parsedImport.rows.filter(
+          (row) =>
+            row.errors.length >
+            0
+        ),
+      [
+        parsedImport.rows,
+      ]
+    );
+
+
+  const generatedFiles =
+    useMemo(
+      () =>
+        buildManufacturerFiles(
           parsedImport.rows
         ),
       [
@@ -1191,19 +1423,15 @@ export default function BulkImport() {
     );
 
 
-  const validRows =
-    parsedImport.rows.filter(
-      (row) =>
-        row.errors.length ===
-        0
-    );
-
-
-  const invalidRows =
-    parsedImport.rows.filter(
-      (row) =>
-        row.errors.length >
-        0
+  const indexCode =
+    useMemo(
+      () =>
+        buildIndexCode(
+          generatedFiles
+        ),
+      [
+        generatedFiles,
+      ]
     );
 
 
@@ -1221,8 +1449,9 @@ export default function BulkImport() {
             </h2>
 
             <p className="mt-2 max-w-3xl text-sm leading-6 text-zinc-400">
-              Atlas automatically detects the format, validates each row, checks
-              duplicate slugs, and generates production-ready vehicle objects.
+              Atlas validates the imported vehicles, groups valid records by
+              manufacturer, and generates individually downloadable TypeScript
+              files.
             </p>
           </div>
 
@@ -1277,9 +1506,9 @@ export default function BulkImport() {
         />
 
 
-        <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
           <Metric
-            label="Detected Format"
+            label="Format"
             value={
               parsedImport.format.toUpperCase()
             }
@@ -1306,9 +1535,17 @@ export default function BulkImport() {
               invalidRows.length.toString()
             }
             tone={
-              invalidRows.length > 0
+              invalidRows.length >
+              0
                 ? "negative"
                 : "default"
+            }
+          />
+
+          <Metric
+            label="Generated Files"
+            value={
+              generatedFiles.length.toString()
             }
           />
         </div>
@@ -1328,7 +1565,8 @@ export default function BulkImport() {
       </section>
 
 
-      {parsedImport.rows.length > 0 ? (
+      {parsedImport.rows.length >
+      0 ? (
         <section className="rounded-2xl border border-zinc-800 bg-zinc-950 p-6">
           <p className="text-xs font-black uppercase tracking-[0.3em] text-cyan-400">
             Validation Results
@@ -1343,7 +1581,9 @@ export default function BulkImport() {
               (row) => (
                 <ImportRowCard
                   key={`${row.rowNumber}-${row.vehicle?.slug ?? "invalid"}`}
-                  row={row}
+                  row={
+                    row
+                  }
                 />
               )
             )}
@@ -1352,11 +1592,59 @@ export default function BulkImport() {
       ) : null}
 
 
-      <GeneratedCode
-        code={
-          generatedCode
-        }
-      />
+      {generatedFiles.length >
+      0 ? (
+        <section className="space-y-6">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.3em] text-violet-400">
+              Smart Export
+            </p>
+
+            <h2 className="mt-3 text-3xl font-black text-white">
+              Manufacturer Files
+            </h2>
+
+            <p className="mt-2 text-sm leading-6 text-zinc-400">
+              Download each file and place it inside
+              <span className="font-mono text-zinc-200">
+                {" "}
+                app/data/vehicles
+              </span>
+              .
+            </p>
+          </div>
+
+          {generatedFiles.map(
+            (file) => (
+              <GeneratedFile
+                key={
+                  file.filename
+                }
+                filename={
+                  file.filename
+                }
+                code={
+                  file.code
+                }
+                description={`${file.manufacturer} — ${file.vehicleCount} ${
+                  file.vehicleCount ===
+                  1
+                    ? "vehicle"
+                    : "vehicles"
+                }`}
+              />
+            )
+          )}
+
+          <GeneratedFile
+            filename="vehicles-index-snippet.ts"
+            code={
+              indexCode
+            }
+            description="Suggested manufacturer imports and combined vehicle export. Merge these entries into the existing app/data/vehicles/index.ts file."
+          />
+        </section>
+      ) : null}
     </div>
   );
 }
@@ -1446,12 +1734,15 @@ function ImportRowCard({
       ) : null}
 
 
-      {row.errors.length > 0 ? (
+      {row.errors.length >
+      0 ? (
         <div className="mt-4 space-y-2">
           {row.errors.map(
             (error) => (
               <p
-                key={error}
+                key={
+                  error
+                }
                 className="text-sm font-semibold text-red-300"
               >
                 ✕ {error}
@@ -1462,12 +1753,15 @@ function ImportRowCard({
       ) : null}
 
 
-      {row.warnings.length > 0 ? (
+      {row.warnings.length >
+      0 ? (
         <div className="mt-4 space-y-2">
           {row.warnings.map(
             (warning) => (
               <p
-                key={warning}
+                key={
+                  warning
+                }
                 className="text-sm font-semibold text-amber-300"
               >
                 ! {warning}
