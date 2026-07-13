@@ -1,37 +1,41 @@
-import AtlasAdvisorCard from "./AtlasAdvisorCard";
 import AtlasActionTrackerCard from "./AtlasActionTrackerCard";
+import AtlasAdvisorCard from "./AtlasAdvisorCard";
+import AtlasBehaviorCard from "./AtlasBehaviorCard";
 import AtlasCoreCard from "./AtlasCoreCard";
 import AtlasDailyObjectivesCard from "./AtlasDailyObjectivesCard";
 import AtlasEvolutionCard from "./AtlasEvolutionCard";
 import AtlasIdentityCard from "./AtlasIdentityCard";
-import AtlasMissionStrategyCard from "./AtlasMissionStrategyCard";
-import AtlasOutcomeCard from "./AtlasOutcomeCard";
-import AtlasValidationCard from "./AtlasValidationCard";
 import AtlasIntelligenceFeed from "./AtlasIntelligenceFeed";
 import AtlasMemoryCard from "./AtlasMemoryCard";
 import AtlasMemoryInsightCard from "./AtlasMemoryInsightCard";
+import AtlasMissionEvolutionCard from "./AtlasMissionEvolutionCard";
+import AtlasMissionStrategyCard from "./AtlasMissionStrategyCard";
+import AtlasOutcomeCard from "./AtlasOutcomeCard";
 import AtlasStatusCard from "./AtlasStatusCard";
-import AtlasStrategyReportCard from "./AtlasStrategyReportCard";
-import AtlasStrategyInsightCard from "./AtlasStrategyInsightCard";
-import AtlasStrategyFeedbackCard from "./AtlasStrategyFeedbackCard";
 import AtlasStrategicPlanCard from "./AtlasStrategicPlanCard";
+import AtlasStrategyFeedbackCard from "./AtlasStrategyFeedbackCard";
+import AtlasStrategyInsightCard from "./AtlasStrategyInsightCard";
+import AtlasStrategyReportCard from "./AtlasStrategyReportCard";
+import AtlasValidationCard from "./AtlasValidationCard";
 import EmpireForecastCard from "./EmpireForecastCard";
 import EmpireSimulatorCard from "./EmpireSimulatorCard";
 import EmpireTimelineCard from "./EmpireTimelineCard";
 import PersonalPicksCard from "./PersonalPicksCard";
-import AtlasMissionEvolutionCard from "./AtlasMissionEvolutionCard";
 
-import { GlowCard } from "@/app/components/ui";
+import {
+  GlowCard,
+} from "@/app/components/ui";
 
 import type {
   AtlasAdaptiveStrategy,
+  AtlasBehaviorProfile,
   AtlasImpact,
   AtlasLearningProfile,
   AtlasMemory,
   AtlasMemoryInsight,
   AtlasMissionLearning,
-  AtlasMissionOutcome,
   AtlasMissionLearningUpdate,
+  AtlasMissionOutcome,
   AtlasMissionStrategy,
   AtlasOutcome,
   AtlasPlayerAction,
@@ -54,59 +58,89 @@ import type {
 
 
 type AtlasAIPanelProps = {
-  recommendation: AtlasRecommendation;
+  recommendation:
+    AtlasRecommendation;
 
-  personalPicks: AtlasRecommendation[];
+  personalPicks:
+    AtlasRecommendation[];
 
-  reasoning: AtlasReasoning;
+  reasoning:
+    AtlasReasoning;
 
-  nextAction: NextAction;
+  nextAction:
+    NextAction;
 
-  impact: AtlasImpact;
+  impact:
+    AtlasImpact;
 
-  forecast: EmpireForecast;
+  forecast:
+    EmpireForecast;
 
-  simulation: EmpireSimulation;
+  simulation:
+    EmpireSimulation;
 
-  strategyReport: AtlasStrategyReport;
+  strategyReport:
+    AtlasStrategyReport;
 
-  adaptiveStrategy: AtlasAdaptiveStrategy;
+  adaptiveStrategy:
+    AtlasAdaptiveStrategy;
 
-  strategyFeedback: AtlasStrategyFeedback;
+  strategyFeedback:
+    AtlasStrategyFeedback;
 
-  strategicPlan: AtlasStrategicPlan;
+  strategicPlan:
+    AtlasStrategicPlan;
 
-  missionStrategy: AtlasMissionStrategy;
+  missionStrategy:
+    AtlasMissionStrategy;
 
-  missionLearning: AtlasMissionLearning | null;
+  missionLearning:
+    AtlasMissionLearning | null;
 
-  missionOutcome: AtlasMissionOutcome | null;
+  missionOutcome:
+    AtlasMissionOutcome | null;
 
-  missionLearningUpdate: AtlasMissionLearningUpdate | null;
+  missionLearningUpdate:
+    AtlasMissionLearningUpdate | null;
 
-  learningProfile: AtlasLearningProfile;
+  learningProfile:
+    AtlasLearningProfile;
 
-  outcome: AtlasOutcome;
+  behaviorProfile:
+    AtlasBehaviorProfile;
 
-  playerAction: AtlasPlayerAction;
+  outcome:
+    AtlasOutcome;
 
-  outcomeValidation: AtlasValidatedOutcome;
+  playerAction:
+    AtlasPlayerAction;
 
-  playerIdentity: AtlasPlayerIdentity;
+  outcomeValidation:
+    AtlasValidatedOutcome;
 
-  identityAdvisor: IdentityAdvisorResult;
+  playerIdentity:
+    AtlasPlayerIdentity;
 
-  timeline: EmpireTimelinePoint[];
+  identityAdvisor:
+    IdentityAdvisorResult;
 
-  memory: AtlasMemory;
+  timeline:
+    EmpireTimelinePoint[];
 
-  memoryHistory: MemoryHistoryItem[];
+  memory:
+    AtlasMemory;
 
-  memoryInsight: AtlasMemoryInsight;
+  memoryHistory:
+    MemoryHistoryItem[];
 
-  dailyObjectives: DailyObjective[];
+  memoryInsight:
+    AtlasMemoryInsight;
 
-  insights: IntelligenceInsight[];
+  dailyObjectives:
+    DailyObjective[];
+
+  insights:
+    IntelligenceInsight[];
 };
 
 
@@ -127,6 +161,7 @@ export default function AtlasAIPanel({
   missionOutcome,
   missionLearningUpdate,
   learningProfile,
+  behaviorProfile,
   outcome,
   playerAction,
   outcomeValidation,
@@ -157,15 +192,24 @@ export default function AtlasAIPanel({
 
 
       <div className="space-y-10">
-
         <section>
           <p className="mb-4 text-xs font-black uppercase tracking-[0.3em] text-cyan-400">
             Player Identity
           </p>
 
-          <AtlasIdentityCard
-            identity={playerIdentity}
-          />
+          <div className="space-y-6">
+            <AtlasIdentityCard
+              identity={
+                playerIdentity
+              }
+            />
+
+            <AtlasBehaviorCard
+              behavior={
+                behaviorProfile
+              }
+            />
+          </div>
         </section>
 
 
@@ -175,23 +219,29 @@ export default function AtlasAIPanel({
           </p>
 
           <div className="space-y-6">
-
             <AtlasEvolutionCard
-              learning={learningProfile}
+              learning={
+                learningProfile
+              }
             />
 
             <AtlasActionTrackerCard
-              action={playerAction}
+              action={
+                playerAction
+              }
             />
 
             <AtlasOutcomeCard
-              outcome={outcome}
+              outcome={
+                outcome
+              }
             />
 
             <AtlasValidationCard
-              validation={outcomeValidation}
+              validation={
+                outcomeValidation
+              }
             />
-
           </div>
         </section>
 
@@ -202,36 +252,52 @@ export default function AtlasAIPanel({
           </p>
 
           <div className="space-y-6">
-
             <AtlasStrategyReportCard
-              report={strategyReport}
+              report={
+                strategyReport
+              }
             />
 
             <AtlasStrategyInsightCard
-              strategy={adaptiveStrategy}
+              strategy={
+                adaptiveStrategy
+              }
             />
 
             <AtlasStrategyFeedbackCard
-              feedback={strategyFeedback}
+              feedback={
+                strategyFeedback
+              }
             />
 
             <AtlasStrategicPlanCard
-              plan={strategicPlan}
+              plan={
+                strategicPlan
+              }
             />
 
             <AtlasMissionStrategyCard
-  strategy={missionStrategy}
-  missionLearning={missionLearning}
-/>
+              strategy={
+                missionStrategy
+              }
+              missionLearning={
+                missionLearning
+              }
+            />
 
-{missionLearning && (
-  <AtlasMissionEvolutionCard
-    learning={missionLearning}
-    outcome={missionOutcome}
-    update={missionLearningUpdate}
-  />
-)}
-
+            {missionLearning ? (
+              <AtlasMissionEvolutionCard
+                learning={
+                  missionLearning
+                }
+                outcome={
+                  missionOutcome
+                }
+                update={
+                  missionLearningUpdate
+                }
+              />
+            ) : null}
           </div>
         </section>
 
@@ -242,10 +308,18 @@ export default function AtlasAIPanel({
           </p>
 
           <AtlasCoreCard
-            action={nextAction}
-            impact={impact}
-            recommendation={recommendation}
-            reasoning={reasoning}
+            action={
+              nextAction
+            }
+            impact={
+              impact
+            }
+            recommendation={
+              recommendation
+            }
+            reasoning={
+              reasoning
+            }
           />
         </section>
 
@@ -256,23 +330,29 @@ export default function AtlasAIPanel({
           </p>
 
           <div className="space-y-6">
-
             <PersonalPicksCard
-              picks={personalPicks}
+              picks={
+                personalPicks
+              }
             />
 
             <EmpireSimulatorCard
-              simulation={simulation}
+              simulation={
+                simulation
+              }
             />
 
             <EmpireForecastCard
-              forecast={forecast}
+              forecast={
+                forecast
+              }
             />
 
             <EmpireTimelineCard
-              points={timeline}
+              points={
+                timeline
+              }
             />
-
           </div>
         </section>
 
@@ -283,35 +363,48 @@ export default function AtlasAIPanel({
           </p>
 
           <div className="space-y-6">
-
             <AtlasMemoryCard
-              memory={memory}
-              history={memoryHistory}
+              memory={
+                memory
+              }
+              history={
+                memoryHistory
+              }
             />
 
             <AtlasMemoryInsightCard
-              insight={memoryInsight}
+              insight={
+                memoryInsight
+              }
             />
 
             <AtlasDailyObjectivesCard
-              objectives={dailyObjectives}
+              objectives={
+                dailyObjectives
+              }
             />
 
             <AtlasStatusCard />
 
             <AtlasAdvisorCard
-              recommendation={recommendation}
-              reasoning={reasoning}
-              identityAdvisor={identityAdvisor}
+              recommendation={
+                recommendation
+              }
+              reasoning={
+                reasoning
+              }
+              identityAdvisor={
+                identityAdvisor
+              }
             />
 
             <AtlasIntelligenceFeed
-              insights={insights}
+              insights={
+                insights
+              }
             />
-
           </div>
         </section>
-
       </div>
     </GlowCard>
   );

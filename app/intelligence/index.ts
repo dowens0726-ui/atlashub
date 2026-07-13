@@ -24,6 +24,7 @@ export * from "./ranking.engine";
 export * from "./match.engine";
 export * from "./decision-history.engine";
 export * from "./learning.engine";
+export * from "./behavioral-intelligence.engine";
 export * from "./outcome.engine";
 export * from "./outcome-validation.engine";
 export * from "./action-tracker.engine";

@@ -1,9 +1,16 @@
 "use client";
 
-import { useMemo } from "react";
+import {
+  useMemo,
+} from "react";
 
-import { ActivityFeed } from "@/app/components/activity";
-import { AchievementList } from "@/app/components/achievements";
+import {
+  ActivityFeed,
+} from "@/app/components/activity";
+
+import {
+  AchievementList,
+} from "@/app/components/achievements";
 
 import {
   CommandCenterHero,
@@ -81,26 +88,32 @@ export default function DashboardClient() {
     <CommandCenterLayout
       hero={
         <CommandCenterHero
-          dashboard={dashboard}
+          dashboard={
+            dashboard
+          }
         />
       }
 
 
       overview={
         <div className="space-y-8">
-
           <LiveEmpireCard
-            profile={dashboard.profile}
+            profile={
+              dashboard.profile
+            }
           />
 
           <EmpireScoreCard
-            empire={dashboard.empire}
+            empire={
+              dashboard.empire
+            }
           />
 
           <DashboardSummary
-            dashboard={dashboard}
+            dashboard={
+              dashboard
+            }
           />
-
         </div>
       }
 
@@ -185,6 +198,11 @@ export default function DashboardClient() {
           learningProfile={
             intelligence
               .learningProfile
+          }
+
+          behaviorProfile={
+            intelligence
+              .behaviorProfile
           }
 
           playerAction={

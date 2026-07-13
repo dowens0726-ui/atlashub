@@ -13,88 +13,42 @@ import {
 } from "./advisor.service";
 
 import {
-  buildDecisionHistory,
-  type AtlasDecisionHistoryItem,
-} from "./decision-history.engine";
-
-import {
-  buildAtlasLearning,
-} from "./learning.engine";
-
-import {
-  buildAtlasOutcome,
-  type AtlasOutcome,
-} from "./outcome.engine";
-
-import {
-  buildOutcomeValidation,
-  type AtlasValidatedOutcome,
-} from "./outcome-validation.engine";
-
-import {
   buildPlayerAction,
   type AtlasPlayerAction,
 } from "./action-tracker.engine";
-
-import {
-  buildRecommendationPrediction,
-} from "./prediction.engine";
-
-import {
-  buildPlayerIdentity,
-} from "./player-identity.engine";
-
-import {
-  buildIdentityAdvisor,
-} from "./identity-advisor.engine";
 
 import {
   buildAdaptiveStrategy,
 } from "./adaptive-strategy.engine";
 
 import {
-  buildStrategyFeedback,
-} from "./strategy-feedback.engine";
+  buildBehaviorProfile,
+} from "./behavioral-intelligence.engine";
 
 import {
-  buildAtlasStrategicPlan,
-} from "./planning.engine";
-
-import {
-  getPersonalPicks,
-} from "./personal-picks.engine";
-
-import {
-  buildAtlasReasoning,
-} from "./reasoning.engine";
-
-import {
-  buildSessionPlan,
-} from "./session.engine";
-
-import {
-  buildSessionReasoning,
-} from "./session-reasoning.engine";
-
-import {
-  buildNextAction,
-} from "./next-action.engine";
-
-import {
-  buildAtlasImpact,
-} from "./impact.engine";
+  buildDecisionHistory,
+  type AtlasDecisionHistoryItem,
+} from "./decision-history.engine";
 
 import {
   buildEmpireForecast,
 } from "./forecast.engine";
 
 import {
-  buildEmpireTimeline,
-} from "./timeline.engine";
+  buildIdentityAdvisor,
+} from "./identity-advisor.engine";
 
 import {
-  buildDailyObjectives,
-} from "./daily-objectives.engine";
+  buildAtlasImpact,
+} from "./impact.engine";
+
+import {
+  buildIntelligenceFeed,
+} from "./intelligence-feed.engine";
+
+import {
+  buildAtlasLearning,
+} from "./learning.engine";
 
 import {
   buildAtlasMemory,
@@ -109,36 +63,86 @@ import {
 } from "./memory-insight.engine";
 
 import {
-  buildEmpireSimulation,
-} from "./empire-simulator.engine";
-
-import {
-  buildIntelligenceFeed,
-} from "./intelligence-feed.engine";
-
-import {
-  buildAtlasStrategyReport,
-} from "./strategy-report.engine";
-
-import {
-  buildMissionStrategy,
-} from "./mission-strategy.engine";
+  buildMissionFeedback,
+} from "./mission-feedback.engine";
 
 import {
   buildMissionLearning,
 } from "./mission-learning.engine";
 
 import {
-  buildMissionFeedback,
-} from "./mission-feedback.engine";
+  buildMissionLearningUpdate,
+} from "./mission-learning-update.engine";
 
 import {
   buildMissionOutcome,
 } from "./mission-outcome.engine";
 
 import {
-  buildMissionLearningUpdate,
-} from "./mission-learning-update.engine";
+  buildMissionStrategy,
+} from "./mission-strategy.engine";
+
+import {
+  buildNextAction,
+} from "./next-action.engine";
+
+import {
+  buildAtlasOutcome,
+  type AtlasOutcome,
+} from "./outcome.engine";
+
+import {
+  buildOutcomeValidation,
+  type AtlasValidatedOutcome,
+} from "./outcome-validation.engine";
+
+import {
+  getPersonalPicks,
+} from "./personal-picks.engine";
+
+import {
+  buildAtlasStrategicPlan,
+} from "./planning.engine";
+
+import {
+  buildPlayerIdentity,
+} from "./player-identity.engine";
+
+import {
+  buildRecommendationPrediction,
+} from "./prediction.engine";
+
+import {
+  buildAtlasReasoning,
+} from "./reasoning.engine";
+
+import {
+  buildSessionPlan,
+} from "./session.engine";
+
+import {
+  buildSessionReasoning,
+} from "./session-reasoning.engine";
+
+import {
+  buildStrategyFeedback,
+} from "./strategy-feedback.engine";
+
+import {
+  buildAtlasStrategyReport,
+} from "./strategy-report.engine";
+
+import {
+  buildEmpireSimulation,
+} from "./empire-simulator.engine";
+
+import {
+  buildDailyObjectives,
+} from "./daily-objectives.engine";
+
+import {
+  buildEmpireTimeline,
+} from "./timeline.engine";
 
 
 export type AtlasBrainHistory = {
@@ -334,11 +338,10 @@ export function buildAtlasBrain({
 
 
   /*
-   * These fallback models preserve the existing dashboard contract when
-   * no persisted lifecycle record exists yet.
+   * These fallback records preserve the existing dashboard contract before
+   * the player has created real lifecycle history.
    *
-   * They are display previews only. They are not supplied to the learning
-   * engine unless they exist in persisted history.
+   * They are display-only models and are never supplied to Atlas Learning.
    */
   const fallbackDecision =
     buildDecisionHistory(
@@ -391,18 +394,38 @@ export function buildAtlasBrain({
 
 
   /*
-   * Learning uses persisted history only.
+   * Atlas Learning consumes only persisted history.
    *
-   * Generated fallback models are intentionally excluded so Atlas does not
-   * learn from recommendations or outcomes that the player never confirmed.
+   * Generated fallback records are excluded so Atlas never learns from
+   * recommendations or outcomes that the player did not confirm.
    */
   const learningProfile =
     buildAtlasLearning(
-    history.decisions,
-    history.validations,
-    history.actions,
-    history.outcomes
-  );
+      history.decisions,
+      history.validations,
+      history.actions,
+      history.outcomes
+    );
+
+
+  const behaviorProfile =
+    buildBehaviorProfile({
+      decisions:
+        history.decisions,
+
+      actions:
+        history.actions,
+
+      outcomes:
+        history.outcomes,
+
+      learning:
+        learningProfile,
+
+      identity:
+        playerIdentity,
+    });
+
 
   const memoryInsight =
     buildMemoryInsight(
@@ -534,6 +557,8 @@ export function buildAtlasBrain({
     personalPicks,
 
     playerIdentity,
+
+    behaviorProfile,
 
     identityAdvisor,
 
