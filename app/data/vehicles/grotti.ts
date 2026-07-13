@@ -1,0 +1,95 @@
+import type { Vehicle } from "@/app/types";
+import { createVehicle } from "../factories";
+
+export const grottiVehicles: Vehicle[] = [
+  createVehicle({
+    slug: "carbonizzare",
+    name: "Carbonizzare",
+    manufacturer: "Grotti",
+    class: "Sports",
+    image: "/vehicles/carbonizzare.jpg",
+    price: 195000,
+    topSpeed: 118,
+    acceleration: 82,
+    handling: 82,
+    braking: 75,
+    drivetrain: "RWD",
+    seats: 2,
+    location: "Legendary Motorsport",
+    description:
+      "A stylish convertible sports car built for speed and luxury.",
+    featured: false,
+    tags: ["sports", "convertible", "grotti"],
+  }),
+
+  createVehicle({
+    slug: "itali-gto",
+    name: "Itali GTO",
+    manufacturer: "Grotti",
+    class: "Sports",
+    image: "/vehicles/itali-gto.jpg",
+    price: 1965000,
+    topSpeed: 127,
+    acceleration: 89,
+    handling: 84,
+    braking: 80,
+    drivetrain: "AWD",
+    seats: 2,
+    location: "Legendary Motorsport",
+    description:
+      "One of the quickest sports cars in GTA with blistering acceleration.",
+    featured: true,
+    tags: ["sports", "awd", "meta", "grotti"],
+  }),
+
+  createVehicle({
+    slug: "turismo-r",
+    name: "Turismo R",
+    manufacturer: "Grotti",
+    class: "Super",
+    image: "/vehicles/turismo-r.jpg",
+    price: 500000,
+    topSpeed: 121,
+    acceleration: 86,
+    handling: 82,
+    braking: 78,
+    drivetrain: "AWD",
+    seats: 2,
+    location: "Legendary Motorsport",
+    description:
+      "A hybrid-inspired Grotti supercar built for quick launches, stylish cruising, and high-speed pursuits.",
+    featured: false,
+    tags: [
+      "super",
+      "hybrid",
+      "grotti",
+      "legendary-motorsport",
+    ],
+  }),
+
+  createVehicle({
+    slug: "x80-proto",
+    name: "X80 Proto",
+    manufacturer: "Grotti",
+    class: "Super",
+    image: "/vehicles/x80-proto.jpg",
+    price: 2700000,
+    topSpeed: 127,
+    acceleration: 91,
+    handling: 84,
+    braking: 80,
+    drivetrain: "AWD",
+    seats: 2,
+    location: "Legendary Motorsport",
+    description:
+      "A futuristic concept hypercar with explosive acceleration and one of the most recognizable silhouettes in GTA.",
+    featured: true,
+    tags: [
+      "super",
+      "concept",
+      "futuristic",
+      "grotti",
+      "legendary-motorsport",
+    ],
+  }),
+];
