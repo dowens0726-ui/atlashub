@@ -398,9 +398,11 @@ export function buildAtlasBrain({
    */
   const learningProfile =
     buildAtlasLearning(
-      history.decisions,
-      history.validations
-    );
+    history.decisions,
+    history.validations,
+    history.actions,
+    history.outcomes
+  );
 
   const memoryInsight =
     buildMemoryInsight(
