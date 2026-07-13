@@ -3,6 +3,22 @@ export {
 } from "./AtlasAIPanel";
 
 export {
+  default as AtlasCoachCard,
+} from "./AtlasCoachCard";
+
+export {
+  default as AtlasLiveEventToast,
+} from "./AtlasLiveEventToast";
+
+export {
+  default as AtlasIntelligenceTimelineCard,
+} from "./AtlasIntelligenceTimelineCard";
+
+export {
+  default as AtlasRecommendationAnalysisCard,
+} from "./AtlasRecommendationAnalysisCard";
+
+export {
   default as AtlasCoreCard,
 } from "./AtlasCoreCard";
 

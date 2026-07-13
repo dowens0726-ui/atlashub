@@ -24,6 +24,10 @@ import type {
 } from "@/app/intelligence/recommendation.engine";
 
 import {
+  publishAtlasEvent,
+} from "@/app/store/atlas-events";
+
+import {
   applyAtlasLifecycleUpdate,
   getAtlasIntelligenceState,
   updateAtlasAction,
@@ -78,6 +82,31 @@ function createLifecycleId(
 
 function createTimestamp(): string {
   return new Date().toISOString();
+}
+
+
+function publishLifecycleEvent(
+  type:
+    | "strategy-started"
+    | "strategy-completed"
+    | "strategy-abandoned"
+    | "outcome-reported"
+    | "outcome-validated",
+  payload: Record<string, unknown>
+): void {
+  publishAtlasEvent({
+    id:
+      createLifecycleId(
+        "event"
+      ),
+
+    type,
+
+    timestamp:
+      createTimestamp(),
+
+    payload,
+  });
 }
 
 
@@ -279,6 +308,23 @@ export function startAtlasDecision(
     action,
   });
 
+  publishLifecycleEvent(
+    "strategy-started",
+    {
+      recommendationId:
+        decision.recommendationId,
+
+      decisionId:
+        decision.id,
+
+      actionId:
+        action.id,
+
+      title:
+        action.title,
+    }
+  );
+
   return {
     ok: true,
 
@@ -340,6 +386,23 @@ export function acceptAndStartAtlasRecommendation(
     decision,
     action,
   });
+
+  publishLifecycleEvent(
+    "strategy-started",
+    {
+      recommendationId:
+        recommendation.id,
+
+      decisionId:
+        decision.id,
+
+      actionId:
+        action.id,
+
+      title:
+        action.title,
+    }
+  );
 
   return {
     ok: true,
@@ -433,6 +496,23 @@ export function completeAtlasAction(
     };
   }
 
+  publishLifecycleEvent(
+    "strategy-completed",
+    {
+      decisionId:
+        updatedAction.decisionId,
+
+      actionId:
+        updatedAction.id,
+
+      title:
+        updatedAction.title,
+
+      completedAt:
+        updatedAction.completedAt,
+    }
+  );
+
   return {
     ok: true,
 
@@ -519,6 +599,20 @@ export function abandonAtlasAction(
         "Atlas could not update the selected action.",
     };
   }
+
+  publishLifecycleEvent(
+    "strategy-abandoned",
+    {
+      decisionId:
+        updatedAction.decisionId,
+
+      actionId:
+        updatedAction.id,
+
+      title:
+        updatedAction.title,
+    }
+  );
 
   return {
     ok: true,
@@ -657,6 +751,52 @@ export function reportAtlasOutcome(
 
     validation,
   });
+
+  publishLifecycleEvent(
+    "outcome-reported",
+    {
+      decisionId:
+        updatedDecision.id,
+
+      actionId:
+        action.id,
+
+      outcomeId:
+        outcome.id,
+
+      rating:
+        outcome.rating,
+
+      incomeChange:
+        outcome.incomeChange,
+
+      empireScoreChange:
+        outcome.empireScoreChange,
+    }
+  );
+
+  publishLifecycleEvent(
+    "outcome-validated",
+    {
+      decisionId:
+        updatedDecision.id,
+
+      actionId:
+        action.id,
+
+      outcomeId:
+        outcome.id,
+
+      validationId:
+        validation.id,
+
+      status:
+        validation.status,
+
+      successScore:
+        validation.successScore,
+    }
+  );
 
   return {
     ok: true,

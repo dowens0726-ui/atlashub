@@ -1,16 +1,19 @@
 import AtlasActionTrackerCard from "./AtlasActionTrackerCard";
 import AtlasAdvisorCard from "./AtlasAdvisorCard";
 import AtlasBehaviorCard from "./AtlasBehaviorCard";
+import AtlasCoachCard from "./AtlasCoachCard";
 import AtlasCoreCard from "./AtlasCoreCard";
 import AtlasDailyObjectivesCard from "./AtlasDailyObjectivesCard";
 import AtlasEvolutionCard from "./AtlasEvolutionCard";
 import AtlasIdentityCard from "./AtlasIdentityCard";
 import AtlasIntelligenceFeed from "./AtlasIntelligenceFeed";
+import AtlasIntelligenceTimelineCard from "./AtlasIntelligenceTimelineCard";
 import AtlasMemoryCard from "./AtlasMemoryCard";
 import AtlasMemoryInsightCard from "./AtlasMemoryInsightCard";
 import AtlasMissionEvolutionCard from "./AtlasMissionEvolutionCard";
 import AtlasMissionStrategyCard from "./AtlasMissionStrategyCard";
 import AtlasOutcomeCard from "./AtlasOutcomeCard";
+import AtlasRecommendationAnalysisCard from "./AtlasRecommendationAnalysisCard";
 import AtlasStatusCard from "./AtlasStatusCard";
 import AtlasStrategicPlanCard from "./AtlasStrategicPlanCard";
 import AtlasStrategyFeedbackCard from "./AtlasStrategyFeedbackCard";
@@ -29,7 +32,9 @@ import {
 import type {
   AtlasAdaptiveStrategy,
   AtlasBehaviorProfile,
+  AtlasCoachBriefing,
   AtlasImpact,
+  AtlasIntelligenceTimeline,
   AtlasLearningProfile,
   AtlasMemory,
   AtlasMemoryInsight,
@@ -41,6 +46,7 @@ import type {
   AtlasPlayerAction,
   AtlasPlayerIdentity,
   AtlasRecommendation,
+  AtlasRecommendationWeight,
   AtlasReasoning,
   AtlasStrategicPlan,
   AtlasStrategyFeedback,
@@ -58,8 +64,17 @@ import type {
 
 
 type AtlasAIPanelProps = {
+  coachBriefing:
+    AtlasCoachBriefing;
+
   recommendation:
     AtlasRecommendation;
+
+  recommendationWeighting:
+    AtlasRecommendationWeight;
+
+  intelligenceTimeline:
+    AtlasIntelligenceTimeline;
 
   personalPicks:
     AtlasRecommendation[];
@@ -145,7 +160,10 @@ type AtlasAIPanelProps = {
 
 
 export default function AtlasAIPanel({
+  coachBriefing,
   recommendation,
+  recommendationWeighting,
+  intelligenceTimeline,
   personalPicks,
   reasoning,
   nextAction,
@@ -192,6 +210,28 @@ export default function AtlasAIPanel({
 
 
       <div className="space-y-10">
+        <section>
+          <AtlasCoachCard
+            briefing={
+              coachBriefing
+            }
+          />
+        </section>
+
+
+        <section>
+          <p className="mb-4 text-xs font-black uppercase tracking-[0.3em] text-violet-400">
+            Intelligence Timeline
+          </p>
+
+          <AtlasIntelligenceTimelineCard
+            timeline={
+              intelligenceTimeline
+            }
+          />
+        </section>
+
+
         <section>
           <p className="mb-4 text-xs font-black uppercase tracking-[0.3em] text-cyan-400">
             Player Identity
@@ -307,20 +347,28 @@ export default function AtlasAIPanel({
             Strategic Decision
           </p>
 
-          <AtlasCoreCard
-            action={
-              nextAction
-            }
-            impact={
-              impact
-            }
-            recommendation={
-              recommendation
-            }
-            reasoning={
-              reasoning
-            }
-          />
+          <div className="space-y-6">
+            <AtlasRecommendationAnalysisCard
+              weighting={
+                recommendationWeighting
+              }
+            />
+
+            <AtlasCoreCard
+              action={
+                nextAction
+              }
+              impact={
+                impact
+              }
+              recommendation={
+                recommendation
+              }
+              reasoning={
+                reasoning
+              }
+            />
+          </div>
         </section>
 
 

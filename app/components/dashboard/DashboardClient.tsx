@@ -24,6 +24,7 @@ import {
 
 import {
   AtlasAIPanel,
+  AtlasLiveEventToast,
   AtlasSessionPlanCard,
 } from "@/app/components/intelligence";
 
@@ -85,227 +86,246 @@ export default function DashboardClient() {
 
 
   return (
-    <CommandCenterLayout
-      hero={
-        <CommandCenterHero
-          dashboard={
-            dashboard
-          }
-        />
-      }
+    <>
+      <AtlasLiveEventToast />
 
-
-      overview={
-        <div className="space-y-8">
-          <LiveEmpireCard
-            profile={
-              dashboard.profile
-            }
-          />
-
-          <EmpireScoreCard
-            empire={
-              dashboard.empire
-            }
-          />
-
-          <DashboardSummary
+      <CommandCenterLayout
+        hero={
+          <CommandCenterHero
             dashboard={
               dashboard
             }
           />
-        </div>
-      }
+        }
 
 
-      atlas={
-        <AtlasAIPanel
-          recommendation={
-            intelligence
-              .atlasRecommendation
-          }
+        overview={
+          <div className="space-y-8">
+            <LiveEmpireCard
+              profile={
+                dashboard.profile
+              }
+            />
 
-          personalPicks={
-            intelligence
-              .personalPicks
-          }
+            <EmpireScoreCard
+              empire={
+                dashboard.empire
+              }
+            />
 
-          reasoning={
-            intelligence
-              .atlasReasoning
-          }
-
-          nextAction={
-            intelligence
-              .nextAction
-          }
-
-          impact={
-            intelligence
-              .atlasImpact
-          }
-
-          forecast={
-            intelligence
-              .empireForecast
-          }
-
-          simulation={
-            intelligence
-              .empireSimulation
-          }
-
-          strategyReport={
-            intelligence
-              .strategyReport
-          }
-
-          adaptiveStrategy={
-            intelligence
-              .adaptiveStrategy
-          }
-
-          strategyFeedback={
-            intelligence
-              .strategyFeedback
-          }
-
-          strategicPlan={
-            intelligence
-              .strategicPlan
-          }
-
-          missionStrategy={
-            intelligence
-              .missionStrategy
-          }
-
-          missionLearning={
-            intelligence
-              .missionLearning
-          }
-
-          missionOutcome={
-            intelligence
-              .missionOutcome
-          }
-
-          missionLearningUpdate={
-            intelligence
-              .missionLearningUpdate
-          }
-
-          learningProfile={
-            intelligence
-              .learningProfile
-          }
-
-          behaviorProfile={
-            intelligence
-              .behaviorProfile
-          }
-
-          playerAction={
-            intelligence
-              .playerAction
-          }
-
-          outcome={
-            intelligence
-              .outcome
-          }
-
-          outcomeValidation={
-            intelligence
-              .outcomeValidation
-          }
-
-          playerIdentity={
-            intelligence
-              .playerIdentity
-          }
-
-          identityAdvisor={
-            intelligence
-              .identityAdvisor
-          }
-
-          memoryInsight={
-            intelligence
-              .memoryInsight
-          }
-
-          timeline={
-            intelligence
-              .empireTimeline
-          }
-
-          memory={
-            intelligence
-              .atlasMemory
-          }
-
-          memoryHistory={
-            intelligence
-              .memoryHistory
-          }
-
-          dailyObjectives={
-            intelligence
-              .dailyObjectives
-          }
-
-          insights={
-            intelligence
-              .intelligenceFeed
-          }
-        />
-      }
+            <DashboardSummary
+              dashboard={
+                dashboard
+              }
+            />
+          </div>
+        }
 
 
-      session={
-        <AtlasSessionPlanCard
-          plan={
-            intelligence
-              .sessionPlan
-          }
+        atlas={
+          <AtlasAIPanel
+            coachBriefing={
+              intelligence
+                .coachBriefing
+            }
 
-          reasoning={
-            intelligence
-              .sessionReasoning
-          }
-        />
-      }
+            recommendation={
+              intelligence
+                .atlasRecommendation
+            }
+
+            recommendationWeighting={
+              intelligence
+                .recommendationWeighting
+            }
+
+            intelligenceTimeline={
+              intelligence
+                .intelligenceTimeline
+            }
+
+            personalPicks={
+              intelligence
+                .personalPicks
+            }
+
+            reasoning={
+              intelligence
+                .atlasReasoning
+            }
+
+            nextAction={
+              intelligence
+                .nextAction
+            }
+
+            impact={
+              intelligence
+                .atlasImpact
+            }
+
+            forecast={
+              intelligence
+                .empireForecast
+            }
+
+            simulation={
+              intelligence
+                .empireSimulation
+            }
+
+            strategyReport={
+              intelligence
+                .strategyReport
+            }
+
+            adaptiveStrategy={
+              intelligence
+                .adaptiveStrategy
+            }
+
+            strategyFeedback={
+              intelligence
+                .strategyFeedback
+            }
+
+            strategicPlan={
+              intelligence
+                .strategicPlan
+            }
+
+            missionStrategy={
+              intelligence
+                .missionStrategy
+            }
+
+            missionLearning={
+              intelligence
+                .missionLearning
+            }
+
+            missionOutcome={
+              intelligence
+                .missionOutcome
+            }
+
+            missionLearningUpdate={
+              intelligence
+                .missionLearningUpdate
+            }
+
+            learningProfile={
+              intelligence
+                .learningProfile
+            }
+
+            behaviorProfile={
+              intelligence
+                .behaviorProfile
+            }
+
+            playerAction={
+              intelligence
+                .playerAction
+            }
+
+            outcome={
+              intelligence
+                .outcome
+            }
+
+            outcomeValidation={
+              intelligence
+                .outcomeValidation
+            }
+
+            playerIdentity={
+              intelligence
+                .playerIdentity
+            }
+
+            identityAdvisor={
+              intelligence
+                .identityAdvisor
+            }
+
+            memoryInsight={
+              intelligence
+                .memoryInsight
+            }
+
+            timeline={
+              intelligence
+                .empireTimeline
+            }
+
+            memory={
+              intelligence
+                .atlasMemory
+            }
+
+            memoryHistory={
+              intelligence
+                .memoryHistory
+            }
+
+            dailyObjectives={
+              intelligence
+                .dailyObjectives
+            }
+
+            insights={
+              intelligence
+                .intelligenceFeed
+            }
+          />
+        }
 
 
-      insights={
-        <EmpireInsights
-          insights={
-            dashboard
-              .empire
-              .insights
-          }
-        />
-      }
+        session={
+          <AtlasSessionPlanCard
+            plan={
+              intelligence
+                .sessionPlan
+            }
+
+            reasoning={
+              intelligence
+                .sessionReasoning
+            }
+          />
+        }
 
 
-      objectives={
-        <DashboardObjectives
-          objectives={
-            dashboard.objectives
-          }
-        />
-      }
+        insights={
+          <EmpireInsights
+            insights={
+              dashboard
+                .empire
+                .insights
+            }
+          />
+        }
 
 
-      activity={
-        <ActivityFeed />
-      }
+        objectives={
+          <DashboardObjectives
+            objectives={
+              dashboard.objectives
+            }
+          />
+        }
 
 
-      achievements={
-        <AchievementList />
-      }
-    />
+        activity={
+          <ActivityFeed />
+        }
+
+
+        achievements={
+          <AchievementList />
+        }
+      />
+    </>
   );
 }

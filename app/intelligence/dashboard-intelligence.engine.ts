@@ -26,13 +26,29 @@ import {
 } from "./behavioral-intelligence.engine";
 
 import {
+  buildAtlasCoach,
+} from "./coach.engine";
+
+import {
   buildDecisionHistory,
   type AtlasDecisionHistoryItem,
 } from "./decision-history.engine";
 
 import {
+  buildDailyObjectives,
+} from "./daily-objectives.engine";
+
+import {
+  buildEmpireSimulation,
+} from "./empire-simulator.engine";
+
+import {
   buildEmpireForecast,
 } from "./forecast.engine";
+
+import {
+  buildAtlasGreeting,
+} from "./greeting.engine";
 
 import {
   buildIdentityAdvisor,
@@ -45,6 +61,10 @@ import {
 import {
   buildIntelligenceFeed,
 } from "./intelligence-feed.engine";
+
+import {
+  buildIntelligenceTimeline,
+} from "./intelligence-timeline.engine";
 
 import {
   buildAtlasLearning,
@@ -113,6 +133,10 @@ import {
 } from "./prediction.engine";
 
 import {
+  buildRecommendationWeight,
+} from "./recommendation-weighting.engine";
+
+import {
   buildAtlasReasoning,
 } from "./reasoning.engine";
 
@@ -131,14 +155,6 @@ import {
 import {
   buildAtlasStrategyReport,
 } from "./strategy-report.engine";
-
-import {
-  buildEmpireSimulation,
-} from "./empire-simulator.engine";
-
-import {
-  buildDailyObjectives,
-} from "./daily-objectives.engine";
 
 import {
   buildEmpireTimeline,
@@ -299,6 +315,11 @@ export function buildAtlasBrain({
       nextAction.confidence
     );
 
+  const atlasGreeting =
+    buildAtlasGreeting(
+      profile
+    );
+
   const empireForecast =
     buildEmpireForecast(
       profile,
@@ -427,17 +448,35 @@ export function buildAtlasBrain({
     });
 
 
+  const intelligenceTimeline =
+    buildIntelligenceTimeline({
+      decisions:
+        history.decisions,
+
+      actions:
+        history.actions,
+
+      outcomes:
+        history.outcomes,
+
+      validations:
+        history.validations,
+    });
+
+
   const memoryInsight =
     buildMemoryInsight(
       atlasMemory,
       learningProfile
     );
 
+
   const recommendationPrediction =
     buildRecommendationPrediction(
       atlasRecommendation,
       learningProfile
     );
+
 
   const predictedRecommendation = {
     ...atlasRecommendation,
@@ -453,9 +492,64 @@ export function buildAtlasBrain({
       recommendationPrediction,
   };
 
+
+  const recommendationWeighting =
+    buildRecommendationWeight({
+      recommendation:
+        predictedRecommendation,
+
+      profile,
+
+      empire,
+
+      identity:
+        playerIdentity,
+
+      behavior:
+        behaviorProfile,
+
+      learning:
+        learningProfile,
+
+      memoryInsight,
+    });
+
+
+  const weightedRecommendation = {
+    ...predictedRecommendation,
+
+    confidence:
+      recommendationWeighting.confidence,
+  };
+
+
+  const coachBriefing =
+    buildAtlasCoach({
+      greeting:
+        atlasGreeting,
+
+      recommendation:
+        weightedRecommendation,
+
+      forecast:
+        empireForecast,
+
+      learning:
+        learningProfile,
+
+      behavior:
+        behaviorProfile,
+
+      identity:
+        playerIdentity,
+
+      memoryInsight,
+    });
+
+
   const adaptiveStrategy =
     buildAdaptiveStrategy(
-      predictedRecommendation,
+      weightedRecommendation,
       playerIdentity,
       memoryInsight,
       learningProfile
@@ -480,7 +574,7 @@ export function buildAtlasBrain({
   const missionStrategy =
     buildMissionStrategy(
       getAllMissions(),
-      predictedRecommendation,
+      weightedRecommendation,
       playerIdentity,
       profile
     );
@@ -539,7 +633,7 @@ export function buildAtlasBrain({
 
   const strategyReport =
     buildAtlasStrategyReport(
-      predictedRecommendation,
+      weightedRecommendation,
       atlasReasoning,
       empireSimulation,
       empireForecast,
@@ -552,9 +646,13 @@ export function buildAtlasBrain({
     atlasRecommendations,
 
     atlasRecommendation:
-      predictedRecommendation,
+      weightedRecommendation,
 
     personalPicks,
+
+    atlasGreeting,
+
+    coachBriefing,
 
     playerIdentity,
 
@@ -604,6 +702,8 @@ export function buildAtlasBrain({
 
     intelligenceFeed,
 
+    intelligenceTimeline,
+
     strategyReport,
 
     decisionHistory,
@@ -617,6 +717,8 @@ export function buildAtlasBrain({
     learningProfile,
 
     recommendationPrediction,
+
+    recommendationWeighting,
 
     history,
   };
