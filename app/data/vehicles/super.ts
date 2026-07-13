@@ -16,32 +16,16 @@ export const superVehicles: Vehicle[] = [
     drivetrain: "AWD",
     seats: 2,
     location: "Legendary Motorsport",
-    description: "A legendary hypercar inspired by the Bugatti Veyron.",
+    description:
+      "A legendary hypercar inspired by the Bugatti Veyron.",
     featured: true,
     tags: ["super", "hypercar", "legendary-motorsport"],
   }),
-  createVehicle({
-    slug: "zentorno",
-    name: "Zentorno",
-    manufacturer: "Pegassi",
-    class: "Super",
-    image: "/vehicles/zentorno.jpg",
-    price: 725000,
-    topSpeed: 122,
-    acceleration: 88,
-    handling: 83,
-    braking: 80,
-    drivetrain: "AWD",
-    seats: 2,
-    location: "Legendary Motorsport",
-    description: "One of GTA's most iconic supercars with incredible acceleration and aggressive styling.",
-    featured: true,
-    tags: ["super", "awd", "iconic", "legendary-motorsport"],
-  }),
+
   createVehicle({
     slug: "entity-xf",
     name: "Entity XF",
-    manufacturer: "Överflöd",
+    manufacturer: "Ã–verflÃ¶d",
     class: "Super",
     image: "/vehicles/entity-xf.jpg",
     price: 795000,
@@ -52,10 +36,17 @@ export const superVehicles: Vehicle[] = [
     drivetrain: "RWD",
     seats: 2,
     location: "Legendary Motorsport",
-    description: "A balanced supercar known for sharp handling, strong speed, and clean Scandinavian styling.",
+    description:
+      "A balanced supercar known for sharp handling, strong speed, and clean Scandinavian styling.",
     featured: false,
-    tags: ["super", "balanced", "handling", "legendary-motorsport"],
+    tags: [
+      "super",
+      "balanced",
+      "handling",
+      "legendary-motorsport",
+    ],
   }),
+
   createVehicle({
     slug: "turismo-r",
     name: "Turismo R",
@@ -70,10 +61,17 @@ export const superVehicles: Vehicle[] = [
     drivetrain: "AWD",
     seats: 2,
     location: "Legendary Motorsport",
-    description: "A hybrid-inspired Grotti supercar built for quick launches, stylish cruising, and high-speed pursuits.",
+    description:
+      "A hybrid-inspired Grotti supercar built for quick launches, stylish cruising, and high-speed pursuits.",
     featured: false,
-    tags: ["super", "hybrid", "grotti", "legendary-motorsport"],
+    tags: [
+      "super",
+      "hybrid",
+      "grotti",
+      "legendary-motorsport",
+    ],
   }),
+
   createVehicle({
     slug: "t20",
     name: "T20",
@@ -88,28 +86,17 @@ export const superVehicles: Vehicle[] = [
     drivetrain: "AWD",
     seats: 2,
     location: "Legendary Motorsport",
-    description: "A premium supercar with elite acceleration, precise handling, and active aerodynamic styling.",
+    description:
+      "A premium supercar with elite acceleration, precise handling, and active aerodynamic styling.",
     featured: true,
-    tags: ["super", "premium", "awd", "legendary-motorsport"],
+    tags: [
+      "super",
+      "premium",
+      "awd",
+      "legendary-motorsport",
+    ],
   }),
-  createVehicle({
-    slug: "osiris",
-    name: "Osiris",
-    manufacturer: "Pegassi",
-    class: "Super",
-    image: "/vehicles/osiris.jpg",
-    price: 1950000,
-    topSpeed: 122,
-    acceleration: 89,
-    handling: 85,
-    braking: 81,
-    drivetrain: "AWD",
-    seats: 2,
-    location: "Legendary Motorsport",
-    description: "A sleek Pegassi hypercar built for players who want speed, style, and confidence in fast corners.",
-    featured: false,
-    tags: ["super", "hypercar", "pegassi", "legendary-motorsport"],
-  }),
+
   createVehicle({
     slug: "nero",
     name: "Nero",
@@ -124,10 +111,12 @@ export const superVehicles: Vehicle[] = [
     drivetrain: "AWD",
     seats: 2,
     location: "Benny's Original Motor Works",
-    description: "A refined Truffade hypercar with immense straight-line speed and upgrade potential through Benny's.",
+    description:
+      "A refined Truffade hypercar with immense straight-line speed and upgrade potential through Benny's.",
     featured: false,
     tags: ["super", "hypercar", "bennys", "upgradeable"],
   }),
+
   createVehicle({
     slug: "itali-gtb",
     name: "Itali GTB",
@@ -142,10 +131,12 @@ export const superVehicles: Vehicle[] = [
     drivetrain: "AWD",
     seats: 2,
     location: "Benny's Original Motor Works",
-    description: "A fast, stylish supercar with strong customization potential and excellent street presence.",
+    description:
+      "A fast, stylish supercar with strong customization potential and excellent street presence.",
     featured: false,
     tags: ["super", "customizable", "bennys", "street"],
   }),
+
   createVehicle({
     slug: "x80-proto",
     name: "X80 Proto",
@@ -160,10 +151,17 @@ export const superVehicles: Vehicle[] = [
     drivetrain: "AWD",
     seats: 2,
     location: "Legendary Motorsport",
-    description: "A futuristic concept hypercar with explosive acceleration and one of the most recognizable silhouettes in GTA.",
+    description:
+      "A futuristic concept hypercar with explosive acceleration and one of the most recognizable silhouettes in GTA.",
     featured: true,
-    tags: ["super", "concept", "futuristic", "legendary-motorsport"],
+    tags: [
+      "super",
+      "concept",
+      "futuristic",
+      "legendary-motorsport",
+    ],
   }),
+
   createVehicle({
     slug: "deveste-eight",
     name: "Deveste Eight",
@@ -178,8 +176,14 @@ export const superVehicles: Vehicle[] = [
     drivetrain: "AWD",
     seats: 2,
     location: "Legendary Motorsport",
-    description: "An extreme high-speed supercar built around straight-line dominance and dramatic styling.",
+    description:
+      "An extreme high-speed supercar built around straight-line dominance and dramatic styling.",
     featured: true,
-    tags: ["super", "top-speed", "hypercar", "legendary-motorsport"],
+    tags: [
+      "super",
+      "top-speed",
+      "hypercar",
+      "legendary-motorsport",
+    ],
   }),
 ];
