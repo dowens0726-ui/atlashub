@@ -1,4 +1,4 @@
-import {
+﻿import {
   getValue,
   isRecord,
   normalizeHeader,
@@ -644,74 +644,6 @@ export function buildVehicleCandidate(
         )
       ),
 
-          sourceGame:
-      "GTA Online",
-
-    verificationStatus:
-      "Legacy",
-
-    confirmedBy:
-      parseOptionalString(
-        getValue(
-          record,
-          [
-            "confirmedBy",
-          ]
-        )
-      ),
-
-    lastVerifiedAt:
-      parseOptionalString(
-        getValue(
-          record,
-          [
-            "lastVerifiedAt",
-          ]
-        )
-      ),
-
-    verificationNotes:
-      parseStringArray(
-        getValue(
-          record,
-          [
-            "verificationNotes",
-          ]
-        )
-      ),
-
-    dataConfidence:
-      "Legacy",
-
-    availability: {
-      price:
-        true,
-
-      topSpeed:
-        true,
-
-      acceleration:
-        true,
-
-      handling:
-        true,
-
-      braking:
-        true,
-
-      drivetrain:
-        true,
-
-      seats:
-        true,
-
-      location:
-        true,
-
-      horsepower:
-        false,
-    },
-
     relatedSlugs:
       parseStringArray(
         getValue(
@@ -724,15 +656,56 @@ export function buildVehicleCandidate(
       ),
 
     recommendedMissionSlugs:
-      parseStringArray(
-        getValue(
-          record,
-          [
-            "recommendedMissionSlugs",
-            "recommendedMissions",
-          ]
-        )
-      ),
+  parseStringArray(
+    getValue(
+      record,
+      [
+        "recommendedMissionSlugs",
+        "recommendedMissions",
+      ]
+    )
+  ),
+
+sourceGame: "gta-online",
+
+verificationStatus: "legacy",
+
+confirmedBy:
+  parseOptionalString(
+    getValue(
+      record,
+      [
+        "confirmedBy",
+      ]
+    )
+  ),
+
+lastVerifiedAt:
+  parseOptionalString(
+    getValue(
+      record,
+      [
+        "lastVerifiedAt",
+      ]
+    )
+  ),
+
+verificationNotes: [],
+
+dataConfidence: "medium",
+
+availability: {
+  price: true,
+  topSpeed: true,
+  acceleration: true,
+  handling: true,
+  braking: true,
+  drivetrain: true,
+  seats: true,
+  location: true,
+  description: true,
+  image: true,
+},
   };
 }
 

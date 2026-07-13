@@ -6,71 +6,125 @@ import type {
 } from "@/app/content-studio";
 
 import type {
+  ContentVerificationStatus,
+  VehicleDataAvailability,
+  VehicleDataConfidence,
   VehicleDrivetrain,
+  VehicleSourceGame,
 } from "@/app/types";
+
 
 export type ImportFormat =
   | "csv"
   | "json"
   | "unknown";
 
+
 export type ImportRecord =
   Record<string, unknown>;
 
+
 export type VehicleImportCandidate =
   AtlasContentInput & {
-    slug: string;
+    slug:
+      string;
 
-    name: string;
+    name:
+      string;
 
-    manufacturer: string;
+    manufacturer:
+      string;
 
-    class: string;
+    class:
+      string;
 
-    image: string;
+    image:
+      string;
 
-    price: number;
+    price:
+      number;
 
-    topSpeed: number;
+    topSpeed:
+      number;
 
-    acceleration: number;
+    acceleration:
+      number;
 
-    handling: number;
+    handling:
+      number;
 
-    braking: number;
+    braking:
+      number;
 
-    drivetrain: VehicleDrivetrain;
+    drivetrain:
+      VehicleDrivetrain;
 
-    seats: number;
+    seats:
+      number;
 
-    location: string;
+    location:
+      string;
 
-    description: string;
+    description:
+      string;
 
-    featured: boolean;
+    featured:
+      boolean;
 
-    tags: string[];
+    tags:
+      string[];
 
-    source: AtlasContentSource;
+    source:
+      AtlasContentSource;
 
-    sourceUrl?: string;
+    sourceUrl?:
+      string;
 
-    status: AtlasContentStatus;
+    status:
+      AtlasContentStatus;
 
-    verified: boolean;
+    verified:
+      boolean;
 
-    confidence: number;
+    confidence:
+      number;
 
-    relatedSlugs: string[];
+    sourceGame:
+      VehicleSourceGame;
 
-    recommendedMissionSlugs: string[];
+    verificationStatus:
+      ContentVerificationStatus;
+
+    confirmedBy?:
+      string;
+
+    lastVerifiedAt?:
+      string;
+
+    verificationNotes:
+      string[];
+
+    dataConfidence:
+      VehicleDataConfidence;
+
+    availability:
+      VehicleDataAvailability;
+
+    relatedSlugs:
+      string[];
+
+    recommendedMissionSlugs:
+      string[];
   };
+
 
 export type VehicleContentBuild =
   AtlasContentBuildResult<VehicleImportCandidate>;
 
+
 export type VehicleImportRow = {
-  rowNumber: number;
+  rowNumber:
+    number;
 
   vehicle:
     VehicleImportCandidate | null;
@@ -78,70 +132,120 @@ export type VehicleImportRow = {
   content:
     VehicleContentBuild | null;
 
-  errors: string[];
+  errors:
+    string[];
 
-  warnings: string[];
+  warnings:
+    string[];
 
-  validationScore: number;
+  validationScore:
+    number;
 };
 
-export type ParsedImport = {
-  format: ImportFormat;
 
-  rows: VehicleImportRow[];
+export type ParsedImport = {
+  format:
+    ImportFormat;
+
+  rows:
+    VehicleImportRow[];
 
   fatalError:
     string | null;
 };
 
+
 export type GeneratedVehicleFile = {
-  filename: string;
+  filename:
+    string;
 
-  exportName: string;
+  exportName:
+    string;
 
-  manufacturer: string;
+  manufacturer:
+    string;
 
-  code: string;
+  code:
+    string;
 
-  vehicleCount: number;
+  vehicleCount:
+    number;
 };
+
 
 export type ImportPackageReport = {
-  importedAt: string;
+  importedAt:
+    string;
 
-  totalRows: number;
+  totalRows:
+    number;
 
-  validRows: number;
+  validRows:
+    number;
 
-  invalidRows: number;
+  invalidRows:
+    number;
 
-  manufacturerCount: number;
+  manufacturerCount:
+    number;
 
-  vehicleCount: number;
+  vehicleCount:
+    number;
 
-  averageValidationScore: number;
+  averageValidationScore:
+    number;
 
-  warnings: string[];
+  warnings:
+    string[];
 
-  generatedFiles: string[];
+  generatedFiles:
+    string[];
 };
+
 
 export type VehicleImportContext = {
   existingSlugs:
     Set<string>;
 };
 
+
 export type VehicleImportParseOptions = {
   existingSlugs:
     Set<string>;
 };
 
+
 export type BuildVehicleCandidateOptions = {
-  source?: AtlasContentSource;
+  source?:
+    AtlasContentSource;
 
-  status?: AtlasContentStatus;
+  status?:
+    AtlasContentStatus;
 
-  verified?: boolean;
+  verified?:
+    boolean;
 
-  confidence?: number;
+  confidence?:
+    number;
+
+  sourceGame?:
+    VehicleSourceGame;
+
+  verificationStatus?:
+    ContentVerificationStatus;
+
+  confirmedBy?:
+    string;
+
+  lastVerifiedAt?:
+    string;
+
+  verificationNotes?:
+    string[];
+
+  dataConfidence?:
+    VehicleDataConfidence;
+
+  availability?:
+    Partial<VehicleDataAvailability>;
 };
