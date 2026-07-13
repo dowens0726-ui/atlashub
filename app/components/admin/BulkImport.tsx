@@ -6,14 +6,6 @@ import {
 } from "react";
 
 import {
-  vehicles,
-} from "@/app/data";
-
-import {
-  buildImportPackageReport,
-  buildManufacturerFiles,
-  buildVehicleIndexCode,
-  parseVehicleImport,
   VEHICLE_CSV_TEMPLATE,
   VEHICLE_JSON_TEMPLATE,
 } from "@/app/content-studio/import";
@@ -21,6 +13,14 @@ import {
 import type {
   VehicleImportRow,
 } from "@/app/content-studio/import";
+
+import type {
+  RegistryFileClassification,
+} from "@/app/content-studio/registry";
+
+import {
+  buildImportPackage,
+} from "@/app/content-studio/services";
 
 import GeneratedFile from "./GeneratedFile";
 import GeneratedPackage from "./GeneratedPackage";
@@ -35,97 +35,45 @@ export default function BulkImport() {
   );
 
 
-  const existingSlugs =
+  const packageResult =
     useMemo(
       () =>
-        new Set(
-          vehicles.map(
-            (vehicle) =>
-              vehicle.slug
-          )
-        ),
-      []
-    );
-
-
-  const parsedImport =
-    useMemo(
-      () =>
-        parseVehicleImport(
-          input,
-          {
-            existingSlugs,
-          }
+        buildImportPackage(
+          input
         ),
       [
         input,
-        existingSlugs,
       ]
     );
 
 
-  const validRows =
+  const {
+    parsedImport,
+    validRows,
+    invalidRows,
+    generatedFiles,
+    indexCode,
+    manifest,
+    packageReport,
+  } =
+    packageResult;
+
+
+  const classificationByFilename =
     useMemo(
       () =>
-        parsedImport.rows.filter(
-          (row) =>
-            row.errors.length ===
-            0
+        new Map(
+          manifest.classifications.map(
+            (
+              classification
+            ) => [
+              classification.filename,
+              classification,
+            ]
+          )
         ),
       [
-        parsedImport.rows,
-      ]
-    );
-
-
-  const invalidRows =
-    useMemo(
-      () =>
-        parsedImport.rows.filter(
-          (row) =>
-            row.errors.length >
-            0
-        ),
-      [
-        parsedImport.rows,
-      ]
-    );
-
-
-  const generatedFiles =
-    useMemo(
-      () =>
-        buildManufacturerFiles(
-          parsedImport.rows
-        ),
-      [
-        parsedImport.rows,
-      ]
-    );
-
-
-  const indexCode =
-    useMemo(
-      () =>
-        buildVehicleIndexCode(
-          generatedFiles
-        ),
-      [
-        generatedFiles,
-      ]
-    );
-
-
-  const packageReport =
-    useMemo(
-      () =>
-        buildImportPackageReport(
-          parsedImport.rows,
-          generatedFiles
-        ),
-      [
-        parsedImport.rows,
-        generatedFiles,
+        manifest.classifications,
       ]
     );
 
@@ -136,7 +84,7 @@ export default function BulkImport() {
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.3em] text-emerald-400">
-              Content Studio v2
+              Content Studio v2.5
             </p>
 
             <h2 className="mt-3 text-2xl font-black text-white">
@@ -144,17 +92,17 @@ export default function BulkImport() {
             </h2>
 
             <p className="mt-2 max-w-3xl text-sm leading-6 text-zinc-400">
-              Paste vehicle CSV or JSON. Atlas parses the source data,
-              generates searchable metadata and relationships, validates every
-              vehicle, groups approved records by manufacturer, and creates a
-              downloadable TypeScript package.
+              Paste vehicle CSV or JSON. Atlas validates the records,
+              generates content metadata, inspects the existing manufacturer
+              registry, classifies every output file, and builds a reviewable
+              production package.
             </p>
           </div>
 
           <div className="flex flex-wrap gap-2">
             <button
-              className="rounded-lg border border-zinc-700 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:border-emerald-400 hover:text-white"
               type="button"
+              className="rounded-lg border border-zinc-700 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:border-emerald-400 hover:text-white"
               onClick={() =>
                 setInput(
                   VEHICLE_CSV_TEMPLATE
@@ -165,8 +113,8 @@ export default function BulkImport() {
             </button>
 
             <button
-              className="rounded-lg border border-zinc-700 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:border-emerald-400 hover:text-white"
               type="button"
+              className="rounded-lg border border-zinc-700 px-4 py-2 text-sm font-bold text-zinc-300 transition hover:border-emerald-400 hover:text-white"
               onClick={() =>
                 setInput(
                   VEHICLE_JSON_TEMPLATE
@@ -177,8 +125,8 @@ export default function BulkImport() {
             </button>
 
             <button
-              className="rounded-lg border border-red-400/30 px-4 py-2 text-sm font-bold text-red-300 transition hover:border-red-400 hover:text-red-200"
               type="button"
+              className="rounded-lg border border-red-400/30 px-4 py-2 text-sm font-bold text-red-300 transition hover:border-red-400 hover:text-red-200"
               onClick={() =>
                 setInput(
                   ""
@@ -208,7 +156,7 @@ export default function BulkImport() {
         />
 
 
-        <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-6">
+        <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-7">
           <Metric
             label="Format"
             value={
@@ -266,6 +214,22 @@ export default function BulkImport() {
               )
             }
           />
+
+          <Metric
+            label="Registry Score"
+            value={
+              parsedImport.rows.length >
+              0
+                ? `${manifest.score}/100`
+                : "—"
+            }
+            tone={
+              getScoreTone(
+                manifest.score,
+                parsedImport.rows.length
+              )
+            }
+          />
         </div>
 
 
@@ -283,6 +247,19 @@ export default function BulkImport() {
       </section>
 
 
+      {manifest.classifications.length >
+      0 ? (
+        <RegistryReview
+          classifications={
+            manifest.classifications
+          }
+          registryScore={
+            manifest.score
+          }
+        />
+      ) : null}
+
+
       {parsedImport.rows.length >
       0 ? (
         <section className="rounded-2xl border border-zinc-800 bg-zinc-950 p-6">
@@ -296,8 +273,8 @@ export default function BulkImport() {
 
           <p className="mt-2 max-w-3xl text-sm leading-6 text-zinc-400">
             Content Studio combines vehicle-specific validation with reusable
-            Atlas content checks. Only rows without errors are included in the
-            generated package.
+            Atlas content checks. Rows containing errors are excluded from
+            generated manufacturer files.
           </p>
 
           <div className="mt-6 space-y-4">
@@ -331,6 +308,9 @@ export default function BulkImport() {
             report={
               packageReport
             }
+            manifest={
+              manifest
+            }
           />
 
           <section className="space-y-6">
@@ -344,33 +324,39 @@ export default function BulkImport() {
               </h2>
 
               <p className="mt-2 text-sm leading-6 text-zinc-400">
-                Review, copy, or download each generated TypeScript file before
-                adding it to the production vehicle database.
+                Review each generated module and its registry classification
+                before merging it into the production vehicle database.
               </p>
             </div>
 
             {generatedFiles.map(
               (
                 file
-              ) => (
-                <GeneratedFile
-                  key={
+              ) => {
+                const classification =
+                  classificationByFilename.get(
                     file.filename
-                  }
-                  filename={
-                    file.filename
-                  }
-                  code={
-                    file.code
-                  }
-                  description={`${file.manufacturer} — ${file.vehicleCount} ${
-                    file.vehicleCount ===
-                    1
-                      ? "vehicle"
-                      : "vehicles"
-                  }`}
-                />
-              )
+                  );
+
+                return (
+                  <GeneratedFile
+                    key={
+                      file.filename
+                    }
+                    filename={
+                      file.filename
+                    }
+                    code={
+                      file.code
+                    }
+                    description={buildGeneratedFileDescription(
+                      file.manufacturer,
+                      file.vehicleCount,
+                      classification
+                    )}
+                  />
+                );
+              }
             )}
 
             <GeneratedFile
@@ -378,12 +364,233 @@ export default function BulkImport() {
               code={
                 indexCode
               }
-              description="Suggested manufacturer imports and combined vehicle export. Merge these entries into the existing app/data/vehicles/index.ts file."
+              description="Suggested imports and array entries for manufacturer modules. Review the registry manifest before merging this code into app/data/vehicles/index.ts."
             />
           </section>
         </>
       ) : null}
     </div>
+  );
+}
+
+
+function RegistryReview({
+  classifications,
+  registryScore,
+}: {
+  classifications:
+    RegistryFileClassification[];
+
+  registryScore:
+    number;
+}) {
+  const statusTotals =
+    classifications.reduce(
+      (
+        totals,
+        classification
+      ) => {
+        totals[
+          classification.status
+        ] +=
+          1;
+
+        return totals;
+      },
+      {
+        existing:
+          0,
+
+        new:
+          0,
+
+        merge:
+          0,
+
+        duplicate:
+          0,
+
+        invalid:
+          0,
+      }
+    );
+
+
+  return (
+    <section className="rounded-2xl border border-violet-400/20 bg-violet-400/[0.04] p-6">
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <p className="text-xs font-black uppercase tracking-[0.3em] text-violet-400">
+            Registry Intelligence
+          </p>
+
+          <h2 className="mt-3 text-2xl font-black text-white">
+            Production Classification
+          </h2>
+
+          <p className="mt-2 max-w-3xl text-sm leading-6 text-zinc-400">
+            Atlas compared the generated package against the current
+            manufacturer registry.
+          </p>
+        </div>
+
+        <span className="rounded-full border border-violet-400/30 bg-violet-400/10 px-4 py-2 text-sm font-black text-violet-200">
+          Readiness {registryScore}/100
+        </span>
+      </div>
+
+
+      <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <Metric
+          label="New Files"
+          value={
+            statusTotals.new.toString()
+          }
+          tone="positive"
+        />
+
+        <Metric
+          label="Merge Files"
+          value={
+            statusTotals.merge.toString()
+          }
+          tone={
+            statusTotals.merge >
+            0
+              ? "warning"
+              : "default"
+          }
+        />
+
+        <Metric
+          label="Duplicate Files"
+          value={
+            statusTotals.duplicate.toString()
+          }
+          tone={
+            statusTotals.duplicate >
+            0
+              ? "negative"
+              : "default"
+          }
+        />
+
+        <Metric
+          label="Invalid Files"
+          value={
+            statusTotals.invalid.toString()
+          }
+          tone={
+            statusTotals.invalid >
+            0
+              ? "negative"
+              : "default"
+          }
+        />
+      </div>
+
+
+      <div className="mt-6 space-y-3">
+        {classifications.map(
+          (
+            classification
+          ) => (
+            <article
+              key={`${classification.filename}-${classification.status}`}
+              className="rounded-xl border border-zinc-800 bg-zinc-950/70 p-4"
+            >
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div>
+                  <p className="font-mono text-sm font-bold text-white">
+                    {classification.filename}
+                  </p>
+
+                  <p className="mt-1 text-sm text-zinc-400">
+                    {classification.message}
+                  </p>
+                </div>
+
+                <ClassificationBadge
+                  status={
+                    classification.status
+                  }
+                />
+              </div>
+
+              <div className="mt-4 grid gap-3 text-sm text-zinc-400 sm:grid-cols-3">
+                <p>
+                  Existing:{" "}
+                  <span className="font-bold text-white">
+                    {classification.existingVehicleCount}
+                  </span>
+                </p>
+
+                <p>
+                  Incoming:{" "}
+                  <span className="font-bold text-white">
+                    {classification.incomingVehicleCount}
+                  </span>
+                </p>
+
+                <p>
+                  New:{" "}
+                  <span className="font-bold text-white">
+                    {classification.newVehicleSlugs.length}
+                  </span>
+                </p>
+              </div>
+
+
+              {classification.duplicateVehicleSlugs.length >
+              0 ? (
+                <p className="mt-3 text-sm text-amber-300">
+                  Duplicate slugs:{" "}
+                  {classification.duplicateVehicleSlugs.join(
+                    ", "
+                  )}
+                </p>
+              ) : null}
+            </article>
+          )
+        )}
+      </div>
+    </section>
+  );
+}
+
+
+function ClassificationBadge({
+  status,
+}: {
+  status:
+    RegistryFileClassification["status"];
+}) {
+  const className = {
+    existing:
+      "border-zinc-600 bg-zinc-800 text-zinc-300",
+
+    new:
+      "border-emerald-400/30 bg-emerald-400/10 text-emerald-300",
+
+    merge:
+      "border-amber-400/30 bg-amber-400/10 text-amber-300",
+
+    duplicate:
+      "border-red-400/30 bg-red-400/10 text-red-300",
+
+    invalid:
+      "border-red-400/30 bg-red-400/10 text-red-300",
+  }[
+    status
+  ];
+
+
+  return (
+    <span
+      className={`rounded-full border px-3 py-1 text-xs font-black uppercase tracking-wider ${className}`}
+    >
+      {status}
+    </span>
   );
 }
 
@@ -646,6 +853,28 @@ function ImportRowCard({
 }
 
 
+function buildGeneratedFileDescription(
+  manufacturer:
+    string,
+  vehicleCount:
+    number,
+  classification?:
+    RegistryFileClassification
+): string {
+  const vehicleLabel =
+    vehicleCount ===
+    1
+      ? "vehicle"
+      : "vehicles";
+
+  if (!classification) {
+    return `${manufacturer} — ${vehicleCount} ${vehicleLabel}`;
+  }
+
+  return `${manufacturer} — ${vehicleCount} ${vehicleLabel} — ${classification.status.toUpperCase()}`;
+}
+
+
 function ContentValue({
   label,
   value,
@@ -696,7 +925,9 @@ function Metric({
 
     negative:
       "text-red-400",
-  }[tone];
+  }[
+    tone
+  ];
 
 
   return (

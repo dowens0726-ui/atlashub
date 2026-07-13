@@ -1,10 +1,18 @@
 export type { BaseEntity } from "./content";
 
+export type {
+  ContentVerification,
+  ContentVerificationStatus,
+} from "./verification";
+
 export type { Mission } from "./mission";
 
 export type {
   Vehicle,
   VehicleAcquisition,
+  VehicleDataAvailability,
+  VehicleDataConfidence,
+  VehicleDataQuality,
   VehicleDrivetrain,
   VehiclePerformance,
   VehicleRarity,

@@ -1,48 +1,49 @@
 "use client";
 
 import {
+  useMemo,
   useState,
 } from "react";
 
 import JSZip from "jszip";
 
+import type {
+  RegistryManifest,
+} from "@/app/content-studio/registry";
+
+import type {
+  ProductionPackageReport,
+} from "@/app/content-studio/services";
+
 
 export type GeneratedPackageFile = {
-  filename: string;
+  filename:
+    string;
 
-  code: string;
+  code:
+    string;
 };
 
 
-export type GeneratedPackageReport = {
-  importedAt: string;
-
-  totalRows: number;
-
-  validRows: number;
-
-  invalidRows: number;
-
-  manufacturerCount: number;
-
-  vehicleCount: number;
-
-  warnings: string[];
-
-  generatedFiles: string[];
-};
+export type GeneratedPackageReport =
+  ProductionPackageReport;
 
 
 type GeneratedPackageProps = {
   files:
     GeneratedPackageFile[];
 
-  indexCode: string;
+  indexCode:
+    string;
 
   report:
     GeneratedPackageReport;
 
-  disabled?: boolean;
+  manifest:
+    RegistryManifest;
+
+  disabled?:
+    boolean;
 };
 
 
@@ -50,6 +51,7 @@ export default function GeneratedPackage({
   files,
   indexCode,
   report,
+  manifest,
   disabled = false,
 }: GeneratedPackageProps) {
   const [
@@ -69,12 +71,60 @@ export default function GeneratedPackage({
   );
 
 
+  const approvedFiles =
+    useMemo(
+      () => {
+        const allowedFilenames =
+          new Set(
+            manifest.classifications
+              .filter(
+                (
+                  classification
+                ) =>
+                  (
+                    classification.status ===
+                      "new" ||
+                    classification.status ===
+                      "merge"
+                  ) &&
+                  classification.newVehicleSlugs.length >
+                    0
+              )
+              .map(
+                (
+                  classification
+                ) =>
+                  classification.filename
+              )
+          );
+
+        return files.filter(
+          (
+            file
+          ) =>
+            allowedFilenames.has(
+              file.filename
+            )
+        );
+      },
+      [
+        files,
+        manifest.classifications,
+      ]
+    );
+
+
+  const canDownload =
+    !disabled &&
+    approvedFiles.length >
+      0 &&
+    manifest.package.invalidFiles ===
+      0 &&
+    !isGenerating;
+
+
   async function handleDownload() {
-    if (
-      disabled ||
-      files.length === 0 ||
-      isGenerating
-    ) {
+    if (!canDownload) {
       return;
     }
 
@@ -115,8 +165,10 @@ export default function GeneratedPackage({
       }
 
 
-      files.forEach(
-        (file) => {
+      approvedFiles.forEach(
+        (
+          file
+        ) => {
           vehiclesFolder.file(
             file.filename,
             file.code
@@ -141,37 +193,23 @@ export default function GeneratedPackage({
       );
 
 
-      const readme = `Atlas Vehicle Import Package
+      rootFolder.file(
+        "registry-manifest.json",
+        JSON.stringify(
+          manifest,
+          null,
+          2
+        )
+      );
 
-Generated:
-${report.importedAt}
-
-Vehicles:
-${report.vehicleCount}
-
-Manufacturers:
-${report.manufacturerCount}
-
-Valid rows:
-${report.validRows}
-
-Invalid rows excluded:
-${report.invalidRows}
-
-Installation:
-1. Review every generated manufacturer file.
-2. Move the approved files into app/data/vehicles.
-3. Merge the contents of vehicles-index-snippet.ts into app/data/vehicles/index.ts.
-4. Add the corresponding vehicle images to public/vehicles.
-5. Run npm run build.
-6. Commit only after the production build passes.
-
-Atlas does not automatically overwrite source files.
-`;
 
       rootFolder.file(
         "README.txt",
-        readme
+        buildReadme(
+          report,
+          manifest,
+          approvedFiles
+        )
       );
 
 
@@ -248,26 +286,24 @@ Atlas does not automatically overwrite source files.
       <div className="flex flex-wrap items-start justify-between gap-5">
         <div>
           <p className="text-xs font-black uppercase tracking-[0.35em] text-emerald-400">
-            Package Export
+            Production Package
           </p>
 
           <h2 className="mt-3 text-3xl font-black text-white">
-            Download Vehicle Package
+            Download Approved Vehicle Package
           </h2>
 
           <p className="mt-3 max-w-3xl text-sm leading-6 text-zinc-400">
-            Download all generated manufacturer files, the vehicle-index
-            suggestion, an import report, and installation instructions in one
-            ZIP archive.
+            The ZIP includes approved manufacturer modules, a registry
+            manifest, an import report, the registry snippet, and installation
+            instructions. Duplicate-only and invalid files are excluded.
           </p>
         </div>
 
         <button
           type="button"
           disabled={
-            disabled ||
-            files.length === 0 ||
-            isGenerating
+            !canDownload
           }
           onClick={
             handleDownload
@@ -281,7 +317,7 @@ Atlas does not automatically overwrite source files.
       </div>
 
 
-      <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-6">
         <Metric
           label="Vehicles"
           value={
@@ -290,28 +326,52 @@ Atlas does not automatically overwrite source files.
         />
 
         <Metric
-          label="Manufacturers"
+          label="Approved Files"
           value={
-            report.manufacturerCount.toString()
+            approvedFiles.length.toString()
           }
         />
 
         <Metric
-          label="Generated Files"
+          label="New Files"
           value={
-            report.generatedFiles.length.toString()
+            report.newFiles.toString()
           }
         />
 
         <Metric
-          label="Rows Excluded"
+          label="Merge Files"
           value={
-            report.invalidRows.toString()
+            report.mergeFiles.toString()
           }
           tone={
-            report.invalidRows > 0
+            report.mergeFiles >
+            0
               ? "warning"
               : "default"
+          }
+        />
+
+        <Metric
+          label="Duplicates"
+          value={
+            report.duplicateFiles.toString()
+          }
+          tone={
+            report.duplicateFiles >
+            0
+              ? "warning"
+              : "default"
+          }
+        />
+
+        <Metric
+          label="Registry Score"
+          value={`${report.registryScore}/100`}
+          tone={
+            getScoreTone(
+              report.registryScore
+            )
           }
         />
       </div>
@@ -323,15 +383,17 @@ Atlas does not automatically overwrite source files.
         </p>
 
         <div className="mt-4 grid gap-2 sm:grid-cols-2">
-          {report.generatedFiles.map(
-            (filename) => (
+          {approvedFiles.map(
+            (
+              file
+            ) => (
               <p
                 key={
-                  filename
+                  file.filename
                 }
                 className="font-mono text-sm text-zinc-300"
               >
-                vehicles/{filename}
+                vehicles/{file.filename}
               </p>
             )
           )}
@@ -345,16 +407,58 @@ Atlas does not automatically overwrite source files.
           </p>
 
           <p className="font-mono text-sm text-zinc-300">
+            registry-manifest.json
+          </p>
+
+          <p className="font-mono text-sm text-zinc-300">
             README.txt
           </p>
         </div>
       </div>
 
 
-      {report.warnings.length > 0 ? (
+      {manifest.classifications.length >
+      0 ? (
+        <div className="mt-6 rounded-2xl border border-zinc-800 bg-zinc-950/70 p-5">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-zinc-500">
+            File Classifications
+          </p>
+
+          <div className="mt-4 space-y-3">
+            {manifest.classifications.map(
+              (
+                classification
+              ) => (
+                <div
+                  key={`${classification.filename}-${classification.status}`}
+                  className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-zinc-800 bg-zinc-900/60 p-4"
+                >
+                  <div>
+                    <p className="font-mono text-sm font-bold text-white">
+                      {classification.filename}
+                    </p>
+
+                    <p className="mt-1 text-sm text-zinc-400">
+                      {classification.message}
+                    </p>
+                  </div>
+
+                  <span className="rounded-full border border-zinc-700 bg-zinc-950 px-3 py-1 text-xs font-black uppercase tracking-wider text-zinc-300">
+                    {classification.status}
+                  </span>
+                </div>
+              )
+            )}
+          </div>
+        </div>
+      ) : null}
+
+
+      {report.warnings.length >
+      0 ? (
         <div className="mt-6 rounded-2xl border border-amber-400/20 bg-amber-400/[0.05] p-5">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-amber-400">
-            Import Warnings
+            Package Warnings
           </p>
 
           <div className="mt-3 space-y-2">
@@ -376,6 +480,17 @@ Atlas does not automatically overwrite source files.
       ) : null}
 
 
+      {!canDownload &&
+      approvedFiles.length ===
+        0 ? (
+        <div className="mt-6 rounded-2xl border border-amber-400/20 bg-amber-400/[0.05] p-5">
+          <p className="text-sm font-bold text-amber-200">
+            No approved manufacturer files are available for export.
+          </p>
+        </div>
+      ) : null}
+
+
       {error ? (
         <div className="mt-6 rounded-2xl border border-red-400/30 bg-red-400/10 p-5">
           <p className="text-sm font-bold text-red-200">
@@ -388,23 +503,124 @@ Atlas does not automatically overwrite source files.
 }
 
 
+function buildReadme(
+  report:
+    GeneratedPackageReport,
+  manifest:
+    RegistryManifest,
+  approvedFiles:
+    GeneratedPackageFile[]
+): string {
+  const newFiles =
+    manifest.classifications
+      .filter(
+        (
+          classification
+        ) =>
+          classification.status ===
+          "new"
+      )
+      .map(
+        (
+          classification
+        ) =>
+          classification.filename
+      );
+
+  const mergeFiles =
+    manifest.classifications
+      .filter(
+        (
+          classification
+        ) =>
+          classification.status ===
+          "merge"
+      )
+      .map(
+        (
+          classification
+        ) =>
+          classification.filename
+      );
+
+
+  return `Atlas Vehicle Import Package
+
+Generated:
+${report.importedAt}
+
+Registry readiness:
+${report.registryScore}/100
+
+Vehicles generated:
+${report.vehicleCount}
+
+Approved manufacturer files:
+${approvedFiles.length}
+
+New manufacturer files:
+${newFiles.length > 0 ? newFiles.join(", ") : "None"}
+
+Existing manufacturer files requiring review and merge:
+${mergeFiles.length > 0 ? mergeFiles.join(", ") : "None"}
+
+Invalid rows excluded:
+${report.invalidRows}
+
+Duplicate-only files excluded:
+${report.duplicateFiles}
+
+Installation:
+1. Review import-report.json and registry-manifest.json.
+2. For files classified NEW, move the approved module into app/data/vehicles.
+3. For files classified MERGE, manually merge only the approved new vehicle objects into the existing manufacturer module.
+4. Review vehicles-index-snippet.ts and add only missing imports and registry entries.
+5. Add the corresponding vehicle images to public/vehicles.
+6. Run the duplicate-slug check.
+7. Run npm run build.
+8. Review /engineering.
+9. Commit only after the production build passes.
+
+Important:
+Atlas does not automatically overwrite source files.
+Generated MERGE files are review artifacts and must not blindly replace existing manufacturer modules.
+`;
+}
+
+
 function Metric({
   label,
   value,
   tone = "default",
 }: {
-  label: string;
+  label:
+    string;
 
-  value: string;
+  value:
+    string;
 
   tone?:
     | "default"
-    | "warning";
+    | "warning"
+    | "negative"
+    | "positive";
 }) {
-  const valueClassName =
-    tone === "warning"
-      ? "text-amber-400"
-      : "text-white";
+  const valueClassName = {
+    default:
+      "text-white",
+
+    warning:
+      "text-amber-400",
+
+    negative:
+      "text-red-400",
+
+    positive:
+      "text-emerald-400",
+  }[
+    tone
+  ];
+
 
   return (
     <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4">
@@ -419,4 +635,29 @@ function Metric({
       </p>
     </div>
   );
+}
+
+
+function getScoreTone(
+  score:
+    number
+):
+  | "positive"
+  | "warning"
+  | "negative" {
+  if (
+    score >=
+    80
+  ) {
+    return "positive";
+  }
+
+  if (
+    score >=
+    60
+  ) {
+    return "warning";
+  }
+
+  return "negative";
 }

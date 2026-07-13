@@ -40,11 +40,40 @@ function average(
 }
 
 
+function getAvailableOverallScores(
+  manufacturerVehicles:
+    Vehicle[]
+): number[] {
+  return manufacturerVehicles
+    .map(
+      (
+        vehicle
+      ) =>
+        getAtlasVehicleScore(
+          vehicle
+        ).overall
+    )
+    .filter(
+      (
+        score
+      ): score is number =>
+        score !==
+        null
+    );
+}
+
+
 function buildManufacturerStatistic(
   name: string,
   manufacturerVehicles:
     Vehicle[]
 ): ManufacturerStatistic {
+  const availableScores =
+    getAvailableOverallScores(
+      manufacturerVehicles
+    );
+
+
   return {
     name,
 
@@ -53,26 +82,25 @@ function buildManufacturerStatistic(
 
     featuredCount:
       manufacturerVehicles.filter(
-        (vehicle) =>
+        (
+          vehicle
+        ) =>
           vehicle.featured ===
           true
       ).length,
 
     verifiedCount:
       manufacturerVehicles.filter(
-        (vehicle) =>
+        (
+          vehicle
+        ) =>
           vehicle.verified ===
           true
       ).length,
 
     averageScore:
       average(
-        manufacturerVehicles.map(
-          (vehicle) =>
-            getAtlasVehicleScore(
-              vehicle
-            ).overall
-        )
+        availableScores
       ),
   };
 }
@@ -88,7 +116,9 @@ export function getManufacturerStatistics():
 
 
   vehicles.forEach(
-    (vehicle) => {
+    (
+      vehicle
+    ) => {
       const manufacturer =
         vehicle.manufacturer.trim() ||
         "Unknown";
@@ -214,7 +244,9 @@ export function getAverageVehiclesPerManufacturer(
 ): number {
   return average(
     statistics.map(
-      (manufacturer) =>
+      (
+        manufacturer
+      ) =>
         manufacturer.vehicleCount
     )
   );
@@ -224,7 +256,9 @@ export function getAverageVehiclesPerManufacturer(
 export function getVehiclesMissingManufacturer():
   Vehicle[] {
   return vehicles.filter(
-    (vehicle) =>
+    (
+      vehicle
+    ) =>
       !vehicle.manufacturer.trim()
   );
 }

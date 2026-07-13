@@ -4,8 +4,18 @@ import type {
   Vehicle,
 } from "@/app/types";
 
-import { getAtlasVehicleScore } from "@/app/services/atlas-score.service";
-import { getBusinessScore } from "@/app/services/scoring.service";
+import {
+  getAtlasVehicleScore,
+} from "@/app/services/atlas-score.service";
+
+import {
+  canDisplayVehiclePrice,
+} from "@/app/services/vehicle-data";
+
+import {
+  getBusinessScore,
+} from "@/app/services/scoring.service";
+
 
 export type AtlasMatch = {
   overall: number;
@@ -20,10 +30,22 @@ export type AtlasMatch = {
   reasons: string[];
 };
 
-function clamp(value: number) {
+
+const NEUTRAL_MATCH_SCORE =
+  50;
+
+
+function clamp(
+  value: number
+): number {
   return Math.max(
     0,
-    Math.min(100, Math.round(value))
+    Math.min(
+      100,
+      Math.round(
+        value
+      )
+    )
   );
 }
 
@@ -33,56 +55,125 @@ export function getVehicleMatch(
   vehicle: Vehicle
 ): AtlasMatch {
   const score =
-    getAtlasVehicleScore(vehicle);
+    getAtlasVehicleScore(
+      vehicle
+    );
 
-  const reasons: string[] = [];
+  const reasons:
+    string[] = [];
 
 
   const performance =
-    score.overall;
+    score.overall ??
+    NEUTRAL_MATCH_SCORE;
 
 
-  if (performance >= 80) {
+  if (
+    score.overall !==
+      null &&
+    performance >=
+      80
+  ) {
     reasons.push(
       "High Atlas performance rating."
     );
   }
 
 
+  if (
+    score.overall ===
+    null
+  ) {
+    reasons.push(
+      "Performance match is provisional because vehicle data is not yet confirmed."
+    );
+  }
+
+
+  const hasConfirmedPrice =
+    canDisplayVehiclePrice(
+      vehicle
+    );
+
+
   const budget =
-    vehicle.price <= profile.cash
-      ? 95
-      : 40;
+    hasConfirmedPrice
+      ? vehicle.price <=
+        profile.cash
+        ? 95
+        : 40
+      : NEUTRAL_MATCH_SCORE;
 
 
-  if (budget >= 90) {
+  if (
+    hasConfirmedPrice &&
+    budget >=
+      90
+  ) {
     reasons.push(
       "Fits your current budget."
     );
   }
 
 
-  let playstyle = 70;
+  if (
+    !hasConfirmedPrice
+  ) {
+    reasons.push(
+      "Budget fit cannot be confirmed because the vehicle price is unavailable."
+    );
+  }
+
+
+  let playstyle =
+    70;
+
 
   if (
-    profile.playstyle === "solo"
+    profile.playstyle ===
+    "solo"
   ) {
-    playstyle = score.beginner;
+    playstyle =
+      score.beginner ??
+      NEUTRAL_MATCH_SCORE;
 
-    if (playstyle >= 80) {
+
+    if (
+      score.beginner !==
+        null &&
+      playstyle >=
+        80
+    ) {
       reasons.push(
         "Matches your solo playstyle."
+      );
+    }
+
+
+    if (
+      score.beginner ===
+      null
+    ) {
+      reasons.push(
+        "Solo suitability is provisional because beginner-driving data is incomplete."
       );
     }
   }
 
 
-  let progression = 70;
+  let progression =
+    hasConfirmedPrice
+      ? 70
+      : NEUTRAL_MATCH_SCORE;
+
 
   if (
-    vehicle.price >= 500000
+    hasConfirmedPrice &&
+    vehicle.price >=
+      500000
   ) {
-    progression += 15;
+    progression +=
+      15;
 
     reasons.push(
       "Provides meaningful progression."
@@ -90,22 +181,42 @@ export function getVehicleMatch(
   }
 
 
-  const overall = clamp(
-    performance * 0.35 +
-      budget * 0.25 +
-      playstyle * 0.2 +
-      progression * 0.2
-  );
+  const overall =
+    clamp(
+      performance *
+        0.35 +
+      budget *
+        0.25 +
+      playstyle *
+        0.2 +
+      progression *
+        0.2
+    );
 
 
   return {
     overall,
 
     factors: {
-      performance: clamp(performance),
-      budget,
-      playstyle: clamp(playstyle),
-      progression: clamp(progression),
+      performance:
+        clamp(
+          performance
+        ),
+
+      budget:
+        clamp(
+          budget
+        ),
+
+      playstyle:
+        clamp(
+          playstyle
+        ),
+
+      progression:
+        clamp(
+          progression
+        ),
     },
 
     reasons,
@@ -118,16 +229,22 @@ export function getBusinessMatch(
   business: Business
 ): AtlasMatch {
   const score =
-    getBusinessScore(business);
+    getBusinessScore(
+      business
+    );
 
-  const reasons: string[] = [];
+  const reasons:
+    string[] = [];
 
 
   const performance =
     score.overall;
 
 
-  if (score.profitability >= 80) {
+  if (
+    score.profitability >=
+    80
+  ) {
     reasons.push(
       "Strong income potential."
     );
@@ -135,12 +252,16 @@ export function getBusinessMatch(
 
 
   const budget =
-    business.price <= profile.cash
+    business.price <=
+    profile.cash
       ? 95
       : 40;
 
 
-  if (budget >= 90) {
+  if (
+    budget >=
+    90
+  ) {
     reasons.push(
       "Affordable with your current funds."
     );
@@ -148,13 +269,17 @@ export function getBusinessMatch(
 
 
   const playstyle =
-    profile.playstyle === "solo" &&
+    profile.playstyle ===
+      "solo" &&
     business.soloFriendly
       ? 95
       : 70;
 
 
-  if (playstyle >= 90) {
+  if (
+    playstyle >=
+    90
+  ) {
     reasons.push(
       "Fits your empire strategy."
     );
@@ -165,7 +290,10 @@ export function getBusinessMatch(
     score.progression;
 
 
-  if (progression >= 80) {
+  if (
+    progression >=
+    80
+  ) {
     reasons.push(
       "Improves long-term empire growth."
     );
@@ -173,18 +301,38 @@ export function getBusinessMatch(
 
 
   return {
-    overall: clamp(
-      performance * 0.4 +
-        budget * 0.2 +
-        playstyle * 0.2 +
-        progression * 0.2
-    ),
+    overall:
+      clamp(
+        performance *
+          0.4 +
+        budget *
+          0.2 +
+        playstyle *
+          0.2 +
+        progression *
+          0.2
+      ),
 
     factors: {
-      performance: clamp(performance),
-      budget,
-      playstyle,
-      progression,
+      performance:
+        clamp(
+          performance
+        ),
+
+      budget:
+        clamp(
+          budget
+        ),
+
+      playstyle:
+        clamp(
+          playstyle
+        ),
+
+      progression:
+        clamp(
+          progression
+        ),
     },
 
     reasons,
