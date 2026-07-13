@@ -1,23 +1,30 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import {
+  useMemo,
+  useState,
+} from "react";
 
 import Button from "@/app/components/ui/Button";
 
+import AtlasOutcomeReportCard from "./AtlasOutcomeReportCard";
+
 import type {
   AtlasDecisionHistoryItem,
+  AtlasOutcome,
   AtlasPlayerAction,
   AtlasRecommendation,
 } from "@/app/intelligence";
 
 import {
   abandonAtlasAction,
-  acceptAtlasRecommendation,
+  acceptAndStartAtlasRecommendation,
   completeAtlasAction,
-  startAtlasDecision,
 } from "@/app/services";
 
-import { useAtlasIntelligence } from "@/app/hooks/useAtlasIntelligence";
+import {
+  useAtlasIntelligence,
+} from "@/app/hooks/useAtlasIntelligence";
 
 
 type AtlasDecisionControlsProps = {
@@ -27,6 +34,7 @@ type AtlasDecisionControlsProps = {
 
 type DecisionMessage = {
   type: "success" | "error";
+
   text: string;
 };
 
@@ -36,18 +44,44 @@ function getLatestAction(
   decisions: AtlasDecisionHistoryItem[],
   actions: AtlasPlayerAction[]
 ): AtlasPlayerAction | null {
-  const relatedDecisionIds = new Set(
-    decisions
-      .filter(
-        (decision) =>
-          decision.recommendationId === recommendationId
-      )
-      .map((decision) => decision.id)
-  );
+  const relatedDecisionIds =
+    new Set(
+      decisions
+        .filter(
+          (decision) =>
+            decision.recommendationId ===
+            recommendationId
+        )
+        .map(
+          (decision) =>
+            decision.id
+        )
+    );
 
   return (
-    actions.find((action) =>
-      relatedDecisionIds.has(action.decisionId)
+    actions.find(
+      (action) =>
+        relatedDecisionIds.has(
+          action.decisionId
+        )
+    ) ?? null
+  );
+}
+
+
+function getOutcomeForAction(
+  action: AtlasPlayerAction | null,
+  outcomes: AtlasOutcome[]
+): AtlasOutcome | null {
+  if (!action) {
+    return null;
+  }
+
+  return (
+    outcomes.find(
+      (outcome) =>
+        outcome.actionId ===
+        action.id
     ) ?? null
   );
 }
@@ -59,49 +93,74 @@ export default function AtlasDecisionControls({
   const {
     decisions,
     actions,
+    outcomes,
     hydrated,
   } = useAtlasIntelligence();
 
-  const [message, setMessage] =
-    useState<DecisionMessage | null>(null);
+  const [
+    message,
+    setMessage,
+  ] = useState<DecisionMessage | null>(
+    null
+  );
 
 
-  const activeAction = useMemo(
-    () =>
-      getLatestAction(
+  const activeAction =
+    useMemo(
+      () =>
+        getLatestAction(
+          recommendation.id,
+          decisions,
+          actions
+        ),
+      [
         recommendation.id,
         decisions,
-        actions
-      ),
-    [
-      recommendation.id,
-      decisions,
-      actions,
-    ]
-  );
+        actions,
+      ]
+    );
+
+
+  const reportedOutcome =
+    useMemo(
+      () =>
+        getOutcomeForAction(
+          activeAction,
+          outcomes
+        ),
+      [
+        activeAction,
+        outcomes,
+      ]
+    );
 
 
   function handleStartStrategy() {
     setMessage(null);
 
-    const decision =
-      acceptAtlasRecommendation(recommendation);
-
     const result =
-      startAtlasDecision(decision.id);
+      acceptAndStartAtlasRecommendation(
+        recommendation
+      );
 
     if (!result.ok) {
       setMessage({
-        type: "error",
-        text: result.message,
+        type:
+          "error",
+
+        text:
+          result.message,
       });
 
       return;
     }
 
     setMessage({
-      type: "success",
-      text: "Atlas is now tracking this strategy.",
+      type:
+        "success",
+
+      text:
+        "Atlas is now tracking this strategy.",
     });
   }
 
@@ -114,21 +173,28 @@ export default function AtlasDecisionControls({
     setMessage(null);
 
     const result =
-      completeAtlasAction(activeAction.id);
+      completeAtlasAction(
+        activeAction.id
+      );
 
     if (!result.ok) {
       setMessage({
-        type: "error",
-        text: result.message,
+        type:
+          "error",
+
+        text:
+          result.message,
       });
 
       return;
     }
 
     setMessage({
-      type: "success",
+      type:
+        "success",
+
       text:
-        "Strategy marked complete. Atlas can now evaluate the result.",
+        "Strategy marked complete. Report the result so Atlas can learn from it.",
     });
   }
 
@@ -141,21 +207,47 @@ export default function AtlasDecisionControls({
     setMessage(null);
 
     const result =
-      abandonAtlasAction(activeAction.id);
+      abandonAtlasAction(
+        activeAction.id
+      );
 
     if (!result.ok) {
       setMessage({
-        type: "error",
-        text: result.message,
+        type:
+          "error",
+
+        text:
+          result.message,
       });
 
       return;
     }
 
     setMessage({
-      type: "success",
+      type:
+        "success",
+
       text:
         "Strategy abandoned. Atlas will keep this decision in your history.",
+    });
+  }
+
+
+  function handleOutcomeReported(
+    outcome: AtlasOutcome
+  ) {
+    setMessage({
+      type:
+        "success",
+
+      text:
+        outcome.rating ===
+        "positive"
+          ? "Successful outcome recorded. Atlas has updated your learning history."
+          : outcome.rating ===
+              "negative"
+            ? "Failed outcome recorded. Atlas will adjust future guidance."
+            : "Neutral outcome recorded. Atlas has added it to your learning history.",
     });
   }
 
@@ -172,13 +264,16 @@ export default function AtlasDecisionControls({
 
 
   const actionIsStarted =
-    activeAction?.status === "started";
+    activeAction?.status ===
+    "started";
 
   const actionIsCompleted =
-    activeAction?.status === "completed";
+    activeAction?.status ===
+    "completed";
 
   const actionIsAbandoned =
-    activeAction?.status === "abandoned";
+    activeAction?.status ===
+    "abandoned";
 
 
   return (
@@ -200,7 +295,11 @@ export default function AtlasDecisionControls({
           </p>
 
           <div className="mt-5">
-            <Button onClick={handleStartStrategy}>
+            <Button
+              onClick={
+                handleStartStrategy
+              }
+            >
               Start Strategy
             </Button>
           </div>
@@ -233,13 +332,19 @@ export default function AtlasDecisionControls({
           </p>
 
           <div className="mt-5 flex flex-wrap gap-3">
-            <Button onClick={handleCompleteAction}>
+            <Button
+              onClick={
+                handleCompleteAction
+              }
+            >
               Mark Complete
             </Button>
 
             <Button
               variant="secondary"
-              onClick={handleAbandonAction}
+              onClick={
+                handleAbandonAction
+              }
             >
               Abandon Strategy
             </Button>
@@ -260,18 +365,51 @@ export default function AtlasDecisionControls({
             Strategy completed
           </h3>
 
-          <p className="mt-2 text-sm leading-6 text-zinc-400">
-            This action is ready for outcome reporting and validation.
-          </p>
+          {reportedOutcome ? (
+            <>
+              <p className="mt-2 text-sm leading-6 text-zinc-400">
+                Atlas has recorded and validated the reported result for this
+                strategy.
+              </p>
 
-          <div className="mt-5">
-            <Button
-              variant="secondary"
-              onClick={handleStartStrategy}
-            >
-              Start Strategy Again
-            </Button>
-          </div>
+              <div className="mt-5 rounded-xl border border-emerald-400/20 bg-emerald-400/[0.04] p-4">
+                <p className="text-xs font-black uppercase tracking-[0.2em] text-emerald-400">
+                  Outcome Recorded
+                </p>
+
+                <p className="mt-2 text-sm leading-6 text-zinc-300">
+                  {reportedOutcome.summary}
+                </p>
+              </div>
+
+              <div className="mt-5">
+                <Button
+                  variant="secondary"
+                  onClick={
+                    handleStartStrategy
+                  }
+                >
+                  Start Strategy Again
+                </Button>
+              </div>
+            </>
+          ) : (
+            <>
+              <p className="mt-2 text-sm leading-6 text-zinc-400">
+                Report the actual result so Atlas can validate the strategy and
+                improve future recommendations.
+              </p>
+
+              <AtlasOutcomeReportCard
+                action={
+                  activeAction
+                }
+                onReported={
+                  handleOutcomeReported
+                }
+              />
+            </>
+          )}
         </>
       ) : null}
 
@@ -296,7 +434,9 @@ export default function AtlasDecisionControls({
           <div className="mt-5">
             <Button
               variant="secondary"
-              onClick={handleStartStrategy}
+              onClick={
+                handleStartStrategy
+              }
             >
               Try Strategy Again
             </Button>
@@ -309,7 +449,8 @@ export default function AtlasDecisionControls({
         <p
           aria-live="polite"
           className={`mt-5 text-sm font-semibold ${
-            message.type === "success"
+            message.type ===
+            "success"
               ? "text-emerald-400"
               : "text-red-400"
           }`}

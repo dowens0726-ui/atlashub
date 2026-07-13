@@ -42,6 +42,17 @@ export type AtlasIntelligenceState = {
 };
 
 
+export type AtlasLifecycleUpdate = {
+  decision?: AtlasDecisionHistoryItem;
+
+  action?: AtlasPlayerAction;
+
+  outcome?: AtlasOutcome;
+
+  validation?: AtlasValidatedOutcome;
+};
+
+
 type PersistedAtlasIntelligenceState =
   AtlasIntelligenceState;
 
@@ -52,6 +63,11 @@ type AtlasIntelligenceStore =
 
     hydrateIntelligence:
       () => AtlasIntelligenceState;
+
+    applyLifecycleUpdate:
+      (
+        update: AtlasLifecycleUpdate
+      ) => AtlasIntelligenceState;
 
     recordDecision:
       (
@@ -106,6 +122,26 @@ function limitHistory<T>(
 }
 
 
+function upsertHistoryItem<
+  T extends {
+    id: string;
+  },
+>(
+  items: T[],
+  item: T
+): T[] {
+  return limitHistory([
+    item,
+
+    ...items.filter(
+      (existingItem) =>
+        existingItem.id !==
+        item.id
+    ),
+  ]);
+}
+
+
 function persistState(
   state: AtlasIntelligenceState
 ): void {
@@ -113,6 +149,25 @@ function persistState(
     ATLAS_INTELLIGENCE_STORAGE_KEY,
     state
   );
+}
+
+
+function getPersistableState(
+  store: AtlasIntelligenceStore
+): AtlasIntelligenceState {
+  return {
+    decisions:
+      store.decisions,
+
+    actions:
+      store.actions,
+
+    outcomes:
+      store.outcomes,
+
+    validations:
+      store.validations,
+  };
 }
 
 
@@ -180,37 +235,66 @@ export const useAtlasIntelligenceStore =
       },
 
 
+      applyLifecycleUpdate: (
+        update
+      ) => {
+        const currentState =
+          getPersistableState(
+            get()
+          );
+
+        const nextState:
+          AtlasIntelligenceState = {
+            decisions:
+              update.decision
+                ? upsertHistoryItem(
+                    currentState.decisions,
+                    update.decision
+                  )
+                : currentState.decisions,
+
+            actions:
+              update.action
+                ? upsertHistoryItem(
+                    currentState.actions,
+                    update.action
+                  )
+                : currentState.actions,
+
+            outcomes:
+              update.outcome
+                ? upsertHistoryItem(
+                    currentState.outcomes,
+                    update.outcome
+                  )
+                : currentState.outcomes,
+
+            validations:
+              update.validation
+                ? upsertHistoryItem(
+                    currentState.validations,
+                    update.validation
+                  )
+                : currentState.validations,
+          };
+
+        persistState(
+          nextState
+        );
+
+        set(
+          nextState
+        );
+
+        return nextState;
+      },
+
+
       recordDecision: (
         decision
       ) => {
-        const decisions =
-          limitHistory([
-            decision,
-
-            ...get().decisions.filter(
-              (existingDecision) =>
-                existingDecision.id !==
-                decision.id
-            ),
-          ]);
-
-        const nextState = {
-          decisions,
-
-          actions:
-            get().actions,
-
-          outcomes:
-            get().outcomes,
-
-          validations:
-            get().validations,
-        };
-
-        persistState(nextState);
-
-        set({
-          decisions,
+        get().applyLifecycleUpdate({
+          decision,
         });
 
         return decision;
@@ -220,34 +304,8 @@ export const useAtlasIntelligenceStore =
       recordAction: (
         action
       ) => {
-        const actions =
-          limitHistory([
-            action,
-
-            ...get().actions.filter(
-              (existingAction) =>
-                existingAction.id !==
-                action.id
-            ),
-          ]);
-
-        const nextState = {
-          decisions:
-            get().decisions,
-
-          actions,
-
-          outcomes:
-            get().outcomes,
-
-          validations:
-            get().validations,
-        };
-
-        persistState(nextState);
-
-        set({
-          actions,
+        get().applyLifecycleUpdate({
+          action,
         });
 
         return action;
@@ -257,34 +315,8 @@ export const useAtlasIntelligenceStore =
       recordOutcome: (
         outcome
       ) => {
-        const outcomes =
-          limitHistory([
-            outcome,
-
-            ...get().outcomes.filter(
-              (existingOutcome) =>
-                existingOutcome.id !==
-                outcome.id
-            ),
-          ]);
-
-        const nextState = {
-          decisions:
-            get().decisions,
-
-          actions:
-            get().actions,
-
-          outcomes,
-
-          validations:
-            get().validations,
-        };
-
-        persistState(nextState);
-
-        set({
-          outcomes,
+        get().applyLifecycleUpdate({
+          outcome,
         });
 
         return outcome;
@@ -294,34 +326,8 @@ export const useAtlasIntelligenceStore =
       recordValidation: (
         validation
       ) => {
-        const validations =
-          limitHistory([
-            validation,
-
-            ...get().validations.filter(
-              (existingValidation) =>
-                existingValidation.id !==
-                validation.id
-            ),
-          ]);
-
-        const nextState = {
-          decisions:
-            get().decisions,
-
-          actions:
-            get().actions,
-
-          outcomes:
-            get().outcomes,
-
-          validations,
-        };
-
-        persistState(nextState);
-
-        set({
-          validations,
+        get().applyLifecycleUpdate({
+          validation,
         });
 
         return validation;
@@ -355,31 +361,9 @@ export const useAtlasIntelligenceStore =
               existingAction.decisionId,
           };
 
-        const actions =
-          get().actions.map(
-            (action) =>
-              action.id === actionId
-                ? updatedAction
-                : action
-          );
-
-        const nextState = {
-          decisions:
-            get().decisions,
-
-          actions,
-
-          outcomes:
-            get().outcomes,
-
-          validations:
-            get().validations,
-        };
-
-        persistState(nextState);
-
-        set({
-          actions,
+        get().applyLifecycleUpdate({
+          action:
+            updatedAction,
         });
 
         return updatedAction;
@@ -405,22 +389,20 @@ export const useAtlasIntelligenceStore =
 
 export function getAtlasIntelligenceState():
   AtlasIntelligenceState {
-  const state =
-    useAtlasIntelligenceStore.getState();
+  return getPersistableState(
+    useAtlasIntelligenceStore.getState()
+  );
+}
 
-  return {
-    decisions:
-      state.decisions,
 
-    actions:
-      state.actions,
-
-    outcomes:
-      state.outcomes,
-
-    validations:
-      state.validations,
-  };
+export function applyAtlasLifecycleUpdate(
+  update: AtlasLifecycleUpdate
+): AtlasIntelligenceState {
+  return useAtlasIntelligenceStore
+    .getState()
+    .applyLifecycleUpdate(
+      update
+    );
 }
 
 
@@ -429,7 +411,9 @@ export function recordAtlasDecision(
 ): AtlasDecisionHistoryItem {
   return useAtlasIntelligenceStore
     .getState()
-    .recordDecision(decision);
+    .recordDecision(
+      decision
+    );
 }
 
 
@@ -438,7 +422,9 @@ export function recordAtlasAction(
 ): AtlasPlayerAction {
   return useAtlasIntelligenceStore
     .getState()
-    .recordAction(action);
+    .recordAction(
+      action
+    );
 }
 
 
@@ -447,7 +433,9 @@ export function recordAtlasOutcome(
 ): AtlasOutcome {
   return useAtlasIntelligenceStore
     .getState()
-    .recordOutcome(outcome);
+    .recordOutcome(
+      outcome
+    );
 }
 
 
@@ -456,7 +444,9 @@ export function recordAtlasValidation(
 ): AtlasValidatedOutcome {
   return useAtlasIntelligenceStore
     .getState()
-    .recordValidation(validation);
+    .recordValidation(
+      validation
+    );
 }
 
 

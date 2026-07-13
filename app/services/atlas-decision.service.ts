@@ -1,21 +1,31 @@
 import {
+  buildPlayerAction,
+  type AtlasPlayerAction,
+} from "@/app/intelligence/action-tracker.engine";
+
+import {
   buildDecisionHistory,
   type AtlasDecisionHistoryItem,
 } from "@/app/intelligence/decision-history.engine";
 
 import {
-  buildPlayerAction,
-  type AtlasPlayerAction,
-} from "@/app/intelligence/action-tracker.engine";
+  buildReportedAtlasOutcome,
+  type AtlasOutcome,
+  type AtlasOutcomeReportInput,
+} from "@/app/intelligence/outcome.engine";
+
+import type {
+  AtlasValidatedOutcome,
+  OutcomeValidationStatus,
+} from "@/app/intelligence/outcome-validation.engine";
 
 import type {
   AtlasRecommendation,
 } from "@/app/intelligence/recommendation.engine";
 
 import {
+  applyAtlasLifecycleUpdate,
   getAtlasIntelligenceState,
-  recordAtlasAction,
-  recordAtlasDecision,
   updateAtlasAction,
 } from "@/app/store/atlas-intelligence.store";
 
@@ -23,6 +33,7 @@ import {
 export type AtlasDecisionLifecycleError =
   | "decision-not-found"
   | "action-not-found"
+  | "action-not-completed"
   | "action-already-completed"
   | "action-already-abandoned";
 
@@ -37,6 +48,17 @@ export type AtlasDecisionLifecycleResult<T> =
       error: AtlasDecisionLifecycleError;
       message: string;
     };
+
+
+export type AtlasReportedOutcomeResult = {
+  decision: AtlasDecisionHistoryItem;
+
+  action: AtlasPlayerAction;
+
+  outcome: AtlasOutcome;
+
+  validation: AtlasValidatedOutcome;
+};
 
 
 function createLifecycleId(
@@ -56,6 +78,105 @@ function createLifecycleId(
 
 function createTimestamp(): string {
   return new Date().toISOString();
+}
+
+
+function getDecisionOutcomeStatus(
+  outcome: AtlasOutcome
+): AtlasDecisionHistoryItem["outcome"] {
+  if (outcome.rating === "positive") {
+    return "successful";
+  }
+
+  if (outcome.rating === "negative") {
+    return "failed";
+  }
+
+  return "neutral";
+}
+
+
+function getValidationStatus(
+  outcome: AtlasOutcome
+): OutcomeValidationStatus {
+  if (outcome.rating === "negative") {
+    return "failed";
+  }
+
+  return "confirmed";
+}
+
+
+function getValidationScore(
+  outcome: AtlasOutcome
+): number {
+  if (outcome.rating === "negative") {
+    return 0;
+  }
+
+  if (outcome.rating === "neutral") {
+    return 50;
+  }
+
+  const empireImpactScore =
+    Math.max(
+      0,
+      outcome.empireScoreChange
+    ) * 3;
+
+  const incomeImpactScore =
+    outcome.incomeChange > 0
+      ? Math.min(
+          20,
+          Math.floor(
+            outcome.incomeChange /
+              250000
+          ) * 5
+        )
+      : 0;
+
+  return Math.min(
+    100,
+    70 +
+      empireImpactScore +
+      incomeImpactScore
+  );
+}
+
+
+function buildReportedOutcomeValidation(
+  action: AtlasPlayerAction,
+  outcome: AtlasOutcome
+): AtlasValidatedOutcome {
+  const status =
+    getValidationStatus(
+      outcome
+    );
+
+  return {
+    id:
+      createLifecycleId(
+        "validation"
+      ),
+
+    actionId:
+      action.id,
+
+    outcomeId:
+      outcome.id,
+
+    status,
+
+    successScore:
+      getValidationScore(
+        outcome
+      ),
+
+    summary:
+      status === "confirmed"
+        ? "Atlas confirmed this completed strategy using the result reported by the player."
+        : "Atlas recorded that this strategy did not produce the intended result.",
+  };
 }
 
 
@@ -83,9 +204,11 @@ export function acceptAtlasRecommendation(
         "pending",
     };
 
-  return recordAtlasDecision(
-    decision
-  );
+  applyAtlasLifecycleUpdate({
+    decision,
+  });
+
+  return decision;
 }
 
 
@@ -98,7 +221,8 @@ export function startAtlasDecision(
   const decision =
     state.decisions.find(
       (item) =>
-        item.id === decisionId
+        item.id ===
+        decisionId
     );
 
   if (!decision) {
@@ -150,13 +274,80 @@ export function startAtlasDecision(
         "started",
     };
 
+  applyAtlasLifecycleUpdate({
+    decision,
+    action,
+  });
+
   return {
     ok: true,
 
     data:
-      recordAtlasAction(
-        action
-      ),
+      action,
+  };
+}
+
+
+export function acceptAndStartAtlasRecommendation(
+  recommendation: AtlasRecommendation
+): AtlasDecisionLifecycleResult<{
+  decision: AtlasDecisionHistoryItem;
+  action: AtlasPlayerAction;
+}> {
+  const generatedDecision =
+    buildDecisionHistory(
+      recommendation
+    );
+
+  const decision:
+    AtlasDecisionHistoryItem = {
+      ...generatedDecision,
+
+      id:
+        createLifecycleId(
+          "decision"
+        ),
+
+      timestamp:
+        createTimestamp(),
+
+      outcome:
+        "pending",
+    };
+
+  const generatedAction =
+    buildPlayerAction(
+      decision
+    );
+
+  const action:
+    AtlasPlayerAction = {
+      ...generatedAction,
+
+      id:
+        createLifecycleId(
+          "action"
+        ),
+
+      startedAt:
+        createTimestamp(),
+
+      status:
+        "started",
+    };
+
+  applyAtlasLifecycleUpdate({
+    decision,
+    action,
+  });
+
+  return {
+    ok: true,
+
+    data: {
+      decision,
+      action,
+    },
   };
 }
 
@@ -171,7 +362,8 @@ export function completeAtlasAction(
   const action =
     state.actions.find(
       (item) =>
-        item.id === actionId
+        item.id ===
+        actionId
     );
 
   if (!action) {
@@ -260,7 +452,8 @@ export function abandonAtlasAction(
   const action =
     state.actions.find(
       (item) =>
-        item.id === actionId
+        item.id ===
+        actionId
     );
 
   if (!action) {
@@ -332,5 +525,151 @@ export function abandonAtlasAction(
 
     data:
       updatedAction,
+  };
+}
+
+
+export function reportAtlasOutcome(
+  report: AtlasOutcomeReportInput
+): AtlasDecisionLifecycleResult<AtlasReportedOutcomeResult> {
+  const state =
+    getAtlasIntelligenceState();
+
+  const action =
+    state.actions.find(
+      (item) =>
+        item.id ===
+        report.actionId
+    );
+
+  if (!action) {
+    return {
+      ok: false,
+
+      error:
+        "action-not-found",
+
+      message:
+        "Atlas could not find the action associated with this outcome.",
+    };
+  }
+
+  if (
+    action.status !==
+    "completed"
+  ) {
+    return {
+      ok: false,
+
+      error:
+        "action-not-completed",
+
+      message:
+        "Complete the Atlas action before reporting its outcome.",
+    };
+  }
+
+  const decision =
+    state.decisions.find(
+      (item) =>
+        item.id ===
+        action.decisionId
+    );
+
+  if (!decision) {
+    return {
+      ok: false,
+
+      error:
+        "decision-not-found",
+
+      message:
+        "Atlas could not find the decision associated with this action.",
+    };
+  }
+
+  const existingOutcome =
+    state.outcomes.find(
+      (outcome) =>
+        outcome.actionId ===
+        action.id
+    );
+
+  const existingValidation =
+    existingOutcome
+      ? state.validations.find(
+          (validation) =>
+            validation.outcomeId ===
+            existingOutcome.id
+        )
+      : undefined;
+
+  if (
+    existingOutcome &&
+    existingValidation
+  ) {
+    return {
+      ok: true,
+
+      data: {
+        decision,
+
+        action,
+
+        outcome:
+          existingOutcome,
+
+        validation:
+          existingValidation,
+      },
+    };
+  }
+
+  const outcome =
+    buildReportedAtlasOutcome(
+      decision,
+      report
+    );
+
+  const validation =
+    buildReportedOutcomeValidation(
+      action,
+      outcome
+    );
+
+  const updatedDecision:
+    AtlasDecisionHistoryItem = {
+      ...decision,
+
+      outcome:
+        getDecisionOutcomeStatus(
+          outcome
+        ),
+    };
+
+  applyAtlasLifecycleUpdate({
+    decision:
+      updatedDecision,
+
+    action,
+
+    outcome,
+
+    validation,
+  });
+
+  return {
+    ok: true,
+
+    data: {
+      decision:
+        updatedDecision,
+
+      action,
+
+      outcome,
+
+      validation,
+    },
   };
 }

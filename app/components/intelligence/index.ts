@@ -1,6 +1,8 @@
 export { default as AtlasAIPanel } from "./AtlasAIPanel";
 
 export { default as AtlasCoreCard } from "./AtlasCoreCard";
+export { default as AtlasDecisionControls } from "./AtlasDecisionControls";
+export { default as AtlasOutcomeReportCard } from "./AtlasOutcomeReportCard";
 export { default as AtlasStrategyReportCard } from "./AtlasStrategyReportCard";
 export { default as AtlasAdvisorCard } from "./AtlasAdvisorCard";
 export { default as AtlasDailyObjectivesCard } from "./AtlasDailyObjectivesCard";
@@ -27,9 +29,8 @@ export { default as AtlasSessionPlanCard } from "./AtlasSessionPlanCard";
 export { default as PersonalPicksCard } from "./PersonalPicksCard";
 
 /*
- Existing intelligence exports
+ Existing intelligence exports.
  Keep these because vehicle and weapon detail pages depend on them.
 */
 export { default as AtlasIntelligenceCard } from "./AtlasIntelligenceCard";
 export { default as VehicleRecommendations } from "./VehicleRecommendations";
-export { default as AtlasDecisionControls } from "./AtlasDecisionControls";
