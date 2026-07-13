@@ -16,7 +16,8 @@ export const sportsVehicles: Vehicle[] = [
     drivetrain: "RWD",
     seats: 2,
     location: "Legendary Motorsport",
-    description: "A modern Pfister sports coupe inspired by Porsche engineering.",
+    description:
+      "A modern Pfister sports coupe inspired by Porsche engineering.",
     featured: true,
     tags: ["sports", "coupe", "pfister"],
   }),
@@ -35,28 +36,10 @@ export const sportsVehicles: Vehicle[] = [
     drivetrain: "AWD",
     seats: 4,
     location: "Legendary Motorsport",
-    description: "Luxury sports sedan with impressive speed and handling.",
+    description:
+      "Luxury sports sedan with impressive speed and handling.",
     featured: false,
     tags: ["sports", "sedan", "ocelot"],
-  }),
-
-  createVehicle({
-    slug: "banshee",
-    name: "Banshee",
-    manufacturer: "Bravado",
-    class: "Sports",
-    image: "/vehicles/banshee.jpg",
-    price: 105000,
-    topSpeed: 117,
-    acceleration: 80,
-    handling: 75,
-    braking: 70,
-    drivetrain: "RWD",
-    seats: 2,
-    location: "Legendary Motorsport",
-    description: "An iconic American sports car famous for street racing.",
-    featured: true,
-    tags: ["sports", "street-racing", "iconic"],
   }),
 
   createVehicle({
@@ -73,7 +56,8 @@ export const sportsVehicles: Vehicle[] = [
     drivetrain: "AWD",
     seats: 2,
     location: "Legendary Motorsport",
-    description: "A legendary tuner car with exceptional grip and balance.",
+    description:
+      "A legendary tuner car with exceptional grip and balance.",
     featured: true,
     tags: ["sports", "tuner", "awd"],
   }),
@@ -92,7 +76,8 @@ export const sportsVehicles: Vehicle[] = [
     drivetrain: "RWD",
     seats: 2,
     location: "Legendary Motorsport",
-    description: "A nimble Japanese-inspired sports coupe built for corners.",
+    description:
+      "A nimble Japanese-inspired sports coupe built for corners.",
     featured: false,
     tags: ["sports", "jdm", "cornering"],
   }),
@@ -111,7 +96,8 @@ export const sportsVehicles: Vehicle[] = [
     drivetrain: "AWD",
     seats: 4,
     location: "Benny's Original Motor Works",
-    description: "One of GTA's most respected tuner cars with incredible customization.",
+    description:
+      "One of GTA's most respected tuner cars with incredible customization.",
     featured: true,
     tags: ["sports", "bennys", "awd", "tuner"],
   }),
@@ -130,7 +116,8 @@ export const sportsVehicles: Vehicle[] = [
     drivetrain: "RWD",
     seats: 2,
     location: "Legendary Motorsport",
-    description: "Balanced handling and acceleration make it a favorite among experienced drivers.",
+    description:
+      "Balanced handling and acceleration make it a favorite among experienced drivers.",
     featured: false,
     tags: ["sports", "balanced", "benefactor"],
   }),
@@ -149,7 +136,8 @@ export const sportsVehicles: Vehicle[] = [
     drivetrain: "RWD",
     seats: 2,
     location: "Legendary Motorsport",
-    description: "A race-inspired sports car with strong all-around performance.",
+    description:
+      "A race-inspired sports car with strong all-around performance.",
     featured: false,
     tags: ["sports", "race", "dewbauchee"],
   }),
@@ -168,7 +156,8 @@ export const sportsVehicles: Vehicle[] = [
     drivetrain: "RWD",
     seats: 2,
     location: "Legendary Motorsport",
-    description: "A stylish convertible sports car built for speed and luxury.",
+    description:
+      "A stylish convertible sports car built for speed and luxury.",
     featured: false,
     tags: ["sports", "convertible", "grotti"],
   }),
@@ -187,7 +176,8 @@ export const sportsVehicles: Vehicle[] = [
     drivetrain: "RWD",
     seats: 4,
     location: "Legendary Motorsport",
-    description: "Luxury meets muscle in one of Benefactor's fastest sedans.",
+    description:
+      "Luxury meets muscle in one of Benefactor's fastest sedans.",
     featured: false,
     tags: ["sports", "sedan", "luxury"],
   }),
@@ -206,7 +196,8 @@ export const sportsVehicles: Vehicle[] = [
     drivetrain: "AWD",
     seats: 2,
     location: "Legendary Motorsport",
-    description: "One of the quickest sports cars in GTA with blistering acceleration.",
+    description:
+      "One of the quickest sports cars in GTA with blistering acceleration.",
     featured: true,
     tags: ["sports", "awd", "meta"],
   }),
@@ -225,7 +216,8 @@ export const sportsVehicles: Vehicle[] = [
     drivetrain: "RWD",
     seats: 2,
     location: "Legendary Motorsport",
-    description: "An absolute monster in straight-line speed and one of GTA's fastest sports cars.",
+    description:
+      "An absolute monster in straight-line speed and one of GTA's fastest sports cars.",
     featured: true,
     tags: ["sports", "fastest", "ocelot"],
   }),
