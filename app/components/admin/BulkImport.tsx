@@ -14,6 +14,11 @@ import type {
 } from "@/app/types";
 
 import GeneratedFile from "./GeneratedFile";
+import GeneratedPackage from "./GeneratedPackage";
+
+import type {
+  GeneratedPackageReport,
+} from "./GeneratedPackage";
 
 
 type ImportFormat =
@@ -24,20 +29,35 @@ type ImportFormat =
 
 type VehicleImportCandidate = {
   slug: string;
+
   name: string;
+
   manufacturer: string;
+
   class: string;
+
   image: string;
+
   price: number;
+
   topSpeed: number;
+
   acceleration: number;
+
   handling: number;
+
   braking: number;
+
   drivetrain: VehicleDrivetrain;
+
   seats: number;
+
   location: string;
+
   description: string;
+
   featured: boolean;
+
   tags: string[];
 };
 
@@ -56,9 +76,13 @@ type VehicleImportRow = {
 
 type GeneratedVehicleFile = {
   filename: string;
+
   exportName: string;
+
   manufacturer: string;
+
   code: string;
+
   vehicleCount: number;
 };
 
@@ -126,17 +150,11 @@ const JSON_TEMPLATE = `[
 
 function isRecord(
   value: unknown
-): value is Record<
-  string,
-  unknown
-> {
+): value is Record<string, unknown> {
   return (
-    typeof value ===
-      "object" &&
+    typeof value === "object" &&
     value !== null &&
-    !Array.isArray(
-      value
-    )
+    !Array.isArray(value)
   );
 }
 
@@ -178,12 +196,8 @@ function toIdentifier(
         " "
       )
       .trim()
-      .split(
-        /\s+/
-      )
-      .filter(
-        Boolean
-      );
+      .split(/\s+/)
+      .filter(Boolean);
 
   if (
     words.length ===
@@ -195,8 +209,7 @@ function toIdentifier(
   const [
     firstWord,
     ...remainingWords
-  ] =
-    words;
+  ] = words;
 
   const identifier =
     firstWord.toLowerCase() +
@@ -240,12 +253,8 @@ function detectFormat(
   }
 
   if (
-    trimmedValue.startsWith(
-      "["
-    ) ||
-    trimmedValue.startsWith(
-      "{"
-    )
+    trimmedValue.startsWith("[") ||
+    trimmedValue.startsWith("{")
   ) {
     return "json";
   }
@@ -338,8 +347,7 @@ function parseCsv(
       if (
         currentRow.some(
           (value) =>
-            value.length >
-            0
+            value.length > 0
         )
       ) {
         rows.push(
@@ -369,8 +377,7 @@ function parseCsv(
   if (
     currentRow.some(
       (value) =>
-        value.length >
-        0
+        value.length > 0
     )
   ) {
     rows.push(
@@ -385,18 +392,14 @@ function parseCsv(
 
 function csvRowsToRecords(
   input: string
-): Record<
-  string,
-  unknown
->[] {
+): Record<string, unknown>[] {
   const rows =
     parseCsv(
       input
     );
 
   if (
-    rows.length <
-    2
+    rows.length < 2
   ) {
     throw new Error(
       "CSV input must include a header row and at least one vehicle row."
@@ -415,10 +418,7 @@ function csvRowsToRecords(
     .map(
       (row) => {
         const record:
-          Record<
-            string,
-            unknown
-          > = {};
+          Record<string, unknown> = {};
 
         headers.forEach(
           (
@@ -439,10 +439,7 @@ function csvRowsToRecords(
 
 function jsonToRecords(
   input: string
-): Record<
-  string,
-  unknown
->[] {
+): Record<string, unknown>[] {
   const parsedValue:
     unknown =
       JSON.parse(
@@ -522,14 +519,8 @@ function jsonToRecords(
 
 
 function normalizeRecord(
-  record: Record<
-    string,
-    unknown
-  >
-): Record<
-  string,
-  unknown
-> {
+  record: Record<string, unknown>
+): Record<string, unknown> {
   return Object.fromEntries(
     Object.entries(
       record
@@ -551,10 +542,7 @@ function normalizeRecord(
 
 
 function getValue(
-  record: Record<
-    string,
-    unknown
-  >,
+  record: Record<string, unknown>,
   keys: string[]
 ): unknown {
   for (
@@ -686,9 +674,7 @@ function parseTags(
               .trim()
               .toLowerCase()
         )
-        .filter(
-          Boolean
-        )
+        .filter(Boolean)
     )
   );
 }
@@ -714,10 +700,7 @@ function parseDrivetrain(
 
 function buildCandidate(
   sourceRecord:
-    Record<
-      string,
-      unknown
-    >
+    Record<string, unknown>
 ): VehicleImportCandidate {
   const record =
     normalizeRecord(
@@ -981,8 +964,7 @@ function validateCandidate(
   }
 
   if (
-    vehicle.price <
-    0
+    vehicle.price < 0
   ) {
     errors.push(
       "Price cannot be negative."
@@ -990,8 +972,7 @@ function validateCandidate(
   }
 
   if (
-    vehicle.seats <
-    1
+    vehicle.seats < 1
   ) {
     errors.push(
       "Seats must be at least 1."
@@ -1226,7 +1207,8 @@ ${manufacturerVehicles
 
 
 function buildManufacturerFiles(
-  rows: VehicleImportRow[]
+  rows:
+    VehicleImportRow[]
 ): GeneratedVehicleFile[] {
   const validVehicles =
     rows
@@ -1347,6 +1329,74 @@ ${arrayEntries}
 }
 
 
+function buildPackageReport(
+  rows:
+    VehicleImportRow[],
+  generatedFiles:
+    GeneratedVehicleFile[]
+): GeneratedPackageReport {
+  const validRows =
+    rows.filter(
+      (row) =>
+        row.errors.length ===
+        0
+    );
+
+  const invalidRows =
+    rows.filter(
+      (row) =>
+        row.errors.length >
+        0
+    );
+
+  const warnings =
+    rows.flatMap(
+      (row) =>
+        row.warnings.map(
+          (warning) =>
+            `Row ${row.rowNumber}: ${warning}`
+        )
+    );
+
+
+  return {
+    importedAt:
+      new Date().toISOString(),
+
+    totalRows:
+      rows.length,
+
+    validRows:
+      validRows.length,
+
+    invalidRows:
+      invalidRows.length,
+
+    manufacturerCount:
+      generatedFiles.length,
+
+    vehicleCount:
+      generatedFiles.reduce(
+        (
+          total,
+          file
+        ) =>
+          total +
+          file.vehicleCount,
+        0
+      ),
+
+    warnings,
+
+    generatedFiles:
+      generatedFiles.map(
+        (file) =>
+          file.filename
+      ),
+  };
+}
+
+
 export default function BulkImport() {
   const [
     input,
@@ -1435,6 +1485,20 @@ export default function BulkImport() {
     );
 
 
+  const packageReport =
+    useMemo(
+      () =>
+        buildPackageReport(
+          parsedImport.rows,
+          generatedFiles
+        ),
+      [
+        parsedImport.rows,
+        generatedFiles,
+      ]
+    );
+
+
   return (
     <div className="space-y-8">
       <section className="rounded-2xl border border-zinc-800 bg-zinc-950 p-6">
@@ -1449,9 +1513,9 @@ export default function BulkImport() {
             </h2>
 
             <p className="mt-2 max-w-3xl text-sm leading-6 text-zinc-400">
-              Atlas validates the imported vehicles, groups valid records by
-              manufacturer, and generates individually downloadable TypeScript
-              files.
+              Atlas validates imported vehicles, groups valid records by
+              manufacturer, and generates a complete downloadable content
+              package.
             </p>
           </div>
 
@@ -1535,8 +1599,7 @@ export default function BulkImport() {
               invalidRows.length.toString()
             }
             tone={
-              invalidRows.length >
-              0
+              invalidRows.length > 0
                 ? "negative"
                 : "default"
             }
@@ -1565,8 +1628,7 @@ export default function BulkImport() {
       </section>
 
 
-      {parsedImport.rows.length >
-      0 ? (
+      {parsedImport.rows.length > 0 ? (
         <section className="rounded-2xl border border-zinc-800 bg-zinc-950 p-6">
           <p className="text-xs font-black uppercase tracking-[0.3em] text-cyan-400">
             Validation Results
@@ -1592,58 +1654,66 @@ export default function BulkImport() {
       ) : null}
 
 
-      {generatedFiles.length >
-      0 ? (
-        <section className="space-y-6">
-          <div>
-            <p className="text-xs font-black uppercase tracking-[0.3em] text-violet-400">
-              Smart Export
-            </p>
-
-            <h2 className="mt-3 text-3xl font-black text-white">
-              Manufacturer Files
-            </h2>
-
-            <p className="mt-2 text-sm leading-6 text-zinc-400">
-              Download each file and place it inside
-              <span className="font-mono text-zinc-200">
-                {" "}
-                app/data/vehicles
-              </span>
-              .
-            </p>
-          </div>
-
-          {generatedFiles.map(
-            (file) => (
-              <GeneratedFile
-                key={
-                  file.filename
-                }
-                filename={
-                  file.filename
-                }
-                code={
-                  file.code
-                }
-                description={`${file.manufacturer} — ${file.vehicleCount} ${
-                  file.vehicleCount ===
-                  1
-                    ? "vehicle"
-                    : "vehicles"
-                }`}
-              />
-            )
-          )}
-
-          <GeneratedFile
-            filename="vehicles-index-snippet.ts"
-            code={
+      {generatedFiles.length > 0 ? (
+        <>
+          <GeneratedPackage
+            files={
+              generatedFiles
+            }
+            indexCode={
               indexCode
             }
-            description="Suggested manufacturer imports and combined vehicle export. Merge these entries into the existing app/data/vehicles/index.ts file."
+            report={
+              packageReport
+            }
           />
-        </section>
+
+          <section className="space-y-6">
+            <div>
+              <p className="text-xs font-black uppercase tracking-[0.3em] text-violet-400">
+                Individual Files
+              </p>
+
+              <h2 className="mt-3 text-3xl font-black text-white">
+                Manufacturer Exports
+              </h2>
+
+              <p className="mt-2 text-sm leading-6 text-zinc-400">
+                Review, copy, or download each generated TypeScript file
+                individually.
+              </p>
+            </div>
+
+            {generatedFiles.map(
+              (file) => (
+                <GeneratedFile
+                  key={
+                    file.filename
+                  }
+                  filename={
+                    file.filename
+                  }
+                  code={
+                    file.code
+                  }
+                  description={`${file.manufacturer} — ${file.vehicleCount} ${
+                    file.vehicleCount === 1
+                      ? "vehicle"
+                      : "vehicles"
+                  }`}
+                />
+              )
+            )}
+
+            <GeneratedFile
+              filename="vehicles-index-snippet.ts"
+              code={
+                indexCode
+              }
+              description="Suggested manufacturer imports and combined vehicle export. Merge these entries into the existing app/data/vehicles/index.ts file."
+            />
+          </section>
+        </>
       ) : null}
     </div>
   );
@@ -1734,8 +1804,7 @@ function ImportRowCard({
       ) : null}
 
 
-      {row.errors.length >
-      0 ? (
+      {row.errors.length > 0 ? (
         <div className="mt-4 space-y-2">
           {row.errors.map(
             (error) => (
@@ -1753,8 +1822,7 @@ function ImportRowCard({
       ) : null}
 
 
-      {row.warnings.length >
-      0 ? (
+      {row.warnings.length > 0 ? (
         <div className="mt-4 space-y-2">
           {row.warnings.map(
             (warning) => (

@@ -15,5 +15,14 @@ export {
 } from "./GeneratedFile";
 
 export {
+  default as GeneratedPackage,
+} from "./GeneratedPackage";
+
+export type {
+  GeneratedPackageFile,
+  GeneratedPackageReport,
+} from "./GeneratedPackage";
+
+export {
   default as VehicleGenerator,
 } from "./VehicleGenerator";
