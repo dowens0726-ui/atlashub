@@ -3,6 +3,7 @@ import type { Vehicle } from "@/app/types";
 import { annisVehicles } from "./annis";
 import { benefactorVehicles } from "./benefactor";
 import { bravadoVehicles } from "./bravado";
+import { declasseVehicles } from "./declasse";
 import { dewbaucheeVehicles } from "./dewbauchee";
 import { dinkaVehicles } from "./dinka";
 import { grottiVehicles } from "./grotti";
@@ -20,6 +21,7 @@ export const vehicles: Vehicle[] = [
   ...annisVehicles,
   ...benefactorVehicles,
   ...bravadoVehicles,
+  ...declasseVehicles,
   ...dewbaucheeVehicles,
   ...dinkaVehicles,
   ...grottiVehicles,
