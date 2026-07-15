@@ -1,5 +1,6 @@
 import type { Vehicle } from "@/app/types";
 
+import { albanyVehicles } from "./albany";
 import { annisVehicles } from "./annis";
 import { benefactorVehicles } from "./benefactor";
 import { bravadoVehicles } from "./bravado";
@@ -18,6 +19,7 @@ import { truffadeVehicles } from "./truffade";
 import { vapidVehicles } from "./vapid";
 
 export const vehicles: Vehicle[] = [
+  ...albanyVehicles,
   ...annisVehicles,
   ...benefactorVehicles,
   ...bravadoVehicles,
