@@ -17,6 +17,7 @@ import { pfisterVehicles } from "./pfister";
 import { principeVehicles } from "./principe";
 import { progenVehicles } from "./progen";
 import { truffadeVehicles } from "./truffade";
+import { ubermachtVehicles } from "./ubermacht";
 import { vapidVehicles } from "./vapid";
 
 export const vehicles: Vehicle[] = [
@@ -37,5 +38,6 @@ export const vehicles: Vehicle[] = [
   ...principeVehicles,
   ...progenVehicles,
   ...truffadeVehicles,
+  ...ubermachtVehicles,
   ...vapidVehicles,
 ];
