@@ -9,6 +9,7 @@ import { dewbaucheeVehicles } from "./dewbauchee";
 import { dinkaVehicles } from "./dinka";
 import { grottiVehicles } from "./grotti";
 import { karinVehicles } from "./karin";
+import { obeyVehicles } from "./obey";
 import { ocelotVehicles } from "./ocelot";
 import { overflodVehicles } from "./overflod";
 import { pegassiVehicles } from "./pegassi";
@@ -28,6 +29,7 @@ export const vehicles: Vehicle[] = [
   ...dinkaVehicles,
   ...grottiVehicles,
   ...karinVehicles,
+  ...obeyVehicles,
   ...ocelotVehicles,
   ...overflodVehicles,
   ...pegassiVehicles,
