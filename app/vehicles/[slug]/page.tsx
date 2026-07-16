@@ -6,6 +6,7 @@ import AtlasScoreCard from "@/app/components/intelligence/AtlasScoreCard";
 
 import {
   AtlasIntelligenceCard,
+  VehicleIntelligenceCard,
   VehicleRecommendations,
 } from "@/app/components/intelligence";
 
@@ -243,6 +244,12 @@ export default async function VehiclePage({
 
 
         <AtlasScoreCard
+          vehicle={
+            vehicle
+          }
+        />
+
+        <VehicleIntelligenceCard
           vehicle={
             vehicle
           }

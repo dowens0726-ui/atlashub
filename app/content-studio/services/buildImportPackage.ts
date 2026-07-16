@@ -3,14 +3,16 @@ import {
 } from "@/app/data";
 
 import {
-  buildManufacturerFiles,
-  buildVehicleIndexCode,
   parseVehicleImport,
 } from "@/app/content-studio/import";
 
 import {
   scanVehicleRegistry,
 } from "@/app/content-studio/registry";
+
+import {
+  generateVehiclePackage,
+} from "@/app/content-studio/vehicle-generator";
 
 import {
   buildPackageReport,
@@ -20,16 +22,13 @@ import {
   buildPackageRegistryManifest,
 } from "./buildRegistryManifest";
 
-
 export function buildImportPackage(
   input: string
 ) {
   const existingSlugs =
     new Set(
       vehicles.map(
-        (
-          vehicle
-        ) =>
+        (vehicle) =>
           vehicle.slug
       )
     );
@@ -44,30 +43,39 @@ export function buildImportPackage(
 
   const validRows =
     parsedImport.rows.filter(
-      (
-        row
-      ) =>
-        row.errors.length ===
-        0
+      (row) =>
+        row.errors.length === 0
     );
 
   const invalidRows =
     parsedImport.rows.filter(
-      (
-        row
-      ) =>
-        row.errors.length >
-        0
+      (row) =>
+        row.errors.length > 0
     );
 
-  const generatedFiles =
-    buildManufacturerFiles(
+  const generatedPackage =
+    generateVehiclePackage(
       parsedImport.rows
     );
 
-  const indexCode =
-    buildVehicleIndexCode(
-      generatedFiles
+  const generatedFiles =
+    generatedPackage.manufacturers.map(
+      (manufacturer) => ({
+        filename:
+          manufacturer.filename,
+
+        exportName:
+          manufacturer.exportName,
+
+        manufacturer:
+          manufacturer.manufacturer,
+
+        code:
+          manufacturer.code,
+
+        vehicleCount:
+          manufacturer.vehicleCount,
+      })
     );
 
   const registry =
@@ -95,8 +103,18 @@ export function buildImportPackage(
     parsedImport,
     validRows,
     invalidRows,
+
     generatedFiles,
-    indexCode,
+
+    indexCode:
+      generatedPackage.registry.code,
+
+    generatorValidation:
+      generatedPackage.validation,
+
+    generatorSummary:
+      generatedPackage.summary,
+
     registry,
     manifest,
     packageReport,

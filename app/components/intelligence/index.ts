@@ -130,3 +130,7 @@ export {
 export {
   default as VehicleRecommendations,
 } from "./VehicleRecommendations";
+
+export {
+  default as VehicleIntelligenceCard,
+} from "./VehicleIntelligenceCard";

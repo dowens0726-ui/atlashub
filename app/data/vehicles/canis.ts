@@ -416,7 +416,7 @@ export const canisVehicles: Vehicle[] = [
       },
     },
     acquisition: {
-      method: "Acquire",
+      method: "Found",
       source: "Street / Mission Acquisition",
       price: 0,
     },
