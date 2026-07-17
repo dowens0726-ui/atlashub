@@ -16,6 +16,10 @@ export {
 } from "./garage.engine";
 
 export {
+  buildGarageIntelligence,
+} from "./garage-intelligence.engine";
+
+export {
   buildVehicleIntelligenceProfile,
 } from "./profile.engine";
 
@@ -30,7 +34,12 @@ export {
 } from "./score.engine";
 
 export type {
+  GarageCoverageImprovement,
+  GarageCoverageItem,
+  GarageCoverageKey,
   GarageGap,
+  GarageIntelligenceResult,
+  GarageProjectedRecommendation,
   GarageRecommendation,
   VehicleComparisonResult,
   VehicleIntelligenceProfile,

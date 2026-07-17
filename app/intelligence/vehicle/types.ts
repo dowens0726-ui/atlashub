@@ -74,3 +74,40 @@ export type VehicleIntelligenceProfile = {
   weaknesses: string[];
   summary: string;
 };
+
+export type GarageCoverageKey =
+  keyof VehicleUseCaseRatings;
+
+export type GarageCoverageItem = {
+  key: GarageCoverageKey;
+  label: string;
+  score: number;
+};
+
+export type GarageCoverageImprovement = {
+  key: GarageCoverageKey;
+  label: string;
+  currentScore: number;
+  projectedScore: number;
+  increase: number;
+};
+
+export type GarageProjectedRecommendation = {
+  vehicle: Vehicle;
+  currentScore: number;
+  projectedScore: number;
+  scoreIncrease: number;
+  currentCoverage: GarageCoverageItem[];
+  projectedCoverage: GarageCoverageItem[];
+  improvements: GarageCoverageImprovement[];
+};
+
+export type GarageIntelligenceResult = {
+  garageScore: number;
+  coverage: GarageCoverageItem[];
+  strengths: string[];
+  weaknesses: string[];
+  missingCategories: string[];
+  recommendation: GarageRecommendation | null;
+  projectedRecommendation: GarageProjectedRecommendation | null;
+};

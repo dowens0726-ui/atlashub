@@ -1,67 +1,28 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo } from "react";
-
-import { vehicles } from "@/app/data/vehicles";
-import useGarage from "@/app/hooks/useGarage";
 import {
-  buildVehicleIntelligenceProfile,
-  getGarageRecommendation,
-  scoreVehicle,
+  useMemo,
+} from "react";
+
+import {
+  vehicles,
+} from "@/app/data/vehicles";
+
+import useGarage from "@/app/hooks/useGarage";
+
+import {
+  buildGarageIntelligence,
 } from "@/app/intelligence/vehicle";
 
-import GarageCoverageCard, {
-  type GarageCoverageItem,
-} from "./GarageCoverageCard";
+import GarageCoverageCard from "./GarageCoverageCard";
+import GarageImpactCard from "./GarageImpactCard";
 import GarageInsightsCard from "./GarageInsightsCard";
 import GarageMissingCategories from "./GarageMissingCategories";
 import GarageRecommendationsCard from "./GarageRecommendationsCard";
 import GarageScoreCard from "./GarageScoreCard";
 import GarageVehicleList from "./GarageVehicleList";
 import GarageVehicleSearch from "./GarageVehicleSearch";
-
-const coverageDefinitions = [
-  {
-    key: "getaway",
-    label: "Getaway Driving",
-  },
-  {
-    key: "offRoad",
-    label: "Off-Road",
-  },
-  {
-    key: "racing",
-    label: "Racing",
-  },
-  {
-    key: "business",
-    label: "Business",
-  },
-  {
-    key: "crew",
-    label: "Crew Transport",
-  },
-  {
-    key: "pvp",
-    label: "PvP Combat",
-  },
-  {
-    key: "pve",
-    label: "PvE Missions",
-  },
-] as const;
-
-function average(values: number[]): number {
-  if (values.length === 0) {
-    return 0;
-  }
-
-  return Math.round(
-    values.reduce((total, value) => total + value, 0) /
-      values.length
-  );
-}
 
 export default function GarageAdvisor() {
   const {
@@ -72,90 +33,22 @@ export default function GarageAdvisor() {
     addVehicle,
     removeVehicle,
     clearGarage,
-  } = useGarage(vehicles);
-
-  const analysis = useMemo(() => {
-    const profiles = ownedVehicles.map((vehicle) =>
-      buildVehicleIntelligenceProfile(vehicle)
-    );
-
-    const scoreBreakdowns = ownedVehicles.map((vehicle) =>
-      scoreVehicle(vehicle)
-    );
-
-    const coverage: GarageCoverageItem[] =
-      coverageDefinitions.map(({ key, label }) => ({
-        key,
-        label,
-        score: average(
-          profiles.map((profile) => profile.ratings[key])
-        ),
-      }));
-
-    const averageVehicleScore = average(
-      scoreBreakdowns.map(
-        (breakdown) => breakdown.score.overall
-      )
-    );
-
-    const coveredCategories = coverage.filter(
-      (item) => item.score >= 55
-    ).length;
-
-    const coverageBreadth =
-      coverage.length > 0
-        ? Math.round(
-            (coveredCategories / coverage.length) * 100
-          )
-        : 0;
-
-    const garageScore =
-      ownedVehicles.length === 0
-        ? 0
-        : Math.round(
-            averageVehicleScore * 0.7 +
-              coverageBreadth * 0.3
-          );
-
-    const rankedCoverage = [...coverage].sort(
-      (first, second) => second.score - first.score
-    );
-
-    const strengths = rankedCoverage
-      .filter((item) => item.score >= 65)
-      .slice(0, 3)
-      .map(
-        (item) =>
-          `${item.label} is a garage strength with a coverage rating of ${item.score}.`
-      );
-
-    const weaknesses = [...coverage]
-      .sort((first, second) => first.score - second.score)
-      .filter((item) => item.score < 60)
-      .slice(0, 3)
-      .map(
-        (item) =>
-          `${item.label} is underrepresented with a coverage rating of ${item.score}.`
-      );
-
-    const missingCategories = coverage
-      .filter((item) => item.score < 55)
-      .map((item) => item.label);
-
-    const recommendation = getGarageRecommendation(
-      ownedVehicles,
+  } =
+    useGarage(
       vehicles
     );
 
-    return {
-      coverage,
-      garageScore,
-      strengths,
-      weaknesses,
-      missingCategories,
-      recommendation,
-    };
-  }, [ownedVehicles]);
+  const analysis =
+    useMemo(
+      () =>
+        buildGarageIntelligence(
+          ownedVehicles,
+          vehicles
+        ),
+      [
+        ownedVehicles,
+      ]
+    );
 
   return (
     <section aria-labelledby="garage-advisor-heading">
@@ -174,7 +67,8 @@ export default function GarageAdvisor() {
 
           <p className="mt-3 max-w-3xl leading-7 text-zinc-400">
             Add the vehicles you own. Atlas will evaluate capability coverage,
-            identify weaknesses, and recommend the strongest next purchase.
+            identify weaknesses, recommend the strongest next purchase, and
+            simulate its projected impact.
           </p>
         </div>
 
@@ -193,7 +87,9 @@ export default function GarageAdvisor() {
           </p>
 
           <p className="mt-1 text-2xl font-black text-white">
-            {isHydrated ? vehicleCount : "—"}
+            {isHydrated
+              ? vehicleCount
+              : "—"}
           </p>
         </div>
 
@@ -213,7 +109,9 @@ export default function GarageAdvisor() {
           </p>
 
           <p className="mt-1 text-lg font-bold text-emerald-400">
-            {isHydrated ? "Saved Locally" : "Loading"}
+            {isHydrated
+              ? "Saved Locally"
+              : "Loading"}
           </p>
         </div>
       </div>
@@ -228,43 +126,75 @@ export default function GarageAdvisor() {
         <>
           <div className="grid gap-6 xl:grid-cols-2">
             <GarageVehicleSearch
-              vehicles={vehicles}
-              ownedVehicleSlugs={ownedVehicleSlugs}
-              onAddVehicle={addVehicle}
+              vehicles={
+                vehicles
+              }
+              ownedVehicleSlugs={
+                ownedVehicleSlugs
+              }
+              onAddVehicle={
+                addVehicle
+              }
             />
 
             <GarageVehicleList
-              vehicles={ownedVehicles}
-              onRemoveVehicle={removeVehicle}
-              onClearGarage={clearGarage}
+              vehicles={
+                ownedVehicles
+              }
+              onRemoveVehicle={
+                removeVehicle
+              }
+              onClearGarage={
+                clearGarage
+              }
             />
           </div>
 
           <div className="mt-8 grid gap-6 xl:grid-cols-[0.8fr_1.2fr]">
             <GarageScoreCard
-              score={analysis.garageScore}
-              vehicleCount={vehicleCount}
+              score={
+                analysis.garageScore
+              }
+              vehicleCount={
+                vehicleCount
+              }
             />
 
             <GarageCoverageCard
-              coverage={analysis.coverage}
+              coverage={
+                analysis.coverage
+              }
             />
           </div>
 
           <div className="mt-6 grid gap-6 xl:grid-cols-2">
             <GarageInsightsCard
-              strengths={analysis.strengths}
-              weaknesses={analysis.weaknesses}
+              strengths={
+                analysis.strengths
+              }
+              weaknesses={
+                analysis.weaknesses
+              }
             />
 
             <GarageMissingCategories
-              categories={analysis.missingCategories}
+              categories={
+                analysis.missingCategories
+              }
             />
           </div>
 
-          <div className="mt-6">
+          <div className="mt-6 grid gap-6 xl:grid-cols-2">
             <GarageRecommendationsCard
-              recommendation={analysis.recommendation}
+              recommendation={
+                analysis.recommendation
+              }
+            />
+
+            <GarageImpactCard
+              projection={
+                analysis.projectedRecommendation
+              }
             />
           </div>
         </>
