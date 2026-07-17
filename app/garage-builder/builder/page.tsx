@@ -1,19 +1,19 @@
-import { GarageCenter } from "@/app/components/garage";
+import { GarageBuilder } from "@/app/components/garage";
 import Container from "@/app/components/ui/Container";
 import PageHeader from "@/app/components/ui/PageHeader";
 
-export default function GarageCenterPage() {
+export default function GarageBuilderPage() {
   return (
     <main className="min-h-screen bg-zinc-950 text-white">
       <Container className="py-16">
         <PageHeader
-          eyebrow="Atlas Garage"
-          title="Garage Center"
-          description="Build, analyze, and plan your vehicle collection from one intelligent command center."
+          eyebrow="Atlas Intelligence"
+          title="Garage Builder"
+          description="Create a recommended vehicle lineup based on your budget and preferred play style."
         />
 
         <div className="mt-10">
-          <GarageCenter />
+          <GarageBuilder />
         </div>
       </Container>
     </main>

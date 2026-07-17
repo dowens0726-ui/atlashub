@@ -14,6 +14,7 @@ import { grottiVehicles } from "./grotti";
 import { imponteVehicles } from "./imponte";
 import { karinVehicles } from "./karin";
 import { maibatsuVehicles } from "./maibatsu";
+import { mammothVehicles } from "./mammoth";
 import { obeyVehicles } from "./obey";
 import { ocelotVehicles } from "./ocelot";
 import { overflodVehicles } from "./overflod";
@@ -40,6 +41,7 @@ export const vehicles: Vehicle[] = [
   ...imponteVehicles,
   ...karinVehicles,
   ...maibatsuVehicles,
+  ...mammothVehicles,
   ...obeyVehicles,
   ...ocelotVehicles,
   ...overflodVehicles,

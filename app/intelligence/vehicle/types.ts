@@ -55,3 +55,22 @@ export type GarageRecommendation = {
   gaps: GarageGap[];
   reason: string;
 };
+
+export type VehicleUseCaseRatings = {
+  getaway: number;
+  offRoad: number;
+  racing: number;
+  business: number;
+  crew: number;
+  pvp: number;
+  pve: number;
+};
+
+export type VehicleIntelligenceProfile = {
+  vehicle: Vehicle;
+  ratings: VehicleUseCaseRatings;
+  bestUses: string[];
+  strengths: string[];
+  weaknesses: string[];
+  summary: string;
+};

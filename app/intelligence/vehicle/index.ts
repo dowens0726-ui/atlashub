@@ -16,6 +16,10 @@ export {
 } from "./garage.engine";
 
 export {
+  buildVehicleIntelligenceProfile,
+} from "./profile.engine";
+
+export {
   getTopVehicleRecommendation,
   getVehicleRecommendations,
   rankVehiclesForCategory,
@@ -29,8 +33,10 @@ export type {
   GarageGap,
   GarageRecommendation,
   VehicleComparisonResult,
+  VehicleIntelligenceProfile,
   VehicleIntelligenceScore,
   VehicleRecommendation,
   VehicleRecommendationCategory,
   VehicleScoreBreakdown,
+  VehicleUseCaseRatings,
 } from "./types";
