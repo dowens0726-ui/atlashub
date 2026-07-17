@@ -42,4 +42,5 @@ export * from "./mission-feedback.engine";
 export * from "./mission-outcome.engine";
 export * from "./mission-learning-update.engine";
 export * from "./recommendation-weighting.engine";
+export * from "./garage-copilot.engine";
 export * from "./vehicle";

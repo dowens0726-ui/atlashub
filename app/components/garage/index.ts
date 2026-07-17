@@ -13,3 +13,4 @@ export { default as GarageResults } from "./GarageResults";
 export { default as GarageScoreCard } from "./GarageScoreCard";
 export { default as GarageVehicleList } from "./GarageVehicleList";
 export { default as GarageVehicleSearch } from "./GarageVehicleSearch";
+export { default as AtlasGarageCopilot } from "./AtlasGarageCopilot";

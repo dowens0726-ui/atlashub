@@ -15,6 +15,12 @@ import {
   buildGarageIntelligence,
 } from "@/app/intelligence/vehicle";
 
+import {
+  buildGarageCopilotReport,
+} from "@/app/intelligence";
+
+import AtlasGarageCopilot from "./AtlasGarageCopilot";
+
 import GarageCoverageCard from "./GarageCoverageCard";
 import GarageImpactCard from "./GarageImpactCard";
 import GarageInsightsCard from "./GarageInsightsCard";
@@ -38,17 +44,22 @@ export default function GarageAdvisor() {
       vehicles
     );
 
-  const analysis =
-    useMemo(
-      () =>
-        buildGarageIntelligence(
-          ownedVehicles,
-          vehicles
-        ),
-      [
-        ownedVehicles,
-      ]
-    );
+  const analysis = useMemo(
+  () =>
+    buildGarageIntelligence(
+      ownedVehicles,
+      vehicles
+    ),
+  [ownedVehicles]
+);
+
+const copilotReport = useMemo(
+  () =>
+    buildGarageCopilotReport(
+      analysis
+    ),
+  [analysis]
+);
 
   return (
     <section aria-labelledby="garage-advisor-heading">
@@ -197,6 +208,11 @@ export default function GarageAdvisor() {
               }
             />
           </div>
+          <div className="mt-8">
+  <AtlasGarageCopilot
+    report={copilotReport}
+  />
+</div>
         </>
       )}
     </section>
