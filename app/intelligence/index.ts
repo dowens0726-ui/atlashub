@@ -45,3 +45,4 @@ export * from "./recommendation-weighting.engine";
 export * from "./garage-copilot.engine";
 export * from "./vehicle";
 export * from "./atlas-brain-copilot.engine";
+export * from "./strategic-command.engine";

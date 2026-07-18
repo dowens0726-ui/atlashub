@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 
 type CommandCenterLayoutProps = {
   hero: ReactNode;
+  copilot?: ReactNode;
   overview: ReactNode;
   atlas: ReactNode;
   session: ReactNode;
@@ -13,6 +14,7 @@ type CommandCenterLayoutProps = {
 
 export default function CommandCenterLayout({
   hero,
+  copilot,
   overview,
   atlas,
   session,
@@ -24,6 +26,10 @@ export default function CommandCenterLayout({
   return (
     <div className="space-y-12">
       <section>{hero}</section>
+
+      {copilot ? (
+        <section>{copilot}</section>
+      ) : null}
 
       <section className="grid gap-8 2xl:grid-cols-[0.95fr_1.05fr]">
         <div className="space-y-8">
