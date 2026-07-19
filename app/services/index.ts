@@ -19,6 +19,7 @@ export * from "./scoring.service";
 export * from "./search.service";
 export * from "./dashboard.service";
 export * from "./empire.service";
+export * from "./atlas-decision-orchestrator.service";
 
 export {
   vehicleRankingAdapter,
