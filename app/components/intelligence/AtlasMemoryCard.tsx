@@ -1,3 +1,6 @@
+import AtlasIntelligencePanel from "./AtlasIntelligencePanel";
+import AtlasStatusBadge from "./AtlasStatusBadge";
+
 import type {
   AtlasMemory,
   MemoryHistoryItem,
@@ -25,10 +28,9 @@ export default function AtlasMemoryCard({
               Atlas Memory
             </p>
 
-            <span className="inline-flex items-center gap-2 rounded-full border border-cyan-400/20 bg-cyan-400/[0.06] px-3 py-1 text-[10px] font-black uppercase tracking-[0.22em] text-cyan-300">
-              <span className="h-1.5 w-1.5 rounded-full bg-cyan-300 shadow-[0_0_10px_rgba(103,232,249,0.9)]" />
+            <AtlasStatusBadge tone="cyan">
               Persistent Learning
-            </span>
+            </AtlasStatusBadge>
           </div>
 
           <h2 className="mt-5 text-3xl font-black text-white">
@@ -42,23 +44,21 @@ export default function AtlasMemoryCard({
 
         <div className="mt-7 grid gap-5 xl:grid-cols-[1fr_1.1fr]">
           <div className="space-y-5">
-            <div className="rounded-2xl border border-violet-400/20 bg-violet-400/[0.04] p-5">
-              <p className="text-[10px] font-black uppercase tracking-[0.25em] text-violet-300">
-                Learned Pattern
-              </p>
-
-              <p className="mt-4 text-sm leading-7 text-zinc-300">
+            <AtlasIntelligencePanel
+              eyebrow="Learned Pattern"
+              tone="violet"
+            >
+              <p className="text-sm leading-7 text-zinc-300">
                 {memory.learnedPattern}
               </p>
-            </div>
+            </AtlasIntelligencePanel>
 
-            {memory.playerInsights.length > 0 && (
-              <div className="rounded-2xl border border-cyan-400/20 bg-cyan-400/[0.04] p-5">
-                <p className="text-[10px] font-black uppercase tracking-[0.25em] text-cyan-300">
-                  Player Understanding
-                </p>
-
-                <ul className="mt-4 space-y-3">
+            {memory.playerInsights.length > 0 ? (
+              <AtlasIntelligencePanel
+                eyebrow="Player Understanding"
+                tone="cyan"
+              >
+                <ul className="space-y-3">
                   {memory.playerInsights.map((insight) => (
                     <li
                       key={insight}
@@ -70,8 +70,8 @@ export default function AtlasMemoryCard({
                     </li>
                   ))}
                 </ul>
-              </div>
-            )}
+              </AtlasIntelligencePanel>
+            ) : null}
           </div>
 
           <div className="rounded-2xl border border-zinc-800 bg-zinc-900/40 p-5">
@@ -85,9 +85,9 @@ export default function AtlasMemoryCard({
                   key={item.id}
                   className="relative rounded-xl border border-zinc-800 bg-zinc-950/70 p-4"
                 >
-                  {index !== history.length - 1 && (
+                  {index !== history.length - 1 ? (
                     <div className="absolute bottom-[-18px] left-6 h-4 w-px bg-zinc-700" />
-                  )}
+                  ) : null}
 
                   <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                     <h3 className="font-bold text-white">
