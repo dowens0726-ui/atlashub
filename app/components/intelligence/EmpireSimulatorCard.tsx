@@ -1,3 +1,6 @@
+import AtlasIntelligencePanel from "./AtlasIntelligencePanel";
+import AtlasMetricCard from "./AtlasMetricCard";
+
 import type { EmpireSimulation } from "@/app/intelligence";
 
 type EmpireSimulatorCardProps = {
@@ -30,83 +33,67 @@ export default function EmpireSimulatorCard({
         {simulation.targetName}
       </p>
 
-
       <div className="mt-5 grid gap-3 md:grid-cols-3">
-        <Stat
+        <AtlasMetricCard
           label="Current Cash"
           value={formatMoney(simulation.currentCash)}
+          tone="zinc"
         />
 
-        <Stat
+        <AtlasMetricCard
           label="Investment"
           value={formatMoney(simulation.purchaseCost)}
+          tone="amber"
         />
 
-        <Stat
+        <AtlasMetricCard
           label="After Purchase"
-          value={formatMoney(simulation.cashAfterPurchase)}
+          value={formatMoney(
+            simulation.cashAfterPurchase
+          )}
+          tone="cyan"
         />
       </div>
-
 
       <div className="mt-5 grid gap-3 md:grid-cols-2">
-        <Stat
+        <AtlasMetricCard
           label="Empire Score"
           value={`+${simulation.scoreDelta}`}
+          tone="emerald"
         />
 
-        <Stat
+        <AtlasMetricCard
           label="Risk"
           value={simulation.risk}
+          tone="amber"
         />
       </div>
 
-
-      <div className="mt-5 rounded-xl border border-zinc-800 bg-zinc-900/60 p-4">
-        <p className="text-xs font-black uppercase tracking-wide text-zinc-500">
-          Liquidity Impact
-        </p>
-
-        <p className="mt-2 text-sm leading-6 text-zinc-300">
-          {simulation.liquidityImpact}
-        </p>
+      <div className="mt-5">
+        <AtlasIntelligencePanel
+          eyebrow="Liquidity Impact"
+          tone="zinc"
+        >
+          <p className="text-sm leading-6 text-zinc-300">
+            {simulation.liquidityImpact}
+          </p>
+        </AtlasIntelligencePanel>
       </div>
 
+      <div className="mt-5">
+        <AtlasIntelligencePanel
+          eyebrow="Atlas Verdict"
+          tone="cyan"
+        >
+          <p className="text-sm leading-6 text-zinc-200">
+            {simulation.recommendation}
+          </p>
 
-      <div className="mt-5 rounded-xl border border-cyan-400/20 bg-cyan-400/[0.04] p-4">
-        <p className="text-xs font-black uppercase tracking-wide text-cyan-400">
-          Atlas Verdict
-        </p>
-
-        <p className="mt-3 text-sm leading-6 text-zinc-200">
-          {simulation.recommendation}
-        </p>
-
-        <p className="mt-3 text-sm leading-6 text-zinc-400">
-          {simulation.projectedOutcome}
-        </p>
+          <p className="mt-3 text-sm leading-6 text-zinc-400">
+            {simulation.projectedOutcome}
+          </p>
+        </AtlasIntelligencePanel>
       </div>
     </section>
-  );
-}
-
-
-function Stat({
-  label,
-  value,
-}: {
-  label: string;
-  value: string;
-}) {
-  return (
-    <div className="rounded-xl border border-zinc-800 bg-zinc-900/70 p-4">
-      <p className="text-xs uppercase tracking-wide text-zinc-500">
-        {label}
-      </p>
-
-      <p className="mt-2 text-lg font-bold text-white">
-        {value}
-      </p>
-    </div>
   );
 }
