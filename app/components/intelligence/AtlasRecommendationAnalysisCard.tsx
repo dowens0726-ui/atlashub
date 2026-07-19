@@ -14,23 +14,13 @@ const factorLabels: Record<
   AtlasRecommendationWeightingFactor,
   string
 > = {
-  identity:
-    "Identity",
-
-  behavior:
-    "Behavior",
-
-  learning:
-    "Learning",
-
-  memory:
-    "Memory",
-
-  empire:
-    "Empire",
-
-  cash:
-    "Cash",
+  identity: "Identity",
+  behavior: "Behavior",
+  learning: "Learning",
+  memory: "Memory",
+  empire: "Empire",
+  cash: "Cash",
+  situation: "Situation",
 };
 
 

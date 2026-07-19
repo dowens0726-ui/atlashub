@@ -15,6 +15,10 @@ import type {
 } from "./player-identity.engine";
 
 import type {
+  AtlasSituation,
+} from "./situation-analysis.engine";
+
+import type {
   AtlasRecommendation,
   RecommendationCategory,
 } from "./recommendation.engine";
@@ -31,7 +35,8 @@ export type AtlasRecommendationWeightingFactor =
   | "learning"
   | "memory"
   | "empire"
-  | "cash";
+  | "cash"
+  | "situation";
 
 
 export type AtlasRecommendationWeightingBreakdown = {
@@ -46,6 +51,8 @@ export type AtlasRecommendationWeightingBreakdown = {
   empireScore: number;
 
   cashScore: number;
+
+  situationScore: number;
 };
 
 
@@ -96,20 +103,25 @@ export type AtlasRecommendationWeightingInput = {
 
   memoryInsight:
     AtlasMemoryInsight;
+
+  situation:
+    AtlasSituation;
 };
 
 
-const MAX_IDENTITY_SCORE = 20;
+const MAX_IDENTITY_SCORE = 15;
 
-const MAX_BEHAVIOR_SCORE = 25;
+const MAX_BEHAVIOR_SCORE = 20;
 
-const MAX_LEARNING_SCORE = 25;
+const MAX_LEARNING_SCORE = 20;
 
-const MAX_MEMORY_SCORE = 15;
+const MAX_MEMORY_SCORE = 10;
 
 const MAX_EMPIRE_SCORE = 10;
 
-const MAX_CASH_SCORE = 5;
+const MAX_CASH_SCORE = 10;
+
+const MAX_SITUATION_SCORE = 15;
 
 
 function clamp(
@@ -563,6 +575,204 @@ function buildCashScore(
   return score;
 }
 
+function buildSituationScore(
+  recommendation: AtlasRecommendation,
+  situation: AtlasSituation,
+  explanations: string[]
+): number {
+  const liquidityScores:
+    Record<
+      AtlasSituation["liquidityStatus"],
+      number
+    > = {
+      Critical: 10,
+      Low: 30,
+      Stable: 65,
+      Strong: 85,
+      Excellent: 100,
+    };
+
+  const expansionScores:
+    Record<
+      AtlasSituation["expansionReadiness"],
+      number
+    > = {
+      "Not Ready": 20,
+      Cautious: 50,
+      Ready: 80,
+      "Highly Ready": 100,
+    };
+
+  const riskScores:
+    Record<
+      AtlasSituation["riskLevel"],
+      number
+    > = {
+      High: 15,
+      Elevated: 40,
+      Moderate: 70,
+      Low: 100,
+    };
+
+  const urgencyScores:
+    Record<
+      AtlasSituation["urgency"],
+      number
+    > = {
+      Immediate: 35,
+      High: 55,
+      Normal: 80,
+      Low: 100,
+    };
+
+  const momentumScores:
+    Record<
+      AtlasSituation["momentum"],
+      number
+    > = {
+      Stalled: 25,
+      Building: 60,
+      Strong: 85,
+      Accelerating: 100,
+    };
+
+  const investmentScores:
+    Record<
+      AtlasSituation[
+        "investmentReadiness"
+      ]["status"],
+      number
+    > = {
+      "Preserve Cash": 20,
+      "Selective Investment": 55,
+      "Expansion Ready": 85,
+      "Aggressive Growth": 100,
+    };
+
+  const liquidityScore =
+    liquidityScores[
+      situation.liquidityStatus
+    ];
+
+  const expansionScore =
+    expansionScores[
+      situation.expansionReadiness
+    ];
+
+  const riskScore =
+    riskScores[
+      situation.riskLevel
+    ];
+
+  const urgencyScore =
+    urgencyScores[
+      situation.urgency
+    ];
+
+  const momentumScore =
+    momentumScores[
+      situation.momentum
+    ];
+
+  const investmentScore =
+    investmentScores[
+      situation.investmentReadiness
+        .status
+    ];
+
+  let categoryReadiness = 70;
+
+  if (
+    recommendation.category ===
+      "business" ||
+    recommendation.category ===
+      "wealth"
+  ) {
+    categoryReadiness =
+      expansionScore * 0.45 +
+      investmentScore * 0.35 +
+      liquidityScore * 0.2;
+  } else if (
+    recommendation.category ===
+    "vehicle"
+  ) {
+    categoryReadiness =
+      liquidityScore * 0.45 +
+      investmentScore * 0.3 +
+      riskScore * 0.25;
+  } else if (
+    recommendation.category ===
+    "mission"
+  ) {
+    categoryReadiness =
+      momentumScore * 0.45 +
+      urgencyScore * 0.3 +
+      riskScore * 0.25;
+  } else if (
+    recommendation.category ===
+    "progression"
+  ) {
+    categoryReadiness =
+      momentumScore * 0.35 +
+      situation.efficiencyScore *
+        0.35 +
+      urgencyScore * 0.3;
+  }
+
+  const situationReliability =
+    clamp(
+      situation.confidence,
+      0,
+      100
+    );
+
+  const combinedScore =
+    categoryReadiness * 0.75 +
+    situationReliability * 0.25;
+
+  const score =
+    calculateProportionalScore(
+      combinedScore,
+      MAX_SITUATION_SCORE
+    );
+
+  if (
+    situation.riskLevel === "High" ||
+    situation.liquidityStatus ===
+      "Critical"
+  ) {
+    explanations.push(
+      `Situation +${score}: Current ${situation.riskLevel.toLowerCase()} risk and ${situation.liquidityStatus.toLowerCase()} liquidity reduce confidence in this strategy.`
+    );
+  } else if (
+    situation.expansionReadiness ===
+      "Highly Ready" &&
+    (
+      recommendation.category ===
+        "business" ||
+      recommendation.category ===
+        "wealth"
+    )
+  ) {
+    explanations.push(
+      `Situation +${score}: Your empire is highly ready for expansion and supports this ${recommendation.category} strategy.`
+    );
+  } else if (
+    situation.momentum ===
+      "Accelerating" ||
+    situation.momentum === "Strong"
+  ) {
+    explanations.push(
+      `Situation +${score}: ${situation.momentum} momentum supports continued progress toward ${situation.primaryFocus.toLowerCase()}.`
+    );
+  } else {
+    explanations.push(
+      `Situation +${score}: Current liquidity, risk, momentum, and investment readiness provide moderate support for this recommendation.`
+    );
+  }
+
+  return score;
+}
 
 function getFactorEntries(
   breakdown:
@@ -610,12 +820,19 @@ function getFactorEntries(
       score:
         breakdown.empireScore,
     },
-    {
+        {
       factor:
         "cash",
 
       score:
         breakdown.cashScore,
+    },
+    {
+      factor:
+        "situation",
+
+      score:
+        breakdown.situationScore,
     },
   ];
 }
@@ -657,6 +874,7 @@ export function buildRecommendationWeight({
   behavior,
   learning,
   memoryInsight,
+  situation,
 }: AtlasRecommendationWeightingInput): AtlasRecommendationWeight {
   const explanations:
     string[] = [];
@@ -701,32 +919,42 @@ export function buildRecommendationWeight({
       explanations
     );
 
+  const situationScore =
+  buildSituationScore(
+    recommendation,
+    situation,
+    explanations
+  );
+
   const breakdown:
-    AtlasRecommendationWeightingBreakdown = {
-      identityScore,
+  AtlasRecommendationWeightingBreakdown = {
+    identityScore,
 
-      behaviorScore,
+    behaviorScore,
 
-      learningScore,
+    learningScore,
 
-      memoryScore,
+    memoryScore,
 
-      empireScore,
+    empireScore,
 
-      cashScore,
-    };
+    cashScore,
+
+    situationScore,
+  };
 
   const totalScore =
-    clamp(
-      identityScore +
-        behaviorScore +
-        learningScore +
-        memoryScore +
-        empireScore +
-        cashScore,
-      0,
-      100
-    );
+  clamp(
+    identityScore +
+      behaviorScore +
+      learningScore +
+      memoryScore +
+      empireScore +
+      cashScore +
+      situationScore,
+    0,
+    100
+  );
 
   const weightedConfidence =
     clamp(

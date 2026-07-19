@@ -531,6 +531,8 @@ export function buildAtlasBrain({
         learningProfile,
 
       memoryInsight,
+
+      situation,
     });
 
 
