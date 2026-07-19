@@ -60,6 +60,7 @@ export * from "./mission-outcome.engine";
 export * from "./memory.engine";
 export * from "./memory-history.engine";
 export * from "./memory-insight.engine";
+export * from "./atlas-persistent-memory.engine";
 
 // Empire
 export * from "./empire.engine";
