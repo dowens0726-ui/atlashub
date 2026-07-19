@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import AtlasStatusBadge from "./AtlasStatusBadge";
 
 import type { AtlasCoachBriefing } from "@/app/intelligence";
 
@@ -110,11 +111,9 @@ export default function AtlasCoachCard({
                 {briefing.title}
               </p>
 
-              <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/[0.06] px-3 py-1 text-[10px] font-black uppercase tracking-[0.22em] text-emerald-300">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-300 shadow-[0_0_10px_rgba(110,231,183,0.9)]" />
-
-                Coach Online
-              </span>
+              <AtlasStatusBadge tone="emerald">
+  Coach Online
+</AtlasStatusBadge>
             </div>
 
             <h2 className="mt-5 text-3xl font-black tracking-tight text-white sm:text-4xl lg:text-5xl">
