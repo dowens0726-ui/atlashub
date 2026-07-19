@@ -1,5 +1,9 @@
 import type { ReactNode } from "react";
 
+import AtlasCommandCenter from "./AtlasCommandCenter";
+import AtlasCommandRail from "./AtlasCommandRail";
+import AtlasCommandSection from "./AtlasCommandSection";
+
 type CommandCenterLayoutProps = {
   hero: ReactNode;
   copilot?: ReactNode;
@@ -24,36 +28,87 @@ export default function CommandCenterLayout({
   achievements,
 }: CommandCenterLayoutProps) {
   return (
-    <div className="space-y-12">
-      <section>{hero}</section>
+    <AtlasCommandCenter>
+      <AtlasCommandSection variant="transparent">
+        {hero}
+      </AtlasCommandSection>
 
       {copilot ? (
-        <section>{copilot}</section>
+        <AtlasCommandSection
+          variant="primary"
+          eyebrow="Strategic Focus"
+          title="Atlas Recommendations"
+          description="Your highest-value opportunities for this session based on your empire, player identity, and historical progression."
+        >
+          {copilot}
+        </AtlasCommandSection>
       ) : null}
 
-      <section className="grid gap-8 2xl:grid-cols-[0.95fr_1.05fr]">
-        <div className="space-y-8">
-          {overview}
-        </div>
+      <section className="grid gap-8 xl:grid-cols-[0.95fr_1.05fr]">
+        <AtlasCommandSection
+          variant="default"
+          eyebrow="Empire Pulse"
+          title="Empire Overview"
+          description="Monitor your overall progression, current status, and strategic health."
+        >
+          <div className="space-y-8">
+            {overview}
+          </div>
+        </AtlasCommandSection>
 
-        <div className="space-y-8">
+        <AtlasCommandRail
+          status="AI Online"
+          title="Atlas Intelligence Core"
+          description="Live recommendations generated from your strategy, memory, forecasting, and adaptive intelligence."
+        >
           {atlas}
-        </div>
+        </AtlasCommandRail>
       </section>
 
-      <section className="rounded-[2rem] border border-white/5 bg-white/[0.01] p-1">
+      <AtlasCommandSection
+        variant="primary"
+        eyebrow="Operations"
+        title="Today's Session"
+        description="Your recommended objectives and execution plan for this play session."
+      >
         {session}
+      </AtlasCommandSection>
+
+      <section className="grid gap-8 xl:grid-cols-2">
+        <AtlasCommandSection
+          eyebrow="Intelligence"
+          title="Empire Insights"
+          description="High-level trends and strategic observations."
+        >
+          {insights}
+        </AtlasCommandSection>
+
+        <AtlasCommandSection
+          eyebrow="Objectives"
+          title="Current Priorities"
+          description="The most impactful goals to complete next."
+        >
+          {objectives}
+        </AtlasCommandSection>
       </section>
 
       <section className="grid gap-8 xl:grid-cols-2">
-        {insights}
-        {objectives}
-      </section>
+        <AtlasCommandSection
+          eyebrow="Activity"
+          title="Recent Activity"
+          description="Your latest actions and empire events."
+        >
+          {activity}
+        </AtlasCommandSection>
 
-      <section className="grid gap-8 xl:grid-cols-2">
-        {activity}
-        {achievements}
+        <AtlasCommandSection
+          eyebrow="Achievements"
+          title="Progress & Milestones"
+          description="Track accomplishments and long-term progression."
+        >
+          {achievements}
+        </AtlasCommandSection>
       </section>
-    </div>
+    </AtlasCommandCenter>
   );
 }
