@@ -14,6 +14,7 @@ import AtlasMissionEvolutionCard from "./AtlasMissionEvolutionCard";
 import AtlasMissionStrategyCard from "./AtlasMissionStrategyCard";
 import AtlasOutcomeCard from "./AtlasOutcomeCard";
 import AtlasRecommendationAnalysisCard from "./AtlasRecommendationAnalysisCard";
+import AtlasSection from "./AtlasSection";
 import AtlasStatusCard from "./AtlasStatusCard";
 import AtlasStrategicPlanCard from "./AtlasStrategicPlanCard";
 import AtlasStrategyFeedbackCard from "./AtlasStrategyFeedbackCard";
@@ -25,9 +26,7 @@ import EmpireSimulatorCard from "./EmpireSimulatorCard";
 import EmpireTimelineCard from "./EmpireTimelineCard";
 import PersonalPicksCard from "./PersonalPicksCard";
 
-import {
-  GlowCard,
-} from "@/app/components/ui";
+import { GlowCard } from "@/app/components/ui";
 
 import type {
   AtlasAdaptiveStrategy,
@@ -62,102 +61,39 @@ import type {
   NextAction,
 } from "@/app/intelligence";
 
-
 type AtlasAIPanelProps = {
-  coachBriefing:
-    AtlasCoachBriefing;
-
-  recommendation:
-    AtlasRecommendation;
-
-  recommendationWeighting:
-    AtlasRecommendationWeight;
-
-  intelligenceTimeline:
-    AtlasIntelligenceTimeline;
-
-  personalPicks:
-    AtlasRecommendation[];
-
-  reasoning:
-    AtlasReasoning;
-
-  nextAction:
-    NextAction;
-
-  impact:
-    AtlasImpact;
-
-  forecast:
-    EmpireForecast;
-
-  simulation:
-    EmpireSimulation;
-
-  strategyReport:
-    AtlasStrategyReport;
-
-  adaptiveStrategy:
-    AtlasAdaptiveStrategy;
-
-  strategyFeedback:
-    AtlasStrategyFeedback;
-
-  strategicPlan:
-    AtlasStrategicPlan;
-
-  missionStrategy:
-    AtlasMissionStrategy;
-
-  missionLearning:
-    AtlasMissionLearning | null;
-
-  missionOutcome:
-    AtlasMissionOutcome | null;
-
-  missionLearningUpdate:
-    AtlasMissionLearningUpdate | null;
-
-  learningProfile:
-    AtlasLearningProfile;
-
-  behaviorProfile:
-    AtlasBehaviorProfile;
-
-  outcome:
-    AtlasOutcome;
-
-  playerAction:
-    AtlasPlayerAction;
-
-  outcomeValidation:
-    AtlasValidatedOutcome;
-
-  playerIdentity:
-    AtlasPlayerIdentity;
-
-  identityAdvisor:
-    IdentityAdvisorResult;
-
-  timeline:
-    EmpireTimelinePoint[];
-
-  memory:
-    AtlasMemory;
-
-  memoryHistory:
-    MemoryHistoryItem[];
-
-  memoryInsight:
-    AtlasMemoryInsight;
-
-  dailyObjectives:
-    DailyObjective[];
-
-  insights:
-    IntelligenceInsight[];
+  coachBriefing: AtlasCoachBriefing;
+  recommendation: AtlasRecommendation;
+  recommendationWeighting: AtlasRecommendationWeight;
+  intelligenceTimeline: AtlasIntelligenceTimeline;
+  personalPicks: AtlasRecommendation[];
+  reasoning: AtlasReasoning;
+  nextAction: NextAction;
+  impact: AtlasImpact;
+  forecast: EmpireForecast;
+  simulation: EmpireSimulation;
+  strategyReport: AtlasStrategyReport;
+  adaptiveStrategy: AtlasAdaptiveStrategy;
+  strategyFeedback: AtlasStrategyFeedback;
+  strategicPlan: AtlasStrategicPlan;
+  missionStrategy: AtlasMissionStrategy;
+  missionLearning: AtlasMissionLearning | null;
+  missionOutcome: AtlasMissionOutcome | null;
+  missionLearningUpdate: AtlasMissionLearningUpdate | null;
+  learningProfile: AtlasLearningProfile;
+  behaviorProfile: AtlasBehaviorProfile;
+  outcome: AtlasOutcome;
+  playerAction: AtlasPlayerAction;
+  outcomeValidation: AtlasValidatedOutcome;
+  playerIdentity: AtlasPlayerIdentity;
+  identityAdvisor: IdentityAdvisorResult;
+  timeline: EmpireTimelinePoint[];
+  memory: AtlasMemory;
+  memoryHistory: MemoryHistoryItem[];
+  memoryInsight: AtlasMemoryInsight;
+  dailyObjectives: DailyObjective[];
+  insights: IntelligenceInsight[];
 };
-
 
 export default function AtlasAIPanel({
   coachBriefing,
@@ -194,7 +130,7 @@ export default function AtlasAIPanel({
 }: AtlasAIPanelProps) {
   return (
     <GlowCard accent="cyan">
-      <div className="mb-8">
+      <header className="mb-8">
         <p className="text-xs font-black uppercase tracking-[0.35em] text-cyan-400">
           Atlas Intelligence
         </p>
@@ -206,253 +142,159 @@ export default function AtlasAIPanel({
         <p className="mt-2 text-zinc-400">
           Atlas is analyzing your empire and adapting to your decisions.
         </p>
-      </div>
-
+      </header>
 
       <div className="space-y-10">
-        <section>
-          <AtlasCoachCard
-            briefing={
-              coachBriefing
-            }
-          />
-        </section>
+        <AtlasSection
+          title="Atlas Coach"
+          accent="cyan"
+        >
+          <AtlasCoachCard briefing={coachBriefing} />
+        </AtlasSection>
 
-
-        <section>
-          <p className="mb-4 text-xs font-black uppercase tracking-[0.3em] text-violet-400">
-            Intelligence Timeline
-          </p>
-
+        <AtlasSection
+          title="Intelligence Timeline"
+          accent="violet"
+        >
           <AtlasIntelligenceTimelineCard
-            timeline={
-              intelligenceTimeline
-            }
+            timeline={intelligenceTimeline}
           />
-        </section>
+        </AtlasSection>
 
+        <AtlasSection
+          title="Player Identity"
+          accent="cyan"
+        >
+          <AtlasIdentityCard
+            identity={playerIdentity}
+          />
 
-        <section>
-          <p className="mb-4 text-xs font-black uppercase tracking-[0.3em] text-cyan-400">
-            Player Identity
-          </p>
+          <AtlasBehaviorCard
+            behavior={behaviorProfile}
+          />
+        </AtlasSection>
 
-          <div className="space-y-6">
-            <AtlasIdentityCard
-              identity={
-                playerIdentity
-              }
+        <AtlasSection
+          title="Atlas Evolution"
+          accent="emerald"
+        >
+          <AtlasEvolutionCard
+            learning={learningProfile}
+          />
+
+          <AtlasActionTrackerCard
+            action={playerAction}
+          />
+
+          <AtlasOutcomeCard
+            outcome={outcome}
+          />
+
+          <AtlasValidationCard
+            validation={outcomeValidation}
+          />
+        </AtlasSection>
+
+        <AtlasSection
+          title="Strategic Overview"
+          accent="violet"
+        >
+          <AtlasStrategyReportCard
+            report={strategyReport}
+          />
+
+          <AtlasStrategyInsightCard
+            strategy={adaptiveStrategy}
+          />
+
+          <AtlasStrategyFeedbackCard
+            feedback={strategyFeedback}
+          />
+
+          <AtlasStrategicPlanCard
+            plan={strategicPlan}
+          />
+
+          <AtlasMissionStrategyCard
+            strategy={missionStrategy}
+            missionLearning={missionLearning}
+          />
+
+          {missionLearning ? (
+            <AtlasMissionEvolutionCard
+              learning={missionLearning}
+              outcome={missionOutcome}
+              update={missionLearningUpdate}
             />
+          ) : null}
+        </AtlasSection>
 
-            <AtlasBehaviorCard
-              behavior={
-                behaviorProfile
-              }
-            />
-          </div>
-        </section>
+        <AtlasSection
+          title="Strategic Decision"
+          accent="cyan"
+        >
+          <AtlasRecommendationAnalysisCard
+            weighting={recommendationWeighting}
+          />
 
+          <AtlasCoreCard
+            action={nextAction}
+            impact={impact}
+            recommendation={recommendation}
+            reasoning={reasoning}
+          />
+        </AtlasSection>
 
-        <section>
-          <p className="mb-4 text-xs font-black uppercase tracking-[0.3em] text-emerald-400">
-            Atlas Evolution
-          </p>
+        <AtlasSection
+          title="Empire Strategy"
+          accent="emerald"
+        >
+          <PersonalPicksCard
+            picks={personalPicks}
+          />
 
-          <div className="space-y-6">
-            <AtlasEvolutionCard
-              learning={
-                learningProfile
-              }
-            />
+          <EmpireSimulatorCard
+            simulation={simulation}
+          />
 
-            <AtlasActionTrackerCard
-              action={
-                playerAction
-              }
-            />
+          <EmpireForecastCard
+            forecast={forecast}
+          />
 
-            <AtlasOutcomeCard
-              outcome={
-                outcome
-              }
-            />
+          <EmpireTimelineCard
+            points={timeline}
+          />
+        </AtlasSection>
 
-            <AtlasValidationCard
-              validation={
-                outcomeValidation
-              }
-            />
-          </div>
-        </section>
+        <AtlasSection
+          title="Player Intelligence"
+          accent="amber"
+        >
+          <AtlasMemoryCard
+            memory={memory}
+            history={memoryHistory}
+          />
 
+          <AtlasMemoryInsightCard
+            insight={memoryInsight}
+          />
 
-        <section>
-          <p className="mb-4 text-xs font-black uppercase tracking-[0.3em] text-violet-400">
-            Strategic Overview
-          </p>
+          <AtlasDailyObjectivesCard
+            objectives={dailyObjectives}
+          />
 
-          <div className="space-y-6">
-            <AtlasStrategyReportCard
-              report={
-                strategyReport
-              }
-            />
+          <AtlasStatusCard />
 
-            <AtlasStrategyInsightCard
-              strategy={
-                adaptiveStrategy
-              }
-            />
+          <AtlasAdvisorCard
+            recommendation={recommendation}
+            reasoning={reasoning}
+            identityAdvisor={identityAdvisor}
+          />
 
-            <AtlasStrategyFeedbackCard
-              feedback={
-                strategyFeedback
-              }
-            />
-
-            <AtlasStrategicPlanCard
-              plan={
-                strategicPlan
-              }
-            />
-
-            <AtlasMissionStrategyCard
-              strategy={
-                missionStrategy
-              }
-              missionLearning={
-                missionLearning
-              }
-            />
-
-            {missionLearning ? (
-              <AtlasMissionEvolutionCard
-                learning={
-                  missionLearning
-                }
-                outcome={
-                  missionOutcome
-                }
-                update={
-                  missionLearningUpdate
-                }
-              />
-            ) : null}
-          </div>
-        </section>
-
-
-        <section>
-          <p className="mb-4 text-xs font-black uppercase tracking-[0.3em] text-cyan-400">
-            Strategic Decision
-          </p>
-
-          <div className="space-y-6">
-            <AtlasRecommendationAnalysisCard
-              weighting={
-                recommendationWeighting
-              }
-            />
-
-            <AtlasCoreCard
-              action={
-                nextAction
-              }
-              impact={
-                impact
-              }
-              recommendation={
-                recommendation
-              }
-              reasoning={
-                reasoning
-              }
-            />
-          </div>
-        </section>
-
-
-        <section>
-          <p className="mb-4 text-xs font-black uppercase tracking-[0.3em] text-emerald-400">
-            Empire Strategy
-          </p>
-
-          <div className="space-y-6">
-            <PersonalPicksCard
-              picks={
-                personalPicks
-              }
-            />
-
-            <EmpireSimulatorCard
-              simulation={
-                simulation
-              }
-            />
-
-            <EmpireForecastCard
-              forecast={
-                forecast
-              }
-            />
-
-            <EmpireTimelineCard
-              points={
-                timeline
-              }
-            />
-          </div>
-        </section>
-
-
-        <section>
-          <p className="mb-4 text-xs font-black uppercase tracking-[0.3em] text-amber-400">
-            Player Intelligence
-          </p>
-
-          <div className="space-y-6">
-            <AtlasMemoryCard
-              memory={
-                memory
-              }
-              history={
-                memoryHistory
-              }
-            />
-
-            <AtlasMemoryInsightCard
-              insight={
-                memoryInsight
-              }
-            />
-
-            <AtlasDailyObjectivesCard
-              objectives={
-                dailyObjectives
-              }
-            />
-
-            <AtlasStatusCard />
-
-            <AtlasAdvisorCard
-              recommendation={
-                recommendation
-              }
-              reasoning={
-                reasoning
-              }
-              identityAdvisor={
-                identityAdvisor
-              }
-            />
-
-            <AtlasIntelligenceFeed
-              insights={
-                insights
-              }
-            />
-          </div>
-        </section>
+          <AtlasIntelligenceFeed
+            insights={insights}
+          />
+        </AtlasSection>
       </div>
     </GlowCard>
   );
