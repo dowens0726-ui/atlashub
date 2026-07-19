@@ -1,3 +1,5 @@
+import AtlasStatusBadge from "./AtlasStatusBadge";
+
 import type { EmpireTimelinePoint } from "@/app/intelligence";
 
 type EmpireTimelineCardProps = {
@@ -20,10 +22,9 @@ export default function EmpireTimelineCard({
               Empire Timeline
             </p>
 
-            <span className="inline-flex items-center gap-2 rounded-full border border-sky-400/20 bg-sky-400/[0.06] px-3 py-1 text-[10px] font-black uppercase tracking-[0.22em] text-sky-300">
-              <span className="h-1.5 w-1.5 rounded-full bg-sky-300 shadow-[0_0_10px_rgba(125,211,252,0.9)]" />
+            <AtlasStatusBadge tone="cyan">
               Growth Path
-            </span>
+            </AtlasStatusBadge>
           </div>
 
           <h2 className="mt-5 text-3xl font-black text-white sm:text-4xl">
@@ -31,8 +32,9 @@ export default function EmpireTimelineCard({
           </h2>
 
           <p className="mt-3 max-w-3xl text-sm leading-7 text-zinc-400">
-            Atlas predicts the milestones you'll reach as your empire expands,
-            helping you visualize long-term progression and strategic momentum.
+            Atlas predicts the milestones you&apos;ll reach as your empire
+            expands, helping you visualize long-term progression and strategic
+            momentum.
           </p>
         </header>
 
@@ -79,9 +81,12 @@ function TimelineItem({
             </h3>
           </div>
 
-          <div className="rounded-full border border-sky-400/20 bg-sky-400/[0.06] px-4 py-2 text-xs font-black uppercase tracking-[0.18em] text-sky-300">
+          <AtlasStatusBadge
+            indicator={false}
+            tone="cyan"
+          >
             Milestone {index + 1}
-          </div>
+          </AtlasStatusBadge>
         </div>
 
         <p className="mt-4 text-sm leading-7 text-zinc-400">
