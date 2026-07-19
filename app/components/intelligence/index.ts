@@ -134,3 +134,7 @@ export {
 export {
   default as VehicleIntelligenceCard,
 } from "./VehicleIntelligenceCard";
+
+export { 
+  default as AtlasRoadmapCard 
+} from "./AtlasRoadmapCard";

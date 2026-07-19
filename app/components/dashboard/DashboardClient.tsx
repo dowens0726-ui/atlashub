@@ -25,6 +25,7 @@ import {
 import {
   AtlasAIPanel,
   AtlasLiveEventToast,
+  AtlasRoadmapCard,
   AtlasSessionPlanCard,
 } from "@/app/components/intelligence";
 
@@ -37,7 +38,7 @@ import {
 } from "@/app/hooks/useDashboard";
 
 import {
-  buildAtlasBrain,
+  buildDashboardComposer,
 } from "@/app/intelligence";
 
 
@@ -54,35 +55,38 @@ export default function DashboardClient() {
     useAtlasIntelligence();
 
 
-  const intelligence =
-    useMemo(
-      () =>
-        buildAtlasBrain({
-          profile:
-            dashboard.profile,
+  const dashboardIntelligence =
+  useMemo(
+    () =>
+      buildDashboardComposer({
+        profile:
+          dashboard.profile,
 
-          empire:
-            dashboard.empire,
+        empire:
+          dashboard.empire,
 
-          history: {
-            decisions,
+        history: {
+          decisions,
 
-            actions,
+          actions,
 
-            outcomes,
+          outcomes,
 
-            validations,
-          },
-        }),
-      [
-        dashboard.profile,
-        dashboard.empire,
-        decisions,
-        actions,
-        outcomes,
-        validations,
-      ]
-    );
+          validations,
+        },
+      }),
+    [
+      dashboard.profile,
+      dashboard.empire,
+      decisions,
+      actions,
+      outcomes,
+      validations,
+    ]
+  );
+
+const intelligence =
+  dashboardIntelligence.brain;
 
 
   return (
@@ -97,6 +101,27 @@ export default function DashboardClient() {
             }
           />
         }
+
+        copilot={
+  <AtlasRoadmapCard
+    roadmap={
+      dashboardIntelligence
+        .roadmap
+    }
+
+    actionLabel={
+      dashboardIntelligence
+        .command
+        .actionLabel
+    }
+
+    href={
+      dashboardIntelligence
+        .command
+        .href
+    }
+  />
+}
 
 
         overview={
