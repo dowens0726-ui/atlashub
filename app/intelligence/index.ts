@@ -3,6 +3,8 @@ export * from "./atlas-brain-copilot.engine";
 export * from "./atlas-brain-snapshot.engine";
 export * from "./atlas-brain-change-detection.engine";
 export * from "./atlas-reactive-timeline.engine";
+export * from "./atlas-persistent-memory.engine";
+export * from "./atlas-memory-storage.adapter";
 export * from "./atlas-event-bus.engine";
 export * from "./dashboard-composer.engine";
 export * from "./dashboard-intelligence.engine";
@@ -60,7 +62,6 @@ export * from "./mission-outcome.engine";
 export * from "./memory.engine";
 export * from "./memory-history.engine";
 export * from "./memory-insight.engine";
-export * from "./atlas-persistent-memory.engine";
 
 // Empire
 export * from "./empire.engine";
