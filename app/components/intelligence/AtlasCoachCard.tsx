@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import AtlasStatusBadge from "./AtlasStatusBadge";
+import AtlasIntelligencePanel from "./AtlasIntelligencePanel";
 
 import type { AtlasCoachBriefing } from "@/app/intelligence";
 
