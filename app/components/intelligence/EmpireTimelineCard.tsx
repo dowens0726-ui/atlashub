@@ -4,45 +4,90 @@ type EmpireTimelineCardProps = {
   points: EmpireTimelinePoint[];
 };
 
-export default function EmpireTimelineCard({ points }: EmpireTimelineCardProps) {
+export default function EmpireTimelineCard({
+  points,
+}: EmpireTimelineCardProps) {
   return (
-    <section className="rounded-[2rem] border border-sky-400/20 bg-gradient-to-br from-zinc-900 via-zinc-950 to-zinc-950 p-6">
-      <p className="text-xs font-black uppercase tracking-[0.35em] text-sky-400">
-        Empire Timeline
-      </p>
+    <section className="relative overflow-hidden rounded-[2rem] border border-sky-400/20 bg-zinc-950 shadow-2xl shadow-sky-950/10">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(56,189,248,0.14),transparent_36%),radial-gradient(circle_at_bottom_right,rgba(139,92,246,0.08),transparent_30%)]" />
 
-      <h2 className="mt-4 text-3xl font-black text-white">
-        Projected Growth
-      </h2>
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-sky-300/70 to-transparent" />
 
-      <div className="mt-6 space-y-4">
-        {points.map((point, index) => (
-          <div
-            key={point.label}
-            className="flex gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4"
-          >
-            <div className="flex flex-col items-center">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-sky-400 font-black text-zinc-950">
-                {index + 1}
-              </div>
-            </div>
+      <div className="relative p-5 sm:p-6 lg:p-8">
+        <header className="border-b border-zinc-800/80 pb-7">
+          <div className="flex flex-wrap items-center gap-3">
+            <p className="text-xs font-black uppercase tracking-[0.35em] text-sky-300">
+              Empire Timeline
+            </p>
 
-            <div>
-              <p className="text-xs font-black uppercase tracking-[0.2em] text-sky-400">
-                {point.label}
-              </p>
-
-              <h3 className="mt-2 text-2xl font-black text-white">
-                Empire Score {point.score}
-              </h3>
-
-              <p className="mt-2 text-sm leading-6 text-zinc-400">
-                {point.description}
-              </p>
-            </div>
+            <span className="inline-flex items-center gap-2 rounded-full border border-sky-400/20 bg-sky-400/[0.06] px-3 py-1 text-[10px] font-black uppercase tracking-[0.22em] text-sky-300">
+              <span className="h-1.5 w-1.5 rounded-full bg-sky-300 shadow-[0_0_10px_rgba(125,211,252,0.9)]" />
+              Growth Path
+            </span>
           </div>
-        ))}
+
+          <h2 className="mt-5 text-3xl font-black text-white sm:text-4xl">
+            Empire Progression Timeline
+          </h2>
+
+          <p className="mt-3 max-w-3xl text-sm leading-7 text-zinc-400">
+            Atlas predicts the milestones you'll reach as your empire expands,
+            helping you visualize long-term progression and strategic momentum.
+          </p>
+        </header>
+
+        <div className="relative mt-8">
+          <div className="absolute bottom-0 left-[23px] top-0 w-px bg-gradient-to-b from-sky-400/60 via-sky-400/20 to-transparent" />
+
+          <div className="space-y-6">
+            {points.map((point, index) => (
+              <TimelineItem
+                key={`${point.label}-${index}`}
+                index={index}
+                point={point}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </section>
+  );
+}
+
+function TimelineItem({
+  index,
+  point,
+}: {
+  index: number;
+  point: EmpireTimelinePoint;
+}) {
+  return (
+    <div className="relative flex gap-5">
+      <div className="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-sky-300/40 bg-sky-400 text-sm font-black text-zinc-950 shadow-lg shadow-sky-500/20">
+        {index + 1}
+      </div>
+
+      <div className="flex-1 rounded-2xl border border-zinc-800 bg-zinc-900/50 p-5 transition duration-200 hover:-translate-y-0.5 hover:border-sky-400/30">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="text-[10px] font-black uppercase tracking-[0.25em] text-sky-300">
+              {point.label}
+            </p>
+
+            <h3 className="mt-2 text-2xl font-black text-white">
+              Empire Score {point.score}
+            </h3>
+          </div>
+
+          <div className="rounded-full border border-sky-400/20 bg-sky-400/[0.06] px-4 py-2 text-xs font-black uppercase tracking-[0.18em] text-sky-300">
+            Milestone {index + 1}
+          </div>
+        </div>
+
+        <p className="mt-4 text-sm leading-7 text-zinc-400">
+          {point.description}
+        </p>
+      </div>
+    </div>
   );
 }
