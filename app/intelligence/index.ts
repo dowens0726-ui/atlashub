@@ -7,12 +7,21 @@ export * from "./atlas-persistent-memory.engine";
 export * from "./atlas-memory-storage.adapter";
 export * from "./atlas-event-bus.engine";
 export * from "./atlas-session-persistence.engine";
+export {
+  buildAtlasIntelligenceDiagnostics,
+} from "./atlas-intelligence-diagnostics.engine";
+
+export type {
+  AtlasIntelligenceDiagnostics,
+  AtlasIntelligenceHealth,
+} from "./atlas-intelligence-diagnostics.engine";
 export * from "./dashboard-composer.engine";
 export * from "./dashboard-intelligence.engine";
 export * from "./planning.engine";
 export * from "./reasoning.engine";
 export * from "./session.engine";
 export * from "./session-reasoning.engine";
+export * from "./atlas-behavior-profile.engine";
 
 // Recommendation System
 export * from "./recommendation.engine";
