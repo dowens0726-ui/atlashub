@@ -1,3 +1,6 @@
+import AtlasIntelligencePanel from "./AtlasIntelligencePanel";
+import AtlasStatusBadge from "./AtlasStatusBadge";
+
 import type { EmpireForecast } from "@/app/intelligence";
 
 type EmpireForecastCardProps = {
@@ -55,10 +58,9 @@ export default function EmpireForecastCard({
               Empire Forecast
             </p>
 
-            <span className="inline-flex items-center gap-2 rounded-full border border-sky-400/20 bg-sky-400/[0.06] px-3 py-1 text-[10px] font-black uppercase tracking-[0.22em] text-sky-300">
-              <span className="h-1.5 w-1.5 rounded-full bg-sky-300 shadow-[0_0_10px_rgba(125,211,252,0.9)]" />
+            <AtlasStatusBadge tone="cyan">
               Forecast Active
-            </span>
+            </AtlasStatusBadge>
           </div>
 
           <h2 className="mt-5 text-3xl font-black text-white sm:text-4xl">
@@ -67,7 +69,7 @@ export default function EmpireForecastCard({
 
           <p className="mt-3 max-w-3xl text-sm leading-7 text-zinc-400">
             Atlas projects how your next strategic decision will influence your
-            empire's growth, finances, unlocks, and long-term progression.
+            empire&apos;s growth, finances, unlocks, and long-term progression.
           </p>
         </header>
 
@@ -92,9 +94,7 @@ export default function EmpireForecastCard({
 
           <ForecastStat
             label="Income Gain"
-            value={formatCurrency(
-              forecast.incomeGain
-            )}
+            value={formatCurrency(forecast.incomeGain)}
             detail="Expected increase"
             tone="emerald"
           />
@@ -115,7 +115,7 @@ export default function EmpireForecastCard({
         </div>
 
         <div className="mt-7 grid gap-5 xl:grid-cols-2">
-          <ForecastPanel
+          <AtlasIntelligencePanel
             eyebrow="Forecast Outlook"
             title="Projected future"
             tone="cyan"
@@ -123,9 +123,9 @@ export default function EmpireForecastCard({
             <p className="text-sm leading-7 text-zinc-300">
               {forecast.outlook}
             </p>
-          </ForecastPanel>
+          </AtlasIntelligencePanel>
 
-          <ForecastPanel
+          <AtlasIntelligencePanel
             eyebrow="Atlas Strategy"
             title="Recommended approach"
             tone="emerald"
@@ -133,52 +133,10 @@ export default function EmpireForecastCard({
             <p className="text-sm leading-7 text-zinc-300">
               {forecast.strategy}
             </p>
-          </ForecastPanel>
+          </AtlasIntelligencePanel>
         </div>
       </div>
     </section>
-  );
-}
-
-function ForecastPanel({
-  eyebrow,
-  title,
-  tone,
-  children,
-}: {
-  eyebrow: string;
-  title: string;
-  tone: ForecastTone;
-  children: React.ReactNode;
-}) {
-  const toneClasses: Record<
-    ForecastTone,
-    string
-  > = {
-    emerald:
-      "border-emerald-400/20 bg-emerald-400/[0.04] text-emerald-300",
-    cyan:
-      "border-cyan-400/20 bg-cyan-400/[0.04] text-cyan-300",
-    violet:
-      "border-violet-400/20 bg-violet-400/[0.04] text-violet-300",
-    amber:
-      "border-amber-400/20 bg-amber-400/[0.04] text-amber-300",
-  };
-
-  return (
-    <div
-      className={`rounded-2xl border p-5 ${toneClasses[tone]}`}
-    >
-      <p className="text-[10px] font-black uppercase tracking-[0.25em]">
-        {eyebrow}
-      </p>
-
-      <h3 className="mt-2 text-xl font-black text-white">
-        {title}
-      </h3>
-
-      <div className="mt-4">{children}</div>
-    </div>
   );
 }
 
@@ -193,10 +151,7 @@ function ForecastStat({
   detail: string;
   tone: ForecastTone;
 }) {
-  const toneClasses: Record<
-    ForecastTone,
-    string
-  > = {
+  const toneClasses: Record<ForecastTone, string> = {
     emerald:
       "border-emerald-400/20 bg-emerald-400/[0.04] text-emerald-300",
     cyan:
