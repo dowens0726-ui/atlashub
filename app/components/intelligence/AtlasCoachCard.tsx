@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import AtlasStatusBadge from "./AtlasStatusBadge";
 import AtlasIntelligencePanel from "./AtlasIntelligencePanel";
+import AtlasMetricCard from "./AtlasMetricCard";
 
 import type { AtlasCoachBriefing } from "@/app/intelligence";
 
@@ -146,26 +147,26 @@ export default function AtlasCoachCard({
         </header>
 
         <div className="mt-7 grid gap-4 sm:grid-cols-3">
-          <CoachMetric
-            label="Coach Confidence"
-            value={`${confidence}%`}
-            detail="Briefing certainty"
-            tone={confidenceTone}
-          />
+          <AtlasMetricCard
+  label="Coach Confidence"
+  value={`${confidence}%`}
+  detail="Briefing certainty"
+  tone={confidenceTone}
+/>
 
-          <CoachMetric
-            label="Priority"
-            value={briefing.priority}
-            detail="Current urgency"
-            tone={priorityTone}
-          />
+<AtlasMetricCard
+  label="Priority"
+  value={briefing.priority}
+  detail="Current urgency"
+  tone={priorityTone}
+/>
 
-          <CoachMetric
-            label="Coaching Mode"
-            value={briefing.tone}
-            detail="Guidance style"
-            tone={coachingTone}
-          />
+<AtlasMetricCard
+  label="Coaching Mode"
+  value={briefing.tone}
+  detail="Guidance style"
+  tone={coachingTone}
+/>
         </div>
 
         <div className="mt-7 grid gap-5 xl:grid-cols-[1.05fr_0.95fr]">
