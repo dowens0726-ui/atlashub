@@ -154,6 +154,10 @@ export {
   default as AtlasDailyObjectivesCard,
 } from "./AtlasDailyObjectivesCard";
 
+export {
+  default as AtlasSessionChangesCard,
+} from "./AtlasSessionChangesCard";
+
 /*
  * Empire intelligence.
  */

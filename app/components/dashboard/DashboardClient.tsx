@@ -1,7 +1,9 @@
 "use client";
 
 import {
+  useEffect,
   useMemo,
+  useState,
 } from "react";
 
 import {
@@ -26,6 +28,7 @@ import {
   AtlasAIPanel,
   AtlasLiveEventToast,
   AtlasRoadmapCard,
+  AtlasSessionChangesCard,
   AtlasSessionPlanCard,
 } from "@/app/components/intelligence";
 
@@ -38,8 +41,124 @@ import {
 } from "@/app/hooks/useDashboard";
 
 import {
+  buildAtlasBrainCopilot,
+  buildAtlasBrainSnapshot,
+  buildAtlasEventBus,
+  buildAtlasReactiveTimeline,
   buildDashboardComposer,
+  detectAtlasBrainChanges,
 } from "@/app/intelligence";
+
+import type {
+  AtlasBrainSnapshot,
+  AtlasEventBus,
+} from "@/app/intelligence";
+
+
+const ATLAS_BRAIN_SNAPSHOT_STORAGE_KEY =
+  "atlas:brain-snapshot";
+
+
+function isStoredBrainSnapshot(
+  value: unknown
+): value is AtlasBrainSnapshot {
+  if (
+    typeof value !== "object" ||
+    value === null
+  ) {
+    return false;
+  }
+
+  const snapshot =
+    value as Partial<AtlasBrainSnapshot>;
+
+  return (
+    typeof snapshot.capturedAt ===
+      "string" &&
+    typeof snapshot.cash ===
+      "number" &&
+    typeof snapshot.empireScore ===
+      "number" &&
+    typeof snapshot.empireHealth ===
+      "string" &&
+    typeof snapshot.copilotConfidence ===
+      "number" &&
+    typeof snapshot.recommendation ===
+      "object" &&
+    snapshot.recommendation !==
+      null &&
+    typeof snapshot.situation ===
+      "object" &&
+    snapshot.situation !==
+      null &&
+    typeof snapshot.topPriority ===
+      "object" &&
+    snapshot.topPriority !==
+      null &&
+    typeof snapshot.secondaryPriority ===
+      "object" &&
+    snapshot.secondaryPriority !==
+      null &&
+    typeof snapshot.warningCount ===
+      "number" &&
+    typeof snapshot.opportunityCount ===
+      "number"
+  );
+}
+
+
+function readStoredBrainSnapshot():
+  AtlasBrainSnapshot | null {
+  try {
+    const storedValue =
+      window.localStorage.getItem(
+        ATLAS_BRAIN_SNAPSHOT_STORAGE_KEY
+      );
+
+    if (!storedValue) {
+      return null;
+    }
+
+    const parsedValue:
+      unknown =
+        JSON.parse(
+          storedValue
+        );
+
+    if (
+      !isStoredBrainSnapshot(
+        parsedValue
+      )
+    ) {
+      window.localStorage.removeItem(
+        ATLAS_BRAIN_SNAPSHOT_STORAGE_KEY
+      );
+
+      return null;
+    }
+
+    return parsedValue;
+  } catch {
+    return null;
+  }
+}
+
+
+function storeBrainSnapshot(
+  snapshot:
+    AtlasBrainSnapshot
+): void {
+  try {
+    window.localStorage.setItem(
+      ATLAS_BRAIN_SNAPSHOT_STORAGE_KEY,
+      JSON.stringify(
+        snapshot
+      )
+    );
+  } catch {
+    // Atlas remains fully functional when browser storage is unavailable.
+  }
+}
 
 
 export default function DashboardClient() {
@@ -54,39 +173,151 @@ export default function DashboardClient() {
   } =
     useAtlasIntelligence();
 
+  const [
+    previousSnapshot,
+    setPreviousSnapshot,
+  ] =
+    useState<
+      AtlasBrainSnapshot | null
+    >(null);
+
+  const [
+    snapshotInitialized,
+    setSnapshotInitialized,
+  ] =
+    useState(false);
+
 
   const dashboardIntelligence =
-  useMemo(
-    () =>
-      buildDashboardComposer({
-        profile:
-          dashboard.profile,
+    useMemo(
+      () =>
+        buildDashboardComposer({
+          profile:
+            dashboard.profile,
 
-        empire:
-          dashboard.empire,
+          empire:
+            dashboard.empire,
 
-        history: {
-          decisions,
+          history: {
+            decisions,
 
-          actions,
+            actions,
 
-          outcomes,
+            outcomes,
 
-          validations,
-        },
-      }),
+            validations,
+          },
+        }),
+      [
+        dashboard.profile,
+        dashboard.empire,
+        decisions,
+        actions,
+        outcomes,
+        validations,
+      ]
+    );
+
+
+  const intelligence =
+    dashboardIntelligence.brain;
+
+
+  const copilot =
+    useMemo(
+      () =>
+        buildAtlasBrainCopilot(
+          intelligence
+        ),
+      [
+        intelligence,
+      ]
+    );
+
+
+  const currentSnapshot =
+    useMemo(
+      () =>
+        buildAtlasBrainSnapshot({
+          brain:
+            intelligence,
+
+          copilot,
+
+          profile:
+            dashboard.profile,
+
+          empire:
+            dashboard.empire,
+        }),
+      [
+        intelligence,
+        copilot,
+        dashboard.profile,
+        dashboard.empire,
+      ]
+    );
+
+
+  useEffect(
+    () => {
+      const storedSnapshot =
+        readStoredBrainSnapshot();
+
+      setPreviousSnapshot(
+        storedSnapshot
+      );
+
+      storeBrainSnapshot(
+        currentSnapshot
+      );
+
+      setSnapshotInitialized(
+        true
+      );
+    },
     [
-      dashboard.profile,
-      dashboard.empire,
-      decisions,
-      actions,
-      outcomes,
-      validations,
+      currentSnapshot,
     ]
   );
 
-const intelligence =
-  dashboardIntelligence.brain;
+
+  const eventBus =
+    useMemo<
+      AtlasEventBus | null
+    >(
+      () => {
+        if (
+          !snapshotInitialized ||
+          !previousSnapshot
+        ) {
+          return null;
+        }
+
+        const changes =
+          detectAtlasBrainChanges({
+            previous:
+              previousSnapshot,
+
+            current:
+              currentSnapshot,
+          });
+
+        const timeline =
+          buildAtlasReactiveTimeline({
+            changes,
+          });
+
+        return buildAtlasEventBus({
+          timeline,
+        });
+      },
+      [
+        snapshotInitialized,
+        previousSnapshot,
+        currentSnapshot,
+      ]
+    );
 
 
   return (
@@ -102,27 +333,37 @@ const intelligence =
           />
         }
 
+        changes={
+          eventBus ? (
+            <AtlasSessionChangesCard
+              eventBus={
+                eventBus
+              }
+              maxEvents={5}
+            />
+          ) : null
+        }
+
         copilot={
-  <AtlasRoadmapCard
-    roadmap={
-      dashboardIntelligence
-        .roadmap
-    }
+          <AtlasRoadmapCard
+            roadmap={
+              dashboardIntelligence
+                .roadmap
+            }
 
-    actionLabel={
-      dashboardIntelligence
-        .command
-        .actionLabel
-    }
+            actionLabel={
+              dashboardIntelligence
+                .command
+                .actionLabel
+            }
 
-    href={
-      dashboardIntelligence
-        .command
-        .href
-    }
-  />
-}
-
+            href={
+              dashboardIntelligence
+                .command
+                .href
+            }
+          />
+        }
 
         overview={
           <div className="space-y-8">
@@ -145,7 +386,6 @@ const intelligence =
             />
           </div>
         }
-
 
         atlas={
           <AtlasAIPanel
@@ -306,7 +546,6 @@ const intelligence =
           />
         }
 
-
         session={
           <AtlasSessionPlanCard
             plan={
@@ -321,7 +560,6 @@ const intelligence =
           />
         }
 
-
         insights={
           <EmpireInsights
             insights={
@@ -332,7 +570,6 @@ const intelligence =
           />
         }
 
-
         objectives={
           <DashboardObjectives
             objectives={
@@ -341,11 +578,9 @@ const intelligence =
           />
         }
 
-
         activity={
           <ActivityFeed />
         }
-
 
         achievements={
           <AchievementList />

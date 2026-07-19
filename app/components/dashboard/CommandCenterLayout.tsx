@@ -1,23 +1,38 @@
-import type { ReactNode } from "react";
+import type {
+  ReactNode,
+} from "react";
 
 import AtlasCommandCenter from "./AtlasCommandCenter";
 import AtlasCommandRail from "./AtlasCommandRail";
 import AtlasCommandSection from "./AtlasCommandSection";
 
+
 type CommandCenterLayoutProps = {
   hero: ReactNode;
+
+  changes?: ReactNode;
+
   copilot?: ReactNode;
+
   overview: ReactNode;
+
   atlas: ReactNode;
+
   session: ReactNode;
+
   insights: ReactNode;
+
   objectives: ReactNode;
+
   activity: ReactNode;
+
   achievements: ReactNode;
 };
 
+
 export default function CommandCenterLayout({
   hero,
+  changes,
   copilot,
   overview,
   atlas,
@@ -32,6 +47,12 @@ export default function CommandCenterLayout({
       <AtlasCommandSection variant="transparent">
         {hero}
       </AtlasCommandSection>
+
+      {changes ? (
+        <AtlasCommandSection variant="transparent">
+          {changes}
+        </AtlasCommandSection>
+      ) : null}
 
       {copilot ? (
         <AtlasCommandSection

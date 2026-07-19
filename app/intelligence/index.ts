@@ -1,6 +1,9 @@
 // Core Intelligence
 export * from "./atlas-brain-copilot.engine";
 export * from "./atlas-brain-snapshot.engine";
+export * from "./atlas-brain-change-detection.engine";
+export * from "./atlas-reactive-timeline.engine";
+export * from "./atlas-event-bus.engine";
 export * from "./dashboard-composer.engine";
 export * from "./dashboard-intelligence.engine";
 export * from "./planning.engine";
