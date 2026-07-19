@@ -22,6 +22,7 @@ export * from "./reasoning.engine";
 export * from "./session.engine";
 export * from "./session-reasoning.engine";
 export * from "./atlas-behavior-profile.engine";
+export * from "./atlas-strategy-evolution.engine";
 
 // Recommendation System
 export * from "./recommendation.engine";
