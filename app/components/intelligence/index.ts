@@ -158,3 +158,11 @@ export {
 export type {
   AtlasStatusBadgeTone,
 } from "./AtlasStatusBadge";
+
+export {
+  default as AtlasIntelligencePanel,
+} from "./AtlasIntelligencePanel";
+
+export type {
+  AtlasIntelligencePanelTone,
+} from "./AtlasIntelligencePanel";
