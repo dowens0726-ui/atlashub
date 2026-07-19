@@ -47,3 +47,4 @@ export * from "./vehicle";
 export * from "./atlas-brain-copilot.engine";
 export * from "./strategic-command.engine";
 export * from "./strategic-roadmap.engine";
+export * from "./dashboard-composer.engine";
