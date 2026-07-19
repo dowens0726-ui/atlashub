@@ -8,6 +8,7 @@ export type RecommendationCategory =
   | "business"
   | "vehicle"
   | "mission"
+  | "property"
   | "progression"
   | "wealth";
 
@@ -34,7 +35,7 @@ export type AtlasRecommendation = {
     reasons: string[];
   };
 
-    estimatedProfit?: number;
+  estimatedProfit?: number;
   estimatedTimeMinutes?: number;
 
   prediction?: {

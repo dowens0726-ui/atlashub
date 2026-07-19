@@ -35,6 +35,8 @@ export * from "./prediction.engine";
 // Player Intelligence
 export * from "./player-identity.engine";
 export * from "./behavioral-intelligence.engine";
+export * from "./property-intelligence.engine";
+export * from "./property-recommendation.engine";
 export * from "./learning.engine";
 export * from "./decision-history.engine";
 export * from "./action-tracker.engine";
