@@ -2,27 +2,36 @@ import type {
   AtlasBrainModel,
 } from "./dashboard-intelligence.engine";
 
+
 export type AtlasBrainHealth =
   | "Excellent"
   | "Strong"
   | "Stable"
   | "Developing";
 
+
 export type AtlasBrainPriority = {
   title: string;
+
   description: string;
+
   confidence: number;
 };
 
+
 export type AtlasBrainOpportunity = {
   title: string;
+
   description: string;
 };
 
+
 export type AtlasBrainWarning = {
   title: string;
+
   description: string;
 };
+
 
 export type AtlasBrainCopilotReport = {
   executiveBriefing: string;
@@ -44,6 +53,7 @@ export type AtlasBrainCopilotReport = {
   highlights: string[];
 };
 
+
 function determineEmpireHealth(
   confidence: number
 ): AtlasBrainHealth {
@@ -62,53 +72,169 @@ function determineEmpireHealth(
   return "Developing";
 }
 
+
 function buildHighlights(
   brain: AtlasBrainModel
 ): string[] {
-  return [
-   brain.playerIdentity.summary,
-   brain.coachBriefing.summary,
-   brain.nextAction.reason,
- ];
+  const highlights = [
+    brain.situationBriefing.headline,
+
+    brain.playerIdentity.summary,
+
+    brain.coachBriefing.summary,
+
+    brain.nextAction.reason,
+  ];
+
+  if (
+    brain.situationBriefing.strengths.length >
+    0
+  ) {
+    highlights.push(
+      brain.situationBriefing.strengths[0]
+    );
+  }
+
+  return highlights;
 }
+
 
 function buildWarnings(
   brain: AtlasBrainModel
 ): AtlasBrainWarning[] {
-  return [
-    {
-      title: "Maintain Momentum",
+  const situationWarnings =
+    brain.situationBriefing.warnings
+      .filter(
+        (warning) =>
+          !warning
+            .toLowerCase()
+            .includes(
+              "no major strategic bottlenecks"
+            )
+      )
+      .slice(
+        0,
+        2
+      )
+      .map(
+        (
+          warning,
+          index
+        ): AtlasBrainWarning => ({
+          title:
+            index === 0
+              ? "Situation Risk"
+              : "Strategic Constraint",
+
+          description:
+            warning,
+        })
+      );
+
+  const warnings: AtlasBrainWarning[] = [
+    ...situationWarnings,
+  ];
+
+  if (
+    brain.situationBriefing.priority ===
+      "Critical" ||
+    brain.situationBriefing.priority ===
+      "High"
+  ) {
+    warnings.push({
+      title:
+        "Immediate Focus Required",
+
+      description:
+        brain.situationBriefing.nextStep,
+    });
+  }
+
+  warnings.push({
+    title:
+      "Review Strategy",
+
+    description:
+      brain.strategyFeedback
+        .futureAdjustment,
+  });
+
+  if (
+    warnings.length === 1
+  ) {
+    warnings.unshift({
+      title:
+        "Maintain Momentum",
+
       description:
         "Continue completing Atlas recommendations to maximize long-term empire growth.",
-    },
-    {
-      title: "Review Strategy",
-      description:
-        brain.strategyFeedback.futureAdjustment,
-    },
-  ];
+    });
+  }
+
+  return warnings.slice(
+    0,
+    4
+  );
 }
+
 
 function buildOpportunities(
   brain: AtlasBrainModel
 ): AtlasBrainOpportunity[] {
-  return [
-    {
-  title: "Highest ROI",
-  description:
-    brain.nextAction.expectedImpact,
-},
-    {
-      title: "Empire Growth",
+  const opportunities: AtlasBrainOpportunity[] =
+    [
+      {
+        title:
+          "Highest ROI",
+
+        description:
+          brain.nextAction
+            .expectedImpact,
+      },
+      {
+        title:
+          "Strategic Focus",
+
+        description:
+          brain.situationBriefing
+            .primaryFocus,
+      },
+      {
+        title:
+          "Empire Growth",
+
+        description:
+          brain.coachBriefing
+            .summary,
+      },
+    ];
+
+  if (
+    brain.situationBriefing.priority ===
+      "Low"
+  ) {
+    opportunities.push({
+      title:
+        "Expansion Opportunity",
+
       description:
-        brain.coachBriefing.summary,
-    },
-  ];
+        brain.situationBriefing
+          .nextStep,
+    });
+  }
+
+  return opportunities;
 }
+
+
 function normalizeConfidence(
   value: number
 ): number {
-  if (!Number.isFinite(value)) {
+  if (
+    !Number.isFinite(
+      value
+    )
+  ) {
     return 0;
   }
 
@@ -116,10 +242,13 @@ function normalizeConfidence(
     100,
     Math.max(
       0,
-      Math.round(value)
+      Math.round(
+        value
+      )
     )
   );
 }
+
 
 function calculateCopilotConfidence(
   brain: AtlasBrainModel
@@ -138,17 +267,76 @@ function calculateCopilotConfidence(
         .confidence
     );
 
+  const coachConfidence =
+    normalizeConfidence(
+      brain
+        .coachBriefing
+        .confidence
+    );
+
+  const situationConfidence =
+    normalizeConfidence(
+      brain
+        .situationBriefing
+        .confidence
+    );
+
   return normalizeConfidence(
-    (
-      recommendationConfidence +
-      actionConfidence
-    ) / 2
+    recommendationConfidence *
+      0.3 +
+      actionConfidence *
+        0.3 +
+      coachConfidence *
+        0.2 +
+      situationConfidence *
+        0.2
   );
 }
+
 
 function buildTopPriority(
   brain: AtlasBrainModel
 ): AtlasBrainPriority {
+  if (
+    brain.situationBriefing.priority ===
+      "Critical"
+  ) {
+    return {
+      title:
+        "Stabilize Your Current Situation",
+
+      description:
+        brain.situationBriefing
+          .nextStep,
+
+      confidence:
+        normalizeConfidence(
+          brain.situationBriefing
+            .confidence
+        ),
+    };
+  }
+
+  if (
+    brain.situationBriefing.priority ===
+      "High"
+  ) {
+    return {
+      title:
+        "Address Your Primary Constraint",
+
+      description:
+        brain.situationBriefing
+          .nextStep,
+
+      confidence:
+        normalizeConfidence(
+          brain.situationBriefing
+            .confidence
+        ),
+    };
+  }
+
   return {
     title:
       "Complete Your Recommended Next Action",
@@ -158,14 +346,37 @@ function buildTopPriority(
 
     confidence:
       normalizeConfidence(
-        brain.nextAction.confidence
+        brain.nextAction
+          .confidence
       ),
   };
 }
 
+
 function buildSecondaryPriority(
   brain: AtlasBrainModel
 ): AtlasBrainPriority {
+  if (
+    brain.situationBriefing.priority ===
+      "Critical" ||
+    brain.situationBriefing.priority ===
+      "High"
+  ) {
+    return {
+      title:
+        "Prepare Your Next Strategic Move",
+
+      description:
+        brain.nextAction.reason,
+
+      confidence:
+        normalizeConfidence(
+          brain.nextAction
+            .confidence
+        ),
+    };
+  }
+
   return {
     title:
       "Continue Strategic Empire Growth",
@@ -182,22 +393,44 @@ function buildSecondaryPriority(
   };
 }
 
+
 function buildExecutiveBriefing(
   brain: AtlasBrainModel,
   health: AtlasBrainHealth
 ): string {
   return [
     `Your empire is currently rated ${health.toLowerCase()}.`,
-    brain.playerIdentity.summary,
-    brain.nextAction.reason,
-  ].join(" ");
+
+    brain.situationBriefing
+      .headline,
+
+    brain.playerIdentity
+      .summary,
+
+    brain.nextAction
+      .reason,
+  ].join(
+    " "
+  );
 }
+
 
 function getRecommendedFocus(
   brain: AtlasBrainModel
 ): string {
-  return brain.nextAction.title;
+  if (
+    brain.situationBriefing.priority ===
+      "Critical" ||
+    brain.situationBriefing.priority ===
+      "High"
+  ) {
+    return brain.situationBriefing
+      .primaryFocus;
+  }
+
+  return brain.nextAction.reason;
 }
+
 
 function removeDuplicateStrings(
   values: string[]
@@ -209,10 +442,13 @@ function removeDuplicateStrings(
           (value) =>
             value.trim()
         )
-        .filter(Boolean)
+        .filter(
+          Boolean
+        )
     )
   );
 }
+
 
 function removeDuplicateOpportunities(
   opportunities:
@@ -226,16 +462,23 @@ function removeDuplicateOpportunities(
       const key =
         `${opportunity.title}:${opportunity.description}`;
 
-      if (seen.has(key)) {
+      if (
+        seen.has(
+          key
+        )
+      ) {
         return false;
       }
 
-      seen.add(key);
+      seen.add(
+        key
+      );
 
       return true;
     }
   );
 }
+
 
 function removeDuplicateWarnings(
   warnings:
@@ -249,16 +492,24 @@ function removeDuplicateWarnings(
       const key =
         `${warning.title}:${warning.description}`;
 
-      if (seen.has(key)) {
+      if (
+        seen.has(
+          key
+        )
+      ) {
         return false;
       }
 
-      seen.add(key);
+      seen.add(
+        key
+      );
 
       return true;
     }
   );
 }
+
+
 export function buildAtlasBrainCopilot(
   brain: AtlasBrainModel
 ): AtlasBrainCopilotReport {
@@ -326,5 +577,3 @@ export function buildAtlasBrainCopilot(
     highlights,
   };
 }
-
-

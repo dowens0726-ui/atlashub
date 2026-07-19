@@ -160,6 +160,14 @@ import {
   buildEmpireTimeline,
 } from "./timeline.engine";
 
+import {
+  analyzeAtlasSituation,
+} from "./situation-analysis.engine";
+
+import {
+  buildAtlasSituationBriefing,
+} from "./atlas-situation-briefing.engine";
+
 
 export type AtlasBrainHistory = {
   decisions: AtlasDecisionHistoryItem[];
@@ -278,6 +286,17 @@ export function buildAtlasBrain({
   const playerIdentity =
     buildPlayerIdentity(
       profile
+    );
+
+  const situation =
+    analyzeAtlasSituation({
+     profile,
+      empire,
+   });
+
+  const situationBriefing =
+    buildAtlasSituationBriefing(
+     situation
     );
 
   const identityAdvisor =
@@ -524,27 +543,21 @@ export function buildAtlasBrain({
 
 
   const coachBriefing =
-    buildAtlasCoach({
-      greeting:
-        atlasGreeting,
-
-      recommendation:
-        weightedRecommendation,
-
-      forecast:
-        empireForecast,
-
-      learning:
-        learningProfile,
-
-      behavior:
-        behaviorProfile,
-
-      identity:
-        playerIdentity,
-
-      memoryInsight,
-    });
+  buildAtlasCoach({
+    greeting: atlasGreeting,
+    recommendation:
+      weightedRecommendation,
+    forecast:
+      empireForecast,
+    learning:
+      learningProfile,
+    behavior:
+      behaviorProfile,
+    identity:
+      playerIdentity,
+    memoryInsight,
+    situationBriefing,
+  });
 
 
   const adaptiveStrategy =
@@ -632,14 +645,15 @@ export function buildAtlasBrain({
     );
 
   const strategyReport =
-    buildAtlasStrategyReport(
-      weightedRecommendation,
-      atlasReasoning,
-      empireSimulation,
-      empireForecast,
-      atlasMemory,
-      nextAction
-    );
+  buildAtlasStrategyReport(
+    weightedRecommendation,
+    atlasReasoning,
+    empireSimulation,
+    empireForecast,
+    atlasMemory,
+    nextAction,
+    situationBriefing
+  );
 
 
   return {
@@ -655,6 +669,10 @@ export function buildAtlasBrain({
     coachBriefing,
 
     playerIdentity,
+
+    situation,
+
+    situationBriefing,
 
     behaviorProfile,
 

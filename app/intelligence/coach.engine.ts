@@ -1,4 +1,8 @@
 import type {
+  AtlasSituationBriefing,
+} from "./atlas-situation-briefing.engine";
+
+import type {
   AtlasBehaviorProfile,
 } from "./behavioral-intelligence.engine";
 
@@ -80,6 +84,9 @@ export type AtlasCoachInput = {
   identity: AtlasPlayerIdentity;
 
   memoryInsight: AtlasMemoryInsight;
+
+  situationBriefing:
+    AtlasSituationBriefing;
 };
 
 
@@ -145,16 +152,22 @@ function formatDuration(
 function getPriority(
   recommendation: AtlasRecommendation,
   learning: AtlasLearningProfile,
-  behavior: AtlasBehaviorProfile
+  behavior: AtlasBehaviorProfile,
+  situationBriefing:
+    AtlasSituationBriefing
 ): AtlasCoachPriority {
   if (
     recommendation.priority ===
-    "critical"
+      "critical" ||
+    situationBriefing.priority ===
+      "Critical"
   ) {
     return "Critical";
   }
 
   if (
+    situationBriefing.priority ===
+      "High" ||
     learning.failureRate >= 50 ||
     behavior.abandonmentRate >= 50
   ) {
@@ -171,7 +184,9 @@ function getPriority(
 
   if (
     recommendation.priority ===
-    "medium"
+      "medium" ||
+    situationBriefing.priority ===
+      "Normal"
   ) {
     return "Medium";
   }
@@ -182,8 +197,19 @@ function getPriority(
 
 function getTone(
   learning: AtlasLearningProfile,
-  behavior: AtlasBehaviorProfile
+  behavior: AtlasBehaviorProfile,
+  situationBriefing:
+    AtlasSituationBriefing
 ): AtlasCoachTone {
+  if (
+    situationBriefing.priority ===
+      "Critical" ||
+    situationBriefing.priority ===
+      "High"
+  ) {
+    return "Corrective";
+  }
+
   if (
     learning.completedStrategies === 0
   ) {
@@ -199,7 +225,9 @@ function getTone(
 
   if (
     learning.successRate >= 75 &&
-    behavior.completionRate >= 70
+    behavior.completionRate >= 70 &&
+    situationBriefing.priority !==
+      "Normal"
   ) {
     return "Confident";
   }
@@ -212,10 +240,39 @@ function buildHighlights(
   learning: AtlasLearningProfile,
   behavior: AtlasBehaviorProfile,
   identity: AtlasPlayerIdentity,
-  memoryInsight: AtlasMemoryInsight
+  memoryInsight: AtlasMemoryInsight,
+  situationBriefing:
+    AtlasSituationBriefing
 ): string[] {
   const highlights: string[] = [];
 
+  highlights.push(
+    situationBriefing.headline
+  );
+
+  if (
+    situationBriefing.primaryFocus
+  ) {
+    highlights.push(
+      `Primary focus: ${situationBriefing.primaryFocus}`
+    );
+  }
+
+  if (
+    situationBriefing.priority ===
+      "Critical" ||
+    situationBriefing.priority ===
+      "High"
+  ) {
+    const firstWarning =
+      situationBriefing.warnings[0];
+
+    if (firstWarning) {
+      highlights.push(
+        firstWarning
+      );
+    }
+  }
 
   if (
     learning.completedStrategies >
@@ -234,7 +291,6 @@ function buildHighlights(
     );
   }
 
-
   if (
     learning.averageIncome !==
     0
@@ -245,7 +301,6 @@ function buildHighlights(
       )} in income impact.`
     );
   }
-
 
   if (
     learning.averageCompletionTimeMinutes >
@@ -258,7 +313,6 @@ function buildHighlights(
     );
   }
 
-
   if (
     learning.predictionAccuracy >
     0
@@ -267,7 +321,6 @@ function buildHighlights(
       `Atlas income-prediction accuracy is currently ${learning.predictionAccuracy}%.`
     );
   }
-
 
   if (
     behavior.businessPreference >=
@@ -292,7 +345,6 @@ function buildHighlights(
     );
   }
 
-
   if (
     behavior.abandonmentRate >=
     40
@@ -302,17 +354,15 @@ function buildHighlights(
     );
   }
 
-
   if (
     highlights.length < 3 &&
     memoryInsight.evidence.length >
-    0
+      0
   ) {
     highlights.push(
       memoryInsight.evidence[0]
     );
   }
-
 
   if (
     highlights.length < 3
@@ -321,7 +371,6 @@ function buildHighlights(
       `Your current Atlas identity is ${identity.archetype} with a ${identity.strategy.toLowerCase()} strategy.`
     );
   }
-
 
   return highlights.slice(
     0,
@@ -334,47 +383,72 @@ function buildSummary(
   recommendation: AtlasRecommendation,
   learning: AtlasLearningProfile,
   behavior: AtlasBehaviorProfile,
-  identity: AtlasPlayerIdentity
+  identity: AtlasPlayerIdentity,
+  situationBriefing:
+    AtlasSituationBriefing
 ): string {
+  if (
+    situationBriefing.priority ===
+    "Critical"
+  ) {
+    return `${situationBriefing.summary} Atlas recommends addressing the current strategic pressure before committing to another major objective.`;
+  }
+
+  if (
+    situationBriefing.priority ===
+    "High"
+  ) {
+    return `${situationBriefing.summary} Progress should remain focused on the highest-priority constraint before broader expansion.`;
+  }
+
   if (
     learning.completedStrategies === 0
   ) {
-    return `Atlas is still building a reliable coaching profile. Your current ${identity.archetype} identity and ${behavior.strongestCategory.toLowerCase()} preference provide the first signals for personalized guidance.`;
+    return `Atlas is still building a reliable coaching profile. Your current ${identity.archetype} identity, ${behavior.strongestCategory.toLowerCase()} preference, and present empire situation provide the first signals for personalized guidance.`;
   }
 
   if (
     learning.failureRate >= 50
   ) {
-    return `Recent results show that several strategies have not produced the intended outcome. Atlas recommends reducing risk and focusing on one high-confidence objective before expanding further.`;
+    return "Recent results show that several strategies have not produced the intended outcome. Atlas recommends reducing risk and focusing on one high-confidence objective before expanding further.";
   }
 
   if (
     behavior.abandonmentRate >=
     40
   ) {
-    return `Atlas has detected frequent changes in strategic direction. Completing one focused objective will give Atlas stronger evidence and improve future recommendations.`;
+    return "Atlas has detected frequent changes in strategic direction. Completing one focused objective will give Atlas stronger evidence and improve future recommendations.";
   }
 
   if (
     learning.successRate >= 75 &&
     behavior.completionRate >= 70
   ) {
-    return `Your recent history shows strong follow-through and consistent results. Atlas is confident that ${recommendation.title} aligns with your observed behavior and current progression path.`;
+    return `Your recent history shows strong follow-through and consistent results. ${situationBriefing.headline} Atlas is confident that ${recommendation.title} aligns with your observed behavior and current progression path.`;
   }
 
-  return `Atlas is refining its coaching using your recorded decisions, reported outcomes, and observed ${behavior.playPattern.toLowerCase()} pattern.`;
+  return `${situationBriefing.summary} Atlas is refining its coaching using your recorded decisions, reported outcomes, and observed ${behavior.playPattern.toLowerCase()} pattern.`;
 }
 
 
 function buildCallToAction(
   recommendation: AtlasRecommendation,
   priority: AtlasCoachPriority,
-  tone: AtlasCoachTone
+  tone: AtlasCoachTone,
+  situationBriefing:
+    AtlasSituationBriefing
 ): string {
   if (
     priority === "Critical"
   ) {
-    return `Prioritize ${recommendation.title} before starting another major strategy.`;
+    return situationBriefing.nextStep;
+  }
+
+  if (
+    situationBriefing.priority ===
+    "High"
+  ) {
+    return `${situationBriefing.nextStep} Then reassess ${recommendation.title}.`;
   }
 
   if (
@@ -401,29 +475,34 @@ export function buildAtlasCoach({
   behavior,
   identity,
   memoryInsight,
+  situationBriefing,
 }: AtlasCoachInput): AtlasCoachBriefing {
   const priority =
     getPriority(
       recommendation,
       learning,
-      behavior
+      behavior,
+      situationBriefing
     );
 
   const tone =
     getTone(
       learning,
-      behavior
+      behavior,
+      situationBriefing
     );
 
   const confidence =
     clampPercentage(
       recommendation.confidence *
-        0.35 +
+        0.3 +
         learning.confidence *
-          0.25 +
+          0.2 +
         behavior.confidence *
-          0.25 +
+          0.2 +
         memoryInsight.confidence *
+          0.15 +
+        situationBriefing.confidence *
           0.15
     );
 
@@ -432,7 +511,8 @@ export function buildAtlasCoach({
       learning,
       behavior,
       identity,
-      memoryInsight
+      memoryInsight,
+      situationBriefing
     );
 
   const summary =
@@ -440,7 +520,8 @@ export function buildAtlasCoach({
       recommendation,
       learning,
       behavior,
-      identity
+      identity,
+      situationBriefing
     );
 
   return {
@@ -473,7 +554,8 @@ export function buildAtlasCoach({
       buildCallToAction(
         recommendation,
         priority,
-        tone
+        tone,
+        situationBriefing
       ),
   };
 }

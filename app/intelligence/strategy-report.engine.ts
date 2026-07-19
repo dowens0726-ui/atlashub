@@ -5,16 +5,24 @@ import type {
   EmpireSimulation,
   AtlasMemory,
   NextAction,
+  AtlasSituationBriefing,
 } from "@/app/intelligence";
 
 export type AtlasStrategyReport = {
   title: string;
+
   empireStatus: string;
+
   strength: string;
+
   recommendedMove: string;
+
   reasoning: string[];
+
   simulationSummary: string;
+
   forecastSummary: string;
+
   nextFocus: string;
 };
 
@@ -24,31 +32,36 @@ export function buildAtlasStrategyReport(
   simulation: EmpireSimulation,
   forecast: EmpireForecast,
   memory: AtlasMemory,
-  nextAction: NextAction
+  nextAction: NextAction,
+  situationBriefing: AtlasSituationBriefing
 ): AtlasStrategyReport {
   return {
-    title: "Empire Growth Strategy",
+    title:
+      "Empire Growth Strategy",
 
     empireStatus:
-      memory.learnedPattern,
+      situationBriefing.headline,
 
     strength:
+      situationBriefing.strengths[0] ??
       memory.playerInsights[0] ??
       "Atlas is still learning your empire strategy.",
 
     recommendedMove:
       recommendation.title,
 
-    reasoning:
-      reasoning.reasons,
+    reasoning: [
+      situationBriefing.summary,
+      ...reasoning.reasons,
+    ],
 
     simulationSummary:
       `${simulation.targetName} creates a ${simulation.risk.toLowerCase()} risk move with a projected +${simulation.scoreDelta} empire score impact.`,
 
     forecastSummary:
-      forecast.outlook,
+      `${forecast.outlook} ${situationBriefing.nextStep}`,
 
     nextFocus:
-      nextAction.title,
+      situationBriefing.primaryFocus,
   };
 }

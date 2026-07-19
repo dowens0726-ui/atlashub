@@ -24,6 +24,8 @@ export * from "./opportunity.engine";
 export * from "./strategy-feedback.engine";
 export * from "./strategy-report.engine";
 export * from "./adaptive-strategy.engine";
+export * from "./situation-analysis.engine";
+export * from "./atlas-situation-briefing.engine";
 
 // Economy & ROI
 export * from "./economy.engine";
