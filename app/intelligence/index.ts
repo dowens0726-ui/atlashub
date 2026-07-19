@@ -6,6 +6,7 @@ export * from "./atlas-reactive-timeline.engine";
 export * from "./atlas-persistent-memory.engine";
 export * from "./atlas-memory-storage.adapter";
 export * from "./atlas-event-bus.engine";
+export * from "./atlas-session-persistence.engine";
 export * from "./dashboard-composer.engine";
 export * from "./dashboard-intelligence.engine";
 export * from "./planning.engine";
