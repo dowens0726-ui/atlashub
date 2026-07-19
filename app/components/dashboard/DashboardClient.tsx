@@ -3,6 +3,7 @@
 import {
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 
@@ -43,122 +44,13 @@ import {
 import {
   buildAtlasBrainCopilot,
   buildAtlasBrainSnapshot,
-  buildAtlasEventBus,
-  buildAtlasReactiveTimeline,
   buildDashboardComposer,
-  detectAtlasBrainChanges,
+  runAtlasSessionPersistence,
 } from "@/app/intelligence";
 
 import type {
-  AtlasBrainSnapshot,
   AtlasEventBus,
 } from "@/app/intelligence";
-
-
-const ATLAS_BRAIN_SNAPSHOT_STORAGE_KEY =
-  "atlas:brain-snapshot";
-
-
-function isStoredBrainSnapshot(
-  value: unknown
-): value is AtlasBrainSnapshot {
-  if (
-    typeof value !== "object" ||
-    value === null
-  ) {
-    return false;
-  }
-
-  const snapshot =
-    value as Partial<AtlasBrainSnapshot>;
-
-  return (
-    typeof snapshot.capturedAt ===
-      "string" &&
-    typeof snapshot.cash ===
-      "number" &&
-    typeof snapshot.empireScore ===
-      "number" &&
-    typeof snapshot.empireHealth ===
-      "string" &&
-    typeof snapshot.copilotConfidence ===
-      "number" &&
-    typeof snapshot.recommendation ===
-      "object" &&
-    snapshot.recommendation !==
-      null &&
-    typeof snapshot.situation ===
-      "object" &&
-    snapshot.situation !==
-      null &&
-    typeof snapshot.topPriority ===
-      "object" &&
-    snapshot.topPriority !==
-      null &&
-    typeof snapshot.secondaryPriority ===
-      "object" &&
-    snapshot.secondaryPriority !==
-      null &&
-    typeof snapshot.warningCount ===
-      "number" &&
-    typeof snapshot.opportunityCount ===
-      "number"
-  );
-}
-
-
-function readStoredBrainSnapshot():
-  AtlasBrainSnapshot | null {
-  try {
-    const storedValue =
-      window.localStorage.getItem(
-        ATLAS_BRAIN_SNAPSHOT_STORAGE_KEY
-      );
-
-    if (!storedValue) {
-      return null;
-    }
-
-    const parsedValue:
-      unknown =
-        JSON.parse(
-          storedValue
-        );
-
-    if (
-      !isStoredBrainSnapshot(
-        parsedValue
-      )
-    ) {
-      window.localStorage.removeItem(
-        ATLAS_BRAIN_SNAPSHOT_STORAGE_KEY
-      );
-
-      return null;
-    }
-
-    return parsedValue;
-  } catch {
-    return null;
-  }
-}
-
-
-function storeBrainSnapshot(
-  snapshot:
-    AtlasBrainSnapshot
-): void {
-  try {
-    window.localStorage.setItem(
-      ATLAS_BRAIN_SNAPSHOT_STORAGE_KEY,
-      JSON.stringify(
-        snapshot
-      )
-    );
-  } catch {
-    // Atlas remains fully functional when browser storage is unavailable.
-  }
-}
 
 
 export default function DashboardClient() {
@@ -174,18 +66,17 @@ export default function DashboardClient() {
     useAtlasIntelligence();
 
   const [
-    previousSnapshot,
-    setPreviousSnapshot,
+    eventBus,
+    setEventBus,
   ] =
     useState<
-      AtlasBrainSnapshot | null
+      AtlasEventBus | null
     >(null);
 
-  const [
-    snapshotInitialized,
-    setSnapshotInitialized,
-  ] =
-    useState(false);
+  const processedSnapshotRef =
+    useRef<
+      string | null
+    >(null);
 
 
   const dashboardIntelligence =
@@ -261,63 +152,34 @@ export default function DashboardClient() {
 
   useEffect(
     () => {
-      const storedSnapshot =
-        readStoredBrainSnapshot();
+      const snapshotSignature =
+        JSON.stringify(
+          currentSnapshot
+        );
 
-      setPreviousSnapshot(
-        storedSnapshot
-      );
+      if (
+        processedSnapshotRef.current ===
+        snapshotSignature
+      ) {
+        return;
+      }
 
-      storeBrainSnapshot(
-        currentSnapshot
-      );
+      processedSnapshotRef.current =
+        snapshotSignature;
 
-      setSnapshotInitialized(
-        true
+      const session =
+        runAtlasSessionPersistence({
+          currentSnapshot,
+        });
+
+      setEventBus(
+        session.eventBus
       );
     },
     [
       currentSnapshot,
     ]
   );
-
-
-  const eventBus =
-    useMemo<
-      AtlasEventBus | null
-    >(
-      () => {
-        if (
-          !snapshotInitialized ||
-          !previousSnapshot
-        ) {
-          return null;
-        }
-
-        const changes =
-          detectAtlasBrainChanges({
-            previous:
-              previousSnapshot,
-
-            current:
-              currentSnapshot,
-          });
-
-        const timeline =
-          buildAtlasReactiveTimeline({
-            changes,
-          });
-
-        return buildAtlasEventBus({
-          timeline,
-        });
-      },
-      [
-        snapshotInitialized,
-        previousSnapshot,
-        currentSnapshot,
-      ]
-    );
 
 
   return (
