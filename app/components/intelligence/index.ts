@@ -150,3 +150,11 @@ export {
 export { 
   default as AtlasReasoningPanel 
 } from "./AtlasReasoningPanel";
+
+export {
+  default as AtlasStatusBadge,
+} from "./AtlasStatusBadge";
+
+export type {
+  AtlasStatusBadgeTone,
+} from "./AtlasStatusBadge";
