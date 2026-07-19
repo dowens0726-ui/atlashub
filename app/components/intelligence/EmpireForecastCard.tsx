@@ -1,4 +1,5 @@
 import AtlasIntelligencePanel from "./AtlasIntelligencePanel";
+import AtlasMetricCard from "./AtlasMetricCard";
 import AtlasStatusBadge from "./AtlasStatusBadge";
 
 import type { EmpireForecast } from "@/app/intelligence";
@@ -74,14 +75,14 @@ export default function EmpireForecastCard({
         </header>
 
         <div className="mt-7 grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
-          <ForecastStat
+          <AtlasMetricCard
             label="Empire Score"
             value={`${forecast.currentScore} → ${forecast.projectedScore}`}
             detail="Projected growth"
             tone="violet"
           />
 
-          <ForecastStat
+          <AtlasMetricCard
             label="Cash Forecast"
             value={`${formatCurrency(
               forecast.currentCash
@@ -92,21 +93,21 @@ export default function EmpireForecastCard({
             tone="cyan"
           />
 
-          <ForecastStat
+          <AtlasMetricCard
             label="Income Gain"
             value={formatCurrency(forecast.incomeGain)}
             detail="Expected increase"
             tone="emerald"
           />
 
-          <ForecastStat
+          <AtlasMetricCard
             label="Unlocks"
             value={`+${forecast.unlocks}`}
             detail="New opportunities"
             tone="violet"
           />
 
-          <ForecastStat
+          <AtlasMetricCard
             label="Risk"
             value={forecast.risk}
             detail="Exposure"
@@ -137,46 +138,5 @@ export default function EmpireForecastCard({
         </div>
       </div>
     </section>
-  );
-}
-
-function ForecastStat({
-  label,
-  value,
-  detail,
-  tone,
-}: {
-  label: string;
-  value: string;
-  detail: string;
-  tone: ForecastTone;
-}) {
-  const toneClasses: Record<ForecastTone, string> = {
-    emerald:
-      "border-emerald-400/20 bg-emerald-400/[0.04] text-emerald-300",
-    cyan:
-      "border-cyan-400/20 bg-cyan-400/[0.04] text-cyan-300",
-    violet:
-      "border-violet-400/20 bg-violet-400/[0.04] text-violet-300",
-    amber:
-      "border-amber-400/20 bg-amber-400/[0.04] text-amber-300",
-  };
-
-  return (
-    <div
-      className={`min-w-0 rounded-2xl border p-4 transition duration-200 hover:-translate-y-0.5 ${toneClasses[tone]}`}
-    >
-      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">
-        {label}
-      </p>
-
-      <p className="mt-2 break-words text-xl font-black text-white">
-        {value}
-      </p>
-
-      <p className="mt-1 text-xs font-bold">
-        {detail}
-      </p>
-    </div>
   );
 }
