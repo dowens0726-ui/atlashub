@@ -1,14 +1,25 @@
 import { notFound } from "next/navigation";
-import { missions } from "@/app/data/missions";
 
 import {
-  MissionStats,
+  AtlasRelationshipPanel,
+} from "@/app/components/intelligence";
+
+import {
   AtlasTips,
+  MissionStats,
   MissionUnlocks,
-  RelatedMissions,
   RecommendedVehicle,
   RecommendedWeapon,
+  RelatedMissions,
 } from "@/app/components/mission";
+
+import {
+  missions,
+} from "@/app/data/missions";
+
+import {
+  getRelationships,
+} from "@/app/intelligence";
 
 type MissionPageProps = {
   params: Promise<{
@@ -16,14 +27,30 @@ type MissionPageProps = {
   }>;
 };
 
-export default async function MissionPage({ params }: MissionPageProps) {
-  const { slug } = await params;
+export default async function MissionPage({
+  params,
+}: MissionPageProps) {
+  const {
+    slug,
+  } = await params;
 
-  const mission = missions.find((mission) => mission.slug === slug);
+  const mission =
+    missions.find(
+      (
+        currentMission
+      ) =>
+        currentMission.slug === slug
+    );
 
   if (!mission) {
     notFound();
   }
+
+  const relationships =
+    getRelationships({
+      type: "mission",
+      slug: mission.slug,
+    });
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-10">
@@ -40,19 +67,54 @@ export default async function MissionPage({ params }: MissionPageProps) {
       </p>
 
       <div className="mt-8">
-        <MissionStats mission={mission} />
+        <MissionStats
+          mission={
+            mission
+          }
+        />
       </div>
 
-      <AtlasTips tips={mission.atlasTips} />
+      <AtlasTips
+        tips={
+          mission.atlasTips
+        }
+      />
 
-      <MissionUnlocks unlocks={mission.unlocks} />
+      <MissionUnlocks
+        unlocks={
+          mission.unlocks
+        }
+      />
 
-      <div className="grid gap-6 md:grid-cols-2">
-        <RecommendedVehicle vehicleSlug={mission.recommendedVehicle} />
-        <RecommendedWeapon weaponSlug={mission.recommendedWeapon} />
+      {relationships && (
+        <div className="mt-8">
+          <AtlasRelationshipPanel
+            relationships={
+              relationships
+            }
+          />
+        </div>
+      )}
+
+      <div className="mt-8 grid gap-6 md:grid-cols-2">
+        <RecommendedVehicle
+          vehicleSlug={
+            mission.recommendedVehicle
+          }
+        />
+
+        <RecommendedWeapon
+          weaponSlug={
+            mission.recommendedWeapon
+          }
+        />
       </div>
 
-      <RelatedMissions relatedMissions={mission.relatedMissions} />
+      <RelatedMissions
+        relatedMissions={
+          mission.relatedMissions
+        }
+      />
     </main>
   );
 }

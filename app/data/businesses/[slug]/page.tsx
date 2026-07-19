@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import {
+  AtlasRelationshipPanel,
+} from "@/app/components/intelligence";
+
 import AtlasMatchCard from "@/app/components/intelligence/AtlasMatchCard";
 
 import {
@@ -17,6 +21,7 @@ import Container from "@/app/components/ui/Container";
 
 import {
   getBusinessMatch,
+  getRelationships,
 } from "@/app/intelligence";
 
 import {
@@ -28,27 +33,32 @@ import {
   getRelatedVehicles,
 } from "@/app/services";
 
-
 type Props = {
-  params: Promise<{ slug: string }>;
+  params: Promise<{
+    slug: string;
+  }>;
 };
-
 
 export default async function BusinessPage({
   params,
 }: Props) {
-  const { slug } = await params;
+  const {
+    slug,
+  } = await params;
 
-  const business = getBusiness(slug);
+  const business =
+    getBusiness(
+      slug
+    );
 
   if (!business) {
     notFound();
   }
 
-
   const score =
-    getBusinessScore(business);
-
+    getBusinessScore(
+      business
+    );
 
   const atlasMatch =
     getBusinessMatch(
@@ -56,21 +66,30 @@ export default async function BusinessPage({
       business
     );
 
+  const relationships =
+    getRelationships({
+      type: "business",
+      slug: business.slug,
+    });
 
   const relatedVehicles =
-    getRelatedVehicles(business);
+    getRelatedVehicles(
+      business
+    );
 
   const relatedMissions =
-    getRelatedMissions(business);
+    getRelatedMissions(
+      business
+    );
 
   const relatedBusinesses =
-    getRelatedBusinesses(business);
-
+    getRelatedBusinesses(
+      business
+    );
 
   return (
     <main className="min-h-screen bg-zinc-950 text-white">
       <Container className="py-16">
-
         <Link
           href="/data/businesses"
           className="text-emerald-400 transition hover:text-emerald-300"
@@ -78,31 +97,53 @@ export default async function BusinessPage({
           ← Back to Businesses
         </Link>
 
-
         <div className="mt-8">
-          <BusinessHero business={business} />
+          <BusinessHero
+            business={
+              business
+            }
+          />
         </div>
 
-
         <div className="mt-8">
-          <BusinessStats business={business} />
+          <BusinessStats
+            business={
+              business
+            }
+          />
         </div>
 
-
         <div className="mt-8">
-          <AtlasScoreCard score={score} />
+          <AtlasScoreCard
+            score={
+              score
+            }
+          />
         </div>
-
 
         <AtlasMatchCard
-          match={atlasMatch}
+          match={
+            atlasMatch
+          }
         />
 
+        {relationships && (
+          <div className="mt-8">
+            <AtlasRelationshipPanel
+              relationships={
+                relationships
+              }
+            />
+          </div>
+        )}
 
         <div className="mt-8">
-          <BusinessTips business={business} />
+          <BusinessTips
+            business={
+              business
+            }
+          />
         </div>
-
 
         {relatedVehicles.length > 0 && (
           <section className="mt-12">
@@ -111,16 +152,23 @@ export default async function BusinessPage({
             </h2>
 
             <div className="mt-6 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-              {relatedVehicles.map((vehicle) => (
-                <VehicleCard
-                  key={vehicle.slug}
-                  vehicle={vehicle}
-                />
-              ))}
+              {relatedVehicles.map(
+                (
+                  vehicle
+                ) => (
+                  <VehicleCard
+                    key={
+                      vehicle.slug
+                    }
+                    vehicle={
+                      vehicle
+                    }
+                  />
+                )
+              )}
             </div>
           </section>
         )}
-
 
         {relatedMissions.length > 0 && (
           <section className="mt-12">
@@ -129,16 +177,23 @@ export default async function BusinessPage({
             </h2>
 
             <div className="mt-6 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-              {relatedMissions.map((mission) => (
-                <MissionCard
-                  key={mission.slug}
-                  mission={mission}
-                />
-              ))}
+              {relatedMissions.map(
+                (
+                  mission
+                ) => (
+                  <MissionCard
+                    key={
+                      mission.slug
+                    }
+                    mission={
+                      mission
+                    }
+                  />
+                )
+              )}
             </div>
           </section>
         )}
-
 
         {relatedBusinesses.length > 0 && (
           <section className="mt-12">
@@ -147,16 +202,23 @@ export default async function BusinessPage({
             </h2>
 
             <div className="mt-6 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-              {relatedBusinesses.map((relatedBusiness) => (
-                <BusinessCard
-                  key={relatedBusiness.slug}
-                  business={relatedBusiness}
-                />
-              ))}
+              {relatedBusinesses.map(
+                (
+                  relatedBusiness
+                ) => (
+                  <BusinessCard
+                    key={
+                      relatedBusiness.slug
+                    }
+                    business={
+                      relatedBusiness
+                    }
+                  />
+                )
+              )}
             </div>
           </section>
         )}
-
       </Container>
     </main>
   );

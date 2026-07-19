@@ -138,3 +138,11 @@ export {
 export { 
   default as AtlasRoadmapCard 
 } from "./AtlasRoadmapCard";
+
+export { 
+  default as AtlasRelationshipPanel 
+} from "./AtlasRelationshipPanel";
+
+export { 
+  default as AtlasReasoningPanel 
+} from "./AtlasReasoningPanel";

@@ -46,11 +46,7 @@ export default function Footer() {
 
         <div className="flex flex-col gap-2 border-t border-zinc-800 pt-6 text-sm text-zinc-500 md:flex-row md:items-center md:justify-between">
           <p>
-            © {new Date().getFullYear()} Atlas. Built by{" "}
-            <span className="font-semibold text-zinc-300">
-              Daniel Owens
-            </span>
-            .
+            © {new Date().getFullYear()} Atlas. Built for players.
           </p>
 
           <p>Version 0.50 • Discovery Update</p>

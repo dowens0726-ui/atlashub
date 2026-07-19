@@ -10,6 +10,7 @@ export * from "./session-reasoning.engine";
 // Recommendation System
 export * from "./recommendation.engine";
 export * from "./recommendation-weighting.engine";
+export * from "./relationship.engine";
 export * from "./advisor.service";
 export * from "./identity-advisor.engine";
 export * from "./personal-picks.engine";
