@@ -55,6 +55,10 @@ export {
 } from "./AtlasMemoryCard";
 
 export {
+  default as AtlasSection,
+} from "./AtlasSection";
+
+export {
   default as AtlasMemoryInsightCard,
 } from "./AtlasMemoryInsightCard";
 
