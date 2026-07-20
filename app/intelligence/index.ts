@@ -105,3 +105,5 @@ export * from "./atlas-intent.engine";
 // Atlas Route Intelligence
 export * from "./atlas-route-context.types";
 export * from "./atlas-route-context.engine";
+// Atlas Copilot Experience
+export * from "./atlas-copilot-actions.engine";
