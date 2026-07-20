@@ -1,3 +1,14 @@
+export type {
+  AtlasCapability,
+  AtlasCapabilityCategory,
+  AtlasCapabilityContext,
+  AtlasCapabilityDefinition,
+  AtlasCapabilityEvaluation,
+  AtlasCapabilityOverride,
+  AtlasCapabilityStatus,
+  AtlasPlan,
+} from "./atlas-capability";
+
 export type { BaseEntity } from "./content";
 
 export type {

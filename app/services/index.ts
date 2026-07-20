@@ -1,4 +1,5 @@
 export * from "./advisor.service";
+export * from "./atlas-capability.service";
 export * from "./atlas-decision.service";
 export * from "./atlas-intelligence.service";
 export * from "./atlas-score.service";
