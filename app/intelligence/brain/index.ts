@@ -47,3 +47,13 @@ export type {
   AtlasMissionPipelineInput,
   AtlasMissionPipelineModel,
 } from "./mission/mission.pipeline";
+
+export {
+  buildAtlasMemoryPipeline,
+} from "./memory/memory.pipeline";
+
+export type {
+  AtlasMemoryPipelineInput,
+  AtlasMemoryPipelineModel,
+} from "./memory/memory.pipeline";
+

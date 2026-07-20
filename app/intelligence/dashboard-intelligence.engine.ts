@@ -10,6 +10,7 @@ import {
   buildAtlasProjectionPipeline,
   buildAtlasRecommendationPipeline,
   buildAtlasStrategyPipeline,
+  buildAtlasMemoryPipeline,
 } from "./brain";
 import {
   getAllMissions,
@@ -46,20 +47,6 @@ import {
 import {
   buildIntelligenceFeed,
 } from "./intelligence-feed.engine";
-
-import {
-  buildAtlasMemory,
-} from "./memory.engine";
-
-import {
-  buildMemoryHistory,
-} from "./memory-history.engine";
-
-import {
-  buildMemoryInsight,
-} from "./memory-insight.engine";
-
-
 
 
 
@@ -238,18 +225,6 @@ export function buildAtlasBrain({
       empireForecast
     );
 
-  const atlasMemory =
-    buildAtlasMemory(
-      profile,
-      nextAction,
-      empireForecast
-    );
-
-  const memoryHistory =
-    buildMemoryHistory(
-      atlasMemory
-    );
-
   const lifecycle =
     buildAtlasLifecyclePipeline({
       history,
@@ -279,11 +254,27 @@ export function buildAtlasBrain({
   } = lifecycle;
 
 
-  const memoryInsight =
-    buildMemoryInsight(
-      atlasMemory,
-      learningProfile
-    );
+  const memoryPipeline =
+    buildAtlasMemoryPipeline({
+      profile,
+
+      nextAction,
+
+      forecast:
+        empireForecast,
+
+      learning:
+        learningProfile,
+    });
+
+
+  const {
+    atlasMemory,
+
+    memoryHistory,
+
+    memoryInsight,
+  } = memoryPipeline;
 
 
   const recommendationPipeline =
