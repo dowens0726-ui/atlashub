@@ -5,6 +5,13 @@ import AtlasMetric from "@/app/components/design-system/AtlasMetric";
 import AtlasSurface from "@/app/components/design-system/AtlasSurface";
 
 import {
+  AtlasCountUp,
+  AtlasProgress,
+  AtlasPulse,
+  AtlasReveal,
+} from "@/app/components/motion";
+
+import {
   buildAtlasBriefing,
   buildAtlasGreeting,
   buildAtlasImpact,
@@ -328,12 +335,20 @@ export default function CommandCenterHero({
                       pipelineStatusClasses,
                     ].join(" ")}
                   >
-                    <span
-                      aria-hidden="true"
-                      className={[
-                        "h-1.5 w-1.5 rounded-full",
-                        pipelineIndicatorClasses,
-                      ].join(" ")}
+                    <AtlasPulse
+                      active={
+                        brainPipeline.status === "loading" ||
+                        brainPipeline.status === "success"
+                      }
+                      tone={
+                        brainPipeline.status === "success"
+                          ? "emerald"
+                          : brainPipeline.status === "warning"
+                            ? "amber"
+                            : brainPipeline.status === "failed"
+                              ? "red"
+                              : "cyan"
+                      }
                     />
 
                     {pipelineStatusLabel}
@@ -480,7 +495,9 @@ export default function CommandCenterHero({
 
                   <div className="mt-5 flex items-end gap-2">
                     <span className="text-6xl font-black tracking-[-0.06em] text-white">
-                      {normalizedConfidence}
+                      <AtlasCountUp
+                        value={normalizedConfidence}
+                      />
                     </span>
 
                     <span className="pb-2 text-xl font-black text-emerald-300">
@@ -488,14 +505,11 @@ export default function CommandCenterHero({
                     </span>
                   </div>
 
-                  <div className="mt-5 h-2 overflow-hidden rounded-full bg-white/[0.06]">
-                    <div
-                      className="h-full rounded-full bg-gradient-to-r from-cyan-300 to-emerald-300 transition-[width] duration-700"
-                      style={{
-                        width: `${normalizedConfidence}%`,
-                      }}
-                    />
-                  </div>
+                  <AtlasProgress
+                    value={normalizedConfidence}
+                    tone="emerald"
+                    animated
+                  />
 
                   <div className="mt-3 flex items-center justify-between text-xs">
                     <span className="text-zinc-500">
