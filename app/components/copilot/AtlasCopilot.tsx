@@ -4,6 +4,8 @@ import AtlasSurface from "@/app/components/design-system/AtlasSurface";
 
 import type {
   AtlasCopilotAction,
+  AtlasCopilotSession,
+  AtlasRecommendationWeight,
 } from "@/app/intelligence";
 
 import AtlasBriefingHero, {
@@ -17,6 +19,10 @@ import AtlasCopilotMessage, {
 import AtlasCopilotPrompt from "./AtlasCopilotPrompt";
 
 import AtlasCopilotQuickActions from "./AtlasCopilotQuickActions";
+
+import AtlasCopilotTimeline from "./AtlasCopilotTimeline";
+
+import RecommendationWeightCard from "./RecommendationWeightCard";
 
 
 export type AtlasCopilotStatusTone =
@@ -40,11 +46,20 @@ type AtlasCopilotProps = {
   messages:
     AtlasCopilotMessageModel[];
 
+  session:
+    AtlasCopilotSession | null;
+
+  sessionReady:
+    boolean;
+
   status:
     AtlasCopilotStatusModel;
 
-    briefing:
+  briefing:
     AtlasBriefingHeroProps;
+
+  recommendationWeight:
+    AtlasRecommendationWeight;
 
   actions:
     AtlasCopilotAction[];
@@ -59,15 +74,19 @@ type AtlasCopilotProps = {
     ) => void;
 };
 
+
 export default function AtlasCopilot({
   messages,
+  session,
+  sessionReady,
   status,
   briefing,
+  recommendationWeight,
   actions,
   loading,
   onSubmit,
 }: AtlasCopilotProps) {
-    function handleQuickAction(
+  function handleQuickAction(
     action:
       AtlasCopilotAction
   ): void {
@@ -83,12 +102,28 @@ export default function AtlasCopilot({
         {...briefing}
       />
 
+      <RecommendationWeightCard
+        weight={
+          recommendationWeight
+        }
+      />
+
+      <AtlasCopilotTimeline
+        session={
+          session
+        }
+
+        isReady={
+          sessionReady
+        }
+      />
+
       <AtlasSurface
         tone="subtle"
         className="p-5 sm:p-6"
       >
         <AtlasCopilotQuickActions
-                    actions={
+          actions={
             actions
           }
 

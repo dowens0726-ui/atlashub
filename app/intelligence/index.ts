@@ -10,6 +10,7 @@ export * from "./atlas-session-persistence.engine";
 export {
   buildAtlasIntelligenceDiagnostics,
 } from "./atlas-intelligence-diagnostics.engine";
+export * from "./copilot-session.engine";
 
 export type {
   AtlasIntelligenceDiagnostics,

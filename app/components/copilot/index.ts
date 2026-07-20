@@ -41,3 +41,5 @@ export {
 export type {
   AtlasCopilotQuickAction,
 } from "./AtlasCopilotQuickActions";
+
+export { default as RecommendationWeightCard } from "./RecommendationWeightCard";

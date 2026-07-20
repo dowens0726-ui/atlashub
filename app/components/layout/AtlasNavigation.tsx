@@ -25,7 +25,7 @@ const navigationSections: AtlasNavigationSection[] = [
     items: [
       {
         label: "Dashboard",
-        href: "/",
+        href: "/dashboard",
         icon: "⌂",
         description: "Empire command center",
       },
@@ -101,9 +101,9 @@ function isNavigationItemActive(
   pathname: string,
   href: string
 ): boolean {
-  if (href === "/") {
-    return pathname === "/";
-  }
+  if (href === "/dashboard") {
+  return pathname === "/dashboard";
+}
 
   return pathname === href || pathname.startsWith(`${href}/`);
 }

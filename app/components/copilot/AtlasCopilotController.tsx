@@ -23,6 +23,10 @@ import {
 } from "@/app/hooks/useDashboard";
 
 import {
+  useAtlasCopilotSession,
+} from "@/app/hooks/useAtlasCopilotSession";
+
+import {
   buildAtlasCopilotActions,
   buildAtlasIntent,
   buildAtlasRouteContext,
@@ -384,6 +388,16 @@ export default function AtlasCopilotController() {
   } =
     useAtlasIntelligence();
 
+      const {
+  session,
+  isReady:
+    sessionReady,
+  addPlayerEntry,
+  addAtlasEntry,
+  addSystemEntry,
+} =
+  useAtlasCopilotSession();
+
   const [
     messages,
     setMessages,
@@ -705,7 +719,7 @@ export default function AtlasCopilotController() {
           brainPipeline
         );
 
-      setMessages(
+            setMessages(
         (
           currentMessages
         ) => [
@@ -714,15 +728,69 @@ export default function AtlasCopilotController() {
         ]
       );
 
+      const responseIntent =
+        pendingResponse.intent
+          .classification
+          .primary
+          .intent;
+
+      if (
+        responseMessage.role ===
+        "atlas"
+      ) {
+        const decision =
+          brainPipeline.decision;
+
+        const recommendation =
+          decision
+            ?.primaryRecommendation;
+
+        addAtlasEntry({
+          id:
+            responseMessage.id,
+
+          content:
+            responseMessage.content,
+
+          intent:
+            responseIntent,
+
+          recommendationTitle:
+            recommendation
+              ?.title ??
+            decision
+              ?.headline,
+
+          recommendationConfidence:
+            recommendation
+              ?.confidence ??
+            decision
+              ?.confidence,
+        });
+      } else {
+        addSystemEntry({
+          id:
+            responseMessage.id,
+
+          content:
+            responseMessage.content,
+
+          intent:
+            responseIntent,
+        });
+      }
+
       setPendingResponse(
         null
       );
     },
-    [
+        [
       pendingResponse,
       brainPipeline.loading,
       brainPipeline.error,
       brainPipeline.decision,
+      addAtlasEntry,
+      addSystemEntry,
     ]
   );
 
@@ -763,7 +831,7 @@ export default function AtlasCopilotController() {
             "Atlas is already processing a strategic request. Wait for the current analysis to finish before submitting another command.",
         };
 
-      setMessages(
+            setMessages(
         (
           currentMessages
         ) => [
@@ -771,6 +839,14 @@ export default function AtlasCopilotController() {
           busyMessage,
         ]
       );
+
+      addSystemEntry({
+        id:
+          busyMessage.id,
+
+        content:
+          busyMessage.content,
+      });
 
       return;
     }
@@ -804,7 +880,7 @@ export default function AtlasCopilotController() {
           messageIntent,
       };
 
-    setMessages(
+        setMessages(
       (
         currentMessages
       ) => [
@@ -812,6 +888,19 @@ export default function AtlasCopilotController() {
         playerMessage,
       ]
     );
+
+    addPlayerEntry({
+      id:
+        playerMessage.id,
+
+      content:
+        playerMessage.content,
+
+      intent:
+        intent.classification
+          .primary
+          .intent,
+    });
 
     setActiveIntent(
       intent
@@ -833,15 +922,23 @@ export default function AtlasCopilotController() {
 
   return (
     <AtlasCopilot
-      messages={
-        messages
-      }
+  messages={
+    messages
+  }
 
-      status={
-        statusModel
-      }
+  session={
+    session
+  }
 
-      briefing={{
+  sessionReady={
+    sessionReady
+  }
+
+  status={
+    statusModel
+  }
+
+            briefing={{
         routeContext,
 
         empireScore:
@@ -861,6 +958,12 @@ export default function AtlasCopilotController() {
         loading:
           brainPipeline.loading,
       }}
+
+      recommendationWeight={
+        dashboardIntelligence
+          .brain
+          .recommendationWeighting
+      }
 
       actions={
         quickActions

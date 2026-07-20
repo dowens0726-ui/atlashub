@@ -7,7 +7,7 @@ export default function AtlasSidebar() {
     <aside className="flex h-screen w-72 shrink-0 flex-col border-r border-white/10 bg-zinc-950/95 backdrop-blur-xl">
       <div className="border-b border-white/10 px-6 py-7">
         <Link
-          href="/"
+          href="/dashboard"
           aria-label="Atlas dashboard"
           className={[
             "group block rounded-2xl",
@@ -71,10 +71,26 @@ export default function AtlasSidebar() {
             </p>
 
             <p className="mt-1 text-xs leading-5 text-zinc-500">
-              Intelligence engines are synchronized and monitoring your next move.
+              Intelligence engines are synchronized and monitoring your next
+              move.
             </p>
           </div>
         </div>
+
+        <Link
+          href="/"
+          aria-label="Return to the AtlasHub public website"
+          className={[
+            "mt-3 flex items-center justify-center gap-2 rounded-2xl border border-transparent px-4 py-3",
+            "text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500",
+            "transition-all duration-200",
+            "hover:border-white/10 hover:bg-white/[0.04] hover:text-zinc-200",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/70",
+          ].join(" ")}
+        >
+          <span aria-hidden="true">←</span>
+          <span>Back to AtlasHub</span>
+        </Link>
       </div>
     </aside>
   );
