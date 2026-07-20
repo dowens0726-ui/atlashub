@@ -6,6 +6,7 @@
 
 import {
   buildAtlasLifecyclePipeline,
+  buildAtlasRecommendationPipeline,
 } from "./brain";
 import {
   getAllMissions,
@@ -100,13 +101,7 @@ import {
   buildPlayerIdentity,
 } from "./player-identity.engine";
 
-import {
-  buildRecommendationPrediction,
-} from "./prediction.engine";
 
-import {
-  buildRecommendationWeight,
-} from "./recommendation-weighting.engine";
 
 import {
   buildAtlasReasoning,
@@ -316,32 +311,10 @@ export function buildAtlasBrain({
     );
 
 
-  const recommendationPrediction =
-    buildRecommendationPrediction(
-      atlasRecommendation,
-      learningProfile
-    );
-
-
-  const predictedRecommendation = {
-    ...atlasRecommendation,
-
-    confidence:
-      Math.min(
-        100,
-        atlasRecommendation.confidence +
-          recommendationPrediction.confidenceBoost
-      ),
-
-    prediction:
-      recommendationPrediction,
-  };
-
-
-  const recommendationWeighting =
-    buildRecommendationWeight({
+  const recommendationPipeline =
+    buildAtlasRecommendationPipeline({
       recommendation:
-        predictedRecommendation,
+        atlasRecommendation,
 
       profile,
 
@@ -362,12 +335,13 @@ export function buildAtlasBrain({
     });
 
 
-  const weightedRecommendation = {
-    ...predictedRecommendation,
+  const {
+    recommendationPrediction,
 
-    confidence:
-      recommendationWeighting.confidence,
-  };
+    recommendationWeighting,
+
+    weightedRecommendation,
+  } = recommendationPipeline;
 
 
   const coachBriefing =
