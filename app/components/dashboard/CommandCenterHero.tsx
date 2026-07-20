@@ -5,14 +5,9 @@ import AtlasMetric from "@/app/components/design-system/AtlasMetric";
 import AtlasSurface from "@/app/components/design-system/AtlasSurface";
 
 import {
-  AtlasCountUp,
-  AtlasProgress,
-  AtlasPulse,
-  AtlasReveal,
-} from "@/app/components/motion";
-
-import {
-  buildDashboardPresenter,
+  buildAtlasBriefing,
+  buildAtlasGreeting,
+  buildAtlasImpact,
 } from "@/app/intelligence";
 
 import type { AtlasMetricTone } from "@/app/components/design-system/AtlasMetric";
@@ -196,71 +191,95 @@ export default function CommandCenterHero({
   dashboard,
   brainPipeline,
 }: CommandCenterHeroProps) {
-    const presenter =
-    buildDashboardPresenter({
-      dashboard,
+  const decision = brainPipeline.decision;
+  const primaryRecommendation =
+    brainPipeline.primaryRecommendation;
 
-      pipeline: {
-        status:
-          brainPipeline.status,
+  const fallbackConfidence =
+    dashboard.recommendation?.confidence ?? 90;
 
-        loading:
-          brainPipeline.loading,
+  const recommendationConfidence =
+    decision?.confidence ??
+    primaryRecommendation?.confidence ??
+    fallbackConfidence;
 
-        successful:
-          brainPipeline.successful,
+  const normalizedConfidence =
+    clampPercentage(recommendationConfidence);
 
-        decision:
-          brainPipeline.decision,
+  const greeting = buildAtlasGreeting(dashboard.profile);
 
-        primaryRecommendation:
-          brainPipeline.primaryRecommendation,
+  const impact = buildAtlasImpact(recommendationConfidence);
 
-        error:
-          brainPipeline.error,
-      },
-    });
+  const fallbackBriefing = buildAtlasBriefing(
+    dashboard.profile,
+    impact
+  );
 
-  const {
-    briefing,
-    confidence,
-    empire,
-    greeting,
-    metrics,
-    pipeline,
-    urgency,
-  } = presenter;
+  const briefingTitle =
+    decision?.headline ??
+    primaryRecommendation?.title ??
+    fallbackBriefing.title;
 
-  const empireHealthTone =
-    getEmpireHealthTone(
-      empire.score
-    );
+  const briefingSummary =
+    decision?.summary ??
+    primaryRecommendation?.explanation ??
+    fallbackBriefing.summary;
 
-  const confidenceTone =
-    getConfidenceTone(
-      confidence.value
-    );
+  const immediateNextStep =
+    decision?.immediateNextStep ??
+    primaryRecommendation?.explanation ??
+    fallbackBriefing.objective;
+
+  const longTermDirection =
+    decision?.longTermDirection ??
+    "Continue building momentum while preserving enough capital for the next high-impact opportunity.";
+
+  const decisionRationale =
+    decision?.rationale ??
+    primaryRecommendation?.explanation ??
+    "Atlas is balancing your current resources, empire progression, and highest-value available action.";
+
+  const coachingResponse =
+    decision?.coachingResponse ??
+    "Complete the priority action before redirecting resources. The next measurable gain matters more than adding another competing objective.";
+
+  const shouldActNow =
+    decision?.shouldActNow ?? false;
+
+  const urgencyLabel = getUrgencyLabel(
+    decision?.urgency,
+    shouldActNow
+  );
+
+  const empireHealthTone = getEmpireHealthTone(
+    dashboard.empire.overallScore
+  );
+
+  const confidenceTone = getConfidenceTone(
+    recommendationConfidence
+  );
+
+  const empireStatus = getEmpireStatus(
+    dashboard.empire.overallScore
+  );
+
+  const pipelineStatusLabel =
+    getPipelineStatusLabel(brainPipeline);
 
   const pipelineStatusClasses =
-    getPipelineStatusClasses(
-      brainPipeline
-    );
+    getPipelineStatusClasses(brainPipeline);
 
   const pipelineIndicatorClasses =
-    getPipelineIndicatorClasses(
-      brainPipeline
-    );
+    getPipelineIndicatorClasses(brainPipeline);
 
   const urgencyClasses =
-    getUrgencyClasses(
-      urgency.shouldActNow
-    );
+    getUrgencyClasses(shouldActNow);
 
   return (
     <div className="space-y-6">
       <AtlasHero
         layout="stacked"
-        eyebrow={greeting.eyebrow}
+        eyebrow={`Atlas AI · ${greeting.greeting}, Commander`}
         title="Empire Command Center"
         description={greeting.subtitle}
         actions={
@@ -309,23 +328,15 @@ export default function CommandCenterHero({
                       pipelineStatusClasses,
                     ].join(" ")}
                   >
-                    <AtlasPulse
-                      active={
-                        brainPipeline.status === "loading" ||
-                        brainPipeline.status === "success"
-                      }
-                      tone={
-                        brainPipeline.status === "success"
-                          ? "emerald"
-                          : brainPipeline.status === "warning"
-                            ? "amber"
-                            : brainPipeline.status === "failed"
-                              ? "red"
-                              : "cyan"
-                      }
+                    <span
+                      aria-hidden="true"
+                      className={[
+                        "h-1.5 w-1.5 rounded-full",
+                        pipelineIndicatorClasses,
+                      ].join(" ")}
                     />
 
-                    {pipeline.label}
+                    {pipelineStatusLabel}
                   </div>
 
                   <div
@@ -334,7 +345,7 @@ export default function CommandCenterHero({
                       urgencyClasses,
                     ].join(" ")}
                   >
-                    {urgency.label}
+                    {urgencyLabel}
                   </div>
                 </div>
               </div>
@@ -346,11 +357,11 @@ export default function CommandCenterHero({
                   </p>
 
                   <h2 className="mt-3 max-w-4xl text-3xl font-black tracking-[-0.035em] text-white sm:text-4xl lg:text-5xl">
-                    {briefing.title}
+                    {briefingTitle}
                   </h2>
 
                   <p className="mt-5 max-w-3xl text-sm leading-7 text-zinc-400 sm:text-base">
-                    {briefing.summary}
+                    {briefingSummary}
                   </p>
                 </div>
 
@@ -360,23 +371,23 @@ export default function CommandCenterHero({
                   </p>
 
                   <p className="mt-3 text-3xl font-black tracking-tight text-white">
-                    {empire.status}
+                    {empireStatus.label}
                   </p>
 
                   <p className="mt-2 text-sm leading-6 text-zinc-500">
-                    {empire.score}/100 health
+                    {dashboard.empire.overallScore}/100 health
                   </p>
                 </div>
               </div>
 
-              {pipeline.error ? (
+              {brainPipeline.error ? (
                 <div className="mt-6 rounded-2xl border border-red-400/15 bg-red-400/[0.05] p-4">
                   <p className="text-xs font-semibold uppercase tracking-[0.2em] text-red-300">
                     Pipeline Notice
                   </p>
 
                   <p className="mt-2 text-sm leading-6 text-zinc-300">
-                    {pipeline.error}
+                    {brainPipeline.error}
                   </p>
                 </div>
               ) : null}
@@ -397,7 +408,7 @@ export default function CommandCenterHero({
                   </div>
 
                   <p className="mt-4 text-base font-bold leading-7 text-white">
-                    {briefing.immediateNextStep}
+                    {immediateNextStep}
                   </p>
 
                   <div className="mt-6 flex items-center justify-between gap-4 border-t border-white/[0.06] pt-4">
@@ -406,7 +417,7 @@ export default function CommandCenterHero({
                     </span>
 
                     <span className="text-sm font-black text-cyan-200">
-                      {briefing.recommendedSessionMinutes} min
+                      {fallbackBriefing.recommendedSessionMinutes} min
                     </span>
                   </div>
                 </AtlasSurface>
@@ -426,7 +437,7 @@ export default function CommandCenterHero({
                   </div>
 
                   <p className="mt-4 text-base font-bold leading-7 text-white">
-                    {briefing.longTermDirection}
+                    {longTermDirection}
                   </p>
 
                   <div className="mt-6 flex items-center justify-between gap-4 border-t border-white/[0.06] pt-4">
@@ -435,7 +446,7 @@ export default function CommandCenterHero({
                     </span>
 
                     <span className="text-sm font-black text-violet-200">
-                      {urgency.shouldActNow? "Priority" : "Planned"}
+                      {shouldActNow ? "Priority" : "Planned"}
                     </span>
                   </div>
                 </AtlasSurface>
@@ -454,7 +465,7 @@ export default function CommandCenterHero({
                   </div>
 
                   <p className="text-sm font-medium leading-7 text-zinc-300">
-                    {briefing.rationale}
+                    {decisionRationale}
                   </p>
                 </div>
               </div>
@@ -469,9 +480,7 @@ export default function CommandCenterHero({
 
                   <div className="mt-5 flex items-end gap-2">
                     <span className="text-6xl font-black tracking-[-0.06em] text-white">
-                      <AtlasCountUp
-                        value={confidence.value}
-                      />
+                      {normalizedConfidence}
                     </span>
 
                     <span className="pb-2 text-xl font-black text-emerald-300">
@@ -479,11 +488,14 @@ export default function CommandCenterHero({
                     </span>
                   </div>
 
-                  <AtlasProgress
-                    value={confidence.value}
-                    tone="emerald"
-                    animated
-                  />
+                  <div className="mt-5 h-2 overflow-hidden rounded-full bg-white/[0.06]">
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-cyan-300 to-emerald-300 transition-[width] duration-700"
+                      style={{
+                        width: `${normalizedConfidence}%`,
+                      }}
+                    />
+                  </div>
 
                   <div className="mt-3 flex items-center justify-between text-xs">
                     <span className="text-zinc-500">
@@ -491,7 +503,11 @@ export default function CommandCenterHero({
                     </span>
 
                     <span className="font-bold text-emerald-200">
-                      {confidence.level}
+                      {normalizedConfidence >= 85
+                        ? "High"
+                        : normalizedConfidence >= 65
+                          ? "Moderate"
+                          : "Review"}
                     </span>
                   </div>
                 </div>
@@ -504,7 +520,7 @@ export default function CommandCenterHero({
                   </p>
 
                   <p className="mt-3 text-sm font-semibold leading-7 text-zinc-200">
-                    {briefing.rationale}
+                    {coachingResponse}
                   </p>
                 </div>
 
@@ -515,7 +531,11 @@ export default function CommandCenterHero({
                     </p>
 
                     <p className="mt-2 text-sm font-bold text-white">
-                      {pipeline.operationalState}
+                      {brainPipeline.successful
+                        ? "Operational"
+                        : brainPipeline.loading
+                          ? "Processing"
+                          : "Standby"}
                     </p>
                   </div>
 
@@ -527,12 +547,12 @@ export default function CommandCenterHero({
                     <p
                       className={[
                         "mt-2 text-sm font-bold",
-                        urgency.shouldActNow
+                        shouldActNow
                           ? "text-amber-300"
                           : "text-emerald-300",
                       ].join(" ")}
                     >
-                      {urgency.shouldActNow ? "Priority" : "Planned"}
+                      {shouldActNow ? "Priority" : "Planned"}
                     </p>
                   </div>
                 </div>
@@ -546,47 +566,43 @@ export default function CommandCenterHero({
             <span className="font-semibold text-zinc-200">
               Current operating condition:
             </span>{" "}
-            {empire.summary}
+            {empireStatus.summary}
           </p>
         </div>
       </AtlasHero>
 
-            <AtlasGrid columns={4}>
+      <AtlasGrid columns={4}>
         <AtlasMetric
-          label={metrics.empireHealth.label}
-          value={metrics.empireHealth.value}
-          description={
-            metrics.empireHealth.description
-          }
+          label="Empire Health"
+          value={dashboard.empire.overallScore}
+          description="Overall strategic strength"
           tone={empireHealthTone}
-          trend={metrics.empireHealth.trend}
+          trend={`${dashboard.empire.overallGrade} grade`}
         />
 
         <AtlasMetric
-          label={metrics.atlasConfidence.label}
-          value={metrics.atlasConfidence.value}
-          description={
-            metrics.atlasConfidence.description
-          }
+          label="Atlas Confidence"
+          value={`${normalizedConfidence}%`}
+          description="Recommendation reliability"
           tone={confidenceTone}
-          trend={metrics.atlasConfidence.trend}
+          trend={
+            normalizedConfidence >= 85
+              ? "High confidence"
+              : "Review signals"
+          }
         />
 
         <AtlasMetric
-          label={metrics.currentStage.label}
-          value={metrics.currentStage.value}
-          description={
-            metrics.currentStage.description
-          }
+          label="Current Stage"
+          value={dashboard.summary.stage}
+          description="Active empire phase"
           tone="accent"
         />
 
         <AtlasMetric
-          label={metrics.availableCash.label}
-          value={metrics.availableCash.value}
-          description={
-            metrics.availableCash.description
-          }
+          label="Available Cash"
+          value={`$${dashboard.summary.cash.toLocaleString()}`}
+          description="Capital ready for deployment"
           tone="default"
         />
       </AtlasGrid>
