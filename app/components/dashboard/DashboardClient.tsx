@@ -34,6 +34,10 @@ import {
 } from "@/app/components/intelligence";
 
 import {
+  useAtlasBrainPipeline,
+} from "@/app/hooks/useAtlasBrainPipeline";
+
+import {
   useAtlasIntelligence,
 } from "@/app/hooks/useAtlasIntelligence";
 
@@ -62,6 +66,7 @@ export default function DashboardClient() {
     actions,
     outcomes,
     validations,
+    hydrated,
   } =
     useAtlasIntelligence();
 
@@ -112,6 +117,24 @@ export default function DashboardClient() {
 
   const intelligence =
     dashboardIntelligence.brain;
+
+
+  const brainPipeline =
+    useAtlasBrainPipeline({
+      brain:
+        intelligence,
+
+      profile:
+        dashboard.profile,
+
+      empire:
+        dashboard.empire,
+
+      hydrated,
+
+      source:
+        "dashboard",
+    });
 
 
   const copilot =
