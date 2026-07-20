@@ -102,3 +102,6 @@ export * from "./atlas-intent.types";
 export * from "./atlas-intent.matcher";
 export * from "./atlas-intent.router";
 export * from "./atlas-intent.engine";
+// Atlas Route Intelligence
+export * from "./atlas-route-context.types";
+export * from "./atlas-route-context.engine";
