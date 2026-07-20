@@ -19,4 +19,4 @@ export { default as CommandCenterHero } from "./CommandCenterHero";
 export { default as LiveEmpireCard } from "./LiveEmpireCard";
 export { default as AtlasCommandCenter } from "./AtlasCommandCenter";
 export { default as AtlasCommandSection } from "./AtlasCommandSection";
-export { default as AtlasCommandRail } from "./AtlasCommandRail";
+export { default as AtlasCommandRail } from "./AtlasCommandRail";export { default as CommandCenterOverview } from "./CommandCenterOverview";

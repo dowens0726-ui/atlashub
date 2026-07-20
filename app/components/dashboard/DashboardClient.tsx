@@ -18,11 +18,9 @@ import {
 import {
   CommandCenterHero,
   CommandCenterLayout,
+  CommandCenterOverview,
   DashboardObjectives,
-  DashboardSummary,
   EmpireInsights,
-  EmpireScoreCard,
-  LiveEmpireCard,
 } from "@/app/components/dashboard";
 
 import {
@@ -212,13 +210,13 @@ export default function DashboardClient() {
       <CommandCenterLayout
         hero={
           <CommandCenterHero
-  dashboard={
-    dashboard
-  }
-  brainPipeline={
-    brainPipeline
-  }
-/>
+            dashboard={
+              dashboard
+            }
+            brainPipeline={
+              brainPipeline
+            }
+          />
         }
 
         changes={
@@ -254,25 +252,11 @@ export default function DashboardClient() {
         }
 
         overview={
-          <div className="space-y-8">
-            <LiveEmpireCard
-              profile={
-                dashboard.profile
-              }
-            />
-
-            <EmpireScoreCard
-              empire={
-                dashboard.empire
-              }
-            />
-
-            <DashboardSummary
-              dashboard={
-                dashboard
-              }
-            />
-          </div>
+          <CommandCenterOverview
+            dashboard={
+              dashboard
+            }
+          />
         }
 
         atlas={
