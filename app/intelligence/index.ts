@@ -97,3 +97,8 @@ export * from "./greeting.engine";
 // Vehicle Intelligence
 export * from "./garage-copilot.engine";
 export * from "./vehicle";
+// Atlas Intent Intelligence
+export * from "./atlas-intent.types";
+export * from "./atlas-intent.matcher";
+export * from "./atlas-intent.router";
+export * from "./atlas-intent.engine";
