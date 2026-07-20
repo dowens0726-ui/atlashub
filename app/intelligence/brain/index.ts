@@ -37,3 +37,13 @@ export type {
   AtlasProjectionPipelineInput,
   AtlasProjectionPipelineModel,
 } from "./projection/projection.pipeline";
+
+
+export {
+  buildAtlasMissionPipeline,
+} from "./mission/mission.pipeline";
+
+export type {
+  AtlasMissionPipelineInput,
+  AtlasMissionPipelineModel,
+} from "./mission/mission.pipeline";

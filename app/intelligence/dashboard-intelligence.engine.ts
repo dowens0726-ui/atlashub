@@ -6,6 +6,7 @@
 
 import {
   buildAtlasLifecyclePipeline,
+  buildAtlasMissionPipeline,
   buildAtlasProjectionPipeline,
   buildAtlasRecommendationPipeline,
   buildAtlasStrategyPipeline,
@@ -58,25 +59,10 @@ import {
   buildMemoryInsight,
 } from "./memory-insight.engine";
 
-import {
-  buildMissionFeedback,
-} from "./mission-feedback.engine";
 
-import {
-  buildMissionLearning,
-} from "./mission-learning.engine";
 
-import {
-  buildMissionLearningUpdate,
-} from "./mission-learning-update.engine";
 
-import {
-  buildMissionOutcome,
-} from "./mission-outcome.engine";
 
-import {
-  buildMissionStrategy,
-} from "./mission-strategy.engine";
 
 import {
   buildNextAction,
@@ -381,60 +367,36 @@ export function buildAtlasBrain({
   } = strategyPipeline;
 
 
-  const missionStrategy =
-    buildMissionStrategy(
-      getAllMissions(),
-      weightedRecommendation,
-      playerIdentity,
-      profile
-    );
+  const missionPipeline =
+    buildAtlasMissionPipeline({
+      missions:
+        getAllMissions(),
 
-  const missionLearning =
-    missionStrategy.mission
-      ? buildMissionLearning(
-          missionStrategy.mission,
-          profile,
-          learningProfile
-        )
-      : null;
+      recommendation:
+        weightedRecommendation,
 
-  const missionFeedback =
-    missionStrategy.mission
-      ? buildMissionFeedback(
-          missionStrategy.mission.id,
-          missionStrategy.mission.title,
-          "recommended",
-          {
-            selectedVehicle:
-              missionStrategy
-                .loadout
-                .vehicle
-                ?.name,
+      identity:
+        playerIdentity,
 
-            selectedWeapon:
-              missionStrategy
-                .loadout
-                .weapon
-                ?.name,
-          }
-        )
-      : null;
+      profile,
 
-  const missionOutcome =
-    missionFeedback
-      ? buildMissionOutcome(
-          missionFeedback
-        )
-      : null;
+      learning:
+        learningProfile,
+    });
 
-  const missionLearningUpdate =
-    missionLearning &&
-    missionOutcome
-      ? buildMissionLearningUpdate(
-          missionOutcome,
-          missionLearning
-        )
-      : null;
+
+  const {
+    missionStrategy,
+
+    missionLearning,
+
+    missionFeedback,
+
+    missionOutcome,
+
+    missionLearningUpdate,
+  } = missionPipeline;
+
 
   const intelligenceFeed =
     buildIntelligenceFeed(
