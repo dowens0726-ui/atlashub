@@ -27,3 +27,13 @@ export type {
   AtlasStrategyPipelineInput,
   AtlasStrategyPipelineModel,
 } from "./strategy/strategy.pipeline";
+
+
+export {
+  buildAtlasProjectionPipeline,
+} from "./projection/projection.pipeline";
+
+export type {
+  AtlasProjectionPipelineInput,
+  AtlasProjectionPipelineModel,
+} from "./projection/projection.pipeline";

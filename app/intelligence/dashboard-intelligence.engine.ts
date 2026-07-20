@@ -6,6 +6,7 @@
 
 import {
   buildAtlasLifecyclePipeline,
+  buildAtlasProjectionPipeline,
   buildAtlasRecommendationPipeline,
   buildAtlasStrategyPipeline,
 } from "./brain";
@@ -27,13 +28,7 @@ import {
   buildDailyObjectives,
 } from "./daily-objectives.engine";
 
-import {
-  buildEmpireSimulation,
-} from "./empire-simulator.engine";
 
-import {
-  buildEmpireForecast,
-} from "./forecast.engine";
 
 import {
   buildAtlasGreeting,
@@ -115,9 +110,6 @@ import {
   buildAtlasStrategyReport,
 } from "./strategy-report.engine";
 
-import {
-  buildEmpireTimeline,
-} from "./timeline.engine";
 
 import {
   analyzeAtlasSituation,
@@ -230,23 +222,28 @@ export function buildAtlasBrain({
       profile
     );
 
-  const empireForecast =
-    buildEmpireForecast(
+  const projectionPipeline =
+    buildAtlasProjectionPipeline({
       profile,
+
       empire,
-      atlasImpact
-    );
 
-  const empireSimulation =
-    buildEmpireSimulation(
-      profile,
-      atlasRecommendation
-    );
+      impact:
+        atlasImpact,
 
-  const empireTimeline =
-    buildEmpireTimeline(
-      empireForecast
-    );
+      recommendation:
+        atlasRecommendation,
+    });
+
+
+  const {
+    empireForecast,
+
+    empireSimulation,
+
+    empireTimeline,
+  } = projectionPipeline;
+
 
   const dailyObjectives =
     buildDailyObjectives(
