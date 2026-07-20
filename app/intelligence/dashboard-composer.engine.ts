@@ -47,6 +47,20 @@ import type {
   Opportunity,
 } from "./opportunity.engine";
 
+export type AtlasDashboardDerivedState = {
+  completedRoadmapSteps: number;
+
+  totalRoadmapSteps: number;
+
+  roadmapProgress: number;
+
+  activeRoadmapStep:
+    | StrategicRoadmap["steps"][number]
+    | undefined;
+
+  roadmapConfidence: number;
+};
+
 export type AtlasDashboardIntelligence = {
   brain: AtlasBrainModel;
 
@@ -59,7 +73,52 @@ export type AtlasDashboardIntelligence = {
   roi: ROIAnalysis;
 
   opportunity: Opportunity;
+
+  derived: AtlasDashboardDerivedState;
 };
+
+function buildDashboardDerivedState(
+  roadmap: StrategicRoadmap
+): AtlasDashboardDerivedState {
+  const completedRoadmapSteps =
+    roadmap.steps.filter(
+      (step) => step.completed
+    ).length;
+
+  const totalRoadmapSteps =
+    roadmap.steps.length;
+
+  const roadmapProgress =
+    totalRoadmapSteps > 0
+      ? Math.round(
+          (
+            completedRoadmapSteps /
+            totalRoadmapSteps
+          ) * 100
+        )
+      : 0;
+
+  const activeRoadmapStep =
+    roadmap.steps.find(
+      (step) => !step.completed
+    ) ??
+    roadmap.steps[
+      roadmap.steps.length - 1
+    ];
+
+  return {
+    completedRoadmapSteps,
+
+    totalRoadmapSteps,
+
+    roadmapProgress,
+
+    activeRoadmapStep,
+
+    roadmapConfidence:
+      roadmap.confidence,
+  };
+}
 
 export function buildDashboardComposer(
   input: AtlasBrainInput
@@ -109,6 +168,11 @@ export function buildDashboardComposer(
       roi,
     });
 
+  const derived =
+    buildDashboardDerivedState(
+      roadmap
+    );
+
   return {
     brain,
 
@@ -121,5 +185,7 @@ export function buildDashboardComposer(
     roi,
 
     opportunity,
+
+    derived,
   };
 }
