@@ -317,10 +317,11 @@ export default function CommandCenterHero({
   return (
     <div className="space-y-6">
       <AtlasHero
+        layout="stacked"
         eyebrow={`Atlas AI · ${greeting.greeting}, Commander`}
         title="Empire Command Center"
-        description={
-          greeting.subtitle
+          description={
+            greeting.subtitle
         }
         actions={
           <>
