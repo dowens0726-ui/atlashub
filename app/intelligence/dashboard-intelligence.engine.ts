@@ -3,24 +3,27 @@
   PlayerProfile,
 } from "@/app/types";
 
+import {
+  getAllMissions,
+} from "@/app/services";
 
 import {
   buildAtlasLifecyclePipeline,
+  buildAtlasMemoryPipeline,
   buildAtlasMissionPipeline,
   buildAtlasProjectionPipeline,
   buildAtlasRecommendationPipeline,
   buildAtlasStrategyPipeline,
-  buildAtlasMemoryPipeline,
 } from "./brain";
-import {
-  getAllMissions,
-} from "@/app/services";
 
 import {
   getAtlasAdvisorRecommendations,
   getPrimaryAtlasRecommendation,
 } from "./advisor.service";
 
+import {
+  buildAtlasSituationBriefing,
+} from "./atlas-situation-briefing.engine";
 
 import {
   buildAtlasCoach,
@@ -29,8 +32,6 @@ import {
 import {
   buildDailyObjectives,
 } from "./daily-objectives.engine";
-
-
 
 import {
   buildAtlasGreeting,
@@ -48,9 +49,6 @@ import {
   buildIntelligenceFeed,
 } from "./intelligence-feed.engine";
 
-
-
-
 import {
   buildNextAction,
 } from "./next-action.engine";
@@ -59,43 +57,33 @@ import {
   getPersonalPicks,
 } from "./personal-picks.engine";
 
-
 import {
   buildPlayerIdentity,
 } from "./player-identity.engine";
-
-
 
 import {
   buildAtlasReasoning,
 } from "./reasoning.engine";
 
 import {
-  buildSessionPlan,
-} from "./session.engine";
-
-import {
   buildSessionReasoning,
 } from "./session-reasoning.engine";
 
-
 import {
-  buildAtlasStrategyReport,
-} from "./strategy-report.engine";
-
+  buildSessionPlan,
+} from "./session.engine";
 
 import {
   analyzeAtlasSituation,
 } from "./situation-analysis.engine";
 
 import {
-  buildAtlasSituationBriefing,
-} from "./atlas-situation-briefing.engine";
+  buildAtlasStrategyReport,
+} from "./strategy-report.engine";
 
 
 export type AtlasBrainHistory =
   import("./brain").AtlasBrainHistory;
-
 
 
 export type AtlasBrainInput = {
@@ -146,13 +134,13 @@ export function buildAtlasBrain({
 
   const situation =
     analyzeAtlasSituation({
-     profile,
+      profile,
       empire,
-   });
+    });
 
   const situationBriefing =
     buildAtlasSituationBriefing(
-     situation
+      situation
     );
 
   const identityAdvisor =
@@ -208,7 +196,6 @@ export function buildAtlasBrain({
         atlasRecommendation,
     });
 
-
   const {
     empireForecast,
 
@@ -217,7 +204,6 @@ export function buildAtlasBrain({
     empireTimeline,
   } = projectionPipeline;
 
-
   const dailyObjectives =
     buildDailyObjectives(
       profile,
@@ -225,7 +211,7 @@ export function buildAtlasBrain({
       empireForecast
     );
 
-  const lifecycle =
+  const lifecyclePipeline =
     buildAtlasLifecyclePipeline({
       history,
 
@@ -235,7 +221,6 @@ export function buildAtlasBrain({
       identity:
         playerIdentity,
     });
-
 
   const {
     decisionHistory,
@@ -251,8 +236,7 @@ export function buildAtlasBrain({
     behaviorProfile,
 
     intelligenceTimeline,
-  } = lifecycle;
-
+  } = lifecyclePipeline;
 
   const memoryPipeline =
     buildAtlasMemoryPipeline({
@@ -267,7 +251,6 @@ export function buildAtlasBrain({
         learningProfile,
     });
 
-
   const {
     atlasMemory,
 
@@ -275,7 +258,6 @@ export function buildAtlasBrain({
 
     memoryInsight,
   } = memoryPipeline;
-
 
   const recommendationPipeline =
     buildAtlasRecommendationPipeline({
@@ -300,7 +282,6 @@ export function buildAtlasBrain({
       situation,
     });
 
-
   const {
     recommendationPrediction,
 
@@ -309,24 +290,30 @@ export function buildAtlasBrain({
     weightedRecommendation,
   } = recommendationPipeline;
 
-
   const coachBriefing =
-  buildAtlasCoach({
-    greeting: atlasGreeting,
-    recommendation:
-      weightedRecommendation,
-    forecast:
-      empireForecast,
-    learning:
-      learningProfile,
-    behavior:
-      behaviorProfile,
-    identity:
-      playerIdentity,
-    memoryInsight,
-    situationBriefing,
-  });
+    buildAtlasCoach({
+      greeting:
+        atlasGreeting,
 
+      recommendation:
+        weightedRecommendation,
+
+      forecast:
+        empireForecast,
+
+      learning:
+        learningProfile,
+
+      behavior:
+        behaviorProfile,
+
+      identity:
+        playerIdentity,
+
+      memoryInsight,
+
+      situationBriefing,
+    });
 
   const strategyPipeline =
     buildAtlasStrategyPipeline({
@@ -348,7 +335,6 @@ export function buildAtlasBrain({
       profile,
     });
 
-
   const {
     adaptiveStrategy,
 
@@ -356,7 +342,6 @@ export function buildAtlasBrain({
 
     strategicPlan,
   } = strategyPipeline;
-
 
   const missionPipeline =
     buildAtlasMissionPipeline({
@@ -375,7 +360,6 @@ export function buildAtlasBrain({
         learningProfile,
     });
 
-
   const {
     missionStrategy,
 
@@ -388,23 +372,21 @@ export function buildAtlasBrain({
     missionLearningUpdate,
   } = missionPipeline;
 
-
   const intelligenceFeed =
     buildIntelligenceFeed(
       profile
     );
 
   const strategyReport =
-  buildAtlasStrategyReport(
-    weightedRecommendation,
-    atlasReasoning,
-    empireSimulation,
-    empireForecast,
-    atlasMemory,
-    nextAction,
-    situationBriefing
-  );
-
+    buildAtlasStrategyReport(
+      weightedRecommendation,
+      atlasReasoning,
+      empireSimulation,
+      empireForecast,
+      atlasMemory,
+      nextAction,
+      situationBriefing
+    );
 
   return {
     atlasRecommendations,
@@ -494,5 +476,6 @@ export function buildAtlasBrain({
 
 
 export type AtlasBrainModel =
-  ReturnType<typeof buildAtlasBrain>;
-
+  ReturnType<
+    typeof buildAtlasBrain
+  >;
