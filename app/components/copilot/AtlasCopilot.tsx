@@ -2,6 +2,10 @@
 
 import AtlasSurface from "@/app/components/design-system/AtlasSurface";
 
+import type {
+  AtlasCopilotAction,
+} from "@/app/intelligence";
+
 import AtlasBriefingHero, {
   type AtlasBriefingHeroProps,
 } from "./AtlasBriefingHero";
@@ -12,9 +16,7 @@ import AtlasCopilotMessage, {
 
 import AtlasCopilotPrompt from "./AtlasCopilotPrompt";
 
-import AtlasCopilotQuickActions, {
-  type AtlasCopilotQuickAction,
-} from "./AtlasCopilotQuickActions";
+import AtlasCopilotQuickActions from "./AtlasCopilotQuickActions";
 
 
 export type AtlasCopilotStatusTone =
@@ -41,8 +43,11 @@ type AtlasCopilotProps = {
   status:
     AtlasCopilotStatusModel;
 
-  briefing:
+    briefing:
     AtlasBriefingHeroProps;
+
+  actions:
+    AtlasCopilotAction[];
 
   loading:
     boolean;
@@ -54,106 +59,17 @@ type AtlasCopilotProps = {
     ) => void;
 };
 
-
-const QUICK_ACTIONS:
-  AtlasCopilotQuickAction[] =
-  [
-    {
-      id:
-        "make-money",
-
-      label:
-        "Make Money",
-
-      prompt:
-        "What is the fastest way for me to make money right now?",
-
-      description:
-        "Find the highest-value activity available for your current position.",
-    },
-
-    {
-      id:
-        "expand-empire",
-
-      label:
-        "Expand Empire",
-
-      prompt:
-        "What should I invest in next to expand my empire?",
-
-      description:
-        "Compare your next business, property, and progression opportunities.",
-    },
-
-    {
-      id:
-        "plan-session",
-
-      label:
-        "Plan Session",
-
-      prompt:
-        "Plan my next 45-minute session.",
-
-      description:
-        "Build an efficient sequence of objectives for your available time.",
-    },
-
-    {
-      id:
-        "vehicle-purchase",
-
-      label:
-        "Buy a Vehicle",
-
-      prompt:
-        "Which vehicle should I purchase next and why?",
-
-      description:
-        "Balance performance, utility, progression, and available cash.",
-    },
-
-    {
-      id:
-        "find-bottleneck",
-
-      label:
-        "Find Bottleneck",
-
-      prompt:
-        "What is currently slowing down my empire progression?",
-
-      description:
-        "Identify the largest weakness limiting your next stage of growth.",
-    },
-
-    {
-      id:
-        "compare-investments",
-
-      label:
-        "Compare Investments",
-
-      prompt:
-        "Should I buy a business, property, or vehicle next?",
-
-      description:
-        "Compare competing purchases using Atlas strategic priorities.",
-    },
-  ];
-
-
 export default function AtlasCopilot({
   messages,
   status,
   briefing,
+  actions,
   loading,
   onSubmit,
 }: AtlasCopilotProps) {
-  function handleQuickAction(
+    function handleQuickAction(
     action:
-      AtlasCopilotQuickAction
+      AtlasCopilotAction
   ): void {
     onSubmit(
       action.prompt
@@ -172,8 +88,8 @@ export default function AtlasCopilot({
         className="p-5 sm:p-6"
       >
         <AtlasCopilotQuickActions
-          actions={
-            QUICK_ACTIONS
+                    actions={
+            actions
           }
 
           onSelect={

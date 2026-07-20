@@ -23,6 +23,7 @@ import {
 } from "@/app/hooks/useDashboard";
 
 import {
+  buildAtlasCopilotActions,
   buildAtlasIntent,
   buildAtlasRouteContext,
   buildDashboardComposer,
@@ -422,6 +423,21 @@ export default function AtlasCopilotController() {
         }),
       [
         pathname,
+      ]
+    );
+
+
+  const quickActions =
+    useMemo(
+      () =>
+        buildAtlasCopilotActions({
+          routeContext,
+
+          limit:
+            6,
+        }),
+      [
+        routeContext,
       ]
     );
 
@@ -845,6 +861,10 @@ export default function AtlasCopilotController() {
         loading:
           brainPipeline.loading,
       }}
+
+      actions={
+        quickActions
+      }
 
       loading={
         brainPipeline.loading
