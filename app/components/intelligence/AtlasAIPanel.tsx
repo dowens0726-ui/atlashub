@@ -26,6 +26,7 @@ import EmpireSimulatorCard from "./EmpireSimulatorCard";
 import EmpireTimelineCard from "./EmpireTimelineCard";
 import PersonalPicksCard from "./PersonalPicksCard";
 
+import { AtlasFeatureGate } from "@/app/components/platform";
 import { GlowCard } from "@/app/components/ui";
 
 import type {
@@ -128,6 +129,7 @@ export default function AtlasAIPanel({
   dailyObjectives,
   insights,
 }: AtlasAIPanelProps) {
+
   return (
     <GlowCard accent="cyan">
       <header className="mb-8">
@@ -257,9 +259,17 @@ export default function AtlasAIPanel({
             simulation={simulation}
           />
 
-          <EmpireForecastCard
-            forecast={forecast}
-          />
+          <AtlasFeatureGate
+            capability="empire-forecast"
+            upgradeHref="/pro"
+            previewEyebrow="Atlas Pro Preview"
+            previewTitle="Empire Forecast"
+            previewDescription="Unlock predictive empire forecasting to see how future purchases and strategic decisions can impact your progression."
+          >
+            <EmpireForecastCard
+              forecast={forecast}
+            />
+          </AtlasFeatureGate>
 
           <EmpireTimelineCard
             points={timeline}

@@ -1,18 +1,18 @@
+"use client";
+
 import type { ReactNode } from "react";
+
+import useAtlasCapability from "@/app/hooks/useAtlasCapability";
 
 import AtlasProPreview from "./AtlasProPreview";
 
-import { evaluateAtlasCapability } from "@/app/services";
-
 import type {
   AtlasCapability,
-  AtlasCapabilityContext,
   AtlasCapabilityEvaluation,
 } from "@/app/types";
 
 export type AtlasFeatureGateProps = {
   capability: AtlasCapability;
-  context: AtlasCapabilityContext;
   children: ReactNode;
   fallback?: ReactNode;
   preview?: ReactNode;
@@ -35,7 +35,6 @@ function shouldRenderPreview(
 
 export default function AtlasFeatureGate({
   capability,
-  context,
   children,
   fallback = null,
   preview,
@@ -46,10 +45,7 @@ export default function AtlasFeatureGate({
   previewActionLabel,
   previewClassName,
 }: AtlasFeatureGateProps) {
-  const evaluation = evaluateAtlasCapability(
-    capability,
-    context
-  );
+  const evaluation = useAtlasCapability(capability);
 
   if (evaluation.enabled) {
     return <>{children}</>;
