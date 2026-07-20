@@ -212,10 +212,13 @@ export default function DashboardClient() {
       <CommandCenterLayout
         hero={
           <CommandCenterHero
-            dashboard={
-              dashboard
-            }
-          />
+  dashboard={
+    dashboard
+  }
+  brainPipeline={
+    brainPipeline
+  }
+/>
         }
 
         changes={
