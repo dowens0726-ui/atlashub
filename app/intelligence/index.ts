@@ -12,6 +12,15 @@ export {
 } from "./atlas-intelligence-diagnostics.engine";
 export * from "./copilot-session.engine";
 
+export {
+  buildAtlasLifecyclePipeline,
+} from "./brain";
+
+export type {
+  AtlasLifecyclePipelineInput,
+  AtlasLifecyclePipelineModel,
+} from "./brain";
+
 export type {
   AtlasIntelligenceDiagnostics,
   AtlasIntelligenceHealth,
