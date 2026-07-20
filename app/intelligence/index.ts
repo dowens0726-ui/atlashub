@@ -17,6 +17,7 @@ export type {
   AtlasIntelligenceHealth,
 } from "./atlas-intelligence-diagnostics.engine";
 export * from "./dashboard-composer.engine";
+export * from "./dashboard-presenter";
 export * from "./dashboard-intelligence.engine";
 export * from "./planning.engine";
 export * from "./reasoning.engine";
