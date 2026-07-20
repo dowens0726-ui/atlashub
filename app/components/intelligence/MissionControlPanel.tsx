@@ -5,6 +5,13 @@ import type {
 } from "@/app/intelligence";
 
 import {
+  AtlasCountUp,
+  AtlasProgress,
+  AtlasPulse,
+  AtlasReveal,
+} from "@/app/components/motion";
+
+import {
   AtlasMetric,
   AtlasSurface,
 } from "@/app/components/design-system";
@@ -107,10 +114,7 @@ export default function MissionControlPanel({
       glow
       className="p-5 sm:p-6 lg:p-8"
     >
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-emerald-300/80 to-transparent"
-      />
+      <AtlasPulse tone="emerald" active />
 
       <header className="relative border-b border-white/[0.07] pb-7">
         <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
@@ -157,7 +161,10 @@ export default function MissionControlPanel({
               </p>
 
               <p className="mt-2 text-lg font-black text-emerald-300">
-                {confidence}%
+                <AtlasCountUp
+                    value={confidence}
+                    suffix="%"
+                />
               </p>
             </div>
           </div>
@@ -192,21 +199,13 @@ export default function MissionControlPanel({
                 </p>
               </div>
 
-              <div
-                className="mt-3 h-2 overflow-hidden rounded-full bg-white/[0.06]"
-                role="progressbar"
-                aria-label="Roadmap progress"
-                aria-valuemin={0}
-                aria-valuemax={100}
-                aria-valuenow={roadmapProgress}
-              >
-                <div
-                  className="h-full rounded-full bg-gradient-to-r from-emerald-500 via-cyan-400 to-violet-400 transition-[width] duration-500"
-                  style={{
-                    width: `${roadmapProgress}%`,
-                  }}
+                <AtlasProgress
+                    value={roadmapProgress}
+                    tone="emerald"
+                    animated
+                    pulse
+                    className="mt-3"
                 />
-              </div>
             </div>
           </section>
 
@@ -240,7 +239,12 @@ export default function MissionControlPanel({
 
             <AtlasMetric
               label="Confidence"
-              value={`${confidence}%`}
+              value={
+            <AtlasCountUp
+              value={confidence}
+              suffix="%"
+            />
+          }
               description="Atlas execution certainty"
               tone={confidenceTone}
             />
