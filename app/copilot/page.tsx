@@ -1,5 +1,5 @@
 import {
-  AtlasCopilot,
+  AtlasCopilotController,
 } from "@/app/components/copilot";
 
 import {
@@ -10,7 +10,7 @@ import {
 export default function CopilotPage() {
   return (
     <AtlasAppShell>
-      <AtlasCopilot />
+      <AtlasCopilotController />
     </AtlasAppShell>
   );
 }

@@ -1,9 +1,5 @@
 "use client";
 
-import {
-  useState,
-} from "react";
-
 import AtlasSurface from "@/app/components/design-system/AtlasSurface";
 
 import AtlasCopilotMessage, {
@@ -15,6 +11,41 @@ import AtlasCopilotPrompt from "./AtlasCopilotPrompt";
 import AtlasCopilotQuickActions, {
   type AtlasCopilotQuickAction,
 } from "./AtlasCopilotQuickActions";
+
+
+export type AtlasCopilotStatusTone =
+  | "waiting"
+  | "loading"
+  | "ready"
+  | "warning"
+  | "error";
+
+
+export type AtlasCopilotStatusModel = {
+  label:
+    string;
+
+  tone:
+    AtlasCopilotStatusTone;
+};
+
+
+type AtlasCopilotProps = {
+  messages:
+    AtlasCopilotMessageModel[];
+
+  status:
+    AtlasCopilotStatusModel;
+
+  loading:
+    boolean;
+
+  onSubmit:
+    (
+      prompt:
+        string
+    ) => void;
+};
 
 
 const QUICK_ACTIONS:
@@ -106,115 +137,52 @@ const QUICK_ACTIONS:
   ];
 
 
-const INITIAL_MESSAGES:
-  AtlasCopilotMessageModel[] =
-  [
-    {
-      id:
-        "atlas-welcome",
-
-      role:
-        "atlas",
-
-      content:
-        "Atlas Copilot is online. I can help you evaluate investments, plan sessions, compare assets, and identify the strongest next move for your empire.",
-    },
-
-    {
-      id:
-        "atlas-foundation-notice",
-
-      role:
-        "system",
-
-      label:
-        "Copilot Foundation",
-
-      content:
-        "The command interface is active. Atlas Brain responses will be connected in the next milestone.",
-    },
-  ];
-
-
-function createMessageId(
-  prefix:
-    string
+function getStatusStyles(
+  tone:
+    AtlasCopilotStatusTone
 ): string {
-  return `${prefix}-${Date.now()}-${Math.random()
-    .toString(36)
-    .slice(2, 8)}`;
+  switch (
+    tone
+  ) {
+    case "ready":
+      return "border-emerald-400/20 bg-emerald-400/[0.07] text-emerald-100";
+
+    case "warning":
+      return "border-amber-400/20 bg-amber-400/[0.07] text-amber-100";
+
+    case "error":
+      return "border-red-400/20 bg-red-400/[0.07] text-red-100";
+
+    case "loading":
+      return "border-cyan-400/20 bg-cyan-400/[0.07] text-cyan-100";
+
+    case "waiting":
+    default:
+      return "border-white/10 bg-white/[0.04] text-zinc-200";
+  }
 }
 
 
-export default function AtlasCopilot() {
-  const [
-    messages,
-    setMessages,
-  ] =
-    useState<
-      AtlasCopilotMessageModel[]
-    >(
-      INITIAL_MESSAGES
-    );
-
-
-  function submitPrompt(
-    prompt:
-      string
-  ): void {
-    const playerMessage:
-      AtlasCopilotMessageModel =
-      {
-        id:
-          createMessageId(
-            "player"
-          ),
-
-        role:
-          "player",
-
-        content:
-          prompt,
-      };
-
-    const pendingMessage:
-      AtlasCopilotMessageModel =
-      {
-        id:
-          createMessageId(
-            "system"
-          ),
-
-        role:
-          "system",
-
-        label:
-          "Pipeline Pending",
-
-        content:
-          "Command received. Atlas Brain execution will be enabled in Sprint 90.3B.",
-      };
-
-    setMessages(
-      (
-        currentMessages
-      ) => [
-        ...currentMessages,
-        playerMessage,
-        pendingMessage,
-      ]
-    );
-  }
-
-
+export default function AtlasCopilot({
+  messages,
+  status,
+  loading,
+  onSubmit,
+}: AtlasCopilotProps) {
   function handleQuickAction(
     action:
       AtlasCopilotQuickAction
   ): void {
-    submitPrompt(
+    onSubmit(
       action.prompt
     );
   }
+
+
+  const statusStyles =
+    getStatusStyles(
+      status.tone
+    );
 
 
   return (
@@ -249,28 +217,33 @@ export default function AtlasCopilot() {
               </h1>
 
               <p className="mt-5 max-w-2xl text-base leading-8 text-zinc-400 sm:text-lg">
-                Your strategic
-                command interface
-                for planning,
-                progression,
-                investments, and
-                empire decisions.
+                Your strategic command interface for planning, progression, investments, and empire decisions.
               </p>
             </div>
 
-            <div className="inline-flex w-fit items-center gap-3 rounded-2xl border border-cyan-400/15 bg-cyan-400/[0.06] px-4 py-3">
+            <div
+              className={[
+                "inline-flex w-fit items-center gap-3 rounded-2xl border px-4 py-3",
+                statusStyles,
+              ].join(" ")}
+            >
               <span
                 aria-hidden="true"
-                className="h-2 w-2 rounded-full bg-cyan-300"
+                className={[
+                  "h-2 w-2 rounded-full",
+                  loading
+                    ? "animate-pulse bg-cyan-300"
+                    : "bg-current",
+                ].join(" ")}
               />
 
               <div>
-                <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-zinc-500">
-                  Copilot Status
+                <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] opacity-60">
+                  Brain Status
                 </p>
 
-                <p className="mt-1 text-sm font-bold text-cyan-100">
-                  Interface Online
+                <p className="mt-1 text-sm font-bold">
+                  {status.label}
                 </p>
               </div>
             </div>
@@ -286,6 +259,7 @@ export default function AtlasCopilot() {
           actions={
             QUICK_ACTIONS
           }
+
           onSelect={
             handleQuickAction
           }
@@ -311,10 +285,7 @@ export default function AtlasCopilot() {
           </div>
 
           <p className="text-xs font-medium text-zinc-600">
-            {
-              messages.length
-            }{" "}
-            messages
+            {messages.length} messages
           </p>
         </header>
 
@@ -327,6 +298,7 @@ export default function AtlasCopilot() {
                 key={
                   message.id
                 }
+
                 message={
                   message
                 }
@@ -338,7 +310,7 @@ export default function AtlasCopilot() {
         <div className="border-t border-white/10 bg-black/30 p-4 sm:p-5">
           <AtlasCopilotPrompt
             onSubmit={
-              submitPrompt
+              onSubmit
             }
           />
         </div>

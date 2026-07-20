@@ -2,6 +2,15 @@ export {
   default as AtlasCopilot,
 } from "./AtlasCopilot";
 
+export type {
+  AtlasCopilotStatusModel,
+  AtlasCopilotStatusTone,
+} from "./AtlasCopilot";
+
+export {
+  default as AtlasCopilotController,
+} from "./AtlasCopilotController";
+
 export {
   default as AtlasCopilotMessage,
 } from "./AtlasCopilotMessage";
