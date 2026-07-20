@@ -7,6 +7,7 @@
 import {
   buildAtlasLifecyclePipeline,
   buildAtlasRecommendationPipeline,
+  buildAtlasStrategyPipeline,
 } from "./brain";
 import {
   getAllMissions,
@@ -17,9 +18,6 @@ import {
   getPrimaryAtlasRecommendation,
 } from "./advisor.service";
 
-import {
-  buildAdaptiveStrategy,
-} from "./adaptive-strategy.engine";
 
 import {
   buildAtlasCoach,
@@ -93,9 +91,6 @@ import {
   getPersonalPicks,
 } from "./personal-picks.engine";
 
-import {
-  buildAtlasStrategicPlan,
-} from "./planning.engine";
 
 import {
   buildPlayerIdentity,
@@ -115,9 +110,6 @@ import {
   buildSessionReasoning,
 } from "./session-reasoning.engine";
 
-import {
-  buildStrategyFeedback,
-} from "./strategy-feedback.engine";
 
 import {
   buildAtlasStrategyReport,
@@ -362,29 +354,35 @@ export function buildAtlasBrain({
   });
 
 
-  const adaptiveStrategy =
-    buildAdaptiveStrategy(
-      weightedRecommendation,
-      playerIdentity,
+  const strategyPipeline =
+    buildAtlasStrategyPipeline({
+      recommendation:
+        weightedRecommendation,
+
+      identity:
+        playerIdentity,
+
       memoryInsight,
-      learningProfile
-    );
 
-  const strategyFeedback =
-    buildStrategyFeedback(
+      learning:
+        learningProfile,
+
       outcome,
-      outcomeValidation,
-      adaptiveStrategy,
-      learningProfile
-    );
 
-  const strategicPlan =
-    buildAtlasStrategicPlan(
+      outcomeValidation,
+
       profile,
-      adaptiveStrategy,
-      strategyFeedback,
-      memoryInsight
-    );
+    });
+
+
+  const {
+    adaptiveStrategy,
+
+    strategyFeedback,
+
+    strategicPlan,
+  } = strategyPipeline;
+
 
   const missionStrategy =
     buildMissionStrategy(
