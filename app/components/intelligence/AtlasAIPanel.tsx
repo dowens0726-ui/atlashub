@@ -255,9 +255,17 @@ export default function AtlasAIPanel({
             picks={personalPicks}
           />
 
+          <AtlasFeatureGate
+            capability="empire-simulator"
+            upgradeHref="/pro"
+            previewEyebrow="Atlas Pro Preview"
+            previewTitle="Empire Simulator"
+            previewDescription="Unlock scenario planning to compare hypothetical purchases, progression paths, and strategic decisions before committing your resources."
+        >
           <EmpireSimulatorCard
             simulation={simulation}
           />
+        </AtlasFeatureGate>
 
           <AtlasFeatureGate
             capability="empire-forecast"
@@ -280,10 +288,18 @@ export default function AtlasAIPanel({
           title="Player Intelligence"
           accent="amber"
         >
+          <AtlasFeatureGate
+            capability="atlas-memory"
+            upgradeHref="/pro"
+            previewEyebrow="Atlas Pro Preview"
+            previewTitle="Atlas Memory"
+            previewDescription="Atlas Pro remembers your gameplay history, strategic decisions, milestones, and long-term progression to provide increasingly personalized recommendations."
+        >
           <AtlasMemoryCard
             memory={memory}
             history={memoryHistory}
           />
+        </AtlasFeatureGate>
 
           <AtlasMemoryInsightCard
             insight={memoryInsight}
