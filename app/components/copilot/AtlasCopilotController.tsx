@@ -7,6 +7,10 @@ import {
 } from "react";
 
 import {
+  usePathname,
+} from "next/navigation";
+
+import {
   useAtlasBrainPipeline,
 } from "@/app/hooks/useAtlasBrainPipeline";
 
@@ -19,12 +23,10 @@ import {
 } from "@/app/hooks/useDashboard";
 
 import {
-  buildDashboardComposer,
-} from "@/app/intelligence/dashboard-composer.engine";
-
-import {
   buildAtlasIntent,
-} from "@/app/intelligence/atlas-intent.engine";
+  buildAtlasRouteContext,
+  buildDashboardComposer,
+} from "@/app/intelligence";
 
 import type {
   AtlasDecision,
@@ -35,6 +37,10 @@ import type {
 import AtlasCopilot, {
   type AtlasCopilotStatusModel,
 } from "./AtlasCopilot";
+
+import type {
+  AtlasBriefingRecommendationModel,
+} from "./AtlasBriefingHero";
 
 import type {
   AtlasCopilotMessageIntentModel,
@@ -362,6 +368,9 @@ function resolveStatusModel(
 
 
 export default function AtlasCopilotController() {
+  const pathname =
+    usePathname();
+
   const dashboard =
     useDashboard();
 
@@ -405,6 +414,18 @@ export default function AtlasCopilotController() {
     );
 
 
+  const routeContext =
+    useMemo(
+      () =>
+        buildAtlasRouteContext({
+          pathname,
+        }),
+      [
+        pathname,
+      ]
+    );
+
+
   const dashboardIntelligence =
     useMemo(
       () =>
@@ -436,68 +457,98 @@ export default function AtlasCopilotController() {
     );
 
 
-  const intentMetadata =
+  const pipelineMetadata =
     useMemo<
       Record<
         string,
         unknown
-      > | undefined
+      >
     >(
-      () => {
-        if (
-          !activeIntent
-        ) {
-          return undefined;
-        }
+      () => ({
+        atlasRouteContext:
+          routeContext,
 
-        return {
-          atlasIntent:
-            activeIntent.classification
-              .primary.intent,
+        atlasRoutePathname:
+          routeContext.pathname,
 
-          atlasIntentDomain:
-            activeIntent.classification
-              .primary.domain,
+        atlasRouteSection:
+          routeContext.section,
 
-          atlasIntentStrategy:
-            activeIntent.route.strategy,
+        atlasRouteDomain:
+          routeContext.domain,
 
-          atlasIntentTitle:
-            activeIntent.route.title,
+        atlasRouteDepth:
+          routeContext.depth,
 
-          atlasIntentConfidence:
-            activeIntent.classification
-              .primary.confidence,
+        atlasRouteSource:
+          routeContext.source,
 
-          atlasIntentConfidenceLevel:
-            activeIntent.classification
-              .primary.confidenceLevel,
+        atlasRouteTitle:
+          routeContext.title,
 
-          atlasIntentAmbiguous:
-            activeIntent.classification
-              .ambiguous,
+        atlasRouteStrategicFocus:
+          routeContext.strategicFocus,
 
-          atlasIntentStrategicObjective:
-            activeIntent.route
-              .strategicObjective,
+        atlasRouteEntitySlug:
+          routeContext.entitySlug,
 
-          atlasIntentResponseSections:
-            activeIntent.route
-              .responseSections,
+        atlasRouteKnown:
+          routeContext.isKnownRoute,
 
-          atlasPrompt:
-            activeIntent.classification
-              .prompt,
+        ...(activeIntent
+          ? {
+              atlasIntentContext:
+                activeIntent,
 
-          atlasNormalizedPrompt:
-            activeIntent.classification
-              .normalizedPrompt,
+              atlasIntent:
+                activeIntent.classification
+                  .primary.intent,
 
-          atlasIntentGeneratedAt:
-            activeIntent.generatedAt,
-        };
-      },
+              atlasIntentDomain:
+                activeIntent.classification
+                  .primary.domain,
+
+              atlasIntentStrategy:
+                activeIntent.route.strategy,
+
+              atlasIntentTitle:
+                activeIntent.route.title,
+
+              atlasIntentConfidence:
+                activeIntent.classification
+                  .primary.confidence,
+
+              atlasIntentConfidenceLevel:
+                activeIntent.classification
+                  .primary.confidenceLevel,
+
+              atlasIntentAmbiguous:
+                activeIntent.classification
+                  .ambiguous,
+
+              atlasIntentStrategicObjective:
+                activeIntent.route
+                  .strategicObjective,
+
+              atlasIntentResponseSections:
+                activeIntent.route
+                  .responseSections,
+
+              atlasPrompt:
+                activeIntent.classification
+                  .prompt,
+
+              atlasNormalizedPrompt:
+                activeIntent.classification
+                  .normalizedPrompt,
+
+              atlasIntentGeneratedAt:
+                activeIntent.generatedAt,
+            }
+          : {}),
+      }),
       [
+        routeContext,
         activeIntent,
       ]
     );
@@ -520,13 +571,68 @@ export default function AtlasCopilotController() {
         "copilot",
 
       metadata:
-        intentMetadata,
+        pipelineMetadata,
     });
 
 
   const statusModel =
     resolveStatusModel(
       brainPipeline.status
+    );
+
+
+  const briefingRecommendation =
+    useMemo<
+      AtlasBriefingRecommendationModel | null
+    >(
+      () => {
+        const decision =
+          brainPipeline.decision;
+
+        if (
+          !decision
+        ) {
+          return null;
+        }
+
+        if (
+          decision.primaryRecommendation
+        ) {
+          return {
+            title:
+              decision.primaryRecommendation
+                .title,
+
+            explanation:
+              decision.primaryRecommendation
+                .explanation,
+
+            confidence:
+              decision.primaryRecommendation
+                .confidence,
+
+            urgency:
+              decision.urgency,
+          };
+        }
+
+        return {
+          title:
+            decision.headline,
+
+          explanation:
+            decision.summary,
+
+          confidence:
+            decision.confidence,
+
+          urgency:
+            decision.urgency,
+        };
+      },
+      [
+        brainPipeline.decision,
+      ]
     );
 
 
@@ -718,6 +824,27 @@ export default function AtlasCopilotController() {
       status={
         statusModel
       }
+
+      briefing={{
+        routeContext,
+
+        empireScore:
+          dashboard.empire
+            .overallScore,
+
+        empireGrade:
+          dashboard.empire
+            .overallGrade,
+
+        recommendation:
+          briefingRecommendation,
+
+        statusLabel:
+          statusModel.label,
+
+        loading:
+          brainPipeline.loading,
+      }}
 
       loading={
         brainPipeline.loading

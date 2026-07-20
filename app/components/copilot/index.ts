@@ -1,4 +1,13 @@
 export {
+  default as AtlasBriefingHero,
+} from "./AtlasBriefingHero";
+
+export type {
+  AtlasBriefingHeroProps,
+  AtlasBriefingRecommendationModel,
+} from "./AtlasBriefingHero";
+
+export {
   default as AtlasCopilot,
 } from "./AtlasCopilot";
 
@@ -16,6 +25,7 @@ export {
 } from "./AtlasCopilotMessage";
 
 export type {
+  AtlasCopilotMessageIntentModel,
   AtlasCopilotMessageModel,
   AtlasCopilotMessageRole,
 } from "./AtlasCopilotMessage";

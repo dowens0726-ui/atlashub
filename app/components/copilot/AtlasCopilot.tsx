@@ -2,6 +2,10 @@
 
 import AtlasSurface from "@/app/components/design-system/AtlasSurface";
 
+import AtlasBriefingHero, {
+  type AtlasBriefingHeroProps,
+} from "./AtlasBriefingHero";
+
 import AtlasCopilotMessage, {
   type AtlasCopilotMessageModel,
 } from "./AtlasCopilotMessage";
@@ -36,6 +40,9 @@ type AtlasCopilotProps = {
 
   status:
     AtlasCopilotStatusModel;
+
+  briefing:
+    AtlasBriefingHeroProps;
 
   loading:
     boolean;
@@ -137,35 +144,10 @@ const QUICK_ACTIONS:
   ];
 
 
-function getStatusStyles(
-  tone:
-    AtlasCopilotStatusTone
-): string {
-  switch (
-    tone
-  ) {
-    case "ready":
-      return "border-emerald-400/20 bg-emerald-400/[0.07] text-emerald-100";
-
-    case "warning":
-      return "border-amber-400/20 bg-amber-400/[0.07] text-amber-100";
-
-    case "error":
-      return "border-red-400/20 bg-red-400/[0.07] text-red-100";
-
-    case "loading":
-      return "border-cyan-400/20 bg-cyan-400/[0.07] text-cyan-100";
-
-    case "waiting":
-    default:
-      return "border-white/10 bg-white/[0.04] text-zinc-200";
-  }
-}
-
-
 export default function AtlasCopilot({
   messages,
   status,
+  briefing,
   loading,
   onSubmit,
 }: AtlasCopilotProps) {
@@ -179,77 +161,11 @@ export default function AtlasCopilot({
   }
 
 
-  const statusStyles =
-    getStatusStyles(
-      status.tone
-    );
-
-
   return (
     <div className="space-y-6">
-      <section className="relative overflow-hidden rounded-[2rem] border border-cyan-400/15 bg-gradient-to-br from-zinc-900 via-zinc-950 to-black p-6 shadow-2xl shadow-cyan-950/10 sm:p-8 lg:p-10">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-cyan-400/10 blur-3xl"
-        />
-
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -bottom-28 left-1/4 h-72 w-72 rounded-full bg-blue-500/[0.07] blur-3xl"
-        />
-
-        <div className="relative">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-            <div className="max-w-3xl">
-              <div className="flex items-center gap-2">
-                <span
-                  aria-hidden="true"
-                  className="h-2 w-2 rounded-full bg-cyan-300 shadow-[0_0_14px_rgba(103,232,249,0.9)]"
-                />
-
-                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-cyan-300">
-                  Atlas Intelligence
-                </p>
-              </div>
-
-              <h1 className="mt-5 text-4xl font-black tracking-tight text-white sm:text-5xl lg:text-6xl">
-                Atlas Copilot
-              </h1>
-
-              <p className="mt-5 max-w-2xl text-base leading-8 text-zinc-400 sm:text-lg">
-                Your strategic command interface for planning, progression, investments, and empire decisions.
-              </p>
-            </div>
-
-            <div
-              className={[
-                "inline-flex w-fit items-center gap-3 rounded-2xl border px-4 py-3",
-                statusStyles,
-              ].join(" ")}
-            >
-              <span
-                aria-hidden="true"
-                className={[
-                  "h-2 w-2 rounded-full",
-                  loading
-                    ? "animate-pulse bg-cyan-300"
-                    : "bg-current",
-                ].join(" ")}
-              />
-
-              <div>
-                <p className="text-[0.65rem] font-semibold uppercase tracking-[0.2em] opacity-60">
-                  Brain Status
-                </p>
-
-                <p className="mt-1 text-sm font-bold">
-                  {status.label}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <AtlasBriefingHero
+        {...briefing}
+      />
 
       <AtlasSurface
         tone="subtle"
@@ -262,6 +178,10 @@ export default function AtlasCopilot({
 
           onSelect={
             handleQuickAction
+          }
+
+          disabled={
+            loading
           }
         />
       </AtlasSurface>
@@ -284,9 +204,15 @@ export default function AtlasCopilot({
             </h2>
           </div>
 
-          <p className="text-xs font-medium text-zinc-600">
-            {messages.length} messages
-          </p>
+          <div className="text-right">
+            <p className="text-xs font-medium text-zinc-600">
+              {messages.length} messages
+            </p>
+
+            <p className="mt-1 text-xs font-semibold text-zinc-500">
+              {status.label}
+            </p>
+          </div>
         </header>
 
         <div className="max-h-[560px] min-h-[420px] space-y-5 overflow-y-auto px-5 py-6 sm:px-6">
