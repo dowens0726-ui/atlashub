@@ -28,7 +28,7 @@ import {
   AtlasLiveEventToast,
   AtlasRoadmapCard,
   AtlasSessionChangesCard,
-  AtlasSessionPlanCard,
+  MissionControlPanel,
 } from "@/app/components/intelligence";
 
 import {
@@ -419,7 +419,7 @@ export default function DashboardClient() {
         }
 
         session={
-          <AtlasSessionPlanCard
+          <MissionControlPanel
             plan={
               intelligence
                 .sessionPlan
@@ -428,6 +428,11 @@ export default function DashboardClient() {
             reasoning={
               intelligence
                 .sessionReasoning
+            }
+
+            roadmap={
+              dashboardIntelligence
+                .roadmap
             }
           />
         }

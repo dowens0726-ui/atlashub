@@ -195,3 +195,4 @@ export {
 export {
   default as VehicleIntelligenceCard,
 } from "./VehicleIntelligenceCard";
+export { default as MissionControlPanel } from "./MissionControlPanel";
