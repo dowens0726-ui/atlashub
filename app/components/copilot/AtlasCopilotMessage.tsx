@@ -1,7 +1,39 @@
+import type {
+  AtlasIntentConfidenceLevel,
+  AtlasIntentDomain,
+  AtlasIntentStrategy,
+  AtlasIntentType,
+} from "@/app/intelligence";
+
+
 export type AtlasCopilotMessageRole =
   | "atlas"
   | "player"
   | "system";
+
+
+export type AtlasCopilotMessageIntentModel = {
+  type:
+    AtlasIntentType;
+
+  domain:
+    AtlasIntentDomain;
+
+  title:
+    string;
+
+  strategy:
+    AtlasIntentStrategy;
+
+  confidence:
+    number;
+
+  confidenceLevel:
+    AtlasIntentConfidenceLevel;
+
+  ambiguous:
+    boolean;
+};
 
 
 export type AtlasCopilotMessageModel = {
@@ -16,6 +48,9 @@ export type AtlasCopilotMessageModel = {
 
   label?:
     string;
+
+  intent?:
+    AtlasCopilotMessageIntentModel;
 };
 
 
@@ -98,6 +133,39 @@ function getRoleLabel(
 }
 
 
+function formatPercentage(
+  value:
+    number
+): string {
+  const normalizedValue =
+    value <= 1
+      ? value * 100
+      : value;
+
+  return `${Math.round(
+    normalizedValue
+  )}%`;
+}
+
+
+function formatDomain(
+  domain:
+    AtlasIntentDomain
+): string {
+  return domain
+    .split("_")
+    .map(
+      (
+        segment
+      ) =>
+        segment.charAt(0)
+          .toUpperCase() +
+        segment.slice(1)
+    )
+    .join(" ");
+}
+
+
 export default function AtlasCopilotMessage({
   message,
 }: AtlasCopilotMessageProps) {
@@ -130,7 +198,7 @@ export default function AtlasCopilotMessage({
           messageStyles,
         ].join(" ")}
       >
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {message.role ===
           "atlas" ? (
             <span
@@ -143,6 +211,33 @@ export default function AtlasCopilotMessage({
             {roleLabel}
           </p>
         </div>
+
+        {message.intent ? (
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            <span className="rounded-full border border-cyan-400/15 bg-cyan-400/[0.06] px-2.5 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-cyan-200">
+              {message.intent.title}
+            </span>
+
+            <span className="rounded-full border border-white/10 bg-white/[0.035] px-2.5 py-1 text-[0.65rem] font-medium uppercase tracking-[0.12em] text-zinc-400">
+              {formatDomain(
+                message.intent.domain
+              )}
+            </span>
+
+            <span className="rounded-full border border-white/10 bg-white/[0.035] px-2.5 py-1 text-[0.65rem] font-medium uppercase tracking-[0.12em] text-zinc-400">
+              {formatPercentage(
+                message.intent.confidence
+              )} confidence
+            </span>
+
+            {message.intent
+              .ambiguous ? (
+              <span className="rounded-full border border-amber-400/15 bg-amber-400/[0.06] px-2.5 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.12em] text-amber-200">
+                Broad request
+              </span>
+            ) : null}
+          </div>
+        ) : null}
 
         <p className="mt-3 whitespace-pre-wrap text-sm leading-7 sm:text-base">
           {message.content}
