@@ -6,9 +6,33 @@ AtlasHub follows a sprint-based development cycle.
 
 ---
 
-# v0.31.0 "Workbench"
+# v0.32.0 "Forge"
 
 **Release Date:** July 2026
+
+## 🚀 Added
+
+### Atlas Admin Pro
+- Manufacturer dropdown
+- Vehicle class dropdown
+- Drivetrain selector
+- Seat selector
+- Location field
+- Tags generator
+- Automatic slug generation
+- Automatic image path preview
+- Live vehicle preview
+- Improved generated vehicle code
+
+## ⚡ Improved
+
+- Atlas Admin workflow
+- Internal content creation speed
+- Data consistency
+
+---
+
+# v0.31.0 "Workbench"
 
 ## 🚀 Added
 
@@ -22,7 +46,7 @@ AtlasHub follows a sprint-based development cycle.
 ### Developer Experience
 - Sprint workflow
 - Milestone-based development
-- Improved project organization
+- Professional documentation
 
 ---
 
@@ -69,9 +93,9 @@ AtlasHub follows a sprint-based development cycle.
 
 - Vehicle Content Factory
 - Categorized vehicle data
-- Super vehicles
-- Sports vehicles
-- Muscle vehicles
+- Super vehicle category
+- Sports vehicle category
+- Muscle vehicle category
 
 ## 🔧 Improved
 

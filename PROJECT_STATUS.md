@@ -1,6 +1,6 @@
 # 🧭 AtlasHub Project Status
 
-> Internal project dashboard for AtlasHub development.
+> Internal development dashboard.
 
 ---
 
@@ -8,16 +8,16 @@
 
 | Property | Value |
 |----------|-------|
-| Version | **v0.31 "Workbench"** |
+| Version | **v0.32 "Forge"** |
 | Stage | Alpha |
-| Current Milestone | Milestone 5 – Atlas Intelligence |
-| Current Sprint | Sprint 0.32 – Atlas Admin Pro |
+| Current Milestone | Milestone 6 – Database Expansion |
+| Current Sprint | Sprint 0.34 – Atlas Garage Expansion I |
 
 ---
 
 # Sprint Objective
 
-Transform Atlas Admin into a professional internal content management tool that dramatically accelerates content creation for AtlasHub.
+Begin rapidly expanding the Atlas vehicle database using Atlas Admin Pro.
 
 ---
 
@@ -28,13 +28,13 @@ Transform Atlas Admin into a professional internal content management tool that 
 | 🏗 Architecture | 100% |
 | 🎨 UI / Design System | 95% |
 | 🏠 Homepage | 100% |
-| 🚗 Atlas Garage | 90% |
+| 🚗 Atlas Garage | 92% |
 | 🗺 Atlas Explorer | 90% |
 | 🔍 Atlas Search | 90% |
-| 🧠 Atlas Intelligence | 45% |
-| 📦 Database Content | 15% |
-| 🛠 Atlas Admin | 70% |
-| 🚀 Launch Readiness | 40% |
+| 🧠 Atlas Intelligence | 50% |
+| 🛠 Atlas Admin | 95% |
+| 📦 Database Content | 18% |
+| 🚀 Launch Readiness | 45% |
 
 ---
 
@@ -51,102 +51,59 @@ Transform Atlas Admin into a professional internal content management tool that 
 
 ---
 
-# Milestone Progress
+# Milestones
 
-## ✅ Milestone 1 – Foundation
+## ✅ Foundation
 
-- Project architecture
-- Shared UI components
-- Routing
-- Theme
-- Layout system
+Complete
 
----
+## ✅ Explorer
 
-## ✅ Milestone 2 – Explorer
+Complete
 
-- Interactive Explorer
-- Zoom controls
-- Drag & pan
+## ✅ Content Engine
+
+Complete
+
+## ✅ Atlas Garage
+
+Complete
+
+## ✅ Atlas Intelligence
+
+Complete
+
 - Search
-- Filtering
-
----
-
-## ✅ Milestone 3 – Content Engine
-
-- Content factory
-- Categorized data
-- Shared services
-- Type-safe architecture
-
----
-
-## ✅ Milestone 4 – Atlas Garage
-
-- Vehicle pages
-- Vehicle compare
-- Related vehicles
-- Stat system
-
----
-
-## 🚧 Milestone 5 – Atlas Intelligence
-
-### Completed
-
-- Smart Search
-- Search Ranking
-- Atlas Spotlight
-- Related Content Engine
-- Atlas Admin v1
-
-### In Progress
-
+- Spotlight
+- Recommendations
+- Related Vehicles
+- Atlas Admin
 - Atlas Admin Pro
 
-### Upcoming
+---
 
-- Explorer Search Sync
-- Keyboard Navigation
-- Mission Intelligence
+# 🚧 Milestone 6 – Database Expansion
+
+## Sprint 0.34
+
+### Planned
+
+- [ ] Add 25 vehicles
+- [ ] Expand supercars
+- [ ] Expand sports cars
+- [ ] Expand muscle cars
+- [ ] Improve search coverage
+- [ ] Improve recommendations
 
 ---
 
-# Current Sprint Tasks
-
-## Sprint 0.32 – Atlas Admin Pro
-
-- [ ] Live vehicle preview
-- [ ] Manufacturer dropdown
-- [ ] Vehicle class dropdown
-- [ ] Tags editor
-- [ ] Auto ID generation
-- [ ] Image preview
-- [ ] Validation
-- [ ] Copy confirmation
-- [ ] Reset form
-
----
-
-# Upcoming Milestones
-
-## Milestone 6 – Database Expansion
-
-- 100+ Vehicles
-- 50+ Weapons
-- 75+ Missions
-- Businesses
-- Collectibles
-
----
+# Upcoming
 
 ## Milestone 7 – Atlas AI
 
 - AI recommendations
 - Mission planner
-- Smart vehicle finder
-- Route planning
+- Vehicle advisor
 
 ---
 
@@ -156,11 +113,10 @@ Transform Atlas Admin into a professional internal content management tool that 
 - Favorites
 - Progress tracking
 - Community features
-- Performance optimization
 
 ---
 
-# Technical Stack
+# Tech Stack
 
 - Next.js 16
 - React 19
@@ -169,29 +125,30 @@ Transform Atlas Admin into a professional internal content management tool that 
 
 ---
 
-# Development Workflow
+# Sprint Workflow
 
-Every sprint follows the same process:
+Every sprint follows:
 
 1. Sprint planning
-2. Feature development
-3. `npm run build`
-4. Fix build issues
-5. Git commit
-6. Documentation update
+2. Development
+3. Build
+4. Testing
+5. Commit
+6. Documentation
 7. Sprint complete
 
 ---
 
 # Next Sprint
 
-**Sprint 0.32 – Atlas Admin Pro**
+**Sprint 0.34 – Atlas Garage Expansion I**
 
-Primary goal:
+Primary Goal:
 
-> Make adding new Atlas content take less than 30 seconds.
+> Expand AtlasHub from a framework into a comprehensive GTA VI database.
 
 ---
 
-Last Updated:
-**Sprint 0.31 – Workbench**
+Last Updated
+
+**Sprint 0.33 – Forge**

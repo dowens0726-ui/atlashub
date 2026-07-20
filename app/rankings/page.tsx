@@ -61,8 +61,8 @@ export default async function RankingsPage({
         />
 
         <div className="mt-12">
-  <RankingsClient />
-</div>
+          <RankingsClient />
+        </div>
 
         <div className="mt-12 grid gap-8">
           {category === "businesses" ? (

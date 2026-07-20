@@ -11,6 +11,10 @@ import {
 } from "@/app/components/intelligence";
 
 import {
+  AtlasRelationshipPanel,
+} from "@/app/components/intelligence";
+
+import {
   AppShell,
 } from "@/app/components/layout";
 
@@ -37,6 +41,10 @@ import {
   getAtlasVehicleScore,
   getMissionsForVehicle,
 } from "@/app/services";
+
+import {
+  getRelationships,
+} from "@/app/intelligence";
 
 import {
   defaultPlayerProfile,
@@ -90,6 +98,11 @@ export default async function VehiclePage({
       vehicle
     );
 
+  const relationships =
+    getRelationships({
+      type: "vehicle",
+      slug: vehicle.slug,
+   });
 
   return (
     <AppShell>

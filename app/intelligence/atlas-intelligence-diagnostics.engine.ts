@@ -5,8 +5,8 @@ import type {
 } from "./atlas-session-persistence.engine";
 
 import type {
-  AtlasMemoryStorageLoadResult,
-  AtlasMemoryStorageSaveResult,
+  AtlasMemoryStorageLoadStatus,
+  AtlasMemoryStorageSaveStatus,
 } from "./atlas-memory-storage.adapter";
 
 
@@ -14,14 +14,6 @@ export type AtlasIntelligenceHealth =
   | "healthy"
   | "warning"
   | "degraded";
-
-
-export type AtlasMemoryStorageLoadStatus =
-  AtlasMemoryStorageLoadResult["status"];
-
-
-export type AtlasMemoryStorageSaveStatus =
-  AtlasMemoryStorageSaveResult["status"];
 
 
 export type AtlasIntelligenceDiagnostics = {

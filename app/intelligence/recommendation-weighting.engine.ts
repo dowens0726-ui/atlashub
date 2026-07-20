@@ -1003,12 +1003,12 @@ export function buildRecommendationWeight({
       weightedConfidence,
 
     summary:
-      confidenceDelta > 0
-        ? `Atlas increased confidence by ${confidenceDelta} points after applying identity, behavior, learning, memory, empire, and cash signals.`
-        : confidenceDelta < 0
-          ? `Atlas reduced confidence by ${Math.abs(
-              confidenceDelta
-            )} points after evaluating current player and empire signals.`
-          : "Atlas confirmed the original recommendation confidence after evaluating all weighting signals.",
+  confidenceDelta > 0
+    ? `Atlas increased confidence by ${confidenceDelta} points after applying identity, behavior, learning, memory, empire, cash, and situation signals.`
+    : confidenceDelta < 0
+      ? `Atlas reduced confidence by ${Math.abs(
+          confidenceDelta
+        )} points after evaluating current player, empire, and situation signals.`
+      : "Atlas confirmed the original recommendation confidence after evaluating all seven weighting signals.",
   };
 }
