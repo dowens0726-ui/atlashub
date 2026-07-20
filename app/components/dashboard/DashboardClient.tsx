@@ -421,18 +421,23 @@ export default function DashboardClient() {
         session={
           <MissionControlPanel
             plan={
-              intelligence
-                .sessionPlan
+             intelligence
+              .sessionPlan
             }
 
             reasoning={
-              intelligence
-                .sessionReasoning
+             intelligence
+              .sessionReasoning
             }
 
             roadmap={
-              dashboardIntelligence
-                .roadmap
+             dashboardIntelligence
+              .roadmap
+            }
+
+            derived={
+             dashboardIntelligence
+              .derived
             }
           />
         }

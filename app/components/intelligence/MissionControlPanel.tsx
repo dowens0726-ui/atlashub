@@ -1,4 +1,5 @@
 import type {
+  AtlasDashboardDerivedState,
   AtlasSessionPlan,
   SessionReasoning,
   StrategicRoadmap,
@@ -8,7 +9,6 @@ import {
   AtlasCountUp,
   AtlasProgress,
   AtlasPulse,
-  AtlasReveal,
 } from "@/app/components/motion";
 
 import {
@@ -22,6 +22,7 @@ type MissionControlPanelProps = {
   plan: AtlasSessionPlan;
   reasoning?: SessionReasoning;
   roadmap: StrategicRoadmap;
+  derived: AtlasDashboardDerivedState;
 };
 
 function formatCurrency(
@@ -70,38 +71,16 @@ export default function MissionControlPanel({
   plan,
   reasoning,
   roadmap,
+  derived,
 }: MissionControlPanelProps) {
   const difficulty =
     getDifficulty(
       plan.estimatedTimeMinutes
     );
 
-  const activeRoadmapStep =
-    roadmap.steps.find(
-      (step) => !step.completed
-    ) ??
-    roadmap.steps[
-      roadmap.steps.length - 1
-    ];
-
-  const completedSteps =
-    roadmap.steps.filter(
-      (step) => step.completed
-    ).length;
-
-  const roadmapProgress =
-    roadmap.steps.length > 0
-      ? Math.round(
-          (
-            completedSteps /
-            roadmap.steps.length
-          ) * 100
-        )
-      : 0;
-
   const confidence =
     reasoning?.confidence ??
-    roadmap.confidence;
+    derived.roadmapConfidence;
 
   const confidenceTone =
     getConfidenceTone(
@@ -114,7 +93,10 @@ export default function MissionControlPanel({
       glow
       className="p-5 sm:p-6 lg:p-8"
     >
-      <AtlasPulse tone="emerald" active />
+      <AtlasPulse
+        tone="emerald"
+        active
+      />
 
       <header className="relative border-b border-white/[0.07] pb-7">
         <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
@@ -162,8 +144,8 @@ export default function MissionControlPanel({
 
               <p className="mt-2 text-lg font-black text-emerald-300">
                 <AtlasCountUp
-                    value={confidence}
-                    suffix="%"
+                  value={confidence}
+                  suffix="%"
                 />
               </p>
             </div>
@@ -179,12 +161,12 @@ export default function MissionControlPanel({
             </p>
 
             <h4 className="mt-3 text-2xl font-black text-white">
-              {activeRoadmapStep?.title ??
+              {derived.activeRoadmapStep?.title ??
                 roadmap.objective}
             </h4>
 
             <p className="mt-3 text-sm leading-7 text-zinc-400">
-              {activeRoadmapStep?.description ??
+              {derived.activeRoadmapStep?.description ??
                 "Atlas is aligning the current session with your long-term strategic objective."}
             </p>
 
@@ -195,17 +177,20 @@ export default function MissionControlPanel({
                 </p>
 
                 <p className="text-xs font-black text-emerald-300">
-                  {completedSteps}/{roadmap.steps.length}
+                  {derived.completedRoadmapSteps}/
+                  {derived.totalRoadmapSteps}
                 </p>
               </div>
 
-                <AtlasProgress
-                    value={roadmapProgress}
-                    tone="emerald"
-                    animated
-                    pulse
-                    className="mt-3"
-                />
+              <AtlasProgress
+                value={
+                  derived.roadmapProgress
+                }
+                tone="emerald"
+                animated
+                pulse
+                className="mt-3"
+              />
             </div>
           </section>
 
@@ -240,11 +225,11 @@ export default function MissionControlPanel({
             <AtlasMetric
               label="Confidence"
               value={
-            <AtlasCountUp
-              value={confidence}
-              suffix="%"
-            />
-          }
+                <AtlasCountUp
+                  value={confidence}
+                  suffix="%"
+                />
+              }
               description="Atlas execution certainty"
               tone={confidenceTone}
             />
