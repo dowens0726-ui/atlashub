@@ -3,6 +3,7 @@ import AtlasGrid from "@/app/components/design-system/AtlasGrid";
 import AtlasHero from "@/app/components/design-system/AtlasHero";
 import AtlasMetric from "@/app/components/design-system/AtlasMetric";
 import AtlasSurface from "@/app/components/design-system/AtlasSurface";
+import { AtlasOSRibbon } from "./mission-control";
 
 import {
   buildAtlasBriefing,
@@ -398,7 +399,16 @@ export default function CommandCenterHero({
     );
 
   return (
-    <div className="space-y-6">
+    <div className="atlas-command-center-shell space-y-6">
+      <AtlasOSRibbon
+        pipelineStatusLabel={pipelineStatusLabel}
+        pipelineIndicatorClasses={pipelineIndicatorClasses}
+        cash={dashboard.summary.cash}
+        stage={dashboard.summary.stage}
+        empireScore={empireScore}
+        confidence={confidence}
+      />
+
       <AtlasHero
         layout="stacked"
         eyebrow={`Atlas AI · ${greeting.greeting}, Commander`}
@@ -765,3 +775,4 @@ export default function CommandCenterHero({
     </div>
   );
 }
+
