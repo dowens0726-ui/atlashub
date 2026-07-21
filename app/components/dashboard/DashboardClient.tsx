@@ -25,6 +25,7 @@ import {
 
 import {
   MissionControlEnvironment,
+  type AtlasWorldConfiguration,
 } from "@/app/components/dashboard/mission-control";
 
 import {
@@ -207,8 +208,50 @@ export default function DashboardClient() {
   );
 
 
+  const worldConfiguration =
+    useMemo<
+      AtlasWorldConfiguration
+    >(
+      () => {
+        const status =
+          brainPipeline.status;
+
+        const intensity:
+          AtlasWorldConfiguration["intensity"] =
+            status ===
+              "loading" ||
+            status ===
+              "warning" ||
+            status ===
+              "failed"
+              ? "high"
+              : status ===
+                  "success"
+                ? "medium"
+                : "low";
+
+        return {
+          state:
+            status,
+
+          intensity,
+
+          active:
+            true,
+        };
+      },
+      [
+        brainPipeline.status,
+      ]
+    );
+
+
   return (
-    <MissionControlEnvironment>
+    <MissionControlEnvironment
+      worldConfiguration={
+        worldConfiguration
+      }
+    >
       <AtlasLiveEventToast />
 
       <CommandCenterLayout
@@ -465,3 +508,4 @@ export default function DashboardClient() {
     </MissionControlEnvironment>
   );
 }
+

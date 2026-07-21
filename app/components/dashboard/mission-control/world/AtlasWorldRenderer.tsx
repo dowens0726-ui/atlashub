@@ -1,5 +1,6 @@
 ﻿import AtlasAtmosphere from "./AtlasAtmosphere";
 import AtlasEffects from "./AtlasEffects";
+import AtlasLighting from "./AtlasLighting";
 import AtlasOcean from "./AtlasOcean";
 import AtlasSky from "./AtlasSky";
 import AtlasSkyline from "./AtlasSkyline";
@@ -38,6 +39,12 @@ export default function AtlasWorldRenderer({
       }
     >
       <AtlasSky />
+
+      <AtlasLighting
+        configuration={
+          configuration
+        }
+      />
 
       <AtlasSkyline />
 

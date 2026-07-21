@@ -7,6 +7,10 @@ export {
 } from "./AtlasEffects";
 
 export {
+  default as AtlasLighting,
+} from "./AtlasLighting";
+
+export {
   default as AtlasOcean,
 } from "./AtlasOcean";
 

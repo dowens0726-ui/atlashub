@@ -2586,3 +2586,623 @@ a {
   }
 }
 
+/* ATLAS REACTIVE WORLD LIGHTING: START */
+
+.atlas-mission-environment {
+  --atlas-world-state-cyan:
+    34 211 238;
+  --atlas-world-state-violet:
+    168 85 247;
+  --atlas-world-state-warm:
+    251 146 60;
+  --atlas-world-state-alert:
+    251 113 133;
+  --atlas-world-energy:
+    0.72;
+  --atlas-world-light-speed:
+    10s;
+}
+
+.atlas-mission-environment[
+  data-world-intensity="low"
+] {
+  --atlas-world-energy:
+    0.42;
+  --atlas-world-light-speed:
+    16s;
+}
+
+.atlas-mission-environment[
+  data-world-intensity="medium"
+] {
+  --atlas-world-energy:
+    0.72;
+  --atlas-world-light-speed:
+    11s;
+}
+
+.atlas-mission-environment[
+  data-world-intensity="high"
+] {
+  --atlas-world-energy:
+    1;
+  --atlas-world-light-speed:
+    6s;
+}
+
+.atlas-world-renderer {
+  position:
+    absolute;
+  z-index:
+    0;
+  inset:
+    0;
+  pointer-events:
+    none;
+  isolation:
+    isolate;
+}
+
+.atlas-world-lighting {
+  position:
+    absolute;
+  z-index:
+    -8;
+  inset:
+    0 -3rem;
+  min-height:
+    78rem;
+  overflow:
+    hidden;
+  pointer-events:
+    none;
+}
+
+.atlas-world-lighting > div {
+  position:
+    absolute;
+  pointer-events:
+    none;
+}
+
+.atlas-world-lighting__ambient {
+  inset:
+    -12rem -10rem 0;
+  opacity:
+    calc(
+      0.2 +
+      var(--atlas-world-energy) *
+      0.18
+    );
+  background:
+    radial-gradient(
+      circle at 50% 17%,
+      rgb(
+        var(--atlas-world-state-violet) /
+        0.18
+      ),
+      transparent 36%
+    ),
+    radial-gradient(
+      circle at 72% 30%,
+      rgb(
+        var(--atlas-world-state-cyan) /
+        0.14
+      ),
+      transparent 31%
+    ),
+    radial-gradient(
+      circle at 24% 38%,
+      rgb(
+        var(--atlas-world-state-warm) /
+        0.08
+      ),
+      transparent 27%
+    );
+  filter:
+    blur(34px);
+  animation:
+    atlas-world-lighting-breathe
+    var(--atlas-world-light-speed)
+    ease-in-out
+    infinite;
+}
+
+.atlas-world-lighting__horizon {
+  top:
+    25rem;
+  left:
+    50%;
+  width:
+    min(110rem, 130vw);
+  height:
+    24rem;
+  opacity:
+    calc(
+      0.18 +
+      var(--atlas-world-energy) *
+      0.2
+    );
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgb(
+        var(--atlas-world-state-cyan) /
+        0.22
+      ),
+      transparent 62%
+    );
+  filter:
+    blur(24px);
+  transform:
+    translateX(-50%);
+}
+
+.atlas-world-lighting__core {
+  top:
+    5rem;
+  left:
+    50%;
+  width:
+    42rem;
+  height:
+    42rem;
+  border-radius:
+    999px;
+  opacity:
+    calc(
+      0.08 +
+      var(--atlas-world-energy) *
+      0.1
+    );
+  background:
+    radial-gradient(
+      circle,
+      rgb(
+        var(--atlas-world-state-cyan) /
+        0.18
+      ),
+      rgb(
+        var(--atlas-world-state-violet) /
+        0.08
+      ) 36%,
+      transparent 70%
+    );
+  filter:
+    blur(18px);
+  transform:
+    translateX(-50%);
+  animation:
+    atlas-world-core-pulse
+    var(--atlas-world-light-speed)
+    ease-in-out
+    infinite;
+}
+
+.atlas-world-lighting__scan {
+  top:
+    -15%;
+  left:
+    -30%;
+  width:
+    24%;
+  height:
+    110%;
+  opacity:
+    0;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgb(
+        var(--atlas-world-state-cyan) /
+        0.12
+      ),
+      transparent
+    );
+  filter:
+    blur(12px);
+  transform:
+    skewX(-14deg);
+}
+
+.atlas-world-lighting__alert {
+  inset:
+    0;
+  opacity:
+    0;
+  background:
+    radial-gradient(
+      circle at 50% 22%,
+      rgb(
+        var(--atlas-world-state-alert) /
+        0.18
+      ),
+      transparent 48%
+    ),
+    linear-gradient(
+      180deg,
+      transparent,
+      rgb(
+        var(--atlas-world-state-alert) /
+        0.06
+      )
+    );
+}
+
+
+/* Waiting and idle */
+
+.atlas-mission-environment[
+  data-world-state="idle"
+]
+.atlas-world-skyline,
+.atlas-mission-environment[
+  data-world-state="waiting"
+]
+.atlas-world-skyline {
+  opacity:
+    0.64;
+  filter:
+    saturate(0.78)
+    brightness(0.82);
+}
+
+.atlas-mission-environment[
+  data-world-state="idle"
+]
+.atlas-world-particles,
+.atlas-mission-environment[
+  data-world-state="waiting"
+]
+.atlas-world-particles {
+  opacity:
+    0.2;
+}
+
+
+/* Loading */
+
+.atlas-mission-environment[
+  data-world-state="loading"
+]
+.atlas-world-lighting__scan {
+  opacity:
+    1;
+  animation:
+    atlas-world-loading-scan
+    4.8s
+    linear
+    infinite;
+}
+
+.atlas-mission-environment[
+  data-world-state="loading"
+]
+.atlas-mission-environment__radar {
+  border-color:
+    rgb(
+      var(--atlas-world-state-cyan) /
+      0.18
+    );
+  filter:
+    drop-shadow(
+      0 0 14px
+      rgb(
+        var(--atlas-world-state-cyan) /
+        0.24
+      )
+    );
+}
+
+.atlas-mission-environment[
+  data-world-state="loading"
+]
+.atlas-mission-environment__signal {
+  opacity:
+    0.85;
+}
+
+
+/* Success */
+
+.atlas-mission-environment[
+  data-world-state="success"
+] {
+  --atlas-world-state-cyan:
+    34 211 238;
+  --atlas-world-state-violet:
+    168 85 247;
+}
+
+.atlas-mission-environment[
+  data-world-state="success"
+]
+.atlas-world-skyline {
+  filter:
+    saturate(1.12)
+    brightness(1.04)
+    drop-shadow(
+      0 0 18px
+      rgb(34 211 238 / 0.11)
+    );
+}
+
+.atlas-mission-environment[
+  data-world-state="success"
+]
+.atlas-world-water {
+  filter:
+    saturate(1.18)
+    brightness(1.05);
+}
+
+.atlas-mission-environment[
+  data-world-state="success"
+]
+.atlas-world-beacon {
+  filter:
+    drop-shadow(
+      0 0 8px
+      rgb(34 211 238 / 0.65)
+    );
+}
+
+
+/* Warning */
+
+.atlas-mission-environment[
+  data-world-state="warning"
+] {
+  --atlas-world-state-cyan:
+    251 191 36;
+  --atlas-world-state-violet:
+    249 115 22;
+  --atlas-world-state-warm:
+    251 146 60;
+}
+
+.atlas-mission-environment[
+  data-world-state="warning"
+]
+.atlas-world-sunset {
+  opacity:
+    1;
+  filter:
+    saturate(1.28)
+    brightness(1.08);
+}
+
+.atlas-mission-environment[
+  data-world-state="warning"
+]
+.atlas-world-haze--rear {
+  opacity:
+    0.32;
+  filter:
+    blur(28px)
+    hue-rotate(-28deg)
+    saturate(1.4);
+}
+
+.atlas-mission-environment[
+  data-world-state="warning"
+]
+.atlas-mission-environment__horizon {
+  filter:
+    drop-shadow(
+      0 0 14px
+      rgb(251 146 60 / 0.34)
+    );
+}
+
+.atlas-mission-environment[
+  data-world-state="warning"
+]
+.atlas-world-beacon {
+  background:
+    rgb(251 191 36);
+  box-shadow:
+    0 0 10px
+    rgb(251 146 60 / 0.9);
+}
+
+
+/* Failed */
+
+.atlas-mission-environment[
+  data-world-state="failed"
+] {
+  --atlas-world-state-cyan:
+    251 113 133;
+  --atlas-world-state-violet:
+    190 24 93;
+  --atlas-world-state-warm:
+    239 68 68;
+}
+
+.atlas-mission-environment[
+  data-world-state="failed"
+]
+.atlas-world-lighting__alert {
+  opacity:
+    1;
+  animation:
+    atlas-world-alert-pulse
+    2.4s
+    ease-in-out
+    infinite;
+}
+
+.atlas-mission-environment[
+  data-world-state="failed"
+]
+.atlas-world-skyline {
+  opacity:
+    0.72;
+  filter:
+    saturate(0.82)
+    brightness(0.72)
+    sepia(0.12)
+    hue-rotate(300deg)
+    drop-shadow(
+      0 0 16px
+      rgb(251 113 133 / 0.18)
+    );
+}
+
+.atlas-mission-environment[
+  data-world-state="failed"
+]
+.atlas-world-water {
+  opacity:
+    0.48;
+  filter:
+    saturate(0.7)
+    hue-rotate(290deg);
+}
+
+.atlas-mission-environment[
+  data-world-state="failed"
+]
+.atlas-mission-environment__radar {
+  border-color:
+    rgb(251 113 133 / 0.2);
+}
+
+.atlas-mission-environment[
+  data-world-state="failed"
+]
+.atlas-mission-environment__signal {
+  background:
+    linear-gradient(
+      to top,
+      transparent,
+      rgb(251 113 133 / 0.72),
+      transparent
+    );
+  filter:
+    drop-shadow(
+      0 0 10px
+      rgb(251 113 133 / 0.48)
+    );
+}
+
+.atlas-mission-environment[
+  data-world-state="failed"
+]
+.atlas-world-aircraft {
+  background:
+    rgb(251 113 133);
+  box-shadow:
+    0 0 10px
+    rgb(251 113 133 / 0.95);
+}
+
+
+@keyframes atlas-world-lighting-breathe {
+  0%,
+  100% {
+    opacity:
+      0.68;
+    transform:
+      scale(0.98);
+  }
+
+  50% {
+    opacity:
+      1;
+    transform:
+      scale(1.035);
+  }
+}
+
+@keyframes atlas-world-core-pulse {
+  0%,
+  100% {
+    opacity:
+      0.08;
+    transform:
+      translateX(-50%)
+      scale(0.94);
+  }
+
+  50% {
+    opacity:
+      calc(
+        0.14 +
+        var(--atlas-world-energy) *
+        0.08
+      );
+    transform:
+      translateX(-50%)
+      scale(1.06);
+  }
+}
+
+@keyframes atlas-world-loading-scan {
+  from {
+    transform:
+      translateX(0)
+      skewX(-14deg);
+  }
+
+  to {
+    transform:
+      translateX(650%)
+      skewX(-14deg);
+  }
+}
+
+@keyframes atlas-world-alert-pulse {
+  0%,
+  100% {
+    opacity:
+      0.16;
+  }
+
+  50% {
+    opacity:
+      0.78;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .atlas-world-lighting {
+    inset-inline:
+      -1.5rem;
+    min-height:
+      68rem;
+  }
+
+  .atlas-world-lighting__core {
+    top:
+      10rem;
+    width:
+      30rem;
+    height:
+      30rem;
+  }
+
+  .atlas-world-lighting__horizon {
+    top:
+      31rem;
+    width:
+      150vw;
+  }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .atlas-world-lighting__ambient,
+  .atlas-world-lighting__core,
+  .atlas-world-lighting__scan,
+  .atlas-world-lighting__alert {
+    animation:
+      none;
+  }
+}
+
+/* ATLAS REACTIVE WORLD LIGHTING: END */
+
