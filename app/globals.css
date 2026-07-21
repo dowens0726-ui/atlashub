@@ -872,3 +872,469 @@ a {
       none;
   }
 }
+
+/* ATLAS NEURAL COMMAND CORE */
+
+@keyframes atlas-neural-rotate {
+  from {
+    transform:
+      translate(-50%, -50%)
+      rotate(0deg);
+  }
+
+  to {
+    transform:
+      translate(-50%, -50%)
+      rotate(360deg);
+  }
+}
+
+@keyframes atlas-neural-rotate-reverse {
+  from {
+    transform:
+      translate(-50%, -50%)
+      rotate(360deg);
+  }
+
+  to {
+    transform:
+      translate(-50%, -50%)
+      rotate(0deg);
+  }
+}
+
+@keyframes atlas-neural-core-breathe {
+  0%,
+  100% {
+    filter:
+      drop-shadow(
+        0 0 18px
+        rgb(34 211 238 / 0.18)
+      );
+  }
+
+  50% {
+    filter:
+      drop-shadow(
+        0 0 42px
+        rgb(34 211 238 / 0.38)
+      );
+  }
+}
+
+@keyframes atlas-neural-core-warning {
+  0%,
+  100% {
+    filter:
+      drop-shadow(
+        0 0 18px
+        rgb(251 191 36 / 0.18)
+      );
+  }
+
+  50% {
+    filter:
+      drop-shadow(
+        0 0 38px
+        rgb(251 191 36 / 0.4)
+      );
+  }
+}
+
+@keyframes atlas-neural-core-limited {
+  0%,
+  100% {
+    filter:
+      drop-shadow(
+        0 0 14px
+        rgb(251 113 133 / 0.18)
+      );
+    opacity:
+      0.82;
+  }
+
+  50% {
+    filter:
+      drop-shadow(
+        0 0 32px
+        rgb(251 113 133 / 0.4)
+      );
+    opacity:
+      1;
+  }
+}
+
+@keyframes atlas-neural-line-pulse {
+  from {
+    stroke-dashoffset:
+      90;
+  }
+
+  to {
+    stroke-dashoffset:
+      0;
+  }
+}
+
+@keyframes atlas-neural-signal {
+  0% {
+    transform:
+      scale(0.8);
+    opacity:
+      0.45;
+  }
+
+  50% {
+    transform:
+      scale(1.5);
+    opacity:
+      1;
+  }
+
+  100% {
+    transform:
+      scale(0.8);
+    opacity:
+      0.45;
+  }
+}
+
+@keyframes atlas-neural-node-priority {
+  0%,
+  100% {
+    transform:
+      translate(-50%, -50%)
+      scale(1);
+  }
+
+  50% {
+    transform:
+      translate(-50%, -50%)
+      scale(1.04);
+  }
+}
+
+@keyframes atlas-neural-core-scan {
+  0% {
+    top:
+      20%;
+    opacity:
+      0;
+  }
+
+  20% {
+    opacity:
+      0.75;
+  }
+
+  80% {
+    opacity:
+      0.75;
+  }
+
+  100% {
+    top:
+      80%;
+    opacity:
+      0;
+  }
+}
+
+@keyframes atlas-strategic-vector-beam {
+  from {
+    transform:
+      translateX(-120%);
+  }
+
+  to {
+    transform:
+      translateX(520%);
+  }
+}
+
+@keyframes atlas-strategic-vector-arrow {
+  0%,
+  100% {
+    transform:
+      translateX(0);
+  }
+
+  50% {
+    transform:
+      translateX(4px);
+  }
+}
+
+.atlas-neural-command-core {
+  position:
+    relative;
+}
+
+.atlas-neural-connections__static line {
+  stroke:
+    rgb(255 255 255 / 0.065);
+  stroke-width:
+    1;
+}
+
+.atlas-neural-connections__pulse line {
+  stroke:
+    url(#atlas-neural-line);
+  stroke-width:
+    1.5;
+  stroke-linecap:
+    round;
+  stroke-dasharray:
+    10 14;
+  animation:
+    atlas-neural-line-pulse
+    3.8s
+    linear
+    infinite;
+}
+
+.atlas-neural-connections__pulse line:nth-child(2) {
+  animation-delay:
+    -0.5s;
+}
+
+.atlas-neural-connections__pulse line:nth-child(3) {
+  animation-delay:
+    -1s;
+}
+
+.atlas-neural-connections__pulse line:nth-child(4) {
+  animation-delay:
+    -1.5s;
+}
+
+.atlas-neural-connections__pulse line:nth-child(5) {
+  animation-delay:
+    -2s;
+}
+
+.atlas-neural-connections__pulse line:nth-child(6) {
+  animation-delay:
+    -2.5s;
+}
+
+.atlas-neural-connections__pulse line:nth-child(7) {
+  animation-delay:
+    -3s;
+}
+
+.atlas-neural-ring::before,
+.atlas-neural-ring::after {
+  position:
+    absolute;
+  width:
+    7px;
+  height:
+    7px;
+  content:
+    "";
+  border-radius:
+    9999px;
+  background:
+    rgb(103 232 249);
+  box-shadow:
+    0 0 16px
+    rgb(103 232 249 / 0.8);
+}
+
+.atlas-neural-ring::before {
+  top:
+    -4px;
+  left:
+    50%;
+}
+
+.atlas-neural-ring::after {
+  right:
+    -4px;
+  top:
+    50%;
+}
+
+.atlas-neural-ring--outer {
+  animation:
+    atlas-neural-rotate
+    24s
+    linear
+    infinite;
+}
+
+.atlas-neural-ring--middle {
+  animation:
+    atlas-neural-rotate-reverse
+    18s
+    linear
+    infinite;
+}
+
+.atlas-neural-ring--inner {
+  animation:
+    atlas-neural-rotate
+    13s
+    linear
+    infinite;
+}
+
+.atlas-neural-ring--middle::before,
+.atlas-neural-ring--middle::after {
+  background:
+    rgb(196 181 253);
+  box-shadow:
+    0 0 16px
+    rgb(196 181 253 / 0.75);
+}
+
+.atlas-neural-ring--inner::before,
+.atlas-neural-ring--inner::after {
+  background:
+    rgb(110 231 183);
+  box-shadow:
+    0 0 16px
+    rgb(110 231 183 / 0.75);
+}
+
+.atlas-neural-core {
+  animation:
+    atlas-neural-core-breathe
+    4.2s
+    ease-in-out
+    infinite;
+}
+
+.atlas-neural-core--processing {
+  animation-duration:
+    1.8s;
+}
+
+.atlas-neural-core--warning {
+  animation-name:
+    atlas-neural-core-warning;
+  animation-duration:
+    2.8s;
+}
+
+.atlas-neural-core--limited {
+  animation-name:
+    atlas-neural-core-limited;
+  animation-duration:
+    2.2s;
+}
+
+.atlas-neural-core--waiting,
+.atlas-neural-core--standby {
+  animation-duration:
+    6s;
+  opacity:
+    0.9;
+}
+
+.atlas-neural-core__scan {
+  top:
+    20%;
+  z-index:
+    2;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgb(103 232 249 / 0.8),
+      transparent
+    );
+  box-shadow:
+    0 0 14px
+    rgb(34 211 238 / 0.5);
+  animation:
+    atlas-neural-core-scan
+    3.4s
+    ease-in-out
+    infinite;
+}
+
+.atlas-neural-node--active {
+  z-index:
+    24;
+}
+
+.atlas-neural-node--priority {
+  animation:
+    atlas-neural-node-priority
+    2.4s
+    ease-in-out
+    infinite;
+}
+
+.atlas-neural-node__signal {
+  box-shadow:
+    0 0 14px
+    currentColor;
+  animation:
+    atlas-neural-signal
+    2s
+    ease-in-out
+    infinite;
+}
+
+.atlas-strategic-vector__beam {
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgb(255 255 255 / 0.11),
+      transparent
+    );
+  transform:
+    translateX(-120%);
+  animation:
+    atlas-strategic-vector-beam
+    5s
+    linear
+    infinite;
+}
+
+.atlas-strategic-vector__arrow {
+  display:
+    inline-block;
+  animation:
+    atlas-strategic-vector-arrow
+    1.8s
+    ease-in-out
+    infinite;
+}
+
+@media (max-width: 640px) {
+  .atlas-neural-node > div {
+    min-width:
+      72px;
+    padding:
+      0.4rem 0.5rem;
+  }
+
+  .atlas-neural-node p {
+    max-width:
+      78px;
+  }
+
+  .atlas-neural-connections {
+    opacity:
+      0.75;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .atlas-neural-ring,
+  .atlas-neural-core,
+  .atlas-neural-core__scan,
+  .atlas-neural-node--priority,
+  .atlas-neural-node__signal,
+  .atlas-neural-connections__pulse line,
+  .atlas-strategic-vector__beam,
+  .atlas-strategic-vector__arrow {
+    animation:
+      none;
+  }
+}

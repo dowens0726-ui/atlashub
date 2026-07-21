@@ -735,11 +735,13 @@ export default function CommandCenterHero({
                     ? "Moderate"
                     : "Review"
               }
+              pipelineStatus={brainPipeline.status}
               pipelineStatusLabel={pipelineStatusLabel}
               pipelineIndicatorClasses={pipelineIndicatorClasses}
               urgencyLabel={urgencyLabel}
               shouldActNow={shouldActNow}
               stage={dashboard.summary.stage}
+              cash={dashboard.summary.cash}
               coachingResponse={coachingResponse}
               operatingSummary={empireStatus.summary}
             />
@@ -828,6 +830,8 @@ export default function CommandCenterHero({
     </div>
   );
 }
+
+
 
 
 
