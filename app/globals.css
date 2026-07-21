@@ -1,4 +1,4 @@
-@import "tailwindcss";
+﻿@import "tailwindcss";
 
 :root {
   --background: #ffffff;
@@ -4439,3 +4439,539 @@ a {
 }
 
 /* ATLAS FULL-BROWSER WORLD: END */
+/* ATLAS WORLD RENDERER V2: START */
+
+.atlas-v2-world {
+  background: #030612;
+  isolation: isolate;
+}
+
+.atlas-v2-sky {
+  z-index: 0;
+}
+
+.atlas-v2-sky__gradient {
+  background:
+    radial-gradient(
+      circle at 77% 29%,
+      rgba(255, 177, 86, 0.58),
+      transparent 18%
+    ),
+    radial-gradient(
+      circle at 69% 31%,
+      rgba(244, 76, 160, 0.36),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 37% 20%,
+      rgba(41, 104, 196, 0.27),
+      transparent 40%
+    ),
+    linear-gradient(
+      180deg,
+      #09102b 0%,
+      #242056 32%,
+      #7d285f 55%,
+      #e76a68 68%,
+      #16182f 85%,
+      #040812 100%
+    );
+}
+
+.atlas-v2-sky__sun {
+  position: absolute;
+  top: 21%;
+  right: 6%;
+  width: clamp(10rem, 16vw, 20rem);
+  aspect-ratio: 1;
+  border-radius: 999px;
+  background:
+    radial-gradient(
+      circle,
+      rgba(255, 247, 202, 0.98) 0%,
+      rgba(255, 190, 104, 0.94) 42%,
+      rgba(249, 115, 22, 0.58) 62%,
+      transparent 73%
+    );
+  box-shadow:
+    0 0 65px rgba(251, 146, 60, 0.42),
+    0 0 150px rgba(236, 72, 153, 0.22);
+  filter: blur(0.2px);
+}
+
+.atlas-v2-sky__cloud {
+  position: absolute;
+  inset-inline: -14%;
+  height: 20%;
+  opacity: 0.24;
+  filter: blur(24px);
+  background:
+    radial-gradient(
+      ellipse at 12% 54%,
+      rgba(255, 255, 255, 0.34),
+      transparent 38%
+    ),
+    radial-gradient(
+      ellipse at 45% 24%,
+      rgba(255, 255, 255, 0.2),
+      transparent 37%
+    ),
+    radial-gradient(
+      ellipse at 78% 48%,
+      rgba(255, 208, 203, 0.25),
+      transparent 35%
+    );
+}
+
+.atlas-v2-sky__cloud--far {
+  top: 11%;
+  transform: scaleX(1.15);
+  animation:
+    atlas-v2-cloud-drift-far 70s linear infinite;
+}
+
+.atlas-v2-sky__cloud--near {
+  top: 29%;
+  opacity: 0.16;
+  transform: scaleX(1.32);
+  animation:
+    atlas-v2-cloud-drift-near 48s linear infinite;
+}
+
+.atlas-v2-city {
+  z-index: 2;
+}
+
+.atlas-v2-skyline {
+  position: absolute;
+  inset-inline: -3%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  width: 106%;
+  transform-origin: center bottom;
+}
+
+.atlas-v2-skyline--far {
+  bottom: 31%;
+  z-index: 1;
+  min-height: 25%;
+  opacity: 0.42;
+  filter: blur(1.2px);
+  transform: scaleX(1.08);
+}
+
+.atlas-v2-skyline--mid {
+  bottom: 27%;
+  z-index: 2;
+  min-height: 35%;
+  opacity: 0.68;
+  filter: blur(0.45px);
+}
+
+.atlas-v2-skyline--near {
+  bottom: 22%;
+  z-index: 3;
+  min-height: 46%;
+  opacity: 0.94;
+}
+
+.atlas-v2-building {
+  --atlas-building-width: 40px;
+  --atlas-building-height: 180px;
+  --atlas-building-offset: 0px;
+  --atlas-building-density: 0.5;
+  --atlas-building-phase: 0s;
+  --atlas-building-lean: 0deg;
+
+  position: relative;
+  flex: 0 0 var(--atlas-building-width);
+  width: var(--atlas-building-width);
+  height: var(--atlas-building-height);
+  margin-bottom: var(--atlas-building-offset);
+  transform:
+    perspective(700px)
+    rotateY(var(--atlas-building-lean));
+  transform-origin: center bottom;
+}
+
+.atlas-v2-building__face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border: 1px solid rgba(133, 204, 255, 0.07);
+  background:
+    linear-gradient(
+      90deg,
+      rgba(7, 18, 38, 0.97),
+      rgba(19, 43, 70, 0.91) 46%,
+      rgba(5, 14, 32, 0.98)
+    );
+  box-shadow:
+    0 0 28px rgba(22, 126, 207, 0.07),
+    inset 0 0 30px rgba(38, 129, 188, 0.05);
+}
+
+.atlas-v2-building--far
+.atlas-v2-building__face {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(28, 34, 70, 0.9),
+      rgba(50, 51, 94, 0.82),
+      rgba(19, 27, 61, 0.92)
+    );
+}
+
+.atlas-v2-building--near
+.atlas-v2-building__face {
+  border-color: rgba(68, 192, 255, 0.12);
+  background:
+    linear-gradient(
+      90deg,
+      rgba(3, 11, 26, 0.99),
+      rgba(13, 39, 62, 0.96) 46%,
+      rgba(2, 8, 21, 1)
+    );
+}
+
+.atlas-v2-building__windows {
+  position: absolute;
+  inset: 8px 7px 6px;
+  opacity:
+    calc(0.22 + var(--atlas-building-density) * 0.55);
+  background-size: 9px 10px;
+  animation:
+    atlas-v2-building-lights 18s ease-in-out infinite;
+  animation-delay:
+    calc(var(--atlas-building-phase) * -1);
+}
+
+.atlas-v2-building--windows-grid
+.atlas-v2-building__windows {
+  background-image:
+    radial-gradient(
+      circle,
+      rgba(255, 202, 111, 0.88) 0 1px,
+      transparent 1.5px
+    );
+}
+
+.atlas-v2-building--windows-columns
+.atlas-v2-building__windows {
+  background-image:
+    linear-gradient(
+      90deg,
+      rgba(91, 213, 255, 0.5) 0 1px,
+      transparent 1px
+    );
+  background-size: 8px 100%;
+}
+
+.atlas-v2-building--windows-sparse
+.atlas-v2-building__windows {
+  background-image:
+    radial-gradient(
+      circle,
+      rgba(255, 190, 110, 0.8) 0 1px,
+      transparent 1.6px
+    );
+  background-size: 14px 16px;
+}
+
+.atlas-v2-building--windows-bands
+.atlas-v2-building__windows {
+  background-image:
+    linear-gradient(
+      180deg,
+      transparent 0 6px,
+      rgba(90, 208, 255, 0.32) 6px 7px,
+      transparent 7px 13px
+    );
+  background-size: 100% 13px;
+}
+
+.atlas-v2-building__edge {
+  position: absolute;
+  inset-block: 0;
+  right: 0;
+  width: 18%;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(1, 4, 14, 0.5)
+    );
+}
+
+.atlas-v2-building__roof {
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  transform: translateX(-50%);
+}
+
+.atlas-v2-building--roof-flat
+.atlas-v2-building__roof {
+  width: 72%;
+  height: 4px;
+  background: rgba(14, 32, 51, 0.95);
+}
+
+.atlas-v2-building--roof-stepped
+.atlas-v2-building__roof {
+  width: 65%;
+  height: 14px;
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0 12%,
+      rgba(13, 31, 52, 0.98) 12% 88%,
+      transparent 88%
+    );
+  clip-path:
+    polygon(
+      0 100%,
+      0 62%,
+      18% 62%,
+      18% 32%,
+      82% 32%,
+      82% 62%,
+      100% 62%,
+      100% 100%
+    );
+}
+
+.atlas-v2-building--roof-spire
+.atlas-v2-building__roof {
+  width: 3px;
+  height: 38px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 115, 191, 0.85),
+      rgba(92, 205, 255, 0.45),
+      rgba(11, 32, 52, 0.95)
+    );
+  box-shadow:
+    0 0 10px rgba(236, 72, 153, 0.35);
+}
+
+.atlas-v2-building--roof-antenna
+.atlas-v2-building__roof {
+  width: 2px;
+  height: 25px;
+  background: rgba(117, 185, 218, 0.75);
+}
+
+.atlas-v2-building--roof-antenna
+.atlas-v2-building__roof::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: #fb7185;
+  transform: translateX(-50%);
+  box-shadow:
+    0 0 8px rgba(251, 113, 133, 0.8);
+}
+
+.atlas-v2-building--roof-crown
+.atlas-v2-building__roof {
+  width: 70%;
+  height: 26px;
+  border: 1px solid rgba(91, 206, 255, 0.18);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(33, 87, 119, 0.58),
+      rgba(8, 25, 43, 0.92)
+    );
+  clip-path:
+    polygon(
+      15% 100%,
+      0 42%,
+      50% 0,
+      100% 42%,
+      85% 100%
+    );
+}
+
+.atlas-v2-world__shoreline {
+  position: absolute;
+  z-index: 4;
+  inset-inline: -5%;
+  bottom: 19%;
+  height: 5%;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(4, 10, 21, 0.92),
+      rgba(1, 5, 13, 1)
+    );
+  box-shadow:
+    0 -8px 34px rgba(236, 72, 153, 0.12),
+    0 7px 24px rgba(34, 211, 238, 0.1);
+}
+
+.atlas-v2-world__water {
+  position: absolute;
+  z-index: 5;
+  inset-inline: -8%;
+  bottom: 0;
+  height: 23%;
+  background:
+    radial-gradient(
+      ellipse at 72% 0%,
+      rgba(248, 113, 113, 0.22),
+      transparent 42%
+    ),
+    repeating-linear-gradient(
+      176deg,
+      rgba(90, 206, 255, 0.08) 0 1px,
+      transparent 1px 6px
+    ),
+    linear-gradient(
+      180deg,
+      rgba(10, 33, 57, 0.96),
+      rgba(2, 12, 29, 1)
+    );
+  animation:
+    atlas-v2-water-shift 14s ease-in-out infinite alternate;
+}
+
+.atlas-v2-world__reflection {
+  position: absolute;
+  z-index: 6;
+  left: 58%;
+  bottom: -3%;
+  width: 34%;
+  height: 29%;
+  opacity: 0.52;
+  transform: translateX(-50%);
+  filter: blur(7px);
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 184, 99, 0.36),
+      rgba(236, 72, 153, 0.2) 38%,
+      transparent 84%
+    );
+  clip-path:
+    polygon(
+      33% 0,
+      67% 0,
+      100% 100%,
+      0 100%
+    );
+}
+
+.atlas-v2-world__haze {
+  position: absolute;
+  z-index: 7;
+  inset: 38% -10% 14%;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(247, 124, 139, 0.08),
+      rgba(22, 31, 59, 0.15) 46%,
+      transparent
+    );
+  filter: blur(18px);
+}
+
+@keyframes atlas-v2-building-lights {
+  0%,
+  100% {
+    opacity: 0.68;
+  }
+
+  48% {
+    opacity: 1;
+  }
+
+  56% {
+    opacity: 0.76;
+  }
+}
+
+@keyframes atlas-v2-water-shift {
+  from {
+    transform: translate3d(-0.6%, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0.6%, 0, 0);
+  }
+}
+
+@keyframes atlas-v2-cloud-drift-far {
+  from {
+    transform: translateX(-2%) scaleX(1.15);
+  }
+
+  to {
+    transform: translateX(6%) scaleX(1.15);
+  }
+}
+
+@keyframes atlas-v2-cloud-drift-near {
+  from {
+    transform: translateX(5%) scaleX(1.32);
+  }
+
+  to {
+    transform: translateX(-5%) scaleX(1.32);
+  }
+}
+
+@media (max-width: 1023px) {
+  .atlas-v2-skyline {
+    width: 130%;
+    inset-inline: -15%;
+  }
+
+  .atlas-v2-skyline--near {
+    opacity: 0.84;
+  }
+}
+
+@media (max-width: 768px) {
+  .atlas-v2-sky__sun {
+    right: -4rem;
+  }
+
+  .atlas-v2-skyline {
+    width: 180%;
+    inset-inline: -40%;
+  }
+
+  .atlas-v2-skyline--far {
+    bottom: 34%;
+  }
+
+  .atlas-v2-skyline--mid {
+    bottom: 29%;
+  }
+
+  .atlas-v2-skyline--near {
+    bottom: 24%;
+  }
+
+  .atlas-v2-world__water {
+    height: 25%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .atlas-v2-sky__cloud,
+  .atlas-v2-building__windows,
+  .atlas-v2-world__water {
+    animation: none;
+  }
+}
+
+/* ATLAS WORLD RENDERER V2: END */
