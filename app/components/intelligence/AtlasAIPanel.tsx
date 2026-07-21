@@ -1,4 +1,4 @@
-import AtlasActionTrackerCard from "./AtlasActionTrackerCard";
+﻿import AtlasActionTrackerCard from "./AtlasActionTrackerCard";
 import AtlasAdvisorCard from "./AtlasAdvisorCard";
 import AtlasBehaviorCard from "./AtlasBehaviorCard";
 import AtlasCoachCard from "./AtlasCoachCard";
@@ -198,8 +198,8 @@ export default function AtlasAIPanel({
 
         <div className="relative p-5 sm:p-6 lg:p-8">
           <header className="border-b border-white/[0.07] pb-7">
-            <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
-              <div className="max-w-3xl">
+            <div className="flex min-w-0 flex-col gap-6 2xl:flex-row 2xl:items-start 2xl:justify-between">
+              <div className="min-w-0 max-w-3xl">
                 <div className="flex flex-wrap items-center gap-3">
                   <p className="text-xs font-black uppercase tracking-[0.35em] text-cyan-300">
                     Atlas
@@ -225,8 +225,8 @@ export default function AtlasAIPanel({
                 </p>
               </div>
 
-              <div className="min-w-[220px] rounded-2xl border border-white/[0.07] bg-black/25 p-5">
-                <div className="flex items-end justify-between gap-4">
+              <div className="w-full min-w-0 rounded-2xl border border-white/[0.07] bg-black/25 p-5 2xl:w-auto 2xl:min-w-[220px]">
+                <div className="flex min-w-0 flex-wrap items-end justify-between gap-4">
                   <div>
                     <p className="text-[0.65rem] font-black uppercase tracking-[0.22em] text-zinc-500">
                       Decision Confidence
@@ -499,3 +499,6 @@ export default function AtlasAIPanel({
     </GlowCard>
   );
 }
+
+
+

@@ -1,4 +1,4 @@
-import type { DashboardModel } from "@/app/services";
+﻿import type { DashboardModel } from "@/app/services";
 
 import {
   AtlasGrid,
@@ -124,7 +124,7 @@ export default function CommandCenterOverview({
         </div>
       </header>
 
-      <div className="relative mt-7 grid gap-6 xl:grid-cols-[0.82fr_1.18fr]">
+      <div className="relative mt-7 grid min-w-0 gap-6 xl:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)]">
         <section className="rounded-[1.5rem] border border-amber-400/15 bg-amber-400/[0.035] p-5 sm:p-6">
           <div className="flex flex-col gap-6">
             <div className="flex items-end justify-between gap-5">
@@ -206,10 +206,10 @@ export default function CommandCenterOverview({
           </div>
         </section>
 
-        <div className="space-y-6">
+        <div className="min-w-0 space-y-6">
           <AtlasGrid
             columns={2}
-            className="gap-4"
+            className="min-w-0 gap-4 [&>*]:min-w-0"
           >
             <AtlasMetric
               label="Available Cash"
@@ -240,7 +240,7 @@ export default function CommandCenterOverview({
             />
           </AtlasGrid>
 
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid min-w-0 gap-4 sm:grid-cols-2 [&>*]:min-w-0">
             <div className="rounded-2xl border border-white/[0.07] bg-white/[0.025] p-5">
               <p className="text-[0.65rem] font-black uppercase tracking-[0.22em] text-zinc-500">
                 Next Steps
@@ -310,7 +310,7 @@ export default function CommandCenterOverview({
             </p>
           </div>
 
-          <div className="mt-5 grid gap-4 lg:grid-cols-2">
+          <div className="mt-5 grid min-w-0 gap-4 lg:grid-cols-2 [&>*]:min-w-0">
             {empire.insights.map(
               (insight) => (
                 <article
@@ -339,3 +339,7 @@ export default function CommandCenterOverview({
     </AtlasSurface>
   );
 }
+
+
+
+

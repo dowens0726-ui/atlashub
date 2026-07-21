@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+﻿import type { ReactNode } from "react";
 import AtlasStatusBadge from "./AtlasStatusBadge";
 import AtlasIntelligencePanel from "./AtlasIntelligencePanel";
 import AtlasMetricCard from "./AtlasMetricCard";
@@ -106,7 +106,7 @@ export default function AtlasCoachCard({
       <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-violet-300/80 to-transparent" />
 
       <div className="relative p-5 sm:p-6 lg:p-8">
-        <header className="flex flex-col gap-5 border-b border-zinc-800/80 pb-7 lg:flex-row lg:items-start lg:justify-between">
+        <header className="flex min-w-0 flex-col gap-5 border-b border-zinc-800/80 pb-7 xl:flex-row xl:items-start xl:justify-between">
           <div className="max-w-3xl">
             <div className="flex flex-wrap items-center gap-3">
               <p className="text-xs font-black uppercase tracking-[0.35em] text-violet-300">
@@ -146,7 +146,7 @@ export default function AtlasCoachCard({
           </div>
         </header>
 
-        <div className="mt-7 grid gap-4 sm:grid-cols-3">
+        <div className="mt-7 grid min-w-0 gap-4 sm:grid-cols-2 2xl:grid-cols-3 [&>*]:min-w-0">
           <AtlasMetricCard
             label="Coach Confidence"
             value={`${confidence}%`}
@@ -169,7 +169,7 @@ export default function AtlasCoachCard({
           />
         </div>
 
-        <div className="mt-7 grid gap-5 xl:grid-cols-[1.05fr_0.95fr]">
+        <div className="mt-7 grid min-w-0 gap-5 2xl:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
           <div className="space-y-5">
             <CoachPanel
               eyebrow="Coach Summary"
@@ -233,7 +233,7 @@ export default function AtlasCoachCard({
             </CoachPanel>
 
             <div className="rounded-2xl border border-zinc-800 bg-zinc-900/40 p-5">
-              <div className="flex items-center justify-between gap-4">
+              <div className="flex min-w-0 flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="text-[10px] font-black uppercase tracking-[0.22em] text-zinc-500">
                     Coaching Confidence
@@ -244,7 +244,7 @@ export default function AtlasCoachCard({
                   </p>
                 </div>
 
-                <p className="max-w-44 text-right text-xs font-bold leading-5 text-zinc-500">
+                <p className="max-w-md text-left text-xs font-bold leading-5 text-zinc-500 sm:max-w-44 sm:text-right">
                   Based on current player behavior and
                   strategic signals
                 </p>
@@ -320,3 +320,8 @@ function CoachPanel({
     </div>
   );
 }
+
+
+
+
+

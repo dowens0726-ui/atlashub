@@ -1,4 +1,4 @@
-import type {
+﻿import type {
   ReactNode,
 } from "react";
 
@@ -65,7 +65,7 @@ export default function CommandCenterLayout({
         </AtlasCommandSection>
       ) : null}
 
-      <section className="grid gap-8 xl:grid-cols-[0.95fr_1.05fr]">
+      <section className="grid min-w-0 gap-8 2xl:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
         <AtlasCommandSection
           variant="default"
           eyebrow="Empire Pulse"
