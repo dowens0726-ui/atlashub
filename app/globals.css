@@ -1,4 +1,4 @@
-﻿@import "tailwindcss";
+@import "tailwindcss";
 
 :root {
   --background: #ffffff;
@@ -3672,3 +3672,770 @@ a {
    END ATLAS UNIFIED COMMAND SCENE
    ============================================================ */
 
+/* ============================================================
+   ATLAS LIVING VICE CITY SKYLINE
+   Sprint 106C-B.2A
+   ============================================================ */
+
+@keyframes atlas-cloud-drift-far {
+  from {
+    transform: translate3d(-4%, 0, 0);
+  }
+
+  to {
+    transform: translate3d(4%, 0, 0);
+  }
+}
+
+@keyframes atlas-cloud-drift-near {
+  from {
+    transform: translate3d(3%, 0, 0);
+  }
+
+  to {
+    transform: translate3d(-5%, 0, 0);
+  }
+}
+
+@keyframes atlas-water-shimmer {
+  0%,
+  100% {
+    transform:
+      perspective(400px)
+      rotateX(58deg)
+      translate3d(-2%, 0, 0);
+
+    opacity: 0.34;
+  }
+
+  50% {
+    transform:
+      perspective(400px)
+      rotateX(58deg)
+      translate3d(2%, 0, 0);
+
+    opacity: 0.62;
+  }
+}
+
+@keyframes atlas-city-breathe {
+  0%,
+  100% {
+    filter:
+      brightness(0.92)
+      saturate(0.94);
+  }
+
+  50% {
+    filter:
+      brightness(1.08)
+      saturate(1.12);
+  }
+}
+
+@keyframes atlas-palm-sway {
+  0%,
+  100% {
+    transform:
+      rotate(-1.5deg)
+      translateZ(0);
+  }
+
+  50% {
+    transform:
+      rotate(1.5deg)
+      translateZ(0);
+  }
+}
+
+.atlas-world {
+  z-index: 1;
+  opacity: 0.78;
+
+  mask-image:
+    linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(0, 0, 0, 0.52) 12%,
+      #000 34%,
+      #000 88%,
+      transparent 100%
+    );
+}
+
+.atlas-world__sun {
+  position: absolute;
+  top: 4%;
+  right: 12%;
+
+  width: 18rem;
+  height: 18rem;
+
+  border-radius: 999px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255, 188, 104, 0.3) 0%,
+      rgba(255, 113, 180, 0.17) 30%,
+      rgba(139, 92, 246, 0.08) 50%,
+      transparent 72%
+    );
+
+  filter: blur(4px);
+  opacity: 0.78;
+}
+
+.atlas-world__clouds {
+  position: absolute;
+  inset-inline: -15%;
+
+  height: 28%;
+
+  background-repeat: repeat-x;
+
+  filter: blur(14px);
+  will-change: transform;
+}
+
+.atlas-world__clouds--far {
+  top: 4%;
+  opacity: 0.24;
+
+  background:
+    radial-gradient(
+      ellipse at 16% 55%,
+      rgba(204, 228, 255, 0.3),
+      transparent 27%
+    ),
+    radial-gradient(
+      ellipse at 46% 40%,
+      rgba(167, 203, 255, 0.22),
+      transparent 32%
+    ),
+    radial-gradient(
+      ellipse at 78% 62%,
+      rgba(224, 210, 255, 0.2),
+      transparent 28%
+    );
+
+  animation:
+    atlas-cloud-drift-far 32s ease-in-out infinite alternate;
+}
+
+.atlas-world__clouds--near {
+  top: 13%;
+  opacity: 0.16;
+
+  background:
+    radial-gradient(
+      ellipse at 28% 60%,
+      rgba(255, 255, 255, 0.25),
+      transparent 24%
+    ),
+    radial-gradient(
+      ellipse at 62% 44%,
+      rgba(183, 224, 255, 0.2),
+      transparent 28%
+    ),
+    radial-gradient(
+      ellipse at 92% 58%,
+      rgba(244, 198, 255, 0.18),
+      transparent 23%
+    );
+
+  animation:
+    atlas-cloud-drift-near 26s ease-in-out infinite alternate;
+}
+
+.atlas-world__skyline {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 24%;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+
+  padding-inline: 2%;
+
+  transform-origin: bottom;
+
+  animation:
+    atlas-city-breathe 8s ease-in-out infinite;
+}
+
+.atlas-world__skyline--far {
+  height: 24%;
+  opacity: 0.32;
+
+  filter: blur(1.5px);
+  transform: scaleX(1.08);
+}
+
+.atlas-world__skyline--near {
+  height: 34%;
+  opacity: 0.55;
+}
+
+.atlas-building {
+  position: relative;
+
+  display: block;
+
+  width: clamp(2.2rem, 5vw, 5.6rem);
+  min-width: 1.8rem;
+
+  border:
+    1px solid rgba(103, 232, 249, 0.12);
+
+  border-bottom: 0;
+
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 12px,
+      rgba(89, 245, 255, 0.13) 12px 14px
+    ),
+    repeating-linear-gradient(
+      180deg,
+      transparent 0 13px,
+      rgba(244, 206, 255, 0.09) 13px 15px
+    ),
+    linear-gradient(
+      180deg,
+      rgba(17, 44, 67, 0.78),
+      rgba(4, 13, 28, 0.92)
+    );
+
+  box-shadow:
+    0 0 24px rgba(34, 211, 238, 0.08),
+    inset 0 0 22px rgba(139, 92, 246, 0.06);
+
+  clip-path:
+    polygon(
+      5% 8%,
+      28% 8%,
+      28% 0,
+      72% 0,
+      72% 8%,
+      95% 8%,
+      100% 100%,
+      0 100%
+    );
+}
+
+.atlas-building::before {
+  content: "";
+
+  position: absolute;
+  inset: 8% 12%;
+
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(103, 232, 249, 0.34) 0 2px,
+      transparent 2px 12px
+    ),
+    repeating-linear-gradient(
+      180deg,
+      rgba(244, 114, 182, 0.22) 0 2px,
+      transparent 2px 13px
+    );
+
+  opacity: 0.28;
+}
+
+.atlas-building--01 {
+  height: 32%;
+}
+
+.atlas-building--02 {
+  height: 66%;
+}
+
+.atlas-building--03 {
+  height: 43%;
+}
+
+.atlas-building--04 {
+  height: 78%;
+}
+
+.atlas-building--05 {
+  height: 54%;
+}
+
+.atlas-building--06 {
+  height: 91%;
+}
+
+.atlas-building--07 {
+  height: 48%;
+}
+
+.atlas-building--08 {
+  height: 70%;
+}
+
+.atlas-building--09 {
+  height: 40%;
+}
+
+.atlas-building--10 {
+  height: 58%;
+}
+
+.atlas-building--11 {
+  height: 38%;
+}
+
+.atlas-building--12 {
+  height: 76%;
+}
+
+.atlas-building--13 {
+  height: 56%;
+}
+
+.atlas-building--14 {
+  height: 96%;
+}
+
+.atlas-building--15 {
+  height: 64%;
+}
+
+.atlas-building--16 {
+  height: 84%;
+}
+
+.atlas-building--17 {
+  height: 50%;
+}
+
+.atlas-building--18 {
+  height: 68%;
+}
+
+.atlas-world__water {
+  position: absolute;
+  inset-inline: -6%;
+  bottom: 0;
+
+  height: 26%;
+
+  background:
+    repeating-linear-gradient(
+      176deg,
+      transparent 0 9px,
+      rgba(103, 232, 249, 0.06) 9px 10px,
+      transparent 10px 18px
+    ),
+    linear-gradient(
+      180deg,
+      rgba(9, 35, 58, 0.35),
+      rgba(3, 8, 22, 0.86)
+    );
+}
+
+.atlas-world__reflection {
+  position: absolute;
+  inset-inline: -12%;
+  bottom: 2%;
+
+  height: 24%;
+
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0 22px,
+      rgba(34, 211, 238, 0.08) 22px 26px,
+      transparent 26px 42px
+    ),
+    radial-gradient(
+      ellipse at 64% 20%,
+      rgba(236, 72, 153, 0.18),
+      transparent 34%
+    ),
+    radial-gradient(
+      ellipse at 34% 12%,
+      rgba(34, 211, 238, 0.2),
+      transparent 38%
+    );
+
+  filter: blur(5px);
+
+  transform:
+    perspective(400px)
+    rotateX(58deg);
+
+  transform-origin: top;
+
+  animation:
+    atlas-water-shimmer 7s ease-in-out infinite;
+}
+
+.atlas-world__palms {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 20%;
+
+  height: 22%;
+}
+
+.atlas-palm {
+  position: absolute;
+  bottom: 0;
+
+  width: 3px;
+  height: 66%;
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(45, 212, 191, 0.15),
+      rgba(15, 23, 42, 0.94)
+    );
+
+  transform-origin: bottom;
+
+  animation:
+    atlas-palm-sway 6s ease-in-out infinite;
+}
+
+.atlas-palm::before {
+  content: "";
+
+  position: absolute;
+  top: -1.35rem;
+  left: 50%;
+
+  width: 5rem;
+  height: 3.1rem;
+
+  transform: translateX(-50%);
+
+  background:
+    conic-gradient(
+      from 10deg,
+      transparent 0deg 16deg,
+      rgba(45, 212, 191, 0.42) 17deg 30deg,
+      transparent 31deg 58deg,
+      rgba(45, 212, 191, 0.34) 59deg 75deg,
+      transparent 76deg 110deg,
+      rgba(45, 212, 191, 0.4) 111deg 128deg,
+      transparent 129deg 170deg,
+      rgba(45, 212, 191, 0.33) 171deg 190deg,
+      transparent 191deg 230deg,
+      rgba(45, 212, 191, 0.36) 231deg 249deg,
+      transparent 250deg 292deg,
+      rgba(45, 212, 191, 0.36) 293deg 312deg,
+      transparent 313deg 360deg
+    );
+
+  clip-path:
+    ellipse(50% 50%);
+
+  filter:
+    drop-shadow(
+      0 0 8px rgba(45, 212, 191, 0.22)
+    );
+}
+
+.atlas-palm--01 {
+  left: 6%;
+  height: 72%;
+  animation-delay: -1s;
+}
+
+.atlas-palm--02 {
+  left: 18%;
+  height: 52%;
+  animation-delay: -3s;
+}
+
+.atlas-palm--03 {
+  right: 11%;
+  height: 76%;
+  animation-delay: -2s;
+}
+
+.atlas-palm--04 {
+  right: 24%;
+  height: 48%;
+  animation-delay: -4s;
+}
+
+.atlas-world__haze {
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(2, 8, 23, 0.08) 0%,
+      rgba(34, 211, 238, 0.03) 34%,
+      rgba(129, 92, 246, 0.07) 60%,
+      rgba(2, 6, 23, 0.44) 100%
+    ),
+    radial-gradient(
+      ellipse at 50% 62%,
+      rgba(34, 211, 238, 0.1),
+      transparent 52%
+    );
+
+  backdrop-filter: blur(0.6px);
+}
+
+.atlas-hero-scene__content {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(3, 7, 18, 0.08),
+      rgba(3, 7, 18, 0.46)
+    );
+}
+
+@media (max-width: 1023px) {
+  .atlas-world {
+    opacity: 0.6;
+  }
+
+  .atlas-world__sun {
+    right: -4rem;
+  }
+
+  .atlas-world__palms {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .atlas-world__clouds,
+  .atlas-world__skyline,
+  .atlas-world__reflection,
+  .atlas-palm {
+    animation: none;
+  }
+}
+
+/* ATLAS FULL-BROWSER WORLD: START */
+
+.atlas-app-shell {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(1, 5, 15, 0.02),
+      rgba(1, 5, 15, 0.16) 52%,
+      rgba(1, 5, 15, 0.68)
+    );
+}
+
+.atlas-shell-world {
+  z-index: -20;
+  min-height: 100svh;
+  background: #020611;
+}
+
+.atlas-shell-world__base {
+  background:
+    radial-gradient(
+      circle at 82% 24%,
+      rgba(251, 146, 60, 0.34),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 70% 28%,
+      rgba(236, 72, 153, 0.3),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 42% 18%,
+      rgba(59, 130, 246, 0.24),
+      transparent 38%
+    ),
+    linear-gradient(
+      180deg,
+      #07071c 0%,
+      #171238 25%,
+      #3b174f 47%,
+      #181934 67%,
+      #030815 100%
+    );
+}
+
+.atlas-shell-world .atlas-world {
+  z-index: 1;
+  opacity: 1;
+  mask-image: none;
+}
+
+.atlas-shell-world .atlas-world__sun {
+  top: 22%;
+  right: 4%;
+  width: clamp(11rem, 17vw, 21rem);
+  height: clamp(11rem, 17vw, 21rem);
+  opacity: 0.92;
+}
+
+.atlas-shell-world .atlas-world__clouds--far {
+  opacity: 0.36;
+}
+
+.atlas-shell-world .atlas-world__clouds--near {
+  opacity: 0.25;
+}
+
+.atlas-shell-world .atlas-world__skyline {
+  inset-inline: -1%;
+  bottom: 28%;
+  width: 102%;
+  justify-content: space-between;
+}
+
+.atlas-shell-world .atlas-world__skyline--far {
+  height: 29%;
+  opacity: 0.52;
+  transform: scaleX(1.1);
+}
+
+.atlas-shell-world .atlas-world__skyline--near {
+  height: 43%;
+  opacity: 0.9;
+}
+
+.atlas-shell-world .atlas-building {
+  box-shadow:
+    0 0 24px rgba(236, 72, 153, 0.09),
+    inset 0 0 22px rgba(34, 211, 238, 0.04);
+}
+
+.atlas-shell-world .atlas-world__palms {
+  bottom: 20%;
+  opacity: 0.88;
+}
+
+.atlas-shell-world .atlas-world__water {
+  inset-inline: -8%;
+  bottom: 0;
+  height: 31%;
+  opacity: 0.92;
+}
+
+.atlas-shell-world .atlas-world__reflection {
+  inset-inline: -14%;
+  bottom: 1%;
+  height: 31%;
+  opacity: 0.86;
+}
+
+.atlas-shell-world__grid {
+  opacity: 0.09;
+  background-image:
+    linear-gradient(
+      rgba(255, 255, 255, 0.025) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.025) 1px,
+      transparent 1px
+    );
+  background-size: 64px 64px;
+  mask-image:
+    linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.22),
+      transparent 72%
+    );
+}
+
+.atlas-shell-world__vignette {
+  box-shadow:
+    inset 0 0 170px rgba(0, 0, 0, 0.64),
+    inset 0 -190px 230px rgba(0, 0, 0, 0.66);
+}
+
+.atlas-shell-world__wash {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(2, 6, 23, 0.35),
+      transparent 24%,
+      transparent 76%,
+      rgba(2, 6, 23, 0.12)
+    ),
+    linear-gradient(
+      180deg,
+      rgba(2, 6, 23, 0.05),
+      transparent 40%,
+      rgba(2, 6, 23, 0.35)
+    );
+}
+
+.atlas-app-shell__main {
+  background: transparent;
+}
+
+.atlas-app-shell__main-glow {
+  background:
+    radial-gradient(
+      circle at 72% 4%,
+      rgba(236, 72, 153, 0.1),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 18% 38%,
+      rgba(34, 211, 238, 0.08),
+      transparent 31%
+    );
+}
+
+.atlas-app-sidebar {
+  box-shadow:
+    22px 0 80px rgba(0, 0, 0, 0.3),
+    inset -1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.atlas-hero-scene {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(3, 7, 18, 0.66),
+      rgba(3, 7, 18, 0.34)
+    );
+  backdrop-filter: blur(18px);
+}
+
+.atlas-hero-scene__environment {
+  opacity: 0.32;
+}
+
+@media (max-width: 1023px) {
+  .atlas-shell-world .atlas-world__skyline {
+    width: 132%;
+    inset-inline: -16%;
+  }
+
+  .atlas-shell-world .atlas-world__sun {
+    right: -3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .atlas-shell-world .atlas-world__skyline {
+    width: 180%;
+    inset-inline: -40%;
+    bottom: 30%;
+  }
+
+  .atlas-shell-world .atlas-world__water,
+  .atlas-shell-world .atlas-world__reflection {
+    height: 26%;
+  }
+}
+
+/* ATLAS FULL-BROWSER WORLD: END */

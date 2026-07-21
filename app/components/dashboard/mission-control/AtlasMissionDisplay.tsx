@@ -1,4 +1,4 @@
-﻿import AtlasNeuralCommandCore from "./AtlasNeuralCommandCore";
+import AtlasNeuralCommandCore from "./AtlasNeuralCommandCore";
 
 
 type AtlasMissionDisplayProps = {
@@ -100,7 +100,7 @@ export default function AtlasMissionDisplay({
         className="pointer-events-none absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/45 to-transparent"
       />
 
-      <div className="relative flex h-full min-h-[720px] flex-col p-5 sm:p-7">
+      <div className="relative flex h-full min-h-[600px] flex-col p-5 sm:p-6 lg:p-7 2xl:min-h-[640px]">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
             <p className="text-[0.62rem] font-black uppercase tracking-[0.28em] text-cyan-300">

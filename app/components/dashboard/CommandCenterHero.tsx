@@ -1,4 +1,4 @@
-﻿import AtlasButton from "@/app/components/design-system/AtlasButton";
+import AtlasButton from "@/app/components/design-system/AtlasButton";
 import AtlasGrid from "@/app/components/design-system/AtlasGrid";
 import AtlasHero from "@/app/components/design-system/AtlasHero";
 import AtlasMetric from "@/app/components/design-system/AtlasMetric";
@@ -424,8 +424,8 @@ export default function CommandCenterHero({
 
       icon:
         empireScore >= 70
-          ? "▲"
-          : "◆",
+          ? "●"
+          : "●",
     },
     {
       label:
@@ -440,7 +440,7 @@ export default function CommandCenterHero({
           : "amber",
 
       icon:
-        "â—",
+        "●",
     },
     {
       label:
@@ -453,7 +453,7 @@ export default function CommandCenterHero({
         "emerald",
 
       icon:
-        "▲",
+        "●",
     },
     {
       label:
@@ -466,7 +466,7 @@ export default function CommandCenterHero({
         "violet",
 
       icon:
-        "◆",
+        "●",
     },
     {
       label:
@@ -482,8 +482,8 @@ export default function CommandCenterHero({
 
       icon:
         shouldActNow
-          ? "⚡"
-          : "â—",
+          ? "●"
+          : "●",
     },
     {
       label:
@@ -498,7 +498,7 @@ export default function CommandCenterHero({
           : "neutral",
 
       icon:
-        "▲",
+        "●",
     },
     {
       label:
@@ -518,8 +518,8 @@ export default function CommandCenterHero({
 
       icon:
         brainPipeline.status === "loading"
-          ? "◌"
-          : "â—",
+          ? "●"
+          : "●",
     },
     {
       label:
@@ -532,7 +532,7 @@ export default function CommandCenterHero({
         "violet",
 
       icon:
-        "◆",
+        "●",
     },
   ] satisfies Parameters<
     typeof AtlasIntelligenceStrip
@@ -642,264 +642,238 @@ export default function CommandCenterHero({
   ];
 
   return (
-    <div className="atlas-command-center-shell space-y-6">
-      <AtlasOSRibbon
-        pipelineStatusLabel={pipelineStatusLabel}
-        pipelineIndicatorClasses={pipelineIndicatorClasses}
-        cash={dashboard.summary.cash}
-        stage={dashboard.summary.stage}
-        empireScore={empireScore}
-        confidence={confidence}
-      />
-
-      <AtlasIntelligenceStrip
-        signals={intelligenceSignals}
-      />
-
-      <AtlasHero
-        layout="stacked"
-        eyebrow={`Atlas AI · ${greeting.greeting}, Commander`}
-        title="Strategic Mission Control"
-        description="One connected view of your empire, Atlas intelligence, and the highest-impact move available right now."
-        actions={
-          <>
-            <AtlasButton href="/planner">
-              Execute Session Plan
-            </AtlasButton>
-
-            <AtlasButton
-              href="/copilot"
-              variant="secondary"
-            >
-              Open Atlas Copilot
-            </AtlasButton>
-          </>
+    <div className="atlas-command-center-shell space-y-5">
+      <AtlasHeroScene
+        hudSignals={
+          heroHudSignals
         }
       >
-        <AtlasHeroScene
-          hudSignals={
-            heroHudSignals
-          }
-        >
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_0%,rgba(34,211,238,0.15),transparent_34%),radial-gradient(circle_at_92%_12%,rgba(139,92,246,0.13),transparent_30%)]"
-          />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_12%,rgba(34,211,238,0.14),transparent_34%),radial-gradient(circle_at_90%_16%,rgba(139,92,246,0.13),transparent_30%),linear-gradient(180deg,rgba(3,7,18,0.08),rgba(3,7,18,0.78))]"
+        />
 
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-x-12 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/65 to-transparent"
-          />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/70 to-transparent"
+        />
 
-          <div className="relative border-b border-white/[0.07] px-5 py-4 sm:px-7">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div className="flex items-center gap-3">
+        <header className="relative border-b border-white/[0.07] px-5 py-5 sm:px-7 lg:px-8">
+          <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
+            <div className="min-w-0">
+              <div className="flex flex-wrap items-center gap-3">
                 <span
                   aria-hidden="true"
                   className={[
-                    "h-2 w-2 rounded-full",
+                    "h-2.5 w-2.5 rounded-full",
                     pipelineIndicatorClasses,
                   ].join(" ")}
                 />
 
-                <div>
-                  <p className="text-[0.65rem] font-bold uppercase tracking-[0.28em] text-cyan-300">
-                    Atlas Decision Core
-                  </p>
+                <p className="text-[0.62rem] font-black uppercase tracking-[0.3em] text-cyan-300">
+                  Atlas Command Deck
+                </p>
 
-                  <p className="mt-1 text-xs text-zinc-500">
-                    Live strategic interpretation
-                  </p>
-                </div>
+                <span className="hidden h-3 w-px bg-white/10 sm:block" />
+
+                <p className="text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-zinc-500">
+                  {greeting.greeting}, Commander
+                </p>
               </div>
 
-              <div className="flex flex-wrap items-center gap-2">
-                <span
-                  className={[
-                    "inline-flex items-center rounded-full border px-3 py-1.5 text-xs font-semibold",
-                    pipelineStatusClasses,
-                  ].join(" ")}
-                >
-                  {pipelineStatusLabel}
-                </span>
+              <div className="mt-3">
+                <h1 className="text-2xl font-black tracking-[-0.04em] text-white sm:text-3xl lg:text-4xl">
+                  Strategic Mission Control
+                </h1>
 
-                <span
-                  className={[
-                    "inline-flex items-center rounded-full border px-3 py-1.5 text-xs font-semibold capitalize",
-                    urgencyClasses,
-                  ].join(" ")}
-                >
-                  {urgencyLabel}
-                </span>
+                <p className="mt-2 max-w-3xl text-sm leading-6 text-zinc-400">
+                  One connected operating view of your empire, Atlas intelligence,
+                  and the highest-impact move available now.
+                </p>
               </div>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3">
+              <span
+                className={[
+                  "inline-flex items-center rounded-full border px-3 py-1.5 text-xs font-semibold",
+                  pipelineStatusClasses,
+                ].join(" ")}
+              >
+                {pipelineStatusLabel}
+              </span>
+
+              <span
+                className={[
+                  "inline-flex items-center rounded-full border px-3 py-1.5 text-xs font-semibold capitalize",
+                  urgencyClasses,
+                ].join(" ")}
+              >
+                {urgencyLabel}
+              </span>
+
+              <AtlasButton
+                href="/planner"
+              >
+                Execute Plan
+              </AtlasButton>
+
+              <AtlasButton
+                href="/copilot"
+                variant="secondary"
+              >
+                Open Copilot
+              </AtlasButton>
             </div>
           </div>
+        </header>
 
-          <div className="relative grid xl:grid-cols-[minmax(0,1.35fr)_minmax(310px,0.65fr)]">
-            <section className="p-5 sm:p-7 lg:p-9">
-              <p className="text-xs font-semibold uppercase tracking-[0.24em] text-zinc-500">
-                Atlas Recommends
-              </p>
+        <div className="relative grid min-w-0 2xl:grid-cols-[minmax(0,1.12fr)_minmax(360px,0.88fr)]">
+          <main className="min-w-0 p-5 sm:p-7 lg:p-8">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p className="text-[0.62rem] font-black uppercase tracking-[0.26em] text-cyan-300">
+                  Atlas Priority Directive
+                </p>
 
-              <h2 className="mt-4 max-w-5xl text-3xl font-black tracking-[-0.04em] text-white sm:text-4xl lg:text-5xl xl:text-6xl">
-                {recommendationTitle}
-              </h2>
-
-              <p className="mt-5 max-w-4xl text-sm leading-7 text-zinc-400 sm:text-base">
-                {recommendationSummary}
-              </p>
-
-              {brainPipeline.error ? (
-                <div className="mt-6 rounded-2xl border border-rose-400/15 bg-rose-400/[0.05] p-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-rose-300">
-                    Pipeline Notice
-                  </p>
-
-                  <p className="mt-2 text-sm leading-6 text-zinc-300">
-                    {brainPipeline.error}
-                  </p>
-                </div>
-              ) : null}
-
-              <div className="mt-8 grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(240px,0.55fr)]">
-                <AtlasSurface
-                  tone="subtle"
-                  className="p-5 sm:p-6"
-                >
-                  <div className="flex items-center justify-between gap-4">
-                    <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">
-                      Immediate Next Action
-                    </p>
-
-                    <span className="rounded-full border border-cyan-400/15 bg-cyan-400/[0.07] px-2.5 py-1 text-[0.62rem] font-bold uppercase tracking-[0.18em] text-cyan-200">
-                      Execute
-                    </span>
-                  </div>
-
-                  <p className="mt-4 text-lg font-bold leading-8 text-white">
-                    {immediateNextStep}
-                  </p>
-
-                  <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-white/[0.06] pt-4">
-                    <span className="text-xs text-zinc-500">
-                      Recommended session
-                    </span>
-
-                    <span className="text-sm font-black text-cyan-200">
-                      {fallbackBriefing.recommendedSessionMinutes} minutes
-                    </span>
-                  </div>
-                </AtlasSurface>
-
-                <AtlasSurface
-                  tone="subtle"
-                  className="p-5 sm:p-6"
-                >
-                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-violet-300">
-                    Current Posture
-                  </p>
-
-                  <p className="mt-4 text-2xl font-black text-white">
-                    {shouldActNow
-                      ? "Act Now"
-                      : "Planned"}
-                  </p>
-
-                  <p className="mt-3 text-sm leading-6 text-zinc-500">
-                    Atlas has classified this recommendation as a{" "}
-                    <span className="font-semibold text-zinc-300">
-                      {urgencyLabel.toLowerCase()}
-                    </span>{" "}
-                    decision.
-                  </p>
-                </AtlasSurface>
+                <p className="mt-1 text-xs text-zinc-500">
+                  Live recommendation generated from your current empire state
+                </p>
               </div>
 
-              <div className="mt-4 rounded-2xl border border-white/[0.06] bg-white/[0.02] p-5 sm:p-6">
-                <div className="grid gap-5 lg:grid-cols-[190px_minmax(0,1fr)]">
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">
-                      Why Atlas Chose This
-                    </p>
+              <span className="rounded-full border border-white/[0.08] bg-black/25 px-3 py-1.5 text-[0.6rem] font-bold uppercase tracking-[0.18em] text-zinc-300">
+                {fallbackBriefing.recommendedSessionMinutes} minute session
+              </span>
+            </div>
 
-                    <p className="mt-2 text-xs leading-5 text-zinc-500">
-                      Reasoning derived from your live empire state.
-                    </p>
-                  </div>
+            <h2 className="mt-5 max-w-5xl text-3xl font-black tracking-[-0.045em] text-white sm:text-4xl lg:text-5xl">
+              {recommendationTitle}
+            </h2>
 
-                  <p className="text-sm font-medium leading-7 text-zinc-300">
-                    {rationale}
-                  </p>
-                </div>
+            <p className="mt-4 max-w-4xl text-sm leading-7 text-zinc-400 sm:text-base">
+              {recommendationSummary}
+            </p>
+
+            {brainPipeline.error ? (
+              <div className="mt-5 rounded-2xl border border-rose-400/15 bg-rose-400/[0.05] p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-rose-300">
+                  Pipeline Notice
+                </p>
+
+                <p className="mt-2 text-sm leading-6 text-zinc-300">
+                  {brainPipeline.error}
+                </p>
               </div>
-            </section>
+            ) : null}
 
+            <div className="mt-6 grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(220px,0.48fr)]">
+              <AtlasSurface
+                tone="subtle"
+                className="p-5 sm:p-6"
+              >
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-cyan-300">
+                    Immediate Next Action
+                  </p>
 
-            <AtlasMissionDisplay
-              empireScore={empireScore}
-              empireGrade={dashboard.empire.overallGrade}
-              empireStatus={empireStatus.label}
-              confidence={confidence}
-              confidenceLabel={
-                confidence >= 85
-                  ? "High"
-                  : confidence >= 65
-                    ? "Moderate"
-                    : "Review"
-              }
-              pipelineStatus={brainPipeline.status}
-              pipelineStatusLabel={pipelineStatusLabel}
-              pipelineIndicatorClasses={pipelineIndicatorClasses}
-              urgencyLabel={urgencyLabel}
-              shouldActNow={shouldActNow}
-              stage={dashboard.summary.stage}
-              cash={dashboard.summary.cash}
-              coachingResponse={coachingResponse}
-              operatingSummary={empireStatus.summary}
-            />
-          </div>
+                  <span className="rounded-full border border-cyan-400/15 bg-cyan-400/[0.07] px-2.5 py-1 text-[0.6rem] font-bold uppercase tracking-[0.18em] text-cyan-200">
+                    Execute
+                  </span>
+                </div>
 
-          <div className="relative grid border-t border-white/[0.07] md:grid-cols-3">
-            <div className="p-5 sm:p-6 md:border-r md:border-white/[0.07]">
-              <p className="text-[0.62rem] font-semibold uppercase tracking-[0.22em] text-zinc-500">
-                Long-Term Direction
-              </p>
+                <p className="mt-4 text-lg font-bold leading-8 text-white">
+                  {immediateNextStep}
+                </p>
+              </AtlasSurface>
 
-              <p className="mt-3 text-sm font-semibold leading-6 text-zinc-200">
-                {longTermDirection}
-              </p>
+              <AtlasSurface
+                tone="subtle"
+                className="p-5 sm:p-6"
+              >
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-violet-300">
+                  Decision Posture
+                </p>
+
+                <p className="mt-4 text-2xl font-black text-white">
+                  {shouldActNow
+                    ? "Act Now"
+                    : "Planned"}
+                </p>
+
+                <p className="mt-2 text-xs leading-5 text-zinc-500">
+                  Classified as a{" "}
+                  <span className="font-semibold text-zinc-300">
+                    {urgencyLabel.toLowerCase()}
+                  </span>{" "}
+                  decision.
+                </p>
+              </AtlasSurface>
             </div>
 
-            <div className="border-t border-white/[0.07] p-5 sm:p-6 md:border-r md:border-t-0 md:border-white/[0.07]">
-              <p className="text-[0.62rem] font-semibold uppercase tracking-[0.22em] text-zinc-500">
-                Available Capital
-              </p>
+            <div className="mt-4 grid gap-4 xl:grid-cols-2">
+              <div className="rounded-2xl border border-white/[0.06] bg-black/20 p-5">
+                <p className="text-[0.62rem] font-semibold uppercase tracking-[0.22em] text-cyan-300">
+                  Why Atlas Chose This
+                </p>
 
-              <p className="mt-3 text-2xl font-black tracking-tight text-white">
-                ${dashboard.summary.cash.toLocaleString()}
-              </p>
+                <p className="mt-3 text-sm font-medium leading-7 text-zinc-300">
+                  {rationale}
+                </p>
+              </div>
 
-              <p className="mt-2 text-xs text-zinc-500">
-                Ready for strategic deployment
-              </p>
+              <div className="rounded-2xl border border-white/[0.06] bg-black/20 p-5">
+                <p className="text-[0.62rem] font-semibold uppercase tracking-[0.22em] text-violet-300">
+                  Long-Term Direction
+                </p>
+
+                <p className="mt-3 text-sm font-medium leading-7 text-zinc-300">
+                  {longTermDirection}
+                </p>
+              </div>
             </div>
+          </main>
 
-            <div className="border-t border-white/[0.07] p-5 sm:p-6 md:border-t-0">
-              <p className="text-[0.62rem] font-semibold uppercase tracking-[0.22em] text-zinc-500">
-                Empire Stage
-              </p>
+          <AtlasMissionDisplay
+            empireScore={empireScore}
+            empireGrade={dashboard.empire.overallGrade}
+            empireStatus={empireStatus.label}
+            confidence={confidence}
+            confidenceLabel={
+              confidence >= 85
+                ? "High"
+                : confidence >= 65
+                  ? "Moderate"
+                  : "Review"
+            }
+            pipelineStatus={brainPipeline.status}
+            pipelineStatusLabel={pipelineStatusLabel}
+            pipelineIndicatorClasses={pipelineIndicatorClasses}
+            urgencyLabel={urgencyLabel}
+            shouldActNow={shouldActNow}
+            stage={dashboard.summary.stage}
+            cash={dashboard.summary.cash}
+            coachingResponse={coachingResponse}
+            operatingSummary={empireStatus.summary}
+          />
+        </div>
 
-              <p className="mt-3 text-2xl font-black tracking-tight text-white">
-                {dashboard.summary.stage}
-              </p>
+        <div className="relative border-t border-white/[0.07] bg-black/20">
+          <AtlasIntelligenceStrip
+            signals={intelligenceSignals}
+          />
+        </div>
 
-              <p className="mt-2 text-xs text-zinc-500">
-                Current progression phase
-              </p>
-            </div>
-          </div>
-        </AtlasHeroScene>
-      </AtlasHero>
+        <div className="relative border-t border-white/[0.07] p-3">
+          <AtlasOSRibbon
+            pipelineStatusLabel={pipelineStatusLabel}
+            pipelineIndicatorClasses={pipelineIndicatorClasses}
+            cash={dashboard.summary.cash}
+            stage={dashboard.summary.stage}
+            empireScore={empireScore}
+            confidence={confidence}
+          />
+        </div>
+      </AtlasHeroScene>
 
       <AtlasGrid
         columns={4}
@@ -942,9 +916,3 @@ export default function CommandCenterHero({
     </div>
   );
 }
-
-
-
-
-
-

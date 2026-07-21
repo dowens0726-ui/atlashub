@@ -1,10 +1,10 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 
 import AtlasNavigation from "./AtlasNavigation";
 
 export default function AtlasSidebar() {
   return (
-    <aside className="flex h-screen w-72 shrink-0 flex-col border-r border-white/10 bg-zinc-950/95 backdrop-blur-xl">
+    <aside className="atlas-app-sidebar flex h-screen w-72 shrink-0 flex-col border-r border-white/10 bg-black/45 backdrop-blur-2xl">
       <div className="border-b border-white/10 px-6 py-7">
         <Link
           href="/dashboard"
@@ -88,7 +88,7 @@ export default function AtlasSidebar() {
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/70",
           ].join(" ")}
         >
-          <span aria-hidden="true">←</span>
+          <span aria-hidden="true">&larr;</span>
           <span>Back to AtlasHub</span>
         </Link>
       </div>

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 
@@ -6,7 +6,7 @@ import AtlasUserMenu from "./AtlasUserMenu";
 
 export default function AtlasTopBar() {
   return (
-    <header className="sticky top-0 z-40 flex min-h-20 items-center justify-between gap-6 border-b border-white/10 bg-zinc-950/80 px-6 py-4 backdrop-blur-xl lg:px-8">
+    <header className="sticky top-0 z-40 flex min-h-20 items-center justify-between gap-6 border-b border-white/10 bg-zinc-950/80 px-6 py-4 backdrop-blur-2xl lg:px-8">
       <div className="min-w-0">
         <div className="flex items-center gap-2">
           <span
@@ -30,7 +30,7 @@ export default function AtlasTopBar() {
             aria-hidden="true"
             className="pointer-events-none absolute inset-y-0 left-4 flex items-center text-sm text-zinc-600"
           >
-            ⌕
+            &#8981;
           </span>
 
           <input
@@ -61,7 +61,7 @@ export default function AtlasTopBar() {
             aria-hidden="true"
             className="text-cyan-300"
           >
-            ✦
+            &#10022;
           </span>
 
           AI Copilot
