@@ -3,7 +3,10 @@ import AtlasGrid from "@/app/components/design-system/AtlasGrid";
 import AtlasHero from "@/app/components/design-system/AtlasHero";
 import AtlasMetric from "@/app/components/design-system/AtlasMetric";
 import AtlasSurface from "@/app/components/design-system/AtlasSurface";
-import { AtlasOSRibbon } from "./mission-control";
+import {
+  AtlasIntelligenceStrip,
+  AtlasOSRibbon,
+} from "./mission-control";
 
 import {
   buildAtlasBriefing,
@@ -398,6 +401,137 @@ export default function CommandCenterHero({
       shouldActNow
     );
 
+  const intelligenceSignals = [
+    {
+      label:
+        "Empire Health",
+
+      value:
+        `${empireScore}/100`,
+
+      tone:
+        empireScore >= 70
+          ? "emerald"
+          : empireScore >= 50
+            ? "amber"
+            : "rose",
+
+      icon:
+        empireScore >= 70
+          ? "▲"
+          : "◆",
+    },
+    {
+      label:
+        "Atlas Confidence",
+
+      value:
+        `${confidence}%`,
+
+      tone:
+        confidence >= 75
+          ? "cyan"
+          : "amber",
+
+      icon:
+        "●",
+    },
+    {
+      label:
+        "Capital",
+
+      value:
+        `$${dashboard.summary.cash.toLocaleString()}`,
+
+      tone:
+        "emerald",
+
+      icon:
+        "▲",
+    },
+    {
+      label:
+        "Progression",
+
+      value:
+        dashboard.summary.stage,
+
+      tone:
+        "violet",
+
+      icon:
+        "◆",
+    },
+    {
+      label:
+        "Mission State",
+
+      value:
+        urgencyLabel,
+
+      tone:
+        shouldActNow
+          ? "amber"
+          : "cyan",
+
+      icon:
+        shouldActNow
+          ? "⚡"
+          : "●",
+    },
+    {
+      label:
+        "Empire Grade",
+
+      value:
+        dashboard.empire.overallGrade,
+
+      tone:
+        empireScore >= 70
+          ? "emerald"
+          : "neutral",
+
+      icon:
+        "▲",
+    },
+    {
+      label:
+        "Decision Core",
+
+      value:
+        pipelineStatusLabel,
+
+      tone:
+        brainPipeline.status === "success"
+          ? "emerald"
+          : brainPipeline.status === "warning"
+            ? "amber"
+            : brainPipeline.status === "failed"
+              ? "rose"
+              : "cyan",
+
+      icon:
+        brainPipeline.status === "loading"
+          ? "◌"
+          : "●",
+    },
+    {
+      label:
+        "Session",
+
+      value:
+        `${fallbackBriefing.recommendedSessionMinutes} min`,
+
+      tone:
+        "violet",
+
+      icon:
+        "◆",
+    },
+  ] satisfies Parameters<
+    typeof AtlasIntelligenceStrip
+  >[0]["signals"];
+
   return (
     <div className="atlas-command-center-shell space-y-6">
       <AtlasOSRibbon
@@ -407,6 +541,10 @@ export default function CommandCenterHero({
         stage={dashboard.summary.stage}
         empireScore={empireScore}
         confidence={confidence}
+      />
+
+      <AtlasIntelligenceStrip
+        signals={intelligenceSignals}
       />
 
       <AtlasHero
@@ -775,4 +913,5 @@ export default function CommandCenterHero({
     </div>
   );
 }
+
 

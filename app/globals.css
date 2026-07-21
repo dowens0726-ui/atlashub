@@ -533,3 +533,86 @@ a {
     animation: none;
   }
 }
+
+/* ATLAS LIVE INTELLIGENCE STRIP */
+
+@keyframes atlas-intelligence-flow {
+  from {
+    transform:
+      translate3d(0, 0, 0);
+  }
+
+  to {
+    transform:
+      translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes atlas-chip-signal {
+  0%,
+  100% {
+    opacity:
+      0.35;
+  }
+
+  50% {
+    opacity:
+      0.85;
+  }
+}
+
+.atlas-intelligence-strip__track {
+  animation:
+    atlas-intelligence-flow
+    38s
+    linear
+    infinite;
+  will-change:
+    transform;
+}
+
+.atlas-intelligence-strip:hover
+.atlas-intelligence-strip__track {
+  animation-play-state:
+    paused;
+}
+
+.atlas-intelligence-chip::after {
+  position:
+    absolute;
+  inset:
+    auto 18% -1px;
+  height:
+    1px;
+  content:
+    "";
+  pointer-events:
+    none;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgb(103 232 249 / 0.18),
+      transparent
+    );
+  animation:
+    atlas-chip-signal
+    4.5s
+    ease-in-out
+    infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .atlas-intelligence-strip__track,
+  .atlas-intelligence-chip::after {
+    animation:
+      none;
+  }
+
+  .atlas-intelligence-strip__track {
+    flex-wrap:
+      wrap;
+    width:
+      auto;
+  }
+}
