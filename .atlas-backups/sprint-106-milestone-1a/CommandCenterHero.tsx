@@ -10,11 +10,6 @@ import {
 } from "./mission-control";
 
 import {
-  AtlasHeroScene,
-  type AtlasHeroHudSignal,
-} from "./command-center/hero";
-
-import {
   buildAtlasBriefing,
   buildAtlasGreeting,
   buildAtlasImpact,
@@ -440,7 +435,7 @@ export default function CommandCenterHero({
           : "amber",
 
       icon:
-        "â—",
+        "●",
     },
     {
       label:
@@ -483,7 +478,7 @@ export default function CommandCenterHero({
       icon:
         shouldActNow
           ? "⚡"
-          : "â—",
+          : "●",
     },
     {
       label:
@@ -519,7 +514,7 @@ export default function CommandCenterHero({
       icon:
         brainPipeline.status === "loading"
           ? "◌"
-          : "â—",
+          : "●",
     },
     {
       label:
@@ -537,109 +532,6 @@ export default function CommandCenterHero({
   ] satisfies Parameters<
     typeof AtlasIntelligenceStrip
   >[0]["signals"];
-
-  const heroHudSignals: AtlasHeroHudSignal[] = [
-    {
-      label:
-        "Empire Health",
-
-      value:
-        `${empireScore}/100`,
-
-      detail:
-        empireStatus.label,
-
-      code:
-        "EMP",
-
-      tone:
-        empireScore >= 70
-          ? "emerald"
-          : empireScore >= 50
-            ? "amber"
-            : "rose",
-
-      position:
-        "top-left",
-
-      active:
-        empireScore >= 70,
-    },
-    {
-      label:
-        "Atlas Confidence",
-
-      value:
-        `${confidence}%`,
-
-      detail:
-        pipelineStatusLabel,
-
-      code:
-        "AI",
-
-      tone:
-        confidence >= 75
-          ? "cyan"
-          : "amber",
-
-      position:
-        "top-right",
-
-      active:
-        brainPipeline.status ===
-          "success",
-    },
-    {
-      label:
-        "Available Capital",
-
-      value:
-        `$${dashboard.summary.cash.toLocaleString()}`,
-
-      detail:
-        "Deployment ready",
-
-      code:
-        "CAP",
-
-      tone:
-        "emerald",
-
-      position:
-        "bottom-left",
-
-      active:
-        dashboard.summary.cash >
-          0,
-    },
-    {
-      label:
-        "Mission Priority",
-
-      value:
-        urgencyLabel,
-
-      detail:
-        shouldActNow
-          ? "Immediate execution"
-          : "Strategic window",
-
-      code:
-        "MSN",
-
-      tone:
-        shouldActNow
-          ? "amber"
-          : "violet",
-
-      position:
-        "bottom-right",
-
-      active:
-        shouldActNow,
-    },
-  ];
 
   return (
     <div className="atlas-command-center-shell space-y-6">
@@ -676,11 +568,7 @@ export default function CommandCenterHero({
           </>
         }
       >
-        <AtlasHeroScene
-          hudSignals={
-            heroHudSignals
-          }
-        >
+        <div className="relative overflow-hidden rounded-[2rem] border border-cyan-400/15 bg-black/35 shadow-[0_30px_100px_-55px_rgba(34,211,238,0.35)]">
           <div
             aria-hidden="true"
             className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_0%,rgba(34,211,238,0.15),transparent_34%),radial-gradient(circle_at_92%_12%,rgba(139,92,246,0.13),transparent_30%)]"
@@ -898,7 +786,7 @@ export default function CommandCenterHero({
               </p>
             </div>
           </div>
-        </AtlasHeroScene>
+        </div>
       </AtlasHero>
 
       <AtlasGrid
@@ -942,7 +830,6 @@ export default function CommandCenterHero({
     </div>
   );
 }
-
 
 
 

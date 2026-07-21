@@ -1,4 +1,4 @@
-﻿import AtlasButton from "@/app/components/design-system/AtlasButton";
+import AtlasButton from "@/app/components/design-system/AtlasButton";
 import AtlasGrid from "@/app/components/design-system/AtlasGrid";
 import AtlasHero from "@/app/components/design-system/AtlasHero";
 import AtlasMetric from "@/app/components/design-system/AtlasMetric";
@@ -440,7 +440,7 @@ export default function CommandCenterHero({
           : "amber",
 
       icon:
-        "â—",
+        "●",
     },
     {
       label:
@@ -483,7 +483,7 @@ export default function CommandCenterHero({
       icon:
         shouldActNow
           ? "⚡"
-          : "â—",
+          : "●",
     },
     {
       label:
@@ -519,7 +519,7 @@ export default function CommandCenterHero({
       icon:
         brainPipeline.status === "loading"
           ? "◌"
-          : "â—",
+          : "●",
     },
     {
       label:
@@ -942,7 +942,6 @@ export default function CommandCenterHero({
     </div>
   );
 }
-
 
 
 
