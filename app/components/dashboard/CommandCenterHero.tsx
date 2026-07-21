@@ -5,6 +5,7 @@ import AtlasMetric from "@/app/components/design-system/AtlasMetric";
 import AtlasSurface from "@/app/components/design-system/AtlasSurface";
 import {
   AtlasIntelligenceStrip,
+  AtlasMissionDisplay,
   AtlasOSRibbon,
 } from "./mission-control";
 
@@ -721,113 +722,27 @@ export default function CommandCenterHero({
               </div>
             </section>
 
-            <aside className="border-t border-white/[0.07] bg-white/[0.018] p-5 sm:p-7 xl:border-l xl:border-t-0">
-              <div className="flex h-full flex-col">
-                <div>
-                  <p className="text-[0.65rem] font-semibold uppercase tracking-[0.28em] text-emerald-300">
-                    Empire Health
-                  </p>
 
-                  <div className="mt-6 flex items-center gap-5">
-                    <div
-                      className="relative flex h-32 w-32 shrink-0 items-center justify-center rounded-full p-[7px]"
-                      style={{
-                        background:
-                          `conic-gradient(rgb(52 211 153) ${empireScore}%, rgba(255,255,255,0.06) ${empireScore}% 100%)`,
-                      }}
-                    >
-                      <div className="flex h-full w-full flex-col items-center justify-center rounded-full border border-white/[0.06] bg-zinc-950">
-                        <span className="text-4xl font-black tracking-[-0.05em] text-white">
-                          {empireScore}
-                        </span>
-
-                        <span className="mt-1 text-[0.6rem] font-bold uppercase tracking-[0.2em] text-zinc-500">
-                          Out of 100
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="min-w-0">
-                      <p className="text-3xl font-black tracking-tight text-white">
-                        {empireStatus.label}
-                      </p>
-
-                      <p className="mt-2 text-sm font-semibold text-emerald-300">
-                        {dashboard.empire.overallGrade} grade
-                      </p>
-
-                      <p className="mt-3 text-xs leading-5 text-zinc-500">
-                        Overall strategic position
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="my-7 h-px bg-white/[0.06]" />
-
-                <div>
-                  <div className="flex items-end justify-between gap-4">
-                    <div>
-                      <p className="text-[0.65rem] font-semibold uppercase tracking-[0.24em] text-zinc-500">
-                        Atlas Confidence
-                      </p>
-
-                      <div className="mt-3 flex items-end gap-1">
-                        <span className="text-5xl font-black tracking-[-0.06em] text-white">
-                          {confidence}
-                        </span>
-
-                        <span className="pb-1 text-lg font-black text-cyan-300">
-                          %
-                        </span>
-                      </div>
-                    </div>
-
-                    <span className="text-xs font-bold uppercase tracking-[0.18em] text-cyan-200">
-                      {confidence >= 85
-                        ? "High"
-                        : confidence >= 65
-                          ? "Moderate"
-                          : "Review"}
-                    </span>
-                  </div>
-
-                  <div className="mt-4 h-2 overflow-hidden rounded-full bg-white/[0.06]">
-                    <div
-                      className="h-full rounded-full bg-gradient-to-r from-cyan-300 via-cyan-400 to-emerald-300 transition-[width] duration-700"
-                      style={{
-                        width:
-                          `${confidence}%`,
-                      }}
-                    />
-                  </div>
-                </div>
-
-                <div className="my-7 h-px bg-white/[0.06]" />
-
-                <div>
-                  <p className="text-[0.65rem] font-semibold uppercase tracking-[0.24em] text-violet-300">
-                    Atlas Coaching
-                  </p>
-
-                  <p className="mt-3 text-sm font-semibold leading-7 text-zinc-200">
-                    {coachingResponse}
-                  </p>
-                </div>
-
-                <div className="mt-auto pt-7">
-                  <div className="rounded-2xl border border-white/[0.06] bg-black/25 p-4">
-                    <p className="text-[0.6rem] font-semibold uppercase tracking-[0.2em] text-zinc-500">
-                      Operating Condition
-                    </p>
-
-                    <p className="mt-2 text-sm leading-6 text-zinc-300">
-                      {empireStatus.summary}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </aside>
+            <AtlasMissionDisplay
+              empireScore={empireScore}
+              empireGrade={dashboard.empire.overallGrade}
+              empireStatus={empireStatus.label}
+              confidence={confidence}
+              confidenceLabel={
+                confidence >= 85
+                  ? "High"
+                  : confidence >= 65
+                    ? "Moderate"
+                    : "Review"
+              }
+              pipelineStatusLabel={pipelineStatusLabel}
+              pipelineIndicatorClasses={pipelineIndicatorClasses}
+              urgencyLabel={urgencyLabel}
+              shouldActNow={shouldActNow}
+              stage={dashboard.summary.stage}
+              coachingResponse={coachingResponse}
+              operatingSummary={empireStatus.summary}
+            />
           </div>
 
           <div className="relative grid border-t border-white/[0.07] md:grid-cols-3">
@@ -913,5 +828,6 @@ export default function CommandCenterHero({
     </div>
   );
 }
+
 
 

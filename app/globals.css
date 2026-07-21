@@ -616,3 +616,259 @@ a {
       auto;
   }
 }
+
+/* ATLAS MISSION DISPLAY */
+
+@keyframes atlas-mission-orbit {
+  from {
+    transform:
+      rotate(0deg);
+  }
+
+  to {
+    transform:
+      rotate(360deg);
+  }
+}
+
+@keyframes atlas-mission-orbit-reverse {
+  from {
+    transform:
+      rotate(360deg);
+  }
+
+  to {
+    transform:
+      rotate(0deg);
+  }
+}
+
+@keyframes atlas-mission-core-pulse {
+  0%,
+  100% {
+    filter:
+      drop-shadow(
+        0 0 18px rgb(34 211 238 / 0.16)
+      );
+  }
+
+  50% {
+    filter:
+      drop-shadow(
+        0 0 34px rgb(34 211 238 / 0.32)
+      );
+  }
+}
+
+@keyframes atlas-mission-scan {
+  0% {
+    transform:
+      translateY(-120px);
+    opacity:
+      0;
+  }
+
+  15% {
+    opacity:
+      0.65;
+  }
+
+  85% {
+    opacity:
+      0.65;
+  }
+
+  100% {
+    transform:
+      translateY(120px);
+    opacity:
+      0;
+  }
+}
+
+.atlas-mission-display__ambient {
+  background:
+    radial-gradient(
+      circle at 50% 32%,
+      rgb(34 211 238 / 0.13),
+      transparent 31%
+    ),
+    radial-gradient(
+      circle at 82% 26%,
+      rgb(139 92 246 / 0.09),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 15% 78%,
+      rgb(52 211 153 / 0.07),
+      transparent 28%
+    );
+}
+
+.atlas-mission-display__grid {
+  background-image:
+    linear-gradient(
+      rgb(255 255 255 / 0.025) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgb(255 255 255 / 0.025) 1px,
+      transparent 1px
+    );
+  background-size:
+    32px 32px;
+  mask-image:
+    radial-gradient(
+      circle at center,
+      black,
+      transparent 78%
+    );
+}
+
+.atlas-mission-display__orbit::before,
+.atlas-mission-display__orbit::after {
+  position:
+    absolute;
+  width:
+    7px;
+  height:
+    7px;
+  content:
+    "";
+  border-radius:
+    9999px;
+  background:
+    rgb(103 232 249);
+  box-shadow:
+    0 0 15px
+    rgb(103 232 249 / 0.8);
+}
+
+.atlas-mission-display__orbit::before {
+  top:
+    -4px;
+  left:
+    50%;
+}
+
+.atlas-mission-display__orbit::after {
+  right:
+    -4px;
+  top:
+    50%;
+}
+
+.atlas-mission-display__orbit--outer {
+  width:
+    310px;
+  height:
+    310px;
+  animation:
+    atlas-mission-orbit
+    24s
+    linear
+    infinite;
+}
+
+.atlas-mission-display__orbit--middle {
+  width:
+    276px;
+  height:
+    276px;
+  animation:
+    atlas-mission-orbit-reverse
+    18s
+    linear
+    infinite;
+}
+
+.atlas-mission-display__orbit--inner {
+  width:
+    244px;
+  height:
+    244px;
+  animation:
+    atlas-mission-orbit
+    14s
+    linear
+    infinite;
+}
+
+.atlas-mission-display__orbit--middle::before,
+.atlas-mission-display__orbit--middle::after {
+  background:
+    rgb(196 181 253);
+  box-shadow:
+    0 0 15px
+    rgb(196 181 253 / 0.75);
+}
+
+.atlas-mission-display__orbit--inner::before,
+.atlas-mission-display__orbit--inner::after {
+  background:
+    rgb(110 231 183);
+  box-shadow:
+    0 0 15px
+    rgb(110 231 183 / 0.75);
+}
+
+.atlas-mission-display__core {
+  animation:
+    atlas-mission-core-pulse
+    4.5s
+    ease-in-out
+    infinite;
+}
+
+.atlas-mission-display__scanner {
+  z-index:
+    2;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgb(103 232 249 / 0.75),
+      transparent
+    );
+  box-shadow:
+    0 0 18px
+    rgb(34 211 238 / 0.4);
+  animation:
+    atlas-mission-scan
+    5.5s
+    ease-in-out
+    infinite;
+}
+
+@media (max-width: 640px) {
+  .atlas-mission-display__orbit--outer {
+    width:
+      270px;
+    height:
+      270px;
+  }
+
+  .atlas-mission-display__orbit--middle {
+    width:
+      240px;
+    height:
+      240px;
+  }
+
+  .atlas-mission-display__orbit--inner {
+    width:
+      214px;
+    height:
+      214px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .atlas-mission-display__orbit,
+  .atlas-mission-display__core,
+  .atlas-mission-display__scanner {
+    animation:
+      none;
+  }
+}
