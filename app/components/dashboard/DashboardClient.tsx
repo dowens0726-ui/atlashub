@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import {
   useEffect,
@@ -22,6 +22,10 @@ import {
   DashboardObjectives,
   EmpireInsights,
 } from "@/app/components/dashboard";
+
+import {
+  MissionControlEnvironment,
+} from "@/app/components/dashboard/mission-control";
 
 import {
   AtlasAIPanel,
@@ -204,7 +208,7 @@ export default function DashboardClient() {
 
 
   return (
-    <>
+    <MissionControlEnvironment>
       <AtlasLiveEventToast />
 
       <CommandCenterLayout
@@ -458,6 +462,6 @@ export default function DashboardClient() {
           <AchievementList />
         }
       />
-    </>
+    </MissionControlEnvironment>
   );
 }

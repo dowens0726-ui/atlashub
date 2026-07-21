@@ -184,3 +184,352 @@ a {
     animation: none;
   }
 }
+
+/* ATLAS MISSION CONTROL ENVIRONMENT */
+
+@keyframes atlas-environment-shift {
+  0%,
+  100% {
+    transform: translate3d(-1%, -0.5%, 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(1%, 0.75%, 0) scale(1.035);
+  }
+}
+
+@keyframes atlas-horizon-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: translateX(-50%) scaleX(0.92);
+  }
+
+  50% {
+    opacity: 0.72;
+    transform: translateX(-50%) scaleX(1.05);
+  }
+}
+
+@keyframes atlas-radar-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes atlas-radar-counter-rotate {
+  from {
+    transform: rotate(360deg);
+  }
+
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes atlas-signal-rise {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 48px, 0) scaleY(0.7);
+  }
+
+  25% {
+    opacity: 0.5;
+  }
+
+  70% {
+    opacity: 0.2;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(0, -190px, 0) scaleY(1.15);
+  }
+}
+
+.atlas-mission-environment {
+  position: relative;
+  min-height: 100%;
+  isolation: isolate;
+}
+
+.atlas-mission-environment__content {
+  position: relative;
+  z-index: 10;
+}
+
+.atlas-mission-environment__sky {
+  position: absolute;
+  z-index: -8;
+  inset: -5rem -4rem auto;
+  height: 62rem;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      circle at 10% 6%,
+      rgb(34 211 238 / 0.14),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 92% 4%,
+      rgb(217 70 239 / 0.13),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 70% 36%,
+      rgb(124 58 237 / 0.1),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 32% 44%,
+      rgb(14 165 233 / 0.07),
+      transparent 30%
+    ),
+    linear-gradient(
+      180deg,
+      rgb(8 8 18 / 0.86),
+      rgb(9 9 20 / 0.22) 70%,
+      transparent
+    );
+  filter: saturate(1.15) blur(1px);
+  animation:
+    atlas-environment-shift
+    18s
+    ease-in-out
+    infinite;
+}
+
+.atlas-mission-environment__horizon {
+  position: absolute;
+  z-index: -7;
+  top: 24rem;
+  left: 50%;
+  width: min(92vw, 90rem);
+  height: 1px;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgb(34 211 238 / 0.22) 15%,
+      rgb(232 121 249 / 0.34) 50%,
+      rgb(34 211 238 / 0.22) 85%,
+      transparent
+    );
+  box-shadow:
+    0 0 32px rgb(34 211 238 / 0.22),
+    0 0 70px rgb(217 70 239 / 0.14);
+  transform: translateX(-50%);
+  animation:
+    atlas-horizon-pulse
+    7s
+    ease-in-out
+    infinite;
+}
+
+.atlas-mission-environment__grid {
+  position: absolute;
+  z-index: -6;
+  top: 20rem;
+  left: 50%;
+  width: min(110vw, 108rem);
+  height: 42rem;
+  pointer-events: none;
+  background-image:
+    linear-gradient(
+      rgb(34 211 238 / 0.055) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgb(34 211 238 / 0.055) 1px,
+      transparent 1px
+    );
+  background-size: 52px 52px;
+  mask-image:
+    linear-gradient(
+      to bottom,
+      black 0%,
+      rgb(0 0 0 / 0.68) 45%,
+      transparent 100%
+    );
+  transform:
+    translateX(-50%)
+    perspective(520px)
+    rotateX(61deg)
+    scaleX(1.18);
+  transform-origin: center top;
+  opacity: 0.55;
+}
+
+.atlas-mission-environment__radar {
+  position: absolute;
+  z-index: -5;
+  border: 1px solid rgb(34 211 238 / 0.08);
+  border-radius: 999px;
+  pointer-events: none;
+  background:
+    repeating-radial-gradient(
+      circle,
+      transparent 0,
+      transparent 23px,
+      rgb(34 211 238 / 0.035) 24px,
+      transparent 25px
+    );
+  mask-image:
+    radial-gradient(
+      circle,
+      black,
+      transparent 72%
+    );
+}
+
+.atlas-mission-environment__radar::before,
+.atlas-mission-environment__radar::after {
+  position: absolute;
+  content: "";
+  pointer-events: none;
+}
+
+.atlas-mission-environment__radar::before {
+  inset: 50% 0 auto;
+  height: 1px;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgb(34 211 238 / 0.16),
+      transparent
+    );
+}
+
+.atlas-mission-environment__radar::after {
+  inset: 0 auto 0 50%;
+  width: 1px;
+  background:
+    linear-gradient(
+      180deg,
+      transparent,
+      rgb(34 211 238 / 0.16),
+      transparent
+    );
+}
+
+.atlas-mission-environment__radar--primary {
+  top: 6rem;
+  right: -15rem;
+  width: 42rem;
+  height: 42rem;
+  opacity: 0.52;
+  animation:
+    atlas-radar-rotate
+    42s
+    linear
+    infinite;
+}
+
+.atlas-mission-environment__radar--secondary {
+  top: 38rem;
+  left: -13rem;
+  width: 34rem;
+  height: 34rem;
+  border-color: rgb(217 70 239 / 0.08);
+  opacity: 0.34;
+  animation:
+    atlas-radar-counter-rotate
+    54s
+    linear
+    infinite;
+}
+
+.atlas-mission-environment__signal {
+  position: absolute;
+  z-index: -4;
+  width: 1px;
+  height: 9rem;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      to top,
+      transparent,
+      rgb(34 211 238 / 0.58),
+      transparent
+    );
+  filter:
+    drop-shadow(
+      0 0 8px
+      rgb(34 211 238 / 0.4)
+    );
+  animation:
+    atlas-signal-rise
+    9s
+    ease-out
+    infinite;
+}
+
+.atlas-mission-environment__signal--left {
+  top: 32rem;
+  left: 8%;
+}
+
+.atlas-mission-environment__signal--right {
+  top: 43rem;
+  right: 10%;
+  animation-delay: -4.5s;
+}
+
+.atlas-mission-environment__vignette {
+  position: absolute;
+  z-index: -3;
+  inset: -2rem -3rem;
+  pointer-events: none;
+  background:
+    linear-gradient(
+      90deg,
+      rgb(9 9 11 / 0.48),
+      transparent 12%,
+      transparent 88%,
+      rgb(9 9 11 / 0.48)
+    ),
+    linear-gradient(
+      180deg,
+      transparent 0%,
+      transparent 55%,
+      rgb(9 9 11 / 0.24) 78%,
+      rgb(9 9 11 / 0.62) 100%
+    );
+}
+
+@media (max-width: 768px) {
+  .atlas-mission-environment__sky {
+    inset-inline: -1.5rem;
+  }
+
+  .atlas-mission-environment__grid {
+    width: 130vw;
+    opacity: 0.35;
+  }
+
+  .atlas-mission-environment__radar--primary {
+    top: 12rem;
+    right: -22rem;
+  }
+
+  .atlas-mission-environment__radar--secondary {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .atlas-mission-environment__sky,
+  .atlas-mission-environment__horizon,
+  .atlas-mission-environment__radar,
+  .atlas-mission-environment__signal {
+    animation: none;
+  }
+}
