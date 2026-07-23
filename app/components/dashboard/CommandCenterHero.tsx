@@ -823,24 +823,55 @@ const pipelineStatusLabel =
             />
           </div>
 
-          <div className="relative z-20 border-t border-white/[0.06] bg-black/20 p-3 backdrop-blur-md">
-            <AtlasIntelligenceStrip
-              signals={intelligenceSignals}
+          <footer className="relative z-20 border-t border-white/[0.07] bg-[linear-gradient(180deg,rgba(3,7,18,0.42),rgba(3,7,18,0.78))] p-3 backdrop-blur-xl sm:p-4">
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-x-12 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/45 to-transparent"
             />
-          </div>
 
-          <div className="relative z-20 border-t border-white/[0.06] bg-black/25 p-3 backdrop-blur-md">
-            <AtlasOSRibbon
-              pipelineStatusLabel={pipelineStatusLabel}
-              pipelineIndicatorClasses={pipelineIndicatorClasses}
-              cash={dashboard.summary.cash}
-              stage={dashboard.summary.stage}
-              empireScore={empireScore}
-              confidence={confidence}
-            />
-          </div>
+            <div className="grid min-w-0 gap-3 2xl:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
+              <div className="min-w-0 overflow-hidden rounded-[1.35rem] border border-white/[0.06] bg-black/20">
+                <div className="border-b border-white/[0.05] px-4 py-2.5">
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="flex min-w-0 items-center gap-3">
+                      <span
+                        aria-hidden="true"
+                        className="h-1.5 w-1.5 shrink-0 rounded-full bg-cyan-300 shadow-[0_0_12px_rgba(103,232,249,0.75)]"
+                      />
+
+                      <p className="truncate text-[0.56rem] font-black uppercase tracking-[0.28em] text-cyan-200">
+                        Live Intelligence
+                      </p>
+                    </div>
+
+                    <p className="shrink-0 text-[0.52rem] font-bold uppercase tracking-[0.2em] text-zinc-600">
+                      Tactical feed
+                    </p>
+                  </div>
+                </div>
+
+                <div className="p-2.5">
+                  <AtlasIntelligenceStrip
+                    signals={intelligenceSignals}
+                  />
+                </div>
+              </div>
+
+              <div className="min-w-0">
+                <AtlasOSRibbon
+                  pipelineStatusLabel={pipelineStatusLabel}
+                  pipelineIndicatorClasses={pipelineIndicatorClasses}
+                  cash={dashboard.summary.cash}
+                  stage={dashboard.summary.stage}
+                  empireScore={empireScore}
+                  confidence={confidence}
+                />
+              </div>
+            </div>
+          </footer>
         </div>
       </AtlasHeroScene>
     </div>
   );
 }
+
