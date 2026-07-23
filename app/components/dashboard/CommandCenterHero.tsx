@@ -745,134 +745,149 @@ const pipelineStatusLabel =
                   </div>
                 </section>
 
-                <div className="mt-7 max-w-4xl rounded-[1.65rem] border border-cyan-300/15 bg-black/35 p-5 shadow-[0_24px_80px_-52px_rgba(34,211,238,0.95)] backdrop-blur-xl sm:p-6">
-                  <div className="flex flex-wrap items-center justify-between gap-3">
+                <section className="mt-7 max-w-5xl overflow-hidden rounded-[1.75rem] border border-cyan-300/15 bg-[linear-gradient(135deg,rgba(3,7,18,0.78),rgba(6,13,26,0.58)_60%,rgba(139,92,246,0.06))] shadow-[0_28px_90px_-58px_rgba(34,211,238,0.95)] backdrop-blur-xl">
+                  <div className="border-b border-white/[0.06] px-5 py-4 sm:px-6">
+                    <div className="flex flex-wrap items-center justify-between gap-4">
+                      <div className="flex items-center gap-3">
+                        <span
+                          aria-hidden="true"
+                          className="h-2 w-2 rounded-full bg-cyan-300 shadow-[0_0_14px_rgba(103,232,249,0.85)]"
+                        />
+
+                        <div>
+                          <p className="text-[0.58rem] font-black uppercase tracking-[0.28em] text-cyan-300">
+                            Mission Execution
+                          </p>
+
+                          <p className="mt-1 text-xs text-zinc-500">
+                            Atlas directive, strategic rationale, and execution controls
+                          </p>
+                        </div>
+                      </div>
+
+                      <span
+                        className={[
+                          "rounded-full border px-3 py-1.5 text-[0.56rem] font-black uppercase tracking-[0.18em]",
+                          urgencyClasses,
+                        ].join(" ")}
+                      >
+                        {shouldActNow
+                          ? "Ready to Execute"
+                          : "Strategic Window"}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="p-5 sm:p-6">
                     <div>
-                      <p className="text-[0.6rem] font-black uppercase tracking-[0.26em] text-cyan-300">
-                        Atlas Recommendation
+                      <p className="text-[0.55rem] font-black uppercase tracking-[0.24em] text-zinc-500">
+                        Recommended Action
                       </p>
 
-                      <p className="mt-2 text-xs text-zinc-500">
-                        Highest-value action detected for your current empire state
-                      </p>
-                    </div>
-
-                    <span
-                      className={[
-                        "rounded-full border px-3 py-1.5 text-[0.58rem] font-black uppercase tracking-[0.18em]",
-                        urgencyClasses,
-                      ].join(" ")}
-                    >
-                      {shouldActNow
-                        ? "Execute Now"
-                        : "Strategic Window"}
-                    </span>
-                  </div>
-
-                  <p className="mt-5 text-xl font-black leading-8 text-white sm:text-2xl">
-                    {immediateNextStep}
-                  </p>
-
-                  <div className="mt-5 grid gap-4 lg:grid-cols-2">
-                    <div className="rounded-2xl border border-white/[0.06] bg-white/[0.025] p-4">
-                      <p className="text-[0.56rem] font-bold uppercase tracking-[0.22em] text-cyan-300">
-                        Why This Matters
-                      </p>
-
-                      <p className="mt-3 text-sm leading-6 text-zinc-300">
-                        {rationale}
+                      <p className="mt-3 max-w-4xl text-xl font-black leading-8 text-white sm:text-2xl">
+                        {immediateNextStep}
                       </p>
                     </div>
 
-                    <div className="rounded-2xl border border-white/[0.06] bg-white/[0.025] p-4">
-                      <p className="text-[0.56rem] font-bold uppercase tracking-[0.22em] text-violet-300">
-                        Strategic Direction
-                      </p>
-
-                      <p className="mt-3 text-sm leading-6 text-zinc-300">
-                        {longTermDirection}
-                      </p>
-                    </div>
-                  </div>
-
-                  {brainPipeline.error ? (
-                    <div className="mt-4 rounded-2xl border border-rose-400/15 bg-rose-400/[0.06] p-4">
-                      <p className="text-[0.56rem] font-bold uppercase tracking-[0.2em] text-rose-300">
-                        Pipeline Notice
-                      </p>
-
-                      <p className="mt-2 text-sm leading-6 text-zinc-300">
-                        {brainPipeline.error}
-                      </p>
-                    </div>
-                  ) : null}
-
-                  <div className="mt-5 flex flex-wrap items-center gap-3">
-                    <AtlasButton href="/planner">
-                      Execute Atlas Plan
-                    </AtlasButton>
-
-                    <AtlasButton
-                      href="/copilot"
-                      variant="secondary"
-                    >
-                      Review with Copilot
-                    </AtlasButton>
-
-                    <div className="ml-0 flex items-center gap-3 rounded-full border border-white/[0.07] bg-black/25 px-4 py-2 sm:ml-auto">
-                      <div>
-                        <p className="text-[0.52rem] font-bold uppercase tracking-[0.18em] text-zinc-500">
-                          Confidence
+                    <div className="mt-6 grid gap-4 lg:grid-cols-2">
+                      <div className="rounded-2xl border border-white/[0.06] bg-black/25 p-4">
+                        <p className="text-[0.55rem] font-black uppercase tracking-[0.22em] text-cyan-300">
+                          Why Atlas Chose It
                         </p>
 
-                        <p className="text-sm font-black text-cyan-100">
-                          {confidence}%
+                        <p className="mt-3 text-sm leading-6 text-zinc-300">
+                          {rationale}
                         </p>
                       </div>
 
-                      <div className="h-7 w-px bg-white/[0.08]" />
-
-                      <div>
-                        <p className="text-[0.52rem] font-bold uppercase tracking-[0.18em] text-zinc-500">
-                          Posture
+                      <div className="rounded-2xl border border-white/[0.06] bg-black/25 p-4">
+                        <p className="text-[0.55rem] font-black uppercase tracking-[0.22em] text-violet-300">
+                          Long-Term Direction
                         </p>
 
-                        <p
-                          className={[
-                            "text-sm font-black",
-                            shouldActNow
-                              ? "text-amber-200"
-                              : "text-violet-200",
-                          ].join(" ")}
-                        >
-                          {shouldActNow
-                            ? "Act Now"
-                            : "Planned"}
+                        <p className="mt-3 text-sm leading-6 text-zinc-300">
+                          {longTermDirection}
                         </p>
                       </div>
                     </div>
+
+                    <div className="mt-4 rounded-2xl border border-violet-300/10 bg-violet-300/[0.035] p-4">
+                      <div className="flex items-start gap-3">
+                        <span
+                          aria-hidden="true"
+                          className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-violet-300 shadow-[0_0_14px_rgba(196,181,253,0.8)]"
+                        />
+
+                        <div>
+                          <p className="text-[0.55rem] font-black uppercase tracking-[0.22em] text-violet-300">
+                            Atlas Coaching
+                          </p>
+
+                          <p className="mt-2 text-sm font-semibold leading-6 text-zinc-200">
+                            {coachingResponse}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {brainPipeline.error ? (
+                      <div className="mt-4 rounded-2xl border border-rose-400/15 bg-rose-400/[0.06] p-4">
+                        <p className="text-[0.55rem] font-bold uppercase tracking-[0.2em] text-rose-300">
+                          Pipeline Notice
+                        </p>
+
+                        <p className="mt-2 text-sm leading-6 text-zinc-300">
+                          {brainPipeline.error}
+                        </p>
+                      </div>
+                    ) : null}
+
+                    <div className="mt-6 flex flex-wrap items-center gap-3">
+                      <AtlasButton href="/planner">
+                        Execute Atlas Plan
+                      </AtlasButton>
+
+                      <AtlasButton
+                        href="/copilot"
+                        variant="secondary"
+                      >
+                        Review with Copilot
+                      </AtlasButton>
+
+                      <div className="ml-0 grid grid-cols-2 gap-2 sm:ml-auto">
+                        <div className="rounded-xl border border-white/[0.06] bg-black/25 px-4 py-2.5">
+                          <p className="text-[0.5rem] font-bold uppercase tracking-[0.18em] text-zinc-500">
+                            Confidence
+                          </p>
+
+                          <p className="mt-1 text-sm font-black text-cyan-100">
+                            {confidence}%
+                          </p>
+                        </div>
+
+                        <div className="rounded-xl border border-white/[0.06] bg-black/25 px-4 py-2.5">
+                          <p className="text-[0.5rem] font-bold uppercase tracking-[0.18em] text-zinc-500">
+                            Posture
+                          </p>
+
+                          <p
+                            className={[
+                              "mt-1 text-sm font-black",
+                              shouldActNow
+                                ? "text-amber-200"
+                                : "text-violet-200",
+                            ].join(" ")}
+                          >
+                            {shouldActNow
+                              ? "Act Now"
+                              : "Planned"}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-
-              <div className="mt-8 rounded-2xl border border-white/[0.06] bg-black/25 px-4 py-3 backdrop-blur-md sm:px-5">
-                <div className="flex items-start gap-3">
-                  <span
-                    aria-hidden="true"
-                    className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-violet-300 shadow-[0_0_14px_rgba(196,181,253,0.8)]"
-                  />
-
-                  <div>
-                    <p className="text-[0.56rem] font-black uppercase tracking-[0.22em] text-violet-300">
-                      Atlas Coaching
-                    </p>
-
-                    <p className="mt-2 text-sm font-semibold leading-6 text-zinc-200">
-                      {coachingResponse}
-                    </p>
-                  </div>
-                </div>
-              </div>
+                </section>
+              </div>  
             </main>
 
             <AtlasMissionDisplay
@@ -950,5 +965,6 @@ const pipelineStatusLabel =
     </div>
   );
 }
+
 
 
