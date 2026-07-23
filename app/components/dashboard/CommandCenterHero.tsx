@@ -649,25 +649,101 @@ const pipelineStatusLabel =
           <div className="relative z-10 grid min-w-0 2xl:grid-cols-[minmax(0,1.18fr)_minmax(360px,0.82fr)]">
             <main className="flex min-w-0 flex-col justify-between px-5 pb-6 pt-8 sm:px-7 lg:px-8 lg:pb-8 lg:pt-12">
               <div className="max-w-5xl">
-                <div className="flex flex-wrap items-center gap-3">
-                  <p className="text-[0.62rem] font-black uppercase tracking-[0.3em] text-cyan-300">
-                    Today&apos;s Strategic Directive
-                  </p>
+                <section className="relative overflow-hidden rounded-[1.85rem] border border-white/[0.08] bg-[linear-gradient(135deg,rgba(3,7,18,0.74),rgba(8,15,30,0.46)_58%,rgba(34,211,238,0.05))] px-5 py-6 shadow-[0_32px_100px_-70px_rgba(34,211,238,0.95)] backdrop-blur-xl sm:px-7 sm:py-7">
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-x-16 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/70 to-transparent"
+                  />
 
-                  <span className="h-px w-12 bg-gradient-to-r from-cyan-300/70 to-transparent" />
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute -right-20 -top-24 h-56 w-56 rounded-full bg-cyan-300/[0.06] blur-3xl"
+                  />
 
-                  <p className="text-[0.58rem] font-bold uppercase tracking-[0.18em] text-zinc-500">
-                    {fallbackBriefing.recommendedSessionMinutes} minute operation
-                  </p>
-                </div>
+                  <div className="relative">
+                    <div className="flex flex-wrap items-center justify-between gap-4">
+                      <div className="flex flex-wrap items-center gap-3">
+                        <span className="inline-flex items-center gap-2 rounded-full border border-cyan-300/15 bg-cyan-300/[0.07] px-3 py-1.5 text-[0.58rem] font-black uppercase tracking-[0.24em] text-cyan-200">
+                          <span
+                            aria-hidden="true"
+                            className="h-1.5 w-1.5 rounded-full bg-cyan-300 shadow-[0_0_12px_rgba(103,232,249,0.8)]"
+                          />
 
-                <h1 className="mt-5 max-w-5xl text-4xl font-black leading-[0.96] tracking-[-0.055em] text-white sm:text-5xl lg:text-6xl 2xl:text-7xl">
-                  {recommendationTitle}
-                </h1>
+                          Current Operation
+                        </span>
 
-                <p className="mt-5 max-w-3xl text-sm font-medium leading-7 text-zinc-300 sm:text-base">
-                  {recommendationSummary}
-                </p>
+                        <p className="text-[0.58rem] font-bold uppercase tracking-[0.2em] text-zinc-500">
+                          Atlas Mission Brief
+                        </p>
+                      </div>
+
+                      <span
+                        className={[
+                          "rounded-full border px-3 py-1.5 text-[0.56rem] font-black uppercase tracking-[0.18em]",
+                          urgencyClasses,
+                        ].join(" ")}
+                      >
+                        {urgencyLabel}
+                      </span>
+                    </div>
+
+                    <div className="mt-7">
+                      <p className="text-[0.58rem] font-black uppercase tracking-[0.28em] text-cyan-300">
+                        Primary Objective
+                      </p>
+
+                      <h1 className="mt-3 max-w-5xl text-4xl font-black leading-[0.94] tracking-[-0.055em] text-white sm:text-5xl lg:text-6xl 2xl:text-7xl">
+                        {recommendationTitle}
+                      </h1>
+
+                      <p className="mt-5 max-w-3xl text-sm font-medium leading-7 text-zinc-300 sm:text-base">
+                        {recommendationSummary}
+                      </p>
+                    </div>
+
+                    <div className="mt-7 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+                      <div className="rounded-2xl border border-white/[0.06] bg-black/25 px-4 py-3">
+                        <p className="text-[0.52rem] font-bold uppercase tracking-[0.2em] text-zinc-500">
+                          Mission Status
+                        </p>
+
+                        <p className="mt-2 text-sm font-black text-white">
+                          {shouldActNow ? "Ready to Execute" : "Strategic Window"}
+                        </p>
+                      </div>
+
+                      <div className="rounded-2xl border border-white/[0.06] bg-black/25 px-4 py-3">
+                        <p className="text-[0.52rem] font-bold uppercase tracking-[0.2em] text-zinc-500">
+                          Session
+                        </p>
+
+                        <p className="mt-2 text-sm font-black text-violet-200">
+                          {fallbackBriefing.recommendedSessionMinutes} Minutes
+                        </p>
+                      </div>
+
+                      <div className="rounded-2xl border border-white/[0.06] bg-black/25 px-4 py-3">
+                        <p className="text-[0.52rem] font-bold uppercase tracking-[0.2em] text-zinc-500">
+                          AI Confidence
+                        </p>
+
+                        <p className="mt-2 text-sm font-black text-cyan-200">
+                          {confidence}%
+                        </p>
+                      </div>
+
+                      <div className="rounded-2xl border border-white/[0.06] bg-black/25 px-4 py-3">
+                        <p className="text-[0.52rem] font-bold uppercase tracking-[0.2em] text-zinc-500">
+                          Empire Posture
+                        </p>
+
+                        <p className="mt-2 text-sm font-black text-emerald-200">
+                          {empireStatus.label}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </section>
 
                 <div className="mt-7 max-w-4xl rounded-[1.65rem] border border-cyan-300/15 bg-black/35 p-5 shadow-[0_24px_80px_-52px_rgba(34,211,238,0.95)] backdrop-blur-xl sm:p-6">
                   <div className="flex flex-wrap items-center justify-between gap-3">
@@ -874,4 +950,5 @@ const pipelineStatusLabel =
     </div>
   );
 }
+
 
