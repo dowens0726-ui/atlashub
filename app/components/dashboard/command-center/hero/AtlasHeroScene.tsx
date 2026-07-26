@@ -1,6 +1,15 @@
-﻿import type {
+import type {
+  CSSProperties,
   ReactNode,
 } from "react";
+
+import {
+  buildAtlasWorldState,
+} from "@/app/world";
+
+import type {
+  AtlasWorldState,
+} from "@/app/world";
 
 import AtlasFloatingHud from "./AtlasFloatingHud";
 
@@ -24,42 +33,184 @@ type AtlasHeroSceneProps = {
 
   hudSignals:
     AtlasHeroHudSignal[];
+
+  worldState?:
+    AtlasWorldState;
 };
+
+
+type AtlasWorldSceneStyles =
+  CSSProperties & {
+    "--atlas-world-sky-brightness":
+      number;
+
+    "--atlas-world-skyline-brightness":
+      number;
+
+    "--atlas-world-building-lights":
+      number;
+
+    "--atlas-world-system-glow":
+      number;
+
+    "--atlas-world-caution-glow":
+      number;
+
+    "--atlas-world-haze":
+      number;
+
+    "--atlas-world-cloud-cover":
+      number;
+
+    "--atlas-world-water-shimmer":
+      number;
+
+    "--atlas-world-ambient-motion":
+      number;
+  };
+
+
+function buildSceneStyles(
+  worldState:
+    AtlasWorldState
+): AtlasWorldSceneStyles {
+  return {
+    "--atlas-world-sky-brightness":
+      worldState.lighting.skyBrightness,
+
+    "--atlas-world-skyline-brightness":
+      worldState.lighting.skylineBrightness,
+
+    "--atlas-world-building-lights":
+      worldState.lighting.buildingLightIntensity,
+
+    "--atlas-world-system-glow":
+      worldState.lighting.systemGlowIntensity,
+
+    "--atlas-world-caution-glow":
+      worldState.lighting.cautionGlowIntensity,
+
+    "--atlas-world-haze":
+      worldState.atmosphere.haze,
+
+    "--atlas-world-cloud-cover":
+      worldState.atmosphere.cloudCover,
+
+    "--atlas-world-water-shimmer":
+      worldState.atmosphere.waterShimmer,
+
+    "--atlas-world-ambient-motion":
+      worldState.atmosphere.ambientMotion,
+  };
+}
 
 
 export default function AtlasHeroScene({
   children,
   hudSignals,
+  worldState,
 }: AtlasHeroSceneProps) {
+  const resolvedWorldState =
+    worldState ??
+    buildAtlasWorldState({
+      empireScore: 50,
+      confidence: 65,
+      availableCash: 0,
+      progressionStage: "Developing",
+      shouldActNow: false,
+    });
+
+  const sceneStyles =
+    buildSceneStyles(
+      resolvedWorldState
+    );
+
   return (
-    <section className="atlas-hero-scene relative isolate overflow-hidden rounded-[2rem] border border-cyan-400/15 bg-[#020612] shadow-[0_34px_120px_-58px_rgba(34,211,238,0.5)]">
+    <section
+      className="atlas-hero-scene relative isolate overflow-hidden rounded-[2rem] border border-cyan-400/15 bg-[#020612] shadow-[0_34px_120px_-58px_rgba(34,211,238,0.5)]"
+      data-atlas-time-of-day={resolvedWorldState.timeOfDay}
+      data-atlas-weather={resolvedWorldState.weather}
+      data-atlas-city-activity={resolvedWorldState.cityActivity}
+      data-atlas-road-traffic={resolvedWorldState.traffic.road}
+      data-atlas-harbor-traffic={resolvedWorldState.traffic.harbor}
+      data-atlas-air-traffic={resolvedWorldState.traffic.air}
+      style={sceneStyles}
+    >
       <div
         aria-hidden="true"
         className="atlas-hero-scene__environment pointer-events-none absolute inset-0"
       >
-        <AtlasAtmosphereLayer />
+        <AtlasAtmosphereLayer
+          worldState={resolvedWorldState}
+        />
 
-        <AtlasSkylineLayer />
+        <AtlasSkylineLayer
+          worldState={resolvedWorldState}
+        />
 
         <AtlasGridLayer />
 
         <AtlasRadarLayer />
 
-        <AtlasLightingLayer />
+        <AtlasLightingLayer
+          worldState={resolvedWorldState}
+        />
 
-        <AtlasParticleLayer />
+        <AtlasParticleLayer
+          worldState={resolvedWorldState}
+        />
 
-        <div className="atlas-hero-scene__sky absolute inset-0" />
+        <div
+          className="atlas-hero-scene__sky absolute inset-0"
+          style={{
+            opacity:
+              Math.max(
+                0.34,
+                resolvedWorldState.lighting.skyBrightness /
+                  100
+              ),
+          }}
+        />
 
-        <div className="atlas-hero-scene__grid absolute inset-0 opacity-40" />
+        <div
+          className="atlas-hero-scene__grid absolute inset-0"
+          style={{
+            opacity:
+              Math.max(
+                0.18,
+                resolvedWorldState.lighting.systemGlowIntensity /
+                  250
+              ),
+          }}
+        />
 
         <div className="atlas-hero-scene__horizon absolute inset-x-0 top-[46%]" />
 
-        <div className="atlas-hero-scene__scan absolute inset-0 opacity-55" />
+        <div
+          className="atlas-hero-scene__scan absolute inset-0"
+          style={{
+            opacity:
+              Math.max(
+                0.22,
+                resolvedWorldState.atmosphere.ambientMotion /
+                  180
+              ),
+          }}
+        />
 
         <div className="atlas-hero-scene__vignette absolute inset-0" />
 
-        <div className="atlas-hero-scene__top-light absolute inset-x-12 top-0 h-px" />
+        <div
+          className="atlas-hero-scene__top-light absolute inset-x-12 top-0 h-px"
+          style={{
+            opacity:
+              Math.max(
+                0.28,
+                resolvedWorldState.lighting.systemGlowIntensity /
+                  100
+              ),
+          }}
+        />
       </div>
 
       <div

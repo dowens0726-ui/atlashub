@@ -18,6 +18,10 @@ import {
   buildAtlasImpact,
 } from "@/app/intelligence";
 
+import {
+  buildAtlasWorldState,
+} from "@/app/world";
+
 import type {
   UseAtlasBrainPipelineResult,
 } from "@/app/hooks/useAtlasBrainPipeline";
@@ -314,6 +318,19 @@ export default function CommandCenterHero({
     getEmpireStatus(
       empireScore
     );
+    const worldState =
+  buildAtlasWorldState({
+    empireScore,
+    confidence,
+
+    availableCash:
+      dashboard.summary.cash,
+
+    progressionStage:
+      dashboard.summary.stage,
+
+    shouldActNow,
+  });
 const pipelineStatusLabel =
     getPipelineStatusLabel(
       brainPipeline
@@ -578,6 +595,7 @@ const pipelineStatusLabel =
     <div className="atlas-command-center-shell">
       <AtlasHeroScene
         hudSignals={heroHudSignals}
+        worldState={worldState}
       >
         <div
           aria-hidden="true"

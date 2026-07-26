@@ -1,4 +1,15 @@
-﻿const skylineBlocks = [
+﻿import type {
+  AtlasWorldState,
+} from "@/app/world";
+
+
+type AtlasSkylineLayerProps = {
+  worldState:
+    AtlasWorldState;
+};
+
+
+const skylineBlocks = [
   {
     left: "2%",
     width: "7%",
@@ -66,13 +77,47 @@
   },
 ];
 
-export default function AtlasSkylineLayer() {
+
+export default function AtlasSkylineLayer({
+  worldState,
+}: AtlasSkylineLayerProps) {
+  const skylineOpacity =
+    Math.max(
+      0.38,
+      worldState.lighting.skylineBrightness /
+        100
+    );
+
+  const buildingLightOpacity =
+    Math.max(
+      0.12,
+      worldState.lighting.buildingLightIntensity /
+        100
+    );
+
+  const systemGlowOpacity =
+    Math.max(
+      0.12,
+      worldState.lighting.systemGlowIntensity /
+        100
+    );
+
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute inset-x-0 top-[31%] h-[31%] overflow-hidden opacity-65"
+      className="pointer-events-none absolute inset-x-0 top-[31%] h-[31%] overflow-hidden"
+      style={{
+        opacity:
+          skylineOpacity,
+      }}
     >
-      <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-cyan-200/25 to-transparent" />
+      <div
+        className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-cyan-200/40 to-transparent"
+        style={{
+          opacity:
+            systemGlowOpacity,
+        }}
+      />
 
       <div className="absolute inset-x-0 bottom-0 h-[72%] bg-[linear-gradient(180deg,transparent,rgba(4,11,25,0.4)_24%,rgba(2,6,18,0.86)_100%)]" />
 
@@ -95,7 +140,13 @@ export default function AtlasSkylineLayer() {
                 block.height,
             }}
           >
-            <div className="absolute inset-x-[18%] top-[14%] grid grid-cols-2 gap-x-1 gap-y-2 opacity-35">
+            <div
+              className="absolute inset-x-[18%] top-[14%] grid grid-cols-2 gap-x-1 gap-y-2"
+              style={{
+                opacity:
+                  buildingLightOpacity,
+              }}
+            >
               {Array.from({
                 length:
                   index % 3 === 0
@@ -108,7 +159,15 @@ export default function AtlasSkylineLayer() {
                 ) => (
                   <span
                     key={lightIndex}
-                    className="h-px bg-cyan-100/40"
+                    className={[
+                      "h-px",
+                      worldState.timeOfDay ===
+                        "night" ||
+                      worldState.timeOfDay ===
+                        "sunset"
+                        ? "bg-amber-100/60 shadow-[0_0_6px_rgba(254,243,199,0.35)]"
+                        : "bg-cyan-100/40",
+                    ].join(" ")}
                   />
                 )
               )}
@@ -117,9 +176,21 @@ export default function AtlasSkylineLayer() {
         )
       )}
 
-      <div className="absolute bottom-[2%] left-[39%] h-[82%] w-px bg-cyan-200/15" />
+      <div
+        className="absolute bottom-[2%] left-[39%] h-[82%] w-px bg-cyan-200/20"
+        style={{
+          opacity:
+            systemGlowOpacity,
+        }}
+      />
 
-      <div className="absolute bottom-[84%] left-[39%] h-3 w-3 -translate-x-1/2 rounded-full border border-cyan-200/20 bg-cyan-200/10 shadow-[0_0_20px_rgba(103,232,249,0.35)]" />
+      <div
+        className="absolute bottom-[84%] left-[39%] h-3 w-3 -translate-x-1/2 rounded-full border border-cyan-200/20 bg-cyan-200/10 shadow-[0_0_20px_rgba(103,232,249,0.35)]"
+        style={{
+          opacity:
+            systemGlowOpacity,
+        }}
+      />
 
       <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#020612] to-transparent" />
     </div>
