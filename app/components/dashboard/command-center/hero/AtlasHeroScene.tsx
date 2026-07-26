@@ -1,4 +1,4 @@
-﻿import type {
+import type {
   CSSProperties,
   ReactNode,
 } from "react";
@@ -14,13 +14,16 @@ import type {
 import AtlasFloatingHud from "./AtlasFloatingHud";
 
 import {
+  AtlasAircraftLayer,
   AtlasAtmosphereLayer,
   AtlasGridLayer,
+  AtlasHarborLayer,
   AtlasLightingLayer,
   AtlasParticleLayer,
   AtlasRadarLayer,
   AtlasSkyLayer,
   AtlasSkylineLayer,
+  AtlasTrafficLayer,
 } from "./world";
 
 import type {
@@ -149,7 +152,19 @@ export default function AtlasHeroScene({
           worldState={resolvedWorldState}
         />
 
+        <AtlasAircraftLayer
+          worldState={resolvedWorldState}
+        />
+
         <AtlasSkylineLayer
+          worldState={resolvedWorldState}
+        />
+
+        <AtlasHarborLayer
+          worldState={resolvedWorldState}
+        />
+
+        <AtlasTrafficLayer
           worldState={resolvedWorldState}
         />
 

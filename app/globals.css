@@ -1,4 +1,4 @@
-﻿@import "tailwindcss";
+@import "tailwindcss";
 
 :root {
   --background: #ffffff;
@@ -5798,3 +5798,596 @@ a {
     transition: none;
   }
 }
+
+/* ============================================================
+   ATLAS LIVING WORLD ACTIVITY — SPRINT 122.1B.1
+   ============================================================ */
+
+.atlas-living-aircraft {
+  z-index: -4;
+  opacity: 0.74;
+}
+
+.atlas-living-aircraft__route {
+  position: absolute;
+  top: var(--atlas-aircraft-top);
+  left: -12%;
+  width: 8rem;
+  height: 1rem;
+  animation:
+    atlas-living-aircraft-east
+    var(--atlas-aircraft-duration)
+    linear
+    var(--atlas-aircraft-delay)
+    infinite;
+}
+
+.atlas-living-aircraft__route--reverse {
+  right: -12%;
+  left: auto;
+  animation-name:
+    atlas-living-aircraft-west;
+}
+
+.atlas-living-aircraft__craft {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 22px;
+  height: 8px;
+  transform:
+    scale(
+      var(--atlas-aircraft-scale)
+    );
+}
+
+.atlas-living-aircraft__body {
+  position: absolute;
+  top: 3px;
+  left: 0;
+  width: 22px;
+  height: 2px;
+  border-radius: 999px;
+  background:
+    rgb(226 232 240 / 0.72);
+  box-shadow:
+    0 0 8px
+    rgb(186 230 253 / 0.32);
+}
+
+.atlas-living-aircraft__wing {
+  position: absolute;
+  top: 0;
+  left: 8px;
+  width: 7px;
+  height: 8px;
+  background:
+    rgb(148 163 184 / 0.64);
+  clip-path:
+    polygon(
+      0 42%,
+      100% 0,
+      72% 50%,
+      100% 100%,
+      0 58%
+    );
+}
+
+.atlas-living-aircraft__beacon {
+  position: absolute;
+  top: 2px;
+  right: -1px;
+  width: 3px;
+  height: 3px;
+  border-radius: 999px;
+  background:
+    rgb(251 113 133);
+  box-shadow:
+    0 0 8px
+    rgb(251 113 133 / 0.92);
+  animation:
+    atlas-living-beacon
+    1.4s
+    ease-in-out
+    infinite;
+}
+
+.atlas-living-aircraft__trail {
+  position: absolute;
+  top: 4px;
+  right: 100%;
+  width: 88px;
+  height: 1px;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgb(186 230 253 / 0.28)
+    );
+}
+
+.atlas-living-aircraft__route--reverse
+.atlas-living-aircraft__trail {
+  right: auto;
+  left: 20px;
+  background:
+    linear-gradient(
+      90deg,
+      rgb(186 230 253 / 0.28),
+      transparent
+    );
+}
+
+.atlas-living-harbor {
+  z-index: -2;
+}
+
+.atlas-living-harbor__water {
+  position: absolute;
+  inset:
+    56% -8% -12%;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      180deg,
+      rgb(14 116 144 / 0.08),
+      rgb(2 6 23 / 0.2) 34%,
+      rgb(2 6 23 / 0.74)
+    );
+  transform:
+    perspective(620px)
+    rotateX(62deg)
+    scaleX(1.12);
+  transform-origin:
+    center top;
+}
+
+.atlas-living-harbor__water::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background-image:
+    repeating-linear-gradient(
+      180deg,
+      rgb(255 255 255 / 0.055)
+      0 1px,
+      transparent 1px 15px
+    );
+  animation:
+    atlas-living-water-flow
+    11s
+    linear
+    infinite;
+}
+
+.atlas-living-harbor__reflection {
+  position: absolute;
+  top: -5%;
+  width: 12%;
+  height: 92%;
+  filter: blur(16px);
+  transform: skewX(-8deg);
+}
+
+.atlas-living-harbor__reflection--cyan {
+  left: 18%;
+  background:
+    linear-gradient(
+      180deg,
+      rgb(34 211 238 / 0.34),
+      transparent 82%
+    );
+}
+
+.atlas-living-harbor__reflection--violet {
+  left: 54%;
+  background:
+    linear-gradient(
+      180deg,
+      rgb(168 85 247 / 0.3),
+      transparent 80%
+    );
+}
+
+.atlas-living-harbor__reflection--amber {
+  right: 12%;
+  background:
+    linear-gradient(
+      180deg,
+      rgb(251 146 60 / 0.24),
+      transparent 78%
+    );
+}
+
+.atlas-living-harbor__route {
+  position: absolute;
+  right: -10%;
+  bottom:
+    var(--atlas-harbor-bottom);
+  width: 82px;
+  height: 20px;
+  animation:
+    atlas-living-harbor-west
+    var(--atlas-harbor-duration)
+    linear
+    var(--atlas-harbor-delay)
+    infinite;
+}
+
+.atlas-living-harbor__route--reverse {
+  right: auto;
+  left: -10%;
+  animation-name:
+    atlas-living-harbor-east;
+}
+
+.atlas-living-harbor__vessel {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  bottom: 4px;
+  width: 34px;
+  height: 13px;
+  transform:
+    scale(
+      var(--atlas-harbor-scale)
+    );
+  transform-origin:
+    center bottom;
+}
+
+.atlas-living-harbor__hull {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 34px;
+  height: 6px;
+  border-radius:
+    1px 2px 8px 8px;
+  background:
+    linear-gradient(
+      180deg,
+      rgb(203 213 225 / 0.82),
+      rgb(71 85 105 / 0.76)
+    );
+  clip-path:
+    polygon(
+      0 0,
+      100% 0,
+      82% 100%,
+      16% 100%
+    );
+}
+
+.atlas-living-harbor__cabin {
+  position: absolute;
+  right: 8px;
+  bottom: 5px;
+  width: 15px;
+  height: 6px;
+  border:
+    1px solid
+    rgb(186 230 253 / 0.22);
+  border-radius:
+    3px 4px 0 0;
+  background:
+    rgb(15 23 42 / 0.82);
+}
+
+.atlas-living-harbor__navigation-light {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  width: 2px;
+  height: 2px;
+  border-radius: 999px;
+  background:
+    rgb(110 231 183);
+  box-shadow:
+    0 0 7px
+    rgb(110 231 183 / 0.9);
+}
+
+.atlas-living-harbor__wake {
+  position: absolute;
+  right: 39px;
+  bottom: 5px;
+  width: 48px;
+  height: 5px;
+  border-top:
+    1px solid
+    rgb(186 230 253 / 0.2);
+  border-radius: 50%;
+  transform: skewX(-18deg);
+}
+
+.atlas-living-harbor__route--reverse
+.atlas-living-harbor__wake {
+  right: auto;
+  left: 39px;
+  transform: skewX(18deg);
+}
+
+.atlas-living-traffic {
+  z-index: -1;
+}
+
+.atlas-living-traffic__bridge {
+  position: absolute;
+  right: -7%;
+  bottom: 20%;
+  width: 61%;
+  height: 46px;
+  transform:
+    rotate(-4deg)
+    perspective(480px);
+}
+
+.atlas-living-traffic__deck {
+  position: absolute;
+  inset: 15px 0 8px;
+  border:
+    1px solid
+    rgb(148 163 184 / 0.09);
+  background:
+    linear-gradient(
+      180deg,
+      rgb(30 41 59 / 0.56),
+      rgb(2 6 23 / 0.9)
+    );
+  box-shadow:
+    0 12px 28px
+    rgb(2 6 23 / 0.74);
+}
+
+.atlas-living-traffic__rail {
+  position: absolute;
+  right: 0;
+  left: 0;
+  height: 1px;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgb(103 232 249 / 0.2),
+      transparent
+    );
+}
+
+.atlas-living-traffic__rail--top {
+  top: 13px;
+}
+
+.atlas-living-traffic__rail--bottom {
+  bottom: 7px;
+}
+
+.atlas-living-traffic__vehicle {
+  position: absolute;
+  left: -8%;
+  width: 38px;
+  height: 5px;
+  animation:
+    atlas-living-traffic-east
+    var(--atlas-traffic-duration)
+    linear
+    var(--atlas-traffic-delay)
+    infinite;
+}
+
+.atlas-living-traffic__vehicle--west {
+  right: -8%;
+  left: auto;
+  animation-name:
+    atlas-living-traffic-west;
+}
+
+.atlas-living-traffic__vehicle--far {
+  top: 17px;
+}
+
+.atlas-living-traffic__vehicle--near {
+  top: 27px;
+}
+
+.atlas-living-traffic__light {
+  position: absolute;
+  top: 1px;
+  right: 0;
+  width: 4px;
+  height: 3px;
+  border-radius: 999px;
+  background:
+    rgb(165 243 252);
+  box-shadow:
+    0 0 5px
+    rgb(34 211 238 / 0.95),
+    0 0 12px
+    rgb(34 211 238 / 0.52);
+}
+
+.atlas-living-traffic__vehicle--west
+.atlas-living-traffic__light {
+  right: auto;
+  left: 0;
+  background:
+    rgb(253 164 175);
+  box-shadow:
+    0 0 5px
+    rgb(251 113 133 / 0.94),
+    0 0 12px
+    rgb(244 63 94 / 0.5);
+}
+
+.atlas-living-traffic__trail {
+  position: absolute;
+  top: 2px;
+  right: 3px;
+  width: 34px;
+  height: 1px;
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgb(103 232 249 / 0.38)
+    );
+}
+
+.atlas-living-traffic__vehicle--west
+.atlas-living-traffic__trail {
+  right: auto;
+  left: 3px;
+  background:
+    linear-gradient(
+      90deg,
+      rgb(251 113 133 / 0.34),
+      transparent
+    );
+}
+
+@keyframes atlas-living-aircraft-east {
+  from {
+    transform:
+      translate3d(-12vw, 0, 0);
+  }
+
+  to {
+    transform:
+      translate3d(124vw, 16px, 0);
+  }
+}
+
+@keyframes atlas-living-aircraft-west {
+  from {
+    transform:
+      translate3d(12vw, 0, 0);
+  }
+
+  to {
+    transform:
+      translate3d(-124vw, 12px, 0);
+  }
+}
+
+@keyframes atlas-living-harbor-east {
+  from {
+    transform:
+      translate3d(-10vw, 0, 0);
+  }
+
+  to {
+    transform:
+      translate3d(122vw, -3px, 0);
+  }
+}
+
+@keyframes atlas-living-harbor-west {
+  from {
+    transform:
+      translate3d(10vw, 0, 0);
+  }
+
+  to {
+    transform:
+      translate3d(-122vw, 3px, 0);
+  }
+}
+
+@keyframes atlas-living-traffic-east {
+  from {
+    transform:
+      translate3d(-8vw, 0, 0)
+      scale(
+        var(--atlas-traffic-scale)
+      );
+  }
+
+  to {
+    transform:
+      translate3d(112vw, -4px, 0)
+      scale(
+        var(--atlas-traffic-scale)
+      );
+  }
+}
+
+@keyframes atlas-living-traffic-west {
+  from {
+    transform:
+      translate3d(8vw, 0, 0)
+      scale(
+        var(--atlas-traffic-scale)
+      );
+  }
+
+  to {
+    transform:
+      translate3d(-112vw, 4px, 0)
+      scale(
+        var(--atlas-traffic-scale)
+      );
+  }
+}
+
+@keyframes atlas-living-water-flow {
+  from {
+    transform:
+      translateY(-15px);
+  }
+
+  to {
+    transform:
+      translateY(15px);
+  }
+}
+
+@keyframes atlas-living-beacon {
+  0%,
+  46%,
+  100% {
+    opacity: 0.2;
+  }
+
+  52%,
+  62% {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 1023px) {
+  .atlas-living-aircraft {
+    opacity: 0.48;
+  }
+
+  .atlas-living-harbor__route:nth-of-type(n + 4),
+  .atlas-living-aircraft__route:nth-of-type(n + 3),
+  .atlas-living-traffic__vehicle:nth-of-type(even) {
+    display: none;
+  }
+
+  .atlas-living-traffic__bridge {
+    right: -18%;
+    width: 78%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .atlas-living-aircraft__route,
+  .atlas-living-harbor__route,
+  .atlas-living-traffic__vehicle,
+  .atlas-living-harbor__water::before,
+  .atlas-living-aircraft__beacon {
+    animation: none;
+  }
+
+  .atlas-living-aircraft__route,
+  .atlas-living-harbor__route,
+  .atlas-living-traffic__vehicle {
+    opacity: 0.32;
+  }
+}
+
+/* ============================================================
+   END ATLAS LIVING WORLD ACTIVITY
+   ============================================================ */
