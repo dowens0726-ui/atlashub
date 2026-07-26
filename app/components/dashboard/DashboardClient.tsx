@@ -23,6 +23,16 @@ import {
   EmpireInsights,
 } from "@/app/components/dashboard";
 
+import AtlasOperationsSidebar from "@/app/components/dashboard/operations/AtlasOperationsSidebar";
+
+import type {
+  AtlasOperationStatus,
+} from "@/app/components/dashboard/operations/AtlasOperationsSidebar";
+
+import type {
+  AtlasRecentEvent,
+} from "@/app/components/dashboard/operations/AtlasRecentEvents";
+
 import {
   MissionControlEnvironment,
   type AtlasWorldConfiguration,
@@ -58,6 +68,42 @@ import {
 import type {
   AtlasEventBus,
 } from "@/app/intelligence";
+
+
+const atlasCurrencyFormatter =
+  new Intl.NumberFormat(
+    "en-US",
+    {
+      style: "currency",
+      currency: "USD",
+      maximumFractionDigits: 0,
+    }
+  );
+
+
+function formatAtlasCurrency(
+  value: number
+) {
+  return atlasCurrencyFormatter.format(
+    value
+  );
+}
+
+
+function formatAtlasStatus(
+  value: string
+) {
+  return value
+    .replace(
+      /[-_]/g,
+      " "
+    )
+    .replace(
+      /\b\w/g,
+      (character) =>
+        character.toUpperCase()
+    );
+}
 
 
 export default function DashboardClient() {
@@ -246,6 +292,227 @@ export default function DashboardClient() {
     );
 
 
+  const operationsStatuses =
+    useMemo<
+      AtlasOperationStatus[]
+    >(
+      () => {
+        const status =
+          brainPipeline.status;
+
+        const statusTone:
+          AtlasOperationStatus["tone"] =
+            status ===
+              "success"
+              ? "positive"
+              : status ===
+                    "loading"
+                ? "accent"
+                : status ===
+                      "warning" ||
+                    status ===
+                      "failed"
+                  ? "warning"
+                  : "default";
+
+        const activeObjective =
+          dashboard.objectives[0];
+
+        return [
+          {
+            id:
+              "atlas-core",
+
+            label:
+              "Atlas Core",
+
+            value:
+              formatAtlasStatus(
+                status
+              ),
+
+            detail:
+              "Decision systems and intelligence pipeline",
+
+            tone:
+              statusTone,
+
+            pulse:
+              status !==
+              "failed",
+          },
+          {
+            id:
+              "empire-stage",
+
+            label:
+              "Empire Stage",
+
+            value:
+              String(
+                dashboard.summary
+                  .stage
+              ),
+
+            detail:
+              "Current strategic progression position",
+
+            tone:
+              "accent",
+          },
+          {
+            id:
+              "empire-completion",
+
+            label:
+              "Empire Completion",
+
+            value:
+              `${Math.round(
+                dashboard.summary
+                  .completion
+              )}%`,
+
+            detail:
+              "Overall progression toward the active strategy",
+
+            tone:
+              dashboard.summary
+                  .completion >= 70
+                ? "positive"
+                : dashboard.summary
+                      .completion >= 35
+                  ? "accent"
+                  : "warning",
+
+            progress:
+              dashboard.summary
+                .completion,
+          },
+          {
+            id:
+              "available-cash",
+
+            label:
+              "Available Cash",
+
+            value:
+              formatAtlasCurrency(
+                dashboard.summary
+                  .cash
+              ),
+
+            detail:
+              "Current deployable capital",
+
+            tone:
+              dashboard.summary
+                  .cash > 0
+                ? "positive"
+                : "warning",
+          },
+          {
+            id:
+              "remaining-investment",
+
+            label:
+              "Investment Remaining",
+
+            value:
+              formatAtlasCurrency(
+                dashboard.summary
+                  .remainingInvestment
+              ),
+
+            detail:
+              "Capital required by the active roadmap",
+
+            tone:
+              dashboard.summary
+                  .remainingInvestment <=
+                dashboard.summary
+                  .cash
+                ? "positive"
+                : "warning",
+          },
+          {
+            id:
+              "active-objective",
+
+            label:
+              "Active Objective",
+
+            value:
+              activeObjective
+                ?.title ??
+              "Review Planner",
+
+            detail:
+              activeObjective
+                ?.description ??
+              "Atlas is ready to generate the next operating objective.",
+
+            tone:
+              activeObjective
+                ? "accent"
+                : "default",
+          },
+        ];
+      },
+      [
+        brainPipeline.status,
+        dashboard.objectives,
+        dashboard.summary.cash,
+        dashboard.summary.completion,
+        dashboard.summary.remainingInvestment,
+        dashboard.summary.stage,
+      ]
+    );
+
+
+  const operationsEvents =
+    useMemo<
+      AtlasRecentEvent[]
+    >(
+      () =>
+        dashboard.objectives
+          .slice(
+            0,
+            3
+          )
+          .map(
+            (
+              objective,
+              index
+            ) => ({
+              id:
+                `objective-${index}`,
+
+              title:
+                objective.title,
+
+              detail:
+                objective.description,
+
+              timestamp:
+                index === 0
+                  ? "Active"
+                  : "Queued",
+
+              tone:
+                index === 0
+                  ? "accent"
+                  : index === 1
+                    ? "warning"
+                    : "default",
+            })
+          ),
+      [
+        dashboard.objectives,
+      ]
+    );
+
+
   return (
     <MissionControlEnvironment
       worldConfiguration={
@@ -255,11 +522,26 @@ export default function DashboardClient() {
       <AtlasLiveEventToast />
 
       <CommandCenterLayout
+        operations={
+          <AtlasOperationsSidebar
+            statuses={
+              operationsStatuses
+            }
+
+            recentEvents={
+              operationsEvents
+            }
+
+            subtitle="Live intelligence, progression telemetry, and command access for the active operating session."
+          />
+        }
+
         hero={
           <CommandCenterHero
             dashboard={
               dashboard
             }
+
             brainPipeline={
               brainPipeline
             }
@@ -272,6 +554,7 @@ export default function DashboardClient() {
               eventBus={
                 eventBus
               }
+
               maxEvents={5}
             />
           ) : null
@@ -508,4 +791,3 @@ export default function DashboardClient() {
     </MissionControlEnvironment>
   );
 }
-
