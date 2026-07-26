@@ -5,6 +5,7 @@ import AtlasMountainLayer from "./AtlasMountainLayer";
 import AtlasOverlayLayer from "./AtlasOverlayLayer";
 import AtlasSkyLayer from "./AtlasSkyLayer";
 import AtlasSkylineLayer from "./AtlasSkylineLayer";
+import AtlasTrafficLayer from "./AtlasTrafficLayer";
 import AtlasWaterfrontLayer from "./AtlasWaterfrontLayer";
 
 export default function AtlasWorld() {
@@ -15,6 +16,7 @@ export default function AtlasWorld() {
       <AtlasMountainLayer />
       <AtlasSkylineLayer />
       <AtlasWaterfrontLayer />
+      <AtlasTrafficLayer />
       <AtlasForegroundLayer />
       <AtlasLightingLayer />
       <AtlasOverlayLayer />

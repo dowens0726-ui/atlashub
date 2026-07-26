@@ -1,4 +1,4 @@
-import AtlasNeuralCommandCore from "./AtlasNeuralCommandCore";
+﻿import AtlasNeuralCommandCore from "./AtlasNeuralCommandCore";
 
 
 type AtlasMissionDisplayProps = {
@@ -127,7 +127,7 @@ export default function AtlasMissionDisplay({
           </div>
         </div>
 
-        <div className="mt-4">
+        <div className="mt-10 sm:mt-12">
           <AtlasNeuralCommandCore
             empireScore={normalizedEmpireScore}
             confidence={confidence}
@@ -220,3 +220,4 @@ export default function AtlasMissionDisplay({
     </aside>
   );
 }
+

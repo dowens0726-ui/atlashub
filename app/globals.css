@@ -4975,3 +4975,233 @@ a {
 }
 
 /* ATLAS WORLD RENDERER V2: END */
+
+/* ============================================================
+   ATLAS LIVING LEONIDA TRAFFIC — SPRINT 118.3A
+   ============================================================ */
+
+.atlas-v2-traffic {
+  z-index: 5;
+  overflow: hidden;
+  opacity: 0.76;
+  mask-image:
+    linear-gradient(
+      to bottom,
+      transparent 44%,
+      black 57%,
+      black 86%,
+      transparent 100%
+    );
+}
+
+.atlas-v2-traffic__shoreline-road {
+  right: -8%;
+  bottom: 17%;
+  left: -8%;
+  height: 18px;
+  transform:
+    perspective(700px)
+    rotateX(66deg)
+    rotateZ(-1.4deg);
+  transform-origin: center;
+  border-top: 1px solid rgb(103 232 249 / 0.12);
+  border-bottom: 1px solid rgb(196 181 253 / 0.08);
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgb(15 23 42 / 0.68) 12%,
+      rgb(30 41 59 / 0.88) 50%,
+      rgb(15 23 42 / 0.68) 88%,
+      transparent
+    );
+  box-shadow:
+    0 -4px 20px rgb(34 211 238 / 0.06),
+    0 8px 26px rgb(0 0 0 / 0.42);
+}
+
+.atlas-v2-traffic__bridge {
+  right: -3%;
+  bottom: 30%;
+  width: 48%;
+  height: 76px;
+  transform:
+    perspective(700px)
+    rotateY(-7deg)
+    rotateZ(-1.5deg);
+  transform-origin: right center;
+  opacity: 0.7;
+}
+
+.atlas-v2-traffic__bridge-deck {
+  height: 8px;
+  transform: translateY(-50%);
+  border-top: 1px solid rgb(103 232 249 / 0.22);
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgb(15 23 42 / 0.92) 8%,
+      rgb(30 41 59 / 0.96) 92%,
+      transparent
+    );
+  box-shadow:
+    0 0 18px rgb(34 211 238 / 0.13);
+}
+
+.atlas-v2-traffic__bridge-support {
+  top: 50%;
+  width: 2px;
+  height: 48px;
+  background:
+    linear-gradient(
+      to bottom,
+      rgb(103 232 249 / 0.25),
+      rgb(15 23 42 / 0.7),
+      transparent
+    );
+  transform-origin: top;
+}
+
+.atlas-v2-traffic__bridge-support--left {
+  left: 24%;
+  transform: rotate(8deg);
+}
+
+.atlas-v2-traffic__bridge-support--right {
+  right: 24%;
+  transform: rotate(-8deg);
+}
+
+.atlas-v2-traffic__vehicle {
+  --atlas-traffic-duration: 20s;
+  --atlas-traffic-delay: 0s;
+  --atlas-traffic-position: 20%;
+  --atlas-traffic-scale: 1;
+
+  position: absolute;
+  left: -8%;
+  bottom: var(--atlas-traffic-position);
+  display: block;
+  width: 6px;
+  height: 2px;
+  transform:
+    translate3d(0, 0, 0)
+    scale(var(--atlas-traffic-scale));
+  animation-duration: var(--atlas-traffic-duration);
+  animation-delay: var(--atlas-traffic-delay);
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+.atlas-v2-traffic__vehicle--east {
+  animation-name: atlas-v2-traffic-east;
+}
+
+.atlas-v2-traffic__vehicle--west {
+  right: -8%;
+  left: auto;
+  animation-name: atlas-v2-traffic-west;
+}
+
+.atlas-v2-traffic__vehicle--bridge {
+  opacity: 0.72;
+}
+
+.atlas-v2-traffic__light {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: rgb(186 230 253);
+  box-shadow:
+    0 0 4px rgb(103 232 249 / 0.95),
+    0 0 10px rgb(34 211 238 / 0.58);
+}
+
+.atlas-v2-traffic__vehicle--west .atlas-v2-traffic__light {
+  background: rgb(253 164 175);
+  box-shadow:
+    0 0 4px rgb(251 113 133 / 0.92),
+    0 0 10px rgb(244 63 94 / 0.48);
+}
+
+.atlas-v2-traffic__trail {
+  position: absolute;
+  top: 50%;
+  right: 2px;
+  width: 32px;
+  height: 1px;
+  transform: translateY(-50%);
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgb(103 232 249 / 0.4)
+    );
+}
+
+.atlas-v2-traffic__vehicle--west .atlas-v2-traffic__trail {
+  right: auto;
+  left: 2px;
+  background:
+    linear-gradient(
+      90deg,
+      rgb(251 113 133 / 0.36),
+      transparent
+    );
+}
+
+@keyframes atlas-v2-traffic-east {
+  from {
+    transform:
+      translate3d(-10vw, 0, 0)
+      scale(var(--atlas-traffic-scale));
+  }
+
+  to {
+    transform:
+      translate3d(118vw, -5px, 0)
+      scale(var(--atlas-traffic-scale));
+  }
+}
+
+@keyframes atlas-v2-traffic-west {
+  from {
+    transform:
+      translate3d(10vw, 0, 0)
+      scale(var(--atlas-traffic-scale));
+  }
+
+  to {
+    transform:
+      translate3d(-118vw, 5px, 0)
+      scale(var(--atlas-traffic-scale));
+  }
+}
+
+@media (max-width: 1023px) {
+  .atlas-v2-traffic {
+    opacity: 0.46;
+  }
+
+  .atlas-v2-traffic__bridge {
+    right: -14%;
+    width: 66%;
+  }
+
+  .atlas-v2-traffic__vehicle:nth-of-type(even) {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .atlas-v2-traffic__vehicle {
+    animation: none;
+    opacity: 0.28;
+  }
+}
+
+/* ============================================================
+   END ATLAS LIVING LEONIDA TRAFFIC
+   ============================================================ */

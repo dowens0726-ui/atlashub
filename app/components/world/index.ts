@@ -9,6 +9,7 @@ export { default as AtlasSky } from "./AtlasSky";
 export { default as AtlasSkyLayer } from "./AtlasSkyLayer";
 export { default as AtlasSkyline } from "./AtlasSkyline";
 export { default as AtlasSkylineLayer } from "./AtlasSkylineLayer";
+export { default as AtlasTrafficLayer } from "./AtlasTrafficLayer";
 export { default as AtlasWaterfrontLayer } from "./AtlasWaterfrontLayer";
 export { default as AtlasWorld } from "./AtlasWorld";
 export { default as AtlasWorldRenderer } from "./AtlasWorldRenderer";
