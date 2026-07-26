@@ -1,4 +1,4 @@
-import type {
+﻿import type {
   CSSProperties,
   ReactNode,
 } from "react";
@@ -19,6 +19,7 @@ import {
   AtlasLightingLayer,
   AtlasParticleLayer,
   AtlasRadarLayer,
+  AtlasSkyLayer,
   AtlasSkylineLayer,
 } from "./world";
 
@@ -140,6 +141,10 @@ export default function AtlasHeroScene({
         aria-hidden="true"
         className="atlas-hero-scene__environment pointer-events-none absolute inset-0"
       >
+        <AtlasSkyLayer
+          worldState={resolvedWorldState}
+        />
+
         <AtlasAtmosphereLayer
           worldState={resolvedWorldState}
         />
@@ -158,18 +163,6 @@ export default function AtlasHeroScene({
 
         <AtlasParticleLayer
           worldState={resolvedWorldState}
-        />
-
-        <div
-          className="atlas-hero-scene__sky absolute inset-0"
-          style={{
-            opacity:
-              Math.max(
-                0.34,
-                resolvedWorldState.lighting.skyBrightness /
-                  100
-              ),
-          }}
         />
 
         <div
