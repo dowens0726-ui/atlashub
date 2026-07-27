@@ -35,3 +35,11 @@ export type {
   AtlasWorldIntensity,
   AtlasWorldState,
 } from "./atlas-world.types";
+export {
+  buildAtlasWorldConfiguration,
+} from "./atlas-world.adapter";
+
+export type {
+  BuildAtlasWorldConfigurationInput,
+} from "./atlas-world.adapter";
+

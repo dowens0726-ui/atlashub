@@ -33,6 +33,7 @@ export {
   AtlasSky,
   AtlasSkyline,
   AtlasWorldRenderer,
+  buildAtlasWorldConfiguration,
   defaultAtlasWorldConfiguration,
 } from "./world";
 
@@ -52,4 +53,6 @@ export type {
   AtlasWorldConfiguration,
   AtlasWorldIntensity,
   AtlasWorldState,
+  BuildAtlasWorldConfigurationInput,
 } from "./world";
+

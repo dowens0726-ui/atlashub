@@ -16,6 +16,7 @@ import {
 } from "@/app/components/achievements";
 
 import {
+  AtlasWorldStatus,
   CommandCenterHero,
   CommandCenterLayout,
   CommandCenterOverview,
@@ -34,6 +35,7 @@ import type {
 } from "@/app/components/dashboard/operations/AtlasRecentEvents";
 
 import {
+  buildAtlasWorldConfiguration,
   MissionControlEnvironment,
   type AtlasWorldConfiguration,
 } from "@/app/components/dashboard/mission-control";
@@ -53,6 +55,10 @@ import {
 import {
   useAtlasIntelligence,
 } from "@/app/hooks/useAtlasIntelligence";
+
+import {
+  useAtlasWorldContext,
+} from "@/app/hooks/useAtlasWorldContext";
 
 import {
   useDashboard,
@@ -109,6 +115,11 @@ function formatAtlasStatus(
 export default function DashboardClient() {
   const dashboard =
     useDashboard();
+
+  const {
+    worldContext,
+  } =
+    useAtlasWorldContext();
 
   const {
     decisions,
@@ -258,36 +269,24 @@ export default function DashboardClient() {
     useMemo<
       AtlasWorldConfiguration
     >(
-      () => {
-        const status =
-          brainPipeline.status;
+      () =>
+        buildAtlasWorldConfiguration({
+          context:
+            worldContext,
 
-        const intensity:
-          AtlasWorldConfiguration["intensity"] =
-            status ===
-              "loading" ||
-            status ===
-              "warning" ||
-            status ===
-              "failed"
-              ? "high"
-              : status ===
-                  "success"
-                ? "medium"
-                : "low";
-
-        return {
           state:
-            status,
-
-          intensity,
+            brainPipeline.status === "success"
+              ? "ready"
+              : brainPipeline.status === "waiting"
+                ? "loading"
+                : brainPipeline.status,
 
           active:
             true,
-        };
-      },
+        }),
       [
         brainPipeline.status,
+        worldContext,
       ]
     );
 
@@ -560,6 +559,13 @@ export default function DashboardClient() {
           ) : null
         }
 
+        worldStatus={
+
+          <AtlasWorldStatus />
+
+        }
+
+
         copilot={
           <AtlasRoadmapCard
             roadmap={
@@ -791,3 +797,9 @@ export default function DashboardClient() {
     </MissionControlEnvironment>
   );
 }
+
+
+
+
+
+

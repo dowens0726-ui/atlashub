@@ -1,4 +1,4 @@
-@import "tailwindcss";
+﻿@import "tailwindcss";
 
 :root {
   --background: #ffffff;
@@ -2588,619 +2588,632 @@ a {
 
 /* ATLAS REACTIVE WORLD LIGHTING: START */
 
-.atlas-mission-environment {
-  --atlas-world-state-cyan:
-    34 211 238;
-  --atlas-world-state-violet:
-    168 85 247;
-  --atlas-world-state-warm:
-    251 146 60;
-  --atlas-world-state-alert:
-    251 113 133;
-  --atlas-world-energy:
-    0.72;
-  --atlas-world-light-speed:
-    10s;
-}
-
-.atlas-mission-environment[
-  data-world-intensity="low"
-] {
-  --atlas-world-energy:
-    0.42;
-  --atlas-world-light-speed:
-    16s;
-}
-
-.atlas-mission-environment[
-  data-world-intensity="medium"
-] {
-  --atlas-world-energy:
-    0.72;
-  --atlas-world-light-speed:
-    11s;
-}
-
-.atlas-mission-environment[
-  data-world-intensity="high"
-] {
-  --atlas-world-energy:
-    1;
-  --atlas-world-light-speed:
-    6s;
-}
-
-.atlas-world-renderer {
-  position:
-    absolute;
-  z-index:
-    0;
-  inset:
-    0;
-  pointer-events:
-    none;
-  isolation:
-    isolate;
-}
+/*
+ * Sprint 127.3 — Stable Renderer Engine
+ *
+ * Rendering principles:
+ * - No renderer-wide filter transitions.
+ * - No continuously animated fullscreen blur filters.
+ * - No animated brightness or blur values.
+ * - Semantic world states remain driven by CSS variables and data attributes.
+ * - Continuous motion is limited to opacity and lightweight transforms.
+ */
 
 .atlas-world-lighting {
-  position:
-    absolute;
-  z-index:
-    -8;
-  inset:
-    0 -3rem;
-  min-height:
-    78rem;
-  overflow:
-    hidden;
-  pointer-events:
-    none;
+  --atlas-light-ambient-rgb: 12 38 82;
+  --atlas-light-horizon-rgb: 34 211 238;
+  --atlas-light-core-rgb: 168 85 247;
+  --atlas-light-weather-rgb: 63 94 251;
+  --atlas-light-emergency-rgb: 251 113 133;
+
+  --atlas-light-ambient-strength: 0.6;
+  --atlas-light-horizon-strength: 0.6;
+  --atlas-light-core-strength: 0.45;
+  --atlas-light-weather-strength: 0;
+  --atlas-light-emergency-strength: 0;
+
+  --atlas-light-bloom-strength: 1;
+  --atlas-light-contrast: 1;
+  --atlas-light-saturation: 1;
+  --atlas-light-scene-brightness: 1;
+
+  --atlas-light-pulse-duration: 10s;
+  --atlas-light-transition-duration: 700ms;
+
+  position: absolute;
+  z-index: -8;
+  inset: 0 -3rem;
+  min-height: 78rem;
+  overflow: hidden;
+  pointer-events: none;
+  isolation: isolate;
+  contain: layout paint style;
 }
 
 .atlas-world-lighting > div {
-  position:
-    absolute;
-  pointer-events:
-    none;
+  position: absolute;
+  pointer-events: none;
+  backface-visibility: hidden;
+  transition:
+    opacity var(--atlas-light-transition-duration) ease;
 }
 
-.atlas-world-lighting__ambient {
-  inset:
-    -12rem -10rem 0;
+/*
+ * Scene base
+ *
+ * Replaces multiply blending with a normal translucent color layer.
+ */
+
+.atlas-world-lighting__scene {
+  z-index: -7;
+  inset: 0;
+  background:
+    linear-gradient(
+      180deg,
+      rgb(2 6 23 / 0.62),
+      rgb(2 6 23 / 0.28) 48%,
+      rgb(2 6 23 / 0.5)
+    );
   opacity:
     calc(
-      0.2 +
-      var(--atlas-world-energy) *
-      0.18
+      1 -
+      var(--atlas-light-scene-brightness) *
+      0.22
     );
+}
+
+/*
+ * Sky and ambient color
+ *
+ * Soft edges are created by gradients instead of CSS blur filters.
+ */
+
+.atlas-world-lighting__ambient {
+  z-index: -6;
+  inset: -8rem -7rem 0;
+  opacity:
+    var(--atlas-light-ambient-strength);
   background:
     radial-gradient(
-      circle at 50% 17%,
+      circle at 50% 13%,
       rgb(
-        var(--atlas-world-state-violet) /
-        0.18
+        var(--atlas-light-core-rgb) /
+        0.2
       ),
-      transparent 36%
+      transparent 34%
     ),
     radial-gradient(
-      circle at 72% 30%,
+      circle at 74% 28%,
       rgb(
-        var(--atlas-world-state-cyan) /
+        var(--atlas-light-horizon-rgb) /
         0.14
       ),
-      transparent 31%
+      transparent 34%
     ),
     radial-gradient(
-      circle at 24% 38%,
+      circle at 22% 38%,
       rgb(
-        var(--atlas-world-state-warm) /
-        0.08
+        var(--atlas-light-ambient-rgb) /
+        0.18
       ),
-      transparent 27%
+      transparent 38%
+    ),
+    linear-gradient(
+      180deg,
+      rgb(
+        var(--atlas-light-ambient-rgb) /
+        0.25
+      ),
+      transparent 70%
     );
-  filter:
-    blur(34px);
   animation:
-    atlas-world-lighting-breathe
-    var(--atlas-world-light-speed)
+    atlas-world-stable-ambient-pulse
+    var(--atlas-light-pulse-duration)
     ease-in-out
     infinite;
 }
 
+/*
+ * Horizon glow
+ */
+
 .atlas-world-lighting__horizon {
-  top:
-    25rem;
-  left:
-    50%;
-  width:
-    min(110rem, 130vw);
-  height:
-    24rem;
+  z-index: -5;
+  top: 22rem;
+  left: 50%;
+  width: min(112rem, 132vw);
+  height: 29rem;
   opacity:
-    calc(
-      0.18 +
-      var(--atlas-world-energy) *
-      0.2
-    );
+    var(--atlas-light-horizon-strength);
   background:
     radial-gradient(
       ellipse at center,
       rgb(
-        var(--atlas-world-state-cyan) /
-        0.22
+        var(--atlas-light-horizon-rgb) /
+        0.3
       ),
-      transparent 62%
+      rgb(
+        var(--atlas-light-horizon-rgb) /
+        0.09
+      ) 34%,
+      transparent 72%
     );
-  filter:
-    blur(24px);
   transform:
     translateX(-50%);
 }
 
+/*
+ * Atlas hero core
+ */
+
 .atlas-world-lighting__core {
-  top:
-    5rem;
-  left:
-    50%;
-  width:
-    42rem;
-  height:
-    42rem;
-  border-radius:
-    999px;
+  z-index: -4;
+  top: 3rem;
+  left: 50%;
+  width: 46rem;
+  height: 46rem;
+  border-radius: 999px;
   opacity:
-    calc(
-      0.08 +
-      var(--atlas-world-energy) *
-      0.1
-    );
+    var(--atlas-light-core-strength);
   background:
     radial-gradient(
       circle,
       rgb(
-        var(--atlas-world-state-cyan) /
-        0.18
+        var(--atlas-light-core-rgb) /
+        0.28
       ),
       rgb(
-        var(--atlas-world-state-violet) /
+        var(--atlas-light-core-rgb) /
         0.08
-      ) 36%,
-      transparent 70%
+      ) 34%,
+      transparent 72%
     );
-  filter:
-    blur(18px);
   transform:
     translateX(-50%);
   animation:
-    atlas-world-core-pulse
-    var(--atlas-world-light-speed)
+    atlas-world-stable-core-pulse
+    var(--atlas-light-pulse-duration)
     ease-in-out
     infinite;
 }
 
-.atlas-world-lighting__scan {
-  top:
-    -15%;
-  left:
-    -30%;
-  width:
-    24%;
-  height:
-    110%;
+/*
+ * Weather overlay
+ */
+
+.atlas-world-lighting__weather {
+  z-index: -3;
+  inset: -3rem;
   opacity:
-    0;
+    var(--atlas-light-weather-strength);
+  background:
+    radial-gradient(
+      ellipse at 50% 16%,
+      rgb(
+        var(--atlas-light-weather-rgb) /
+        0.22
+      ),
+      transparent 54%
+    ),
+    linear-gradient(
+      180deg,
+      rgb(
+        var(--atlas-light-weather-rgb) /
+        0.12
+      ),
+      transparent 44%,
+      rgb(
+        var(--atlas-light-weather-rgb) /
+        0.07
+      )
+    );
+}
+
+/*
+ * Loading scan
+ *
+ * This is the only large moving layer. It uses transform only.
+ */
+
+.atlas-world-lighting__scan {
+  z-index: -2;
+  top: -15%;
+  left: -30%;
+  width: 22%;
+  height: 110%;
+  opacity: 0;
   background:
     linear-gradient(
       90deg,
       transparent,
       rgb(
-        var(--atlas-world-state-cyan) /
-        0.12
+        var(--atlas-light-horizon-rgb) /
+        0.13
       ),
       transparent
     );
-  filter:
-    blur(12px);
   transform:
+    translate3d(0, 0, 0)
     skewX(-14deg);
 }
 
+/*
+ * Emergency overlay
+ */
+
 .atlas-world-lighting__alert {
-  inset:
-    0;
+  z-index: -1;
+  inset: 0;
   opacity:
-    0;
+    var(--atlas-light-emergency-strength);
   background:
     radial-gradient(
       circle at 50% 22%,
       rgb(
-        var(--atlas-world-state-alert) /
-        0.18
+        var(--atlas-light-emergency-rgb) /
+        0.24
       ),
-      transparent 48%
+      transparent 49%
+    ),
+    linear-gradient(
+      90deg,
+      rgb(
+        var(--atlas-light-emergency-rgb) /
+        0.06
+      ),
+      transparent 18%,
+      transparent 82%,
+      rgb(
+        var(--atlas-light-emergency-rgb) /
+        0.06
+      )
     ),
     linear-gradient(
       180deg,
       transparent,
       rgb(
-        var(--atlas-world-state-alert) /
-        0.06
+        var(--atlas-light-emergency-rgb) /
+        0.07
       )
     );
-}
-
-
-/* Waiting and idle */
-
-.atlas-mission-environment[
-  data-world-state="idle"
-]
-.atlas-world-skyline,
-.atlas-mission-environment[
-  data-world-state="waiting"
-]
-.atlas-world-skyline {
-  opacity:
-    0.64;
-  filter:
-    saturate(0.78)
-    brightness(0.82);
-}
-
-.atlas-mission-environment[
-  data-world-state="idle"
-]
-.atlas-world-particles,
-.atlas-mission-environment[
-  data-world-state="waiting"
-]
-.atlas-world-particles {
-  opacity:
-    0.2;
-}
-
-
-/* Loading */
-
-.atlas-mission-environment[
-  data-world-state="loading"
-]
-.atlas-world-lighting__scan {
-  opacity:
-    1;
   animation:
-    atlas-world-loading-scan
+    atlas-world-stable-alert-pulse
+    var(--atlas-light-pulse-duration)
+    ease-in-out
+    infinite;
+}
+
+/*
+ * Semantic renderer states
+ */
+
+.atlas-world-lighting[data-lighting-state="loading"]
+.atlas-world-lighting__scan {
+  opacity: 0.82;
+  animation:
+    atlas-world-stable-loading-scan
     4.8s
     linear
     infinite;
 }
 
-.atlas-mission-environment[
-  data-world-state="loading"
-]
-.atlas-mission-environment__radar {
-  border-color:
-    rgb(
-      var(--atlas-world-state-cyan) /
-      0.18
-    );
-  filter:
-    drop-shadow(
-      0 0 14px
-      rgb(
-        var(--atlas-world-state-cyan) /
-        0.24
-      )
-    );
+.atlas-world-lighting[data-lighting-state="idle"]
+.atlas-world-lighting__scan {
+  opacity: 0.06;
 }
 
-.atlas-mission-environment[
-  data-world-state="loading"
-]
-.atlas-mission-environment__signal {
-  opacity:
-    0.85;
-}
-
-
-/* Success */
-
-.atlas-mission-environment[
-  data-world-state="success"
-] {
-  --atlas-world-state-cyan:
-    34 211 238;
-  --atlas-world-state-violet:
-    168 85 247;
-}
-
-.atlas-mission-environment[
-  data-world-state="success"
-]
-.atlas-world-skyline {
-  filter:
-    saturate(1.12)
-    brightness(1.04)
-    drop-shadow(
-      0 0 18px
-      rgb(34 211 238 / 0.11)
-    );
-}
-
-.atlas-mission-environment[
-  data-world-state="success"
-]
-.atlas-world-water {
-  filter:
-    saturate(1.18)
-    brightness(1.05);
-}
-
-.atlas-mission-environment[
-  data-world-state="success"
-]
-.atlas-world-beacon {
-  filter:
-    drop-shadow(
-      0 0 8px
-      rgb(34 211 238 / 0.65)
-    );
-}
-
-
-/* Warning */
-
-.atlas-mission-environment[
-  data-world-state="warning"
-] {
-  --atlas-world-state-cyan:
-    251 191 36;
-  --atlas-world-state-violet:
-    249 115 22;
-  --atlas-world-state-warm:
-    251 146 60;
-}
-
-.atlas-mission-environment[
-  data-world-state="warning"
-]
-.atlas-world-sunset {
-  opacity:
-    1;
-  filter:
-    saturate(1.28)
-    brightness(1.08);
-}
-
-.atlas-mission-environment[
-  data-world-state="warning"
-]
-.atlas-world-haze--rear {
-  opacity:
-    0.32;
-  filter:
-    blur(28px)
-    hue-rotate(-28deg)
-    saturate(1.4);
-}
-
-.atlas-mission-environment[
-  data-world-state="warning"
-]
-.atlas-mission-environment__horizon {
-  filter:
-    drop-shadow(
-      0 0 14px
-      rgb(251 146 60 / 0.34)
-    );
-}
-
-.atlas-mission-environment[
-  data-world-state="warning"
-]
-.atlas-world-beacon {
-  background:
-    rgb(251 191 36);
-  box-shadow:
-    0 0 10px
-    rgb(251 146 60 / 0.9);
-}
-
-
-/* Failed */
-
-.atlas-mission-environment[
-  data-world-state="failed"
-] {
-  --atlas-world-state-cyan:
-    251 113 133;
-  --atlas-world-state-violet:
-    190 24 93;
-  --atlas-world-state-warm:
-    239 68 68;
-}
-
-.atlas-mission-environment[
-  data-world-state="failed"
-]
+.atlas-world-lighting[data-lighting-state="failed"]
 .atlas-world-lighting__alert {
-  opacity:
-    1;
+  animation-duration: 2.4s;
+}
+
+.atlas-world-lighting[data-lighting-weather="storm"]
+.atlas-world-lighting__weather {
   animation:
-    atlas-world-alert-pulse
-    2.4s
+    atlas-world-stable-storm-pulse
+    8s
+    steps(1, end)
+    infinite;
+}
+
+.atlas-world-lighting[data-lighting-heat="critical"]
+.atlas-world-lighting__alert {
+  animation:
+    atlas-world-stable-critical-pulse
+    var(--atlas-light-pulse-duration)
     ease-in-out
     infinite;
 }
 
-.atlas-mission-environment[
-  data-world-state="failed"
-]
+/*
+ * World renderer
+ *
+ * The parent renderer is no longer filtered or transitioned.
+ */
+
+.atlas-world-renderer {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  isolation: isolate;
+  contain: layout paint style;
+  backface-visibility: hidden;
+}
+
+/*
+ * Stable semantic scene adjustments
+ *
+ * These use opacity rather than filtering the complete renderer.
+ */
+
+.atlas-world-renderer[data-world-time-of-day="day"]
+.atlas-world-lighting__scene {
+  opacity: 0.24;
+}
+
+.atlas-world-renderer[data-world-time-of-day="dusk"]
+.atlas-world-lighting__scene {
+  opacity: 0.42;
+}
+
+.atlas-world-renderer[data-world-time-of-day="night"]
+.atlas-world-lighting__scene {
+  opacity: 0.58;
+}
+
+.atlas-world-renderer[data-world-weather="overcast"]
+.atlas-world-lighting__scene {
+  opacity: 0.64;
+}
+
+.atlas-world-renderer[data-world-weather="storm"]
+.atlas-world-lighting__scene {
+  opacity: 0.76;
+}
+
+.atlas-world-renderer[data-world-weather="haze"]
+.atlas-world-lighting__scene {
+  opacity: 0.5;
+}
+
+/*
+ * Existing environmental assets
+ *
+ * Remove costly filters and filter transitions from large surfaces.
+ * Lightweight opacity and transform animation can remain elsewhere.
+ */
+
+.atlas-world-renderer .atlas-world-skyline,
+.atlas-world-renderer .atlas-world-water,
+.atlas-world-renderer .atlas-world-sunset,
+.atlas-world-renderer .atlas-world-clouds,
+.atlas-world-renderer .atlas-world-haze,
+.atlas-world-renderer
+.atlas-world-water__reflection,
+.atlas-world-renderer
+.atlas-world-glass-reflection {
+  filter: none;
+  transition:
+    opacity var(--atlas-light-transition-duration)
+    ease;
+}
+
+.atlas-world-renderer
+.atlas-world-glass-reflection {
+  display: none;
+}
+
+/*
+ * Disable continuous motion on the largest translucent surfaces.
+ * Smaller activity elements such as beacons and aircraft remain active.
+ */
+
+.atlas-world-renderer .atlas-world-clouds,
+.atlas-world-renderer .atlas-world-haze,
+.atlas-world-renderer .atlas-world-particles {
+  animation: none;
+}
+
+.atlas-world-renderer[data-world-time-of-day="night"]
 .atlas-world-skyline {
-  opacity:
-    0.72;
-  filter:
-    saturate(0.82)
-    brightness(0.72)
-    sepia(0.12)
-    hue-rotate(300deg)
-    drop-shadow(
-      0 0 16px
-      rgb(251 113 133 / 0.18)
-    );
+  opacity: 0.9;
 }
 
-.atlas-mission-environment[
-  data-world-state="failed"
-]
-.atlas-world-water {
-  opacity:
-    0.48;
-  filter:
-    saturate(0.7)
-    hue-rotate(290deg);
+.atlas-world-renderer[data-world-time-of-day="day"]
+.atlas-world-skyline {
+  opacity: 0.66;
 }
 
-.atlas-mission-environment[
-  data-world-state="failed"
-]
-.atlas-mission-environment__radar {
-  border-color:
-    rgb(251 113 133 / 0.2);
+.atlas-world-renderer[data-world-weather="storm"]
+.atlas-world-clouds {
+  opacity: 0.76;
 }
 
-.atlas-mission-environment[
-  data-world-state="failed"
-]
-.atlas-mission-environment__signal {
-  background:
-    linear-gradient(
-      to top,
-      transparent,
-      rgb(251 113 133 / 0.72),
-      transparent
-    );
-  filter:
-    drop-shadow(
-      0 0 10px
-      rgb(251 113 133 / 0.48)
-    );
+.atlas-world-renderer[data-world-weather="overcast"]
+.atlas-world-clouds {
+  opacity: 0.7;
 }
 
-.atlas-mission-environment[
-  data-world-state="failed"
-]
-.atlas-world-aircraft {
-  background:
-    rgb(251 113 133);
-  box-shadow:
-    0 0 10px
-    rgb(251 113 133 / 0.95);
+.atlas-world-renderer[data-world-weather="haze"]
+.atlas-world-haze {
+  opacity: 0.52;
 }
 
+.atlas-world-renderer[data-world-heat="critical"]
+.atlas-world-skyline {
+  opacity: 0.78;
+}
 
-@keyframes atlas-world-lighting-breathe {
+/*
+ * Stable animation keyframes
+ */
+
+@keyframes atlas-world-stable-ambient-pulse {
   0%,
   100% {
-    opacity:
-      0.68;
-    transform:
-      scale(0.98);
-  }
-
-  50% {
-    opacity:
-      1;
-    transform:
-      scale(1.035);
-  }
-}
-
-@keyframes atlas-world-core-pulse {
-  0%,
-  100% {
-    opacity:
-      0.08;
-    transform:
-      translateX(-50%)
-      scale(0.94);
-  }
-
-  50% {
     opacity:
       calc(
-        0.14 +
-        var(--atlas-world-energy) *
-        0.08
+        var(--atlas-light-ambient-strength) *
+        0.82
       );
-    transform:
-      translateX(-50%)
-      scale(1.06);
+  }
+
+  50% {
+    opacity:
+      var(--atlas-light-ambient-strength);
   }
 }
 
-@keyframes atlas-world-loading-scan {
+@keyframes atlas-world-stable-core-pulse {
+  0%,
+  100% {
+    opacity:
+      calc(
+        var(--atlas-light-core-strength) *
+        0.82
+      );
+  }
+
+  50% {
+    opacity:
+      var(--atlas-light-core-strength);
+  }
+}
+
+@keyframes atlas-world-stable-loading-scan {
   from {
     transform:
-      translateX(0)
+      translate3d(0, 0, 0)
       skewX(-14deg);
   }
 
   to {
     transform:
-      translateX(650%)
+      translate3d(620%, 0, 0)
       skewX(-14deg);
   }
 }
 
-@keyframes atlas-world-alert-pulse {
+@keyframes atlas-world-stable-alert-pulse {
   0%,
   100% {
     opacity:
-      0.16;
+      calc(
+        var(--atlas-light-emergency-strength) *
+        0.52
+      );
   }
 
   50% {
     opacity:
-      0.78;
+      var(--atlas-light-emergency-strength);
   }
 }
 
+@keyframes atlas-world-stable-critical-pulse {
+  0%,
+  100% {
+    opacity:
+      calc(
+        var(--atlas-light-emergency-strength) *
+        0.48
+      );
+  }
+
+  50% {
+    opacity:
+      var(--atlas-light-emergency-strength);
+  }
+}
+
+@keyframes atlas-world-stable-storm-pulse {
+  0%,
+  42%,
+  46%,
+  74%,
+  100% {
+    opacity:
+      calc(
+        var(--atlas-light-weather-strength) *
+        0.82
+      );
+  }
+
+  43% {
+    opacity:
+      var(--atlas-light-weather-strength);
+  }
+
+  44% {
+    opacity:
+      calc(
+        var(--atlas-light-weather-strength) *
+        0.9
+      );
+  }
+
+  75% {
+    opacity:
+      calc(
+        var(--atlas-light-weather-strength) *
+        0.96
+      );
+  }
+}
 
 @media (max-width: 768px) {
   .atlas-world-lighting {
-    inset-inline:
-      -1.5rem;
-    min-height:
-      68rem;
+    inset-inline: -1.5rem;
+    min-height: 68rem;
   }
 
   .atlas-world-lighting__core {
-    top:
-      10rem;
-    width:
-      30rem;
-    height:
-      30rem;
+    top: 9rem;
+    width: 31rem;
+    height: 31rem;
   }
 
   .atlas-world-lighting__horizon {
-    top:
-      31rem;
-    width:
-      150vw;
+    top: 31rem;
+    width: 150vw;
+  }
+
+  .atlas-world-lighting__weather {
+    inset-inline: -2rem;
+  }
+
+  .atlas-world-renderer
+  .atlas-world-particles {
+    display: none;
   }
 }
-
 
 @media (prefers-reduced-motion: reduce) {
   .atlas-world-lighting__ambient,
   .atlas-world-lighting__core,
+  .atlas-world-lighting__weather,
   .atlas-world-lighting__scan,
-  .atlas-world-lighting__alert {
-    animation:
-      none;
+  .atlas-world-lighting__alert,
+  .atlas-world-renderer
+  .atlas-world-skyline__tower::before,
+  .atlas-world-renderer
+  .atlas-world-beacon,
+  .atlas-world-renderer
+  .atlas-world-water::before,
+  .atlas-world-renderer
+  .atlas-world-aircraft {
+    animation: none;
+  }
+
+  .atlas-world-lighting > div,
+  .atlas-world-renderer .atlas-world-skyline,
+  .atlas-world-renderer .atlas-world-water,
+  .atlas-world-renderer .atlas-world-sunset,
+  .atlas-world-renderer .atlas-world-clouds,
+  .atlas-world-renderer .atlas-world-haze {
+    transition-duration: 1ms;
   }
 }
 
@@ -4977,7 +4990,7 @@ a {
 /* ATLAS WORLD RENDERER V2: END */
 
 /* ============================================================
-   ATLAS LIVING LEONIDA TRAFFIC — SPRINT 118.3A
+   ATLAS LIVING LEONIDA TRAFFIC â€” SPRINT 118.3A
    ============================================================ */
 
 .atlas-v2-traffic {
@@ -5207,7 +5220,7 @@ a {
    ============================================================ */
 
 /* ============================================================
-   ATLAS CINEMATIC SKY — SPRINT 121.2A
+   ATLAS CINEMATIC SKY â€” SPRINT 121.2A
    ============================================================ */
 
 .atlas-cinematic-sky {
@@ -5800,7 +5813,7 @@ a {
 }
 
 /* ============================================================
-   ATLAS LIVING WORLD ACTIVITY — SPRINT 122.1B.1
+   ATLAS LIVING WORLD ACTIVITY â€” SPRINT 122.1B.1
    ============================================================ */
 
 .atlas-living-aircraft {
@@ -6392,7 +6405,7 @@ a {
    END ATLAS LIVING WORLD ACTIVITY
    ============================================================ */
 /* ============================================================
-   ATLAS EXECUTIVE VIEWPORT CAMERA — SPRINT 123.1.1
+   ATLAS EXECUTIVE VIEWPORT CAMERA â€” SPRINT 123.1.1
    ============================================================ */
 
 .atlas-executive-viewport {
@@ -6664,7 +6677,7 @@ a {
    ============================================================ */
 
 /* ============================================================
-   ATLAS EXECUTIVE DECK WAKE EFFECT — SPRINT 124.1.1
+   ATLAS EXECUTIVE DECK WAKE EFFECT â€” SPRINT 124.1.1
    ============================================================ */
 
 @keyframes atlas-executive-deck-border-wake {
@@ -7306,3 +7319,80 @@ a {
 /* ============================================================
    END ATLAS EXECUTIVE DECK WAKE EFFECT
    ============================================================ */
+
+/* ATLAS EXECUTIVE DECK STABILITY: START */
+
+/*
+ * Sprint 127.3B
+ *
+ * Stabilizes the large executive dashboard surface by removing
+ * pointer-driven compositor effects. Inner buttons, links, cards,
+ * and controls retain their own hover interactions.
+ */
+
+.atlas-executive-deck-surface,
+.atlas-executive-deck-surface:hover {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+
+  transform: none !important;
+
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease !important;
+}
+
+.atlas-executive-deck-surface::before,
+.atlas-executive-deck-surface::after {
+  animation: none !important;
+  transform: none !important;
+  transition: opacity 180ms ease !important;
+}
+
+.atlas-executive-deck-surface:hover::before,
+.atlas-executive-deck-surface:hover::after {
+  opacity: 0.32 !important;
+}
+
+.atlas-executive-deck-surface__aura {
+  animation: none !important;
+  filter: none !important;
+  opacity: 0.28 !important;
+  transform: none !important;
+}
+
+.atlas-executive-deck-surface:hover
+.atlas-executive-deck-surface__aura {
+  opacity: 0.34 !important;
+}
+
+.atlas-executive-deck-surface__cursor-light,
+.atlas-executive-deck-surface__border-wake,
+.atlas-executive-deck-surface__reflection {
+  display: none !important;
+  animation: none !important;
+  filter: none !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+.atlas-executive-deck-surface__content {
+  position: relative;
+  z-index: 4;
+  transform: none !important;
+}
+
+/*
+ * Prevent CSS-variable movement from shifting any remaining deck
+ * descendants while the React pointer handler is still mounted.
+ */
+
+.atlas-executive-deck-surface {
+  --atlas-deck-shift-x: 0 !important;
+  --atlas-deck-shift-y: 0 !important;
+  --atlas-deck-pointer-x: 50% !important;
+  --atlas-deck-pointer-y: 50% !important;
+}
+
+/* ATLAS EXECUTIVE DECK STABILITY: END */
+

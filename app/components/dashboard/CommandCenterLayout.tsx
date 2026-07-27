@@ -14,6 +14,8 @@ type CommandCenterLayoutProps = {
 
   changes?: ReactNode;
 
+  worldStatus?: ReactNode;
+
   copilot?: ReactNode;
 
   overview: ReactNode;
@@ -36,6 +38,7 @@ export default function CommandCenterLayout({
   operations,
   hero,
   changes,
+  worldStatus,
   copilot,
   overview,
   atlas,
@@ -69,6 +72,17 @@ export default function CommandCenterLayout({
               </div>
             ) : null}
           </section>
+
+          {worldStatus ? (
+            <section
+              aria-label="Atlas live world status"
+              className="min-w-0"
+            >
+              <AtlasCommandSection variant="transparent">
+                {worldStatus}
+              </AtlasCommandSection>
+            </section>
+          ) : null}
 
           {copilot ? (
             <section
@@ -201,3 +215,4 @@ export default function CommandCenterLayout({
     </AtlasCommandCenter>
   );
 }
+

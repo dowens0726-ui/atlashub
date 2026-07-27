@@ -1,4 +1,4 @@
-// Core Intelligence
+﻿// Core Intelligence
 export * from "./atlas-brain-copilot.engine";
 export * from "./atlas-brain-snapshot.engine";
 export * from "./atlas-brain-change-detection.engine";
@@ -119,3 +119,7 @@ export * from "./atlas-route-context.types";
 export * from "./atlas-route-context.engine";
 // Atlas Copilot Experience
 export * from "./atlas-copilot-actions.engine";
+
+
+// World Intelligence
+export * from "./world";
