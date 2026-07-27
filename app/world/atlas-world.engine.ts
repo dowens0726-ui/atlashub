@@ -16,7 +16,9 @@ import type {
   AtlasAtmosphereProfile,
   AtlasLightingProfile,
   AtlasTrafficProfile,
+  AtlasWorldDynamics,
   AtlasWorldIntensity,
+  AtlasWorldOperationalMode,
   AtlasWorldState,
   BuildAtlasWorldStateInput,
 } from "./atlas-world.types";
@@ -34,19 +36,154 @@ function resolveEmpireIntensity(
   );
 }
 
+function resolveOperationalMode(
+  input: {
+    confidence: number;
+    energy: number;
+    shouldActNow: boolean;
+  }
+): AtlasWorldOperationalMode {
+  if (
+    input.shouldActNow &&
+    input.confidence < 45
+  ) {
+    return "critical";
+  }
+
+  if (
+    input.shouldActNow ||
+    input.confidence < 58
+  ) {
+    return "alert";
+  }
+
+  if (input.energy >= 60) {
+    return "active";
+  }
+
+  return "calm";
+}
+
+function resolveCashActivityScore(
+  availableCash: number
+): number {
+  if (
+    availableCash >=
+    ATLAS_WORLD_CASH_ACTIVITY_THRESHOLDS.high
+  ) {
+    return 90;
+  }
+
+  if (
+    availableCash >=
+    ATLAS_WORLD_CASH_ACTIVITY_THRESHOLDS.moderate
+  ) {
+    return 65;
+  }
+
+  return 35;
+}
+
+function buildWorldDynamics(
+  input: {
+    empireScore: number;
+    confidence: number;
+    availableCash: number;
+    shouldActNow: boolean;
+  }
+): AtlasWorldDynamics {
+  const cashScore =
+    resolveCashActivityScore(
+      input.availableCash
+    );
+
+  const energy =
+    clampWorldScore(
+      averageWorldValues(
+        input.empireScore,
+        input.confidence,
+        cashScore
+      ) +
+        (
+          input.shouldActNow
+            ? 8
+            : 0
+        )
+    );
+
+  const ambientTension =
+    clampWorldScore(
+      (
+        input.shouldActNow
+          ? 60
+          : 20
+      ) +
+        Math.round(
+          (
+            100 -
+            input.confidence
+          ) *
+            0.35
+        )
+    );
+
+  return {
+    energy,
+
+    neonIntensity:
+      clampWorldScore(
+        energy +
+          Math.round(
+            input.confidence *
+              0.1
+          )
+      ),
+
+    districtActivityBias:
+      clampWorldScore(
+        averageWorldValues(
+          energy,
+          cashScore,
+          input.empireScore
+        )
+      ),
+
+    ambientTension,
+
+    worldPulse:
+      clampWorldScore(
+        averageWorldValues(
+          energy,
+          input.confidence,
+          100 - ambientTension
+        )
+      ),
+
+    atmosphericClarity:
+      clampWorldScore(
+        90 -
+          Math.round(
+            ambientTension *
+              0.25
+          ) -
+          Math.round(
+            (
+              100 -
+              input.confidence
+            ) *
+              0.12
+          )
+      ),
+  };
+}
+
 function buildLightingProfile(
   input: {
-    base:
-      AtlasLightingProfile;
-
-    empireScore:
-      number;
-
-    confidence:
-      number;
-
-    shouldActNow:
-      boolean;
+    base: AtlasLightingProfile;
+    empireScore: number;
+    confidence: number;
+    shouldActNow: boolean;
+    dynamics: AtlasWorldDynamics;
   }
 ): AtlasLightingProfile {
   const empireBoost =
@@ -68,13 +205,21 @@ function buildLightingProfile(
           Math.round(
             empireBoost *
               0.25
+          ) +
+          Math.round(
+            input.dynamics.atmosphericClarity *
+              0.04
           )
       ),
 
     skylineBrightness:
       clampWorldScore(
         input.base.skylineBrightness +
-          empireBoost
+          empireBoost +
+          Math.round(
+            input.dynamics.neonIntensity *
+              0.08
+          )
       ),
 
     buildingLightIntensity:
@@ -83,13 +228,21 @@ function buildLightingProfile(
           Math.round(
             empireBoost *
               0.7
+          ) +
+          Math.round(
+            input.dynamics.energy *
+              0.08
           )
       ),
 
     systemGlowIntensity:
       clampWorldScore(
         input.base.systemGlowIntensity +
-          confidenceBoost
+          confidenceBoost +
+          Math.round(
+            input.dynamics.neonIntensity *
+              0.08
+          )
       ),
 
     cautionGlowIntensity:
@@ -106,6 +259,10 @@ function buildLightingProfile(
               input.confidence
             ) *
               0.12
+          ) +
+          Math.round(
+            input.dynamics.ambientTension *
+              0.08
           )
       ),
   };
@@ -113,14 +270,10 @@ function buildLightingProfile(
 
 function buildTrafficProfile(
   input: {
-    empireScore:
-      number;
-
-    availableCash:
-      number;
-
-    confidence:
-      number;
+    empireScore: number;
+    availableCash: number;
+    confidence: number;
+    dynamics: AtlasWorldDynamics;
   }
 ): AtlasTrafficProfile {
   const cashIntensity =
@@ -138,7 +291,8 @@ function buildTrafficProfile(
     resolveIntensity(
       averageWorldValues(
         input.empireScore,
-        input.confidence
+        input.confidence,
+        input.dynamics.worldPulse
       ),
       {
         moderate: 52,
@@ -149,32 +303,33 @@ function buildTrafficProfile(
 
   return {
     road:
-      cashIntensity ===
-        "maximum"
+      input.dynamics.energy >= 90
         ? "maximum"
-        : empireIntensity,
+        : cashIntensity === "maximum"
+          ? "maximum"
+          : empireIntensity,
 
     harbor:
-      cashIntensity,
+      input.dynamics.districtActivityBias >= 88
+        ? "maximum"
+        : cashIntensity,
 
     air:
-      airIntensity,
+      input.dynamics.worldPulse >= 90
+        ? "maximum"
+        : input.dynamics.worldPulse >= 80
+          ? "high"
+          : airIntensity,
   };
 }
 
 function buildAtmosphereProfile(
   input: {
-    empireScore:
-      number;
-
-    confidence:
-      number;
-
-    shouldActNow:
-      boolean;
-
-    timeOfDay:
-      AtlasWorldState["timeOfDay"];
+    empireScore: number;
+    confidence: number;
+    shouldActNow: boolean;
+    timeOfDay: AtlasWorldState["timeOfDay"];
+    dynamics: AtlasWorldDynamics;
   }
 ): AtlasAtmosphereProfile {
   const isNight =
@@ -201,14 +356,28 @@ function buildAtmosphereProfile(
             input.shouldActNow
               ? 8
               : 0
+          ) +
+          Math.round(
+            input.dynamics.ambientTension *
+              0.08
+          ) -
+          Math.round(
+            input.dynamics.atmosphericClarity *
+              0.06
           )
       ),
 
     cloudCover:
       clampWorldScore(
-        isNight
-          ? 28
-          : 22
+        (
+          isNight
+            ? 28
+            : 22
+        ) +
+          Math.round(
+            input.dynamics.ambientTension *
+              0.06
+          )
       ),
 
     windStrength:
@@ -217,6 +386,10 @@ function buildAtmosphereProfile(
           Math.round(
             input.empireScore *
               0.18
+          ) +
+          Math.round(
+            input.dynamics.energy *
+              0.08
           )
       ),
 
@@ -230,6 +403,10 @@ function buildAtmosphereProfile(
           Math.round(
             input.confidence *
               0.12
+          ) +
+          Math.round(
+            input.dynamics.neonIntensity *
+              0.08
           )
       ),
 
@@ -237,7 +414,8 @@ function buildAtmosphereProfile(
       clampWorldScore(
         averageWorldValues(
           input.empireScore,
-          input.confidence
+          input.confidence,
+          input.dynamics.worldPulse
         )
       ),
   };
@@ -245,23 +423,20 @@ function buildAtmosphereProfile(
 
 function buildSceneSummary(
   input: {
-    stage:
-      string;
-
-    cityActivity:
-      AtlasWorldIntensity;
-
-    shouldActNow:
-      boolean;
-
-    confidence:
-      number;
+    stage: string;
+    cityActivity: AtlasWorldIntensity;
+    operationalMode: AtlasWorldOperationalMode;
+    confidence: number;
   }
 ): string {
   const operationalPosture =
-    input.shouldActNow
-      ? "Atlas has elevated the environment to an active operational posture."
-      : "The environment is operating in a stable strategic posture.";
+    input.operationalMode === "critical"
+      ? "Atlas has elevated the environment to a critical operational posture."
+      : input.operationalMode === "alert"
+        ? "Atlas has elevated the environment to an alert operational posture."
+        : input.operationalMode === "active"
+          ? "The environment is operating in an active strategic posture."
+          : "The environment is operating in a calm strategic posture.";
 
   const confidenceSummary =
     input.confidence >= 80
@@ -314,6 +489,22 @@ export function buildAtlasWorldState(
     input.shouldActNow ??
     false;
 
+  const dynamics =
+    buildWorldDynamics({
+      empireScore,
+      confidence,
+      availableCash,
+      shouldActNow,
+    });
+
+  const operationalMode =
+    resolveOperationalMode({
+      confidence,
+      energy:
+        dynamics.energy,
+      shouldActNow,
+    });
+
   const baseLighting =
     ATLAS_WORLD_LIGHTING[
       timeOfDay
@@ -323,10 +514,10 @@ export function buildAtlasWorldState(
     buildLightingProfile({
       base:
         baseLighting,
-
       empireScore,
       confidence,
       shouldActNow,
+      dynamics,
     });
 
   const traffic =
@@ -334,6 +525,7 @@ export function buildAtlasWorldState(
       empireScore,
       availableCash,
       confidence,
+      dynamics,
     });
 
   const atmosphere =
@@ -342,21 +534,12 @@ export function buildAtlasWorldState(
       confidence,
       shouldActNow,
       timeOfDay,
+      dynamics,
     });
 
   const cityActivity =
     resolveEmpireIntensity(
-      averageWorldValues(
-        empireScore,
-        confidence,
-        availableCash >=
-          ATLAS_WORLD_CASH_ACTIVITY_THRESHOLDS.high
-          ? 90
-          : availableCash >=
-                ATLAS_WORLD_CASH_ACTIVITY_THRESHOLDS.moderate
-            ? 65
-            : 35
-      )
+      dynamics.districtActivityBias
     );
 
   const progressionStage =
@@ -374,9 +557,12 @@ export function buildAtlasWorldState(
       input.weather ??
       "clear",
 
+    operationalMode,
+
     lighting,
     traffic,
     atmosphere,
+    dynamics,
     cityActivity,
 
     influence: {
@@ -396,9 +582,8 @@ export function buildAtlasWorldState(
       buildSceneSummary({
         stage:
           progressionStage,
-
         cityActivity,
-        shouldActNow,
+        operationalMode,
         confidence,
       }),
   };

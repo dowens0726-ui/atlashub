@@ -19,6 +19,12 @@ export type AtlasWorldIntensity =
   | "high"
   | "maximum";
 
+export type AtlasWorldOperationalMode =
+  | "calm"
+  | "active"
+  | "alert"
+  | "critical";
+
 export type AtlasLightingProfile = {
   skyBrightness: number;
   skylineBrightness: number;
@@ -41,6 +47,15 @@ export type AtlasAtmosphereProfile = {
   ambientMotion: number;
 };
 
+export type AtlasWorldDynamics = {
+  energy: number;
+  neonIntensity: number;
+  districtActivityBias: number;
+  ambientTension: number;
+  worldPulse: number;
+  atmosphericClarity: number;
+};
+
 export type AtlasWorldInfluence = {
   empireScore: number;
   confidence: number;
@@ -54,9 +69,11 @@ export type AtlasWorldState = {
   localHour: number;
   timeOfDay: AtlasTimeOfDay;
   weather: AtlasWeather;
+  operationalMode: AtlasWorldOperationalMode;
   lighting: AtlasLightingProfile;
   traffic: AtlasTrafficProfile;
   atmosphere: AtlasAtmosphereProfile;
+  dynamics: AtlasWorldDynamics;
   cityActivity: AtlasWorldIntensity;
   influence: AtlasWorldInfluence;
   sceneLabel: string;
