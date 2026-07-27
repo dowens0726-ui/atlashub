@@ -1,0 +1,918 @@
+﻿============================================================
+REMAINING INTELLIGENCE CONSUMERS
+Generated: 2026-07-27 12:36:07
+============================================================
+
+===== recommend =====
+app\components\advisor\AtlasAdvisor.tsx:1:import { getAdvisorRecommendation } from "@/app/services";
+app\components\advisor\AtlasAdvisor.tsx:3:import RecommendationCard from "./RecommendationCard";
+app\components\advisor\AtlasAdvisor.tsx:10:const recommendation = getAdvisorRecommendation(profile);
+app\components\advisor\AtlasAdvisor.tsx:23:Personalized recommendations based on your cash, play style, and owned
+app\components\advisor\AtlasAdvisor.tsx:28:{recommendation ? (
+app\components\advisor\AtlasAdvisor.tsx:29:<RecommendationCard recommendation={recommendation} />
+app\components\advisor\AtlasAdvisor.tsx:32:No recommendation available yet.
+app\components\advisor\index.ts:2:export { default as RecommendationCard } from "./RecommendationCard";
+app\components\advisor\RecommendationCard.tsx:2:import type { AdvisorRecommendation } from "@/app/services/advisor.service";
+app\components\advisor\RecommendationCard.tsx:4:type RecommendationCardProps = {
+app\components\advisor\RecommendationCard.tsx:5:recommendation: AdvisorRecommendation;
+app\components\advisor\RecommendationCard.tsx:8:export default function RecommendationCard({
+app\components\advisor\RecommendationCard.tsx:9:recommendation,
+app\components\advisor\RecommendationCard.tsx:10:}: RecommendationCardProps) {
+app\components\advisor\RecommendationCard.tsx:17:Atlas Core Recommendation
+app\components\advisor\RecommendationCard.tsx:21:{recommendation.title}
+app\components\advisor\RecommendationCard.tsx:25:{recommendation.reason}
+app\components\advisor\RecommendationCard.tsx:31:value={`${recommendation.confidence}%`}
+app\components\advisor\RecommendationCard.tsx:36:value={recommendation.business.category}
+app\components\advisor\RecommendationCard.tsx:41:value={recommendation.business.incomePotential.toString()}
+app\components\advisor\RecommendationCard.tsx:51:This recommendation is based on your available cash,
+app\components\advisor\RecommendationCard.tsx:57:href={`/data/businesses/${recommendation.slug}`}
+app\components\planner\PlannerSummary.tsx:51:: "No recommendations available."
+app\components\planner\PlannerTimeline.tsx:32:recommended progression path for your empire.
+app\hooks\useAtlasBrainPipeline.ts:21:getAtlasBrainPipelinePrimaryRecommendation,
+app\hooks\useAtlasBrainPipeline.ts:100:primaryRecommendation:
+app\hooks\useAtlasBrainPipeline.ts:102:typeof getAtlasBrainPipelinePrimaryRecommendation
+app\hooks\useAtlasBrainPipeline.ts:418:const primaryRecommendation =
+app\hooks\useAtlasBrainPipeline.ts:419:getAtlasBrainPipelinePrimaryRecommendation(
+app\hooks\useAtlasBrainPipeline.ts:448:primaryRecommendation,
+app\hooks\useAtlasCopilotResponseLifecycle.ts:205:const recommendation =
+app\hooks\useAtlasCopilotResponseLifecycle.ts:207:?.primaryRecommendation;
+app\hooks\useAtlasCopilotResponseLifecycle.ts:219:recommendationTitle:
+app\hooks\useAtlasCopilotResponseLifecycle.ts:220:recommendation
+app\hooks\useAtlasCopilotResponseLifecycle.ts:225:recommendationConfidence:
+app\hooks\useAtlasCopilotResponseLifecycle.ts:226:recommendation
+app\hooks\useAtlasCopilotSession.ts:28:recommendationTitle?: string;
+app\hooks\useAtlasCopilotSession.ts:30:recommendationConfidence?: number;
+app\hooks\useAtlasCopilotSession.ts:98:recommendationTitle:
+app\hooks\useAtlasCopilotSession.ts:99:input.recommendationTitle,
+app\hooks\useAtlasCopilotSession.ts:101:recommendationConfidence:
+app\hooks\useAtlasCopilotSession.ts:102:input.recommendationConfidence,
+app\services\advisor.service.ts:5:export type AdvisorRecommendation = {
+app\services\advisor.service.ts:14:export function getAdvisorRecommendation(
+app\services\advisor.service.ts:16:): AdvisorRecommendation | null {
+app\services\atlas-brain-decision-pipeline.service.ts:3:buildAtlasRecommendationCandidates,
+app\services\atlas-brain-decision-pipeline.service.ts:4:type AtlasAdaptiveRecommendationCandidate,
+app\services\atlas-brain-decision-pipeline.service.ts:85:AtlasAdaptiveRecommendationCandidate[];
+app\services\atlas-brain-decision-pipeline.service.ts:151:AtlasAdaptiveRecommendationCandidate[]
+app\services\atlas-brain-decision-pipeline.service.ts:201:buildAtlasRecommendationCandidates({
+app\services\atlas-brain-decision-pipeline.service.ts:319:export function getAtlasBrainPipelinePrimaryRecommendation(
+app\services\atlas-brain-decision-pipeline.service.ts:327:?.primaryRecommendation ??
+app\services\atlas-decision.service.ts:23:AtlasRecommendation,
+app\services\atlas-decision.service.ts:24:} from "@/app/intelligence/recommendation.engine";
+app\services\atlas-decision.service.ts:212:export function acceptAtlasRecommendation(
+app\services\atlas-decision.service.ts:213:recommendation: AtlasRecommendation
+app\services\atlas-decision.service.ts:217:recommendation
+app\services\atlas-decision.service.ts:314:recommendationId:
+app\services\atlas-decision.service.ts:315:decision.recommendationId,
+app\services\atlas-decision.service.ts:337:export function acceptAndStartAtlasRecommendation(
+app\services\atlas-decision.service.ts:338:recommendation: AtlasRecommendation
+app\services\atlas-decision.service.ts:345:recommendation
+app\services\atlas-decision.service.ts:393:recommendationId:
+app\services\atlas-decision.service.ts:394:recommendation.id,
+app\services\atlas-decision-orchestrator.service.ts:3:type AtlasAdaptiveRecommendationResult,
+app\services\atlas-decision-orchestrator.service.ts:21:| "adaptive-recommendations"
+app\services\atlas-decision-orchestrator.service.ts:28:| "empty-recommendations"
+app\services\atlas-decision-orchestrator.service.ts:146:export type AtlasAdaptiveRecommendationStageInput<
+app\services\atlas-decision-orchestrator.service.ts:164:adaptiveRecommendations:
+app\services\atlas-decision-orchestrator.service.ts:165:AtlasAdaptiveRecommendationResult;
+app\services\atlas-decision-orchestrator.service.ts:199:buildAdaptiveRecommendations: (
+app\services\atlas-decision-orchestrator.service.ts:200:input: AtlasAdaptiveRecommendationStageInput<
+app\services\atlas-decision-orchestrator.service.ts:206:| AtlasAdaptiveRecommendationResult
+app\services\atlas-decision-orchestrator.service.ts:207:| Promise<AtlasAdaptiveRecommendationResult>;
+app\services\atlas-decision-orchestrator.service.ts:229:adaptiveRecommendations:
+app\services\atlas-decision-orchestrator.service.ts:230:AtlasAdaptiveRecommendationResult;
+app\services\atlas-decision-orchestrator.service.ts:241:adaptiveRecommendations:
+app\services\atlas-decision-orchestrator.service.ts:242:AtlasDecisionOrchestrationStageResult<AtlasAdaptiveRecommendationResult>;
+app\services\atlas-decision-orchestrator.service.ts:265:adaptiveRecommendations: null;
+app\services\atlas-decision-orchestrator.service.ts:274:adaptiveRecommendations: null;
+app\services\atlas-decision-orchestrator.service.ts:406:adaptiveRecommendationsMilliseconds = 0,
+app\services\atlas-decision-orchestrator.service.ts:419:"adaptive-recommendations":
+app\services\atlas-decision-orchestrator.service.ts:420:adaptiveRecommendationsMilliseconds,
+app\services\atlas-decision-orchestrator.service.ts:558:"adaptive-recommendations",
+app\services\atlas-decision-orchestrator.service.ts:561:"The orchestration request did not include recommendation candidates.",
+app\services\atlas-decision-orchestrator.service.ts:567:function addRecommendationWarnings(
+app\services\atlas-decision-orchestrator.service.ts:568:adaptiveRecommendations:
+app\services\atlas-decision-orchestrator.service.ts:569:AtlasAdaptiveRecommendationResult,
+app\services\atlas-decision-orchestrator.service.ts:574:adaptiveRecommendations
+app\services\atlas-decision-orchestrator.service.ts:575:.recommendations.length ===
+app\services\atlas-decision-orchestrator.service.ts:580:"empty-recommendations",
+app\services\atlas-decision-orchestrator.service.ts:583:"adaptive-recommendations",
+app\services\atlas-decision-orchestrator.service.ts:586:"The adaptive recommendation engine returned no recommendations.",
+app\services\atlas-decision-orchestrator.service.ts:716:adaptiveRecommendations:
+app\services\atlas-decision-orchestrator.service.ts:729:adaptiveRecommendations:
+app\services\atlas-decision-orchestrator.service.ts:910:let adaptiveRecommendationsStage:
+app\services\atlas-decision-orchestrator.service.ts:911:AtlasDecisionOrchestrationStageResult<AtlasAdaptiveRecommendationResult>;
+app\services\atlas-decision-orchestrator.service.ts:916:"adaptive-recommendations",
+app\services\atlas-decision-orchestrator.service.ts:919:.buildAdaptiveRecommendations({
+app\services\atlas-decision-orchestrator.service.ts:938:adaptiveRecommendationsStage =
+app\services\atlas-decision-orchestrator.service.ts:942:"adaptive-recommendations"
+app\services\atlas-decision-orchestrator.service.ts:944:adaptiveRecommendationsStage
+app\services\atlas-decision-orchestrator.service.ts:949:"adaptive-recommendations",
+app\services\atlas-decision-orchestrator.service.ts:961:addRecommendationWarnings(
+app\services\atlas-decision-orchestrator.service.ts:962:adaptiveRecommendationsStage
+app\services\atlas-decision-orchestrator.service.ts:977:adaptiveRecommendations:
+app\services\atlas-decision-orchestrator.service.ts:978:adaptiveRecommendationsStage
+app\services\atlas-decision-orchestrator.service.ts:1052:adaptiveRecommendations:
+app\services\atlas-decision-orchestrator.service.ts:1053:adaptiveRecommendationsStage
+app\services\atlas-decision-orchestrator.service.ts:1066:adaptiveRecommendations:
+app\services\atlas-decision-orchestrator.service.ts:1067:adaptiveRecommendationsStage,
+app\services\atlas-decision-pipeline.service.ts:2:buildAtlasAdaptiveRecommendations,
+app\services\atlas-decision-pipeline.service.ts:5:type AtlasAdaptiveRecommendationCandidate,
+app\services\atlas-decision-pipeline.service.ts:6:type AtlasAdaptiveRecommendationResult,
+app\services\atlas-decision-pipeline.service.ts:44:maximumRecommendations?: number;
+app\services\atlas-decision-pipeline.service.ts:46:minimumRecommendationScore?: number;
+app\services\atlas-decision-pipeline.service.ts:48:includeUnavailableRecommendations?: boolean;
+app\services\atlas-decision-pipeline.service.ts:50:includeCompletedRecommendations?: boolean;
+app\services\atlas-decision-pipeline.service.ts:62:AtlasAdaptiveRecommendationCandidate[];
+app\services\atlas-decision-pipeline.service.ts:93:adaptiveRecommendations:
+app\services\atlas-decision-pipeline.service.ts:94:AtlasAdaptiveRecommendationResult;
+app\services\atlas-decision-pipeline.service.ts:131:adaptiveRecommendations:
+app\services\atlas-decision-pipeline.service.ts:238:maximumRecommendations:
+app\services\atlas-decision-pipeline.service.ts:240:?.maximumRecommendations ??
+app\services\atlas-decision-pipeline.service.ts:243:minimumRecommendationScore:
+app\services\atlas-decision-pipeline.service.ts:245:?.minimumRecommendationScore ??
+app\services\atlas-decision-pipeline.service.ts:248:includeUnavailableRecommendations:
+app\services\atlas-decision-pipeline.service.ts:250:?.includeUnavailableRecommendations ??
+app\services\atlas-decision-pipeline.service.ts:253:includeCompletedRecommendations:
+app\services\atlas-decision-pipeline.service.ts:255:?.includeCompletedRecommendations ??
+app\services\atlas-decision-pipeline.service.ts:319:adaptiveRecommendations:
+app\services\atlas-decision-pipeline.service.ts:320:result.adaptiveRecommendations,
+app\services\atlas-decision-pipeline.service.ts:372:adaptiveRecommendations:
+app\services\atlas-decision-pipeline.service.ts:442:AtlasAdaptiveRecommendationCandidate,
+app\services\atlas-decision-pipeline.service.ts:521:buildAdaptiveRecommendations: ({
+app\services\atlas-decision-pipeline.service.ts:528:return buildAtlasAdaptiveRecommendations({
+app\services\atlas-decision-pipeline.service.ts:538:maximumRecommendations:
+app\services\atlas-decision-pipeline.service.ts:540:.maximumRecommendations,
+app\services\atlas-decision-pipeline.service.ts:544:.minimumRecommendationScore,
+app\services\atlas-decision-pipeline.service.ts:548:.includeUnavailableRecommendations,
+app\services\atlas-decision-pipeline.service.ts:552:.includeCompletedRecommendations,
+app\services\atlas-decision-pipeline.service.ts:611:export function getAtlasPipelinePrimaryRecommendation(
+app\services\atlas-decision-pipeline.service.ts:622:?.primaryRecommendation ??
+app\services\atlas-intelligence.service.ts:5:* Returns all missions that recommend a specific vehicle.
+app\services\atlas-intelligence.service.ts:9:(mission) => mission.recommendedVehicle === vehicleSlug
+app\services\atlas-intelligence.service.ts:14:* Returns all missions that recommend a specific weapon.
+app\services\atlas-intelligence.service.ts:18:(mission) => mission.recommendedWeapon === weaponSlug
+app\services\business.service.ts:23:return businesses.filter((business) => business.crewRecommended);
+app\services\collection.service.ts:32:description: "Top overall recommendations based on Atlas Score.",
+app\services\dashboard.service.ts:6:import type { AdvisorRecommendation } from "./advisor.service";
+app\services\dashboard.service.ts:7:import { getAdvisorRecommendation } from "./advisor.service";
+app\services\dashboard.service.ts:21:recommendation: AdvisorRecommendation | null;
+app\services\dashboard.service.ts:34:const recommendation = getAdvisorRecommendation(profile);
+app\services\dashboard.service.ts:71:recommendation,
+app\services\empire.service.ts:9:import { getAdvisorRecommendation } from "./advisor.service";
+app\services\empire.service.ts:38:const recommendation = getAdvisorRecommendation(profile);
+app\services\empire.service.ts:42:if (recommendation) {
+app\services\empire.service.ts:44:id: "next-recommendation",
+app\services\empire.service.ts:45:title: recommendation.title,
+app\services\empire.service.ts:46:description: recommendation.reason,
+app\services\empire.service.ts:57:).toLocaleString()} more for your next recommended step.`,
+app\services\garage-builder.service.ts:7:* recommendations. Vehicles with unavailable score categories are excluded
+app\services\garage-builder.service.ts:39:export type GarageRecommendation = {
+app\services\garage-builder.service.ts:51:recommendations: GarageRecommendation[];
+app\services\garage-builder.service.ts:124:recommendations:
+app\services\garage-builder.service.ts:125:GarageRecommendation[]
+app\services\garage-builder.service.ts:128:recommendations
+app\services\garage-builder.service.ts:131:recommendation
+app\services\garage-builder.service.ts:134:recommendation.vehicle
+app\services\garage-builder.service.ts:184:const recommendations:
+app\services\garage-builder.service.ts:185:GarageRecommendation[] = [];
+app\services\garage-builder.service.ts:191:function addRecommendation(
+app\services\garage-builder.service.ts:202:recommendations.push({
+app\services\garage-builder.service.ts:218:addRecommendation(
+app\services\garage-builder.service.ts:231:addRecommendation(
+app\services\garage-builder.service.ts:246:addRecommendation(
+app\services\garage-builder.service.ts:259:addRecommendation(
+app\services\garage-builder.service.ts:274:addRecommendation(
+app\services\garage-builder.service.ts:287:addRecommendation(
+app\services\garage-builder.service.ts:299:addRecommendation(
+app\services\garage-builder.service.ts:319:addRecommendation(
+app\services\garage-builder.service.ts:332:addRecommendation(
+app\services\garage-builder.service.ts:347:recommendations.reduce(
+app\services\garage-builder.service.ts:350:recommendation
+app\services\garage-builder.service.ts:353:recommendation.vehicle.price,
+app\services\garage-builder.service.ts:369:recommendations
+app\services\garage-builder.service.ts:372:recommendations,
+app\services\index.ts:17:export * from "./recommendation.service";
+app\services\progression.service.ts:38:: "Recommended based on Atlas Score and progression value.",
+app\services\recommendation.service.ts:2:* Atlas Recommendation Service
+app\services\recommendation.service.ts:4:* Generates related vehicle recommendations using class,
+app\services\recommendation.service.ts:29:export type VehicleRecommendation = {
+app\services\recommendation.service.ts:115:function getRecommendationScore(
+app\services\recommendation.service.ts:234:export function getVehicleRecommendations(
+app\services\recommendation.service.ts:239:): VehicleRecommendation[] {
+app\services\recommendation.service.ts:253:getRecommendationScore(
+app\services\recommendation.service.ts:272:recommendation
+app\services\recommendation.service.ts:274:recommendation.score >
+app\services\recommendation.service.ts:279:firstRecommendation,
+app\services\recommendation.service.ts:280:secondRecommendation
+app\services\recommendation.service.ts:282:secondRecommendation.score -
+app\services\recommendation.service.ts:283:firstRecommendation.score
+app\services\search.service.ts:46:description: "Browse vehicles, performance, prices, and recommendations.",
+
+===== advisor =====
+app\advisor\page.tsx:4:import { AtlasAdvisor } from "@/app/components/advisor";
+app\advisor\page.tsx:8:export default function AdvisorPage() {
+app\advisor\page.tsx:23:Empire Advisor
+app\advisor\page.tsx:33:<AtlasAdvisor profile={profile} />
+app\components\advisor\AtlasAdvisor.tsx:1:import { getAdvisorRecommendation } from "@/app/services";
+app\components\advisor\AtlasAdvisor.tsx:5:type AtlasAdvisorProps = {
+app\components\advisor\AtlasAdvisor.tsx:9:export default function AtlasAdvisor({ profile }: AtlasAdvisorProps) {
+app\components\advisor\AtlasAdvisor.tsx:10:const recommendation = getAdvisorRecommendation(profile);
+app\components\advisor\AtlasAdvisor.tsx:15:Atlas Advisor
+app\components\advisor\index.ts:1:export { default as AtlasAdvisor } from "./AtlasAdvisor";
+app\components\advisor\RecommendationCard.tsx:2:import type { AdvisorRecommendation } from "@/app/services/advisor.service";
+app\components\advisor\RecommendationCard.tsx:5:recommendation: AdvisorRecommendation;
+app\services\advisor.service.ts:5:export type AdvisorRecommendation = {
+app\services\advisor.service.ts:14:export function getAdvisorRecommendation(
+app\services\advisor.service.ts:16:): AdvisorRecommendation | null {
+app\services\atlas-decision-pipeline.service.ts:27:| "advisor"
+app\services\dashboard.service.ts:6:import type { AdvisorRecommendation } from "./advisor.service";
+app\services\dashboard.service.ts:7:import { getAdvisorRecommendation } from "./advisor.service";
+app\services\dashboard.service.ts:21:recommendation: AdvisorRecommendation | null;
+app\services\dashboard.service.ts:34:const recommendation = getAdvisorRecommendation(profile);
+app\services\empire.service.ts:9:import { getAdvisorRecommendation } from "./advisor.service";
+app\services\empire.service.ts:38:const recommendation = getAdvisorRecommendation(profile);
+app\services\index.ts:1:export * from "./advisor.service";
+
+===== decision =====
+app\hooks\useAtlasBrainPipeline.ts:11:AtlasDecision,
+app\hooks\useAtlasBrainPipeline.ts:20:getAtlasBrainPipelineDecision,
+app\hooks\useAtlasBrainPipeline.ts:22:runAtlasBrainDecisionPipeline,
+app\hooks\useAtlasBrainPipeline.ts:24:type AtlasBrainDecisionContextConfiguration,
+app\hooks\useAtlasBrainPipeline.ts:25:type AtlasBrainDecisionPipelineResult,
+app\hooks\useAtlasBrainPipeline.ts:26:} from "@/app/services/atlas-brain-decision-pipeline.service";
+app\hooks\useAtlasBrainPipeline.ts:29:AtlasDecisionPipelineConfiguration,
+app\hooks\useAtlasBrainPipeline.ts:30:AtlasDecisionPipelineSource,
+app\hooks\useAtlasBrainPipeline.ts:31:} from "@/app/services/atlas-decision-pipeline.service";
+app\hooks\useAtlasBrainPipeline.ts:56:AtlasDecisionPipelineSource | string;
+app\hooks\useAtlasBrainPipeline.ts:62:AtlasBrainDecisionContextConfiguration;
+app\hooks\useAtlasBrainPipeline.ts:65:AtlasDecisionPipelineConfiguration;
+app\hooks\useAtlasBrainPipeline.ts:95:AtlasBrainDecisionPipelineResult | null;
+app\hooks\useAtlasBrainPipeline.ts:97:decision:
+app\hooks\useAtlasBrainPipeline.ts:98:AtlasDecision | null;
+app\hooks\useAtlasBrainPipeline.ts:126:return "Atlas could not complete the brain decision pipeline.";
+app\hooks\useAtlasBrainPipeline.ts:132:AtlasBrainDecisionPipelineResult
+app\hooks\useAtlasBrainPipeline.ts:147:AtlasBrainDecisionPipelineResult
+app\hooks\useAtlasBrainPipeline.ts:186:AtlasBrainDecisionPipelineResult | null
+app\hooks\useAtlasBrainPipeline.ts:282:await runAtlasBrainDecisionPipeline({
+app\hooks\useAtlasBrainPipeline.ts:413:const decision =
+app\hooks\useAtlasBrainPipeline.ts:414:getAtlasBrainPipelineDecision(
+app\hooks\useAtlasBrainPipeline.ts:446:decision,
+app\hooks\useAtlasCopilotResponseLifecycle.ts:202:const decision =
+app\hooks\useAtlasCopilotResponseLifecycle.ts:203:brainPipeline.decision;
+app\hooks\useAtlasCopilotResponseLifecycle.ts:206:decision
+app\hooks\useAtlasCopilotResponseLifecycle.ts:222:decision
+app\hooks\useAtlasCopilotResponseLifecycle.ts:228:decision
+app\hooks\useAtlasIntelligence.ts:11:const decisions =
+app\hooks\useAtlasIntelligence.ts:13:(state) => state.decisions
+app\hooks\useAtlasIntelligence.ts:42:const recordDecision =
+app\hooks\useAtlasIntelligence.ts:44:(state) => state.recordDecision
+app\hooks\useAtlasIntelligence.ts:84:decisions,
+app\hooks\useAtlasIntelligence.ts:94:recordDecision,
+app\services\atlas-brain-decision-pipeline.service.ts:2:buildAtlasDecisionContext,
+app\services\atlas-brain-decision-pipeline.service.ts:6:type AtlasDecisionContext,
+app\services\atlas-brain-decision-pipeline.service.ts:17:runAtlasDecisionPipeline,
+app\services\atlas-brain-decision-pipeline.service.ts:18:type AtlasDecisionPipelineConfiguration,
+app\services\atlas-brain-decision-pipeline.service.ts:19:type AtlasDecisionPipelineResult,
+app\services\atlas-brain-decision-pipeline.service.ts:20:type AtlasDecisionPipelineSource,
+app\services\atlas-brain-decision-pipeline.service.ts:21:} from "./atlas-decision-pipeline.service";
+app\services\atlas-brain-decision-pipeline.service.ts:24:export const ATLAS_BRAIN_DECISION_PIPELINE_VERSION =
+app\services\atlas-brain-decision-pipeline.service.ts:37:export type AtlasBrainDecisionContextConfiguration = {
+app\services\atlas-brain-decision-pipeline.service.ts:42:export type AtlasBrainDecisionPipelineInput = {
+app\services\atlas-brain-decision-pipeline.service.ts:62:AtlasBrainDecisionContextConfiguration;
+app\services\atlas-brain-decision-pipeline.service.ts:65:AtlasDecisionPipelineConfiguration;
+app\services\atlas-brain-decision-pipeline.service.ts:70:AtlasDecisionPipelineSource | string;
+app\services\atlas-brain-decision-pipeline.service.ts:77:export type AtlasBrainDecisionPipelineResult = {
+app\services\atlas-brain-decision-pipeline.service.ts:87:decisionContext:
+app\services\atlas-brain-decision-pipeline.service.ts:88:AtlasDecisionContext;
+app\services\atlas-brain-decision-pipeline.service.ts:91:AtlasDecisionPipelineResult;
+app\services\atlas-brain-decision-pipeline.service.ts:124:AtlasBrainDecisionPipelineInput["source"]
+app\services\atlas-brain-decision-pipeline.service.ts:145:AtlasBrainDecisionPipelineInput,
+app\services\atlas-brain-decision-pipeline.service.ts:156:brainDecisionPipelineVersion:
+app\services\atlas-brain-decision-pipeline.service.ts:157:ATLAS_BRAIN_DECISION_PIPELINE_VERSION,
+app\services\atlas-brain-decision-pipeline.service.ts:184:export async function runAtlasBrainDecisionPipeline(
+app\services\atlas-brain-decision-pipeline.service.ts:186:AtlasBrainDecisionPipelineInput
+app\services\atlas-brain-decision-pipeline.service.ts:188:AtlasBrainDecisionPipelineResult
+app\services\atlas-brain-decision-pipeline.service.ts:229:const decisionContext =
+app\services\atlas-brain-decision-pipeline.service.ts:230:buildAtlasDecisionContext({
+app\services\atlas-brain-decision-pipeline.service.ts:252:"decision-context",
+app\services\atlas-brain-decision-pipeline.service.ts:257:await runAtlasDecisionPipeline({
+app\services\atlas-brain-decision-pipeline.service.ts:267:decisionContext,
+app\services\atlas-brain-decision-pipeline.service.ts:280:"decision-pipeline",
+app\services\atlas-brain-decision-pipeline.service.ts:286:ATLAS_BRAIN_DECISION_PIPELINE_VERSION,
+app\services\atlas-brain-decision-pipeline.service.ts:294:decisionContext,
+app\services\atlas-brain-decision-pipeline.service.ts:303:export function getAtlasBrainPipelineDecision(
+app\services\atlas-brain-decision-pipeline.service.ts:305:AtlasBrainDecisionPipelineResult | null
+app\services\atlas-brain-decision-pipeline.service.ts:315:return result.pipeline.decision;
+app\services\atlas-brain-decision-pipeline.service.ts:321:AtlasBrainDecisionPipelineResult | null
+app\services\atlas-brain-decision-pipeline.service.ts:324:getAtlasBrainPipelineDecision(
+app\services\atlas-brain-decision-pipeline.service.ts:333:export function isAtlasBrainDecisionPipelineSuccessful(
+app\services\atlas-brain-decision-pipeline.service.ts:335:AtlasBrainDecisionPipelineResult | null
+app\services\atlas-decision.service.ts:7:buildDecisionHistory,
+app\services\atlas-decision.service.ts:8:type AtlasDecisionHistoryItem,
+app\services\atlas-decision.service.ts:9:} from "@/app/intelligence/decision-history.engine";
+app\services\atlas-decision.service.ts:37:export type AtlasDecisionLifecycleError =
+app\services\atlas-decision.service.ts:38:| "decision-not-found"
+app\services\atlas-decision.service.ts:45:export type AtlasDecisionLifecycleResult<T> =
+app\services\atlas-decision.service.ts:52:error: AtlasDecisionLifecycleError;
+app\services\atlas-decision.service.ts:58:decision: AtlasDecisionHistoryItem;
+app\services\atlas-decision.service.ts:113:function getDecisionOutcomeStatus(
+app\services\atlas-decision.service.ts:115:): AtlasDecisionHistoryItem["outcome"] {
+app\services\atlas-decision.service.ts:214:): AtlasDecisionHistoryItem {
+app\services\atlas-decision.service.ts:215:const generatedDecision =
+app\services\atlas-decision.service.ts:216:buildDecisionHistory(
+app\services\atlas-decision.service.ts:220:const decision:
+app\services\atlas-decision.service.ts:221:AtlasDecisionHistoryItem = {
+app\services\atlas-decision.service.ts:222:...generatedDecision,
+app\services\atlas-decision.service.ts:226:"decision"
+app\services\atlas-decision.service.ts:237:decision,
+app\services\atlas-decision.service.ts:240:return decision;
+app\services\atlas-decision.service.ts:244:export function startAtlasDecision(
+app\services\atlas-decision.service.ts:245:decisionId: string
+app\services\atlas-decision.service.ts:246:): AtlasDecisionLifecycleResult<AtlasPlayerAction> {
+app\services\atlas-decision.service.ts:250:const decision =
+app\services\atlas-decision.service.ts:251:state.decisions.find(
+app\services\atlas-decision.service.ts:254:decisionId
+app\services\atlas-decision.service.ts:257:if (!decision) {
+app\services\atlas-decision.service.ts:262:"decision-not-found",
+app\services\atlas-decision.service.ts:265:"Atlas could not find the selected strategic decision.",
+app\services\atlas-decision.service.ts:272:action.decisionId ===
+app\services\atlas-decision.service.ts:273:decisionId
+app\services\atlas-decision.service.ts:287:decision
+app\services\atlas-decision.service.ts:307:decision,
+app\services\atlas-decision.service.ts:315:decision.recommendationId,
+app\services\atlas-decision.service.ts:317:decisionId:
+app\services\atlas-decision.service.ts:318:decision.id,
+app\services\atlas-decision.service.ts:339:): AtlasDecisionLifecycleResult<{
+app\services\atlas-decision.service.ts:340:decision: AtlasDecisionHistoryItem;
+app\services\atlas-decision.service.ts:343:const generatedDecision =
+app\services\atlas-decision.service.ts:344:buildDecisionHistory(
+app\services\atlas-decision.service.ts:348:const decision:
+app\services\atlas-decision.service.ts:349:AtlasDecisionHistoryItem = {
+app\services\atlas-decision.service.ts:350:...generatedDecision,
+app\services\atlas-decision.service.ts:354:"decision"
+app\services\atlas-decision.service.ts:366:decision
+app\services\atlas-decision.service.ts:386:decision,
+app\services\atlas-decision.service.ts:396:decisionId:
+app\services\atlas-decision.service.ts:397:decision.id,
+app\services\atlas-decision.service.ts:411:decision,
+app\services\atlas-decision.service.ts:421:): AtlasDecisionLifecycleResult<AtlasPlayerAction> {
+app\services\atlas-decision.service.ts:502:decisionId:
+app\services\atlas-decision.service.ts:503:updatedAction.decisionId,
+app\services\atlas-decision.service.ts:528:): AtlasDecisionLifecycleResult<AtlasPlayerAction> {
+app\services\atlas-decision.service.ts:606:decisionId:
+app\services\atlas-decision.service.ts:607:updatedAction.decisionId,
+app\services\atlas-decision.service.ts:628:): AtlasDecisionLifecycleResult<AtlasReportedOutcomeResult> {
+app\services\atlas-decision.service.ts:666:const decision =
+app\services\atlas-decision.service.ts:667:state.decisions.find(
+app\services\atlas-decision.service.ts:670:action.decisionId
+app\services\atlas-decision.service.ts:673:if (!decision) {
+app\services\atlas-decision.service.ts:678:"decision-not-found",
+app\services\atlas-decision.service.ts:681:"Atlas could not find the decision associated with this action.",
+app\services\atlas-decision.service.ts:709:decision,
+app\services\atlas-decision.service.ts:724:decision,
+app\services\atlas-decision.service.ts:734:const updatedDecision:
+app\services\atlas-decision.service.ts:735:AtlasDecisionHistoryItem = {
+app\services\atlas-decision.service.ts:736:...decision,
+app\services\atlas-decision.service.ts:739:getDecisionOutcomeStatus(
+app\services\atlas-decision.service.ts:745:decision:
+app\services\atlas-decision.service.ts:746:updatedDecision,
+app\services\atlas-decision.service.ts:758:decisionId:
+app\services\atlas-decision.service.ts:759:updatedDecision.id,
+app\services\atlas-decision.service.ts:781:decisionId:
+app\services\atlas-decision.service.ts:782:updatedDecision.id,
+app\services\atlas-decision.service.ts:805:decision:
+app\services\atlas-decision.service.ts:806:updatedDecision,
+app\services\atlas-decision-orchestrator.service.ts:2:buildAtlasDecision,
+app\services\atlas-decision-orchestrator.service.ts:4:type AtlasDecision,
+app\services\atlas-decision-orchestrator.service.ts:5:type AtlasDecisionContext,
+app\services\atlas-decision-orchestrator.service.ts:9:export const ATLAS_DECISION_ORCHESTRATOR_VERSION = 1;
+app\services\atlas-decision-orchestrator.service.ts:12:export type AtlasDecisionOrchestrationStatus =
+app\services\atlas-decision-orchestrator.service.ts:18:export type AtlasDecisionOrchestrationStage =
+app\services\atlas-decision-orchestrator.service.ts:22:| "decision";
+app\services\atlas-decision-orchestrator.service.ts:25:export type AtlasDecisionOrchestrationWarningCode =
+app\services\atlas-decision-orchestrator.service.ts:29:| "low-decision-confidence"
+app\services\atlas-decision-orchestrator.service.ts:30:| "decision-reassessment-required"
+app\services\atlas-decision-orchestrator.service.ts:35:export type AtlasDecisionOrchestrationWarning = {
+app\services\atlas-decision-orchestrator.service.ts:36:code: AtlasDecisionOrchestrationWarningCode;
+app\services\atlas-decision-orchestrator.service.ts:38:stage: AtlasDecisionOrchestrationStage | null;
+app\services\atlas-decision-orchestrator.service.ts:46:export type AtlasDecisionOrchestrationError = {
+app\services\atlas-decision-orchestrator.service.ts:47:stage: AtlasDecisionOrchestrationStage;
+app\services\atlas-decision-orchestrator.service.ts:57:export type AtlasDecisionOrchestrationStageResult<TValue> = {
+app\services\atlas-decision-orchestrator.service.ts:58:stage: AtlasDecisionOrchestrationStage;
+app\services\atlas-decision-orchestrator.service.ts:70:export type AtlasDecisionOrchestrationMetadata = {
+app\services\atlas-decision-orchestrator.service.ts:82:AtlasDecisionOrchestrationStage,
+app\services\atlas-decision-orchestrator.service.ts:92:export type AtlasDecisionOrchestrationInput<
+app\services\atlas-decision-orchestrator.service.ts:106:decisionContext?: AtlasDecisionContext;
+app\services\atlas-decision-orchestrator.service.ts:163:export type AtlasDecisionStageInput = {
+app\services\atlas-decision-orchestrator.service.ts:167:context: AtlasDecisionContext;
+app\services\atlas-decision-orchestrator.service.ts:173:export type AtlasDecisionOrchestratorDependencies<
+app\services\atlas-decision-orchestrator.service.ts:209:buildDecision?: (
+app\services\atlas-decision-orchestrator.service.ts:210:input: AtlasDecisionStageInput
+app\services\atlas-decision-orchestrator.service.ts:212:| AtlasDecision
+app\services\atlas-decision-orchestrator.service.ts:213:| Promise<AtlasDecision>;
+app\services\atlas-decision-orchestrator.service.ts:217:export type AtlasDecisionOrchestrationSuccess<
+app\services\atlas-decision-orchestrator.service.ts:232:decision: AtlasDecision;
+app\services\atlas-decision-orchestrator.service.ts:236:AtlasDecisionOrchestrationStageResult<TBehaviorProfile>;
+app\services\atlas-decision-orchestrator.service.ts:239:AtlasDecisionOrchestrationStageResult<TStrategyEvolution>;
+app\services\atlas-decision-orchestrator.service.ts:242:AtlasDecisionOrchestrationStageResult<AtlasAdaptiveRecommendationResult>;
+app\services\atlas-decision-orchestrator.service.ts:244:decision:
+app\services\atlas-decision-orchestrator.service.ts:245:AtlasDecisionOrchestrationStageResult<AtlasDecision>;
+app\services\atlas-decision-orchestrator.service.ts:249:AtlasDecisionOrchestrationWarning[];
+app\services\atlas-decision-orchestrator.service.ts:254:AtlasDecisionOrchestrationMetadata;
+app\services\atlas-decision-orchestrator.service.ts:258:export type AtlasDecisionOrchestrationFailure = {
+app\services\atlas-decision-orchestrator.service.ts:267:decision: null;
+app\services\atlas-decision-orchestrator.service.ts:276:decision: null;
+app\services\atlas-decision-orchestrator.service.ts:280:AtlasDecisionOrchestrationWarning[];
+app\services\atlas-decision-orchestrator.service.ts:283:AtlasDecisionOrchestrationError;
+app\services\atlas-decision-orchestrator.service.ts:286:AtlasDecisionOrchestrationMetadata;
+app\services\atlas-decision-orchestrator.service.ts:290:export type AtlasDecisionOrchestrationResult<
+app\services\atlas-decision-orchestrator.service.ts:294:| AtlasDecisionOrchestrationSuccess<
+app\services\atlas-decision-orchestrator.service.ts:298:| AtlasDecisionOrchestrationFailure;
+app\services\atlas-decision-orchestrator.service.ts:303:AtlasDecisionOrchestrationStageResult<TValue>;
+app\services\atlas-decision-orchestrator.service.ts:341:"atlas-decision",
+app\services\atlas-decision-orchestrator.service.ts:381:stage: AtlasDecisionOrchestrationStage,
+app\services\atlas-decision-orchestrator.service.ts:383:): AtlasDecisionOrchestrationError {
+app\services\atlas-decision-orchestrator.service.ts:407:decisionMilliseconds = 0
+app\services\atlas-decision-orchestrator.service.ts:409:AtlasDecisionOrchestrationStage,
+app\services\atlas-decision-orchestrator.service.ts:422:decision:
+app\services\atlas-decision-orchestrator.service.ts:423:decisionMilliseconds,
+app\services\atlas-decision-orchestrator.service.ts:433:AtlasDecisionOrchestrationStage,
+app\services\atlas-decision-orchestrator.service.ts:439:): AtlasDecisionOrchestrationMetadata {
+app\services\atlas-decision-orchestrator.service.ts:442:ATLAS_DECISION_ORCHESTRATOR_VERSION,
+app\services\atlas-decision-orchestrator.service.ts:476:stage: AtlasDecisionOrchestrationStage,
+app\services\atlas-decision-orchestrator.service.ts:525:input: AtlasDecisionOrchestrationInput<
+app\services\atlas-decision-orchestrator.service.ts:532:AtlasDecisionOrchestrationWarning[]
+app\services\atlas-decision-orchestrator.service.ts:571:AtlasDecisionOrchestrationWarning[]
+app\services\atlas-decision-orchestrator.service.ts:592:function addDecisionWarnings(
+app\services\atlas-decision-orchestrator.service.ts:593:decision: AtlasDecision,
+app\services\atlas-decision-orchestrator.service.ts:595:AtlasDecisionOrchestrationWarning[]
+app\services\atlas-decision-orchestrator.service.ts:598:decision.confidence < 50
+app\services\atlas-decision-orchestrator.service.ts:602:"low-decision-confidence",
+app\services\atlas-decision-orchestrator.service.ts:605:"decision",
+app\services\atlas-decision-orchestrator.service.ts:608:`Atlas produced a decision with ${decision.confidence}% confidence.`,
+app\services\atlas-decision-orchestrator.service.ts:612:decision.confidence,
+app\services\atlas-decision-orchestrator.service.ts:615:decision.confidenceLevel,
+app\services\atlas-decision-orchestrator.service.ts:621:decision.shouldReassess
+app\services\atlas-decision-orchestrator.service.ts:625:"decision-reassessment-required",
+app\services\atlas-decision-orchestrator.service.ts:628:"decision",
+app\services\atlas-decision-orchestrator.service.ts:631:"The final Atlas decision requires reassessment before strong execution.",
+app\services\atlas-decision-orchestrator.service.ts:639:AtlasDecisionOrchestrationStage,
+app\services\atlas-decision-orchestrator.service.ts:643:AtlasDecisionOrchestrationWarning[],
+app\services\atlas-decision-orchestrator.service.ts:651:AtlasDecisionOrchestrationStage,
+app\services\atlas-decision-orchestrator.service.ts:690:AtlasDecisionOrchestrationError,
+app\services\atlas-decision-orchestrator.service.ts:692:AtlasDecisionOrchestrationWarning[],
+app\services\atlas-decision-orchestrator.service.ts:696:AtlasDecisionOrchestrationStage,
+app\services\atlas-decision-orchestrator.service.ts:702:): AtlasDecisionOrchestrationFailure {
+app\services\atlas-decision-orchestrator.service.ts:719:decision:
+app\services\atlas-decision-orchestrator.service.ts:732:decision:
+app\services\atlas-decision-orchestrator.service.ts:753:export async function runAtlasDecisionOrchestration<
+app\services\atlas-decision-orchestrator.service.ts:763:input: AtlasDecisionOrchestrationInput<
+app\services\atlas-decision-orchestrator.service.ts:769:dependencies: AtlasDecisionOrchestratorDependencies<
+app\services\atlas-decision-orchestrator.service.ts:778:AtlasDecisionOrchestrationResult<
+app\services\atlas-decision-orchestrator.service.ts:799:AtlasDecisionOrchestrationWarning[] =
+app\services\atlas-decision-orchestrator.service.ts:806:input as AtlasDecisionOrchestrationInput<
+app\services\atlas-decision-orchestrator.service.ts:816:AtlasDecisionOrchestrationStageResult<TBehaviorProfile>;
+app\services\atlas-decision-orchestrator.service.ts:863:AtlasDecisionOrchestrationStageResult<TStrategyEvolution>;
+app\services\atlas-decision-orchestrator.service.ts:911:AtlasDecisionOrchestrationStageResult<AtlasAdaptiveRecommendationResult>;
+app\services\atlas-decision-orchestrator.service.ts:967:let decisionStage:
+app\services\atlas-decision-orchestrator.service.ts:968:AtlasDecisionOrchestrationStageResult<AtlasDecision>;
+app\services\atlas-decision-orchestrator.service.ts:973:"decision",
+app\services\atlas-decision-orchestrator.service.ts:975:const decisionInput:
+app\services\atlas-decision-orchestrator.service.ts:976:AtlasDecisionStageInput = {
+app\services\atlas-decision-orchestrator.service.ts:982:input.decisionContext ??
+app\services\atlas-decision-orchestrator.service.ts:990:.buildDecision
+app\services\atlas-decision-orchestrator.service.ts:993:.buildDecision(
+app\services\atlas-decision-orchestrator.service.ts:994:decisionInput
+app\services\atlas-decision-orchestrator.service.ts:998:return buildAtlasDecision(
+app\services\atlas-decision-orchestrator.service.ts:999:decisionInput
+app\services\atlas-decision-orchestrator.service.ts:1004:decisionStage =
+app\services\atlas-decision-orchestrator.service.ts:1008:"decision"
+app\services\atlas-decision-orchestrator.service.ts:1010:decisionStage
+app\services\atlas-decision-orchestrator.service.ts:1015:"decision",
+app\services\atlas-decision-orchestrator.service.ts:1027:addDecisionWarnings(
+app\services\atlas-decision-orchestrator.service.ts:1028:decisionStage.value,
+app\services\atlas-decision-orchestrator.service.ts:1056:decision:
+app\services\atlas-decision-orchestrator.service.ts:1057:decisionStage.value,
+app\services\atlas-decision-orchestrator.service.ts:1069:decision:
+app\services\atlas-decision-orchestrator.service.ts:1070:decisionStage,
+app\services\atlas-decision-orchestrator.service.ts:1091:export function createAtlasDecisionOrchestrator<
+app\services\atlas-decision-orchestrator.service.ts:1101:dependencies: AtlasDecisionOrchestratorDependencies<
+app\services\atlas-decision-orchestrator.service.ts:1112:input: AtlasDecisionOrchestrationInput<
+app\services\atlas-decision-orchestrator.service.ts:1119:AtlasDecisionOrchestrationResult<
+app\services\atlas-decision-orchestrator.service.ts:1124:return runAtlasDecisionOrchestration(
+app\services\atlas-decision-pipeline.service.ts:7:type AtlasDecision,
+app\services\atlas-decision-pipeline.service.ts:8:type AtlasDecisionContext,
+app\services\atlas-decision-pipeline.service.ts:15:runAtlasDecisionOrchestration,
+app\services\atlas-decision-pipeline.service.ts:16:type AtlasDecisionOrchestrationResult,
+app\services\atlas-decision-pipeline.service.ts:17:type AtlasDecisionOrchestrationWarning,
+app\services\atlas-decision-pipeline.service.ts:18:} from "./atlas-decision-orchestrator.service";
+app\services\atlas-decision-pipeline.service.ts:21:export const ATLAS_DECISION_PIPELINE_VERSION = 1;
+app\services\atlas-decision-pipeline.service.ts:24:export type AtlasDecisionPipelineSource =
+app\services\atlas-decision-pipeline.service.ts:35:export type AtlasDecisionPipelineConfiguration = {
+app\services\atlas-decision-pipeline.service.ts:54:export type AtlasDecisionPipelineInput = {
+app\services\atlas-decision-pipeline.service.ts:64:decisionContext?:
+app\services\atlas-decision-pipeline.service.ts:65:AtlasDecisionContext;
+app\services\atlas-decision-pipeline.service.ts:68:AtlasDecisionPipelineConfiguration;
+app\services\atlas-decision-pipeline.service.ts:73:AtlasDecisionPipelineSource | string;
+app\services\atlas-decision-pipeline.service.ts:80:export type AtlasDecisionPipelineSuccess = {
+app\services\atlas-decision-pipeline.service.ts:96:decision:
+app\services\atlas-decision-pipeline.service.ts:97:AtlasDecision;
+app\services\atlas-decision-pipeline.service.ts:100:AtlasDecisionOrchestrationWarning[];
+app\services\atlas-decision-pipeline.service.ts:119:export type AtlasDecisionPipelineFailure = {
+app\services\atlas-decision-pipeline.service.ts:134:decision:
+app\services\atlas-decision-pipeline.service.ts:138:AtlasDecisionOrchestrationWarning[];
+app\services\atlas-decision-pipeline.service.ts:165:export type AtlasDecisionPipelineResult =
+app\services\atlas-decision-pipeline.service.ts:166:| AtlasDecisionPipelineSuccess
+app\services\atlas-decision-pipeline.service.ts:167:| AtlasDecisionPipelineFailure;
+app\services\atlas-decision-pipeline.service.ts:194:AtlasDecisionPipelineInput["source"]
+app\services\atlas-decision-pipeline.service.ts:213:AtlasDecisionPipelineConfiguration | undefined
+app\services\atlas-decision-pipeline.service.ts:215:AtlasDecisionPipelineConfiguration
+app\services\atlas-decision-pipeline.service.ts:262:input: AtlasDecisionPipelineInput,
+app\services\atlas-decision-pipeline.service.ts:265:AtlasDecisionPipelineConfiguration
+app\services\atlas-decision-pipeline.service.ts:272:ATLAS_DECISION_PIPELINE_VERSION,
+app\services\atlas-decision-pipeline.service.ts:295:AtlasDecisionOrchestrationResult<
+app\services\atlas-decision-pipeline.service.ts:305:): AtlasDecisionPipelineSuccess {
+app\services\atlas-decision-pipeline.service.ts:311:ATLAS_DECISION_PIPELINE_VERSION,
+app\services\atlas-decision-pipeline.service.ts:322:decision:
+app\services\atlas-decision-pipeline.service.ts:323:result.decision,
+app\services\atlas-decision-pipeline.service.ts:350:AtlasDecisionOrchestrationResult<
+app\services\atlas-decision-pipeline.service.ts:358:): AtlasDecisionPipelineFailure {
+app\services\atlas-decision-pipeline.service.ts:364:ATLAS_DECISION_PIPELINE_VERSION,
+app\services\atlas-decision-pipeline.service.ts:375:decision:
+app\services\atlas-decision-pipeline.service.ts:412:export async function runAtlasDecisionPipeline(
+app\services\atlas-decision-pipeline.service.ts:413:input: AtlasDecisionPipelineInput
+app\services\atlas-decision-pipeline.service.ts:415:AtlasDecisionPipelineResult
+app\services\atlas-decision-pipeline.service.ts:440:await runAtlasDecisionOrchestration<
+app\services\atlas-decision-pipeline.service.ts:462:decisionContext:
+app\services\atlas-decision-pipeline.service.ts:463:input.decisionContext ??
+app\services\atlas-decision-pipeline.service.ts:573:export function isAtlasDecisionPipelineSuccess(
+app\services\atlas-decision-pipeline.service.ts:575:AtlasDecisionPipelineResult
+app\services\atlas-decision-pipeline.service.ts:576:): result is AtlasDecisionPipelineSuccess {
+app\services\atlas-decision-pipeline.service.ts:586:export function isAtlasDecisionPipelineFailure(
+app\services\atlas-decision-pipeline.service.ts:588:AtlasDecisionPipelineResult
+app\services\atlas-decision-pipeline.service.ts:589:): result is AtlasDecisionPipelineFailure {
+app\services\atlas-decision-pipeline.service.ts:595:export function getAtlasPipelineDecision(
+app\services\atlas-decision-pipeline.service.ts:597:AtlasDecisionPipelineResult
+app\services\atlas-decision-pipeline.service.ts:598:): AtlasDecision | null {
+app\services\atlas-decision-pipeline.service.ts:600:!isAtlasDecisionPipelineSuccess(
+app\services\atlas-decision-pipeline.service.ts:607:return result.decision;
+app\services\atlas-decision-pipeline.service.ts:613:AtlasDecisionPipelineResult
+app\services\atlas-decision-pipeline.service.ts:615:const decision =
+app\services\atlas-decision-pipeline.service.ts:616:getAtlasPipelineDecision(
+app\services\atlas-decision-pipeline.service.ts:621:decision
+app\services\atlas-decision-pipeline.service.ts:628:export function shouldRefreshAtlasDecisionPipeline(
+app\services\atlas-decision-pipeline.service.ts:630:AtlasDecisionPipelineResult | null,
+app\services\atlas-decision-pipeline.service.ts:646:result.decision
+app\services\index.ts:3:export * from "./atlas-decision.service";
+app\services\index.ts:23:export * from "./atlas-decision-orchestrator.service";
+app\services\index.ts:24:export * from "./atlas-decision-pipeline.service";
+app\services\index.ts:25:export * from "./atlas-brain-decision-pipeline.service";
+
+===== ranking =====
+app\components\search\AtlasSearchResults.tsx:60:📈 Rankings
+app\services\business-ranking-adapter.service.ts:3:export const businessRankingAdapter = {
+app\services\collection.service.ts:5:* rankings, and Atlas Score.
+app\services\collection.service.ts:16:} from "./ranking.service";
+app\services\index.ts:16:export * from "./ranking.service";
+app\services\index.ts:28:vehicleRankingAdapter,
+app\services\index.ts:29:} from "./ranking-adapter.service";
+app\services\index.ts:31:export * from "./business-ranking.service";
+app\services\index.ts:34:businessRankingAdapter,
+app\services\index.ts:35:} from "./business-ranking-adapter.service";
+app\services\ranking.service.ts:2:* Atlas Rankings Service
+app\services\ranking.service.ts:4:* Centralized ranking logic for Atlas entities.
+app\services\ranking.service.ts:6:* Vehicles are only included in rankings when the required underlying data
+app\services\ranking-adapter.service.ts:6:export const vehicleRankingAdapter = {
+app\services\ranking-adapter.service.ts:21:export const businessRankingAdapter = {
+app\services\search.service.ts:78:id: "page:rankings",
+app\services\search.service.ts:79:slug: "rankings",
+app\services\search.service.ts:81:label: "Rankings",
+app\services\search.service.ts:82:description: "View Atlas rankings for vehicles, businesses, and more.",
+app\services\search.service.ts:83:href: "/rankings",
+app\services\search.service.ts:84:tags: ["rankings", "best", "top"],
+
+===== planning =====
+
+===== plan =====
+app\components\planner\AtlasPlannerStrategy.tsx:2:AtlasStrategicPlan,
+app\components\planner\AtlasPlannerStrategy.tsx:5:type AtlasPlannerStrategyProps = {
+app\components\planner\AtlasPlannerStrategy.tsx:6:plan: AtlasStrategicPlan;
+app\components\planner\AtlasPlannerStrategy.tsx:9:export default function AtlasPlannerStrategy({
+app\components\planner\AtlasPlannerStrategy.tsx:10:plan,
+app\components\planner\AtlasPlannerStrategy.tsx:11:}: AtlasPlannerStrategyProps) {
+app\components\planner\AtlasPlannerStrategy.tsx:21:{plan.title}
+app\components\planner\AtlasPlannerStrategy.tsx:26:{plan.objective}
+app\components\planner\AtlasPlannerStrategy.tsx:38:{plan.timeframe}
+app\components\planner\AtlasPlannerStrategy.tsx:49:{plan.confidence}%
+app\components\planner\AtlasPlannerStrategy.tsx:58:{plan.steps.map((step, index) => (
+app\components\planner\index.ts:1:export { default as PlannerHeader } from "./PlannerHeader";
+app\components\planner\index.ts:2:export { default as PlannerStep } from "./PlannerStep";
+app\components\planner\index.ts:3:export { default as PlannerSummary } from "./PlannerSummary";
+app\components\planner\index.ts:4:export { default as PlannerTimeline } from "./PlannerTimeline";
+app\components\planner\index.ts:5:export { default as AtlasPlannerStrategy } from "./AtlasPlannerStrategy";
+app\components\planner\PlannerHeader.tsx:1:export default function PlannerHeader() {
+app\components\planner\PlannerHeader.tsx:5:Atlas Planner
+app\components\planner\PlannerStep.tsx:5:type PlannerStepProps = {
+app\components\planner\PlannerStep.tsx:19:return "/planner";
+app\components\planner\PlannerStep.tsx:22:export default function PlannerStep({ step, active = false }: PlannerStepProps) {
+app\components\planner\PlannerSummary.tsx:1:import type { PlayerProfile, ProgressionPlan } from "@/app/types";
+app\components\planner\PlannerSummary.tsx:4:type PlannerSummaryProps = {
+app\components\planner\PlannerSummary.tsx:6:plan: ProgressionPlan;
+app\components\planner\PlannerSummary.tsx:9:export default function PlannerSummary({
+app\components\planner\PlannerSummary.tsx:11:plan,
+app\components\planner\PlannerSummary.tsx:12:}: PlannerSummaryProps) {
+app\components\planner\PlannerSummary.tsx:17:value={plan.stage}
+app\components\planner\PlannerSummary.tsx:23:value={`${plan.completion}%`}
+app\components\planner\PlannerSummary.tsx:27:value={plan.completion}
+app\components\planner\PlannerSummary.tsx:41:value={`$${plan.totalInvestment.toLocaleString()}`}
+app\components\planner\PlannerSummary.tsx:47:value={plan.nextStep?.title ?? "Complete Profile"}
+app\components\planner\PlannerSummary.tsx:49:plan.nextStep
+app\components\planner\PlannerSummary.tsx:50:? `$${plan.nextStep.estimatedCost.toLocaleString()} investment`
+app\components\planner\PlannerTimeline.tsx:1:import type { ProgressionPlan } from "@/app/types";
+app\components\planner\PlannerTimeline.tsx:2:import PlannerStep from "./PlannerStep";
+app\components\planner\PlannerTimeline.tsx:4:type PlannerTimelineProps = {
+app\components\planner\PlannerTimeline.tsx:5:plan: ProgressionPlan;
+app\components\planner\PlannerTimeline.tsx:8:export default function PlannerTimeline({
+app\components\planner\PlannerTimeline.tsx:9:plan,
+app\components\planner\PlannerTimeline.tsx:10:}: PlannerTimelineProps) {
+app\components\planner\PlannerTimeline.tsx:11:if (plan.steps.length === 0) {
+app\components\planner\PlannerTimeline.tsx:37:{plan.steps.map((step, index) => (
+app\components\planner\PlannerTimeline.tsx:63:<PlannerStep
+app\components\search\AtlasSearchResults.tsx:52:🗺 Mission Planner
+app\hooks\useAtlasCapability.ts:12:plan: "free",
+app\planner\page.tsx:2:AtlasPlannerStrategy,
+app\planner\page.tsx:3:PlannerHeader,
+app\planner\page.tsx:4:PlannerSummary,
+app\planner\page.tsx:5:PlannerTimeline,
+app\planner\page.tsx:6:} from "@/app/components/planner";
+app\planner\page.tsx:15:getProgressionPlan,
+app\planner\page.tsx:23:export default function PlannerPage() {
+app\planner\page.tsx:38:const progressionPlan =
+app\planner\page.tsx:39:getProgressionPlan(
+app\planner\page.tsx:48:<PlannerHeader />
+app\planner\page.tsx:53:<AtlasPlannerStrategy
+app\planner\page.tsx:54:plan={
+app\planner\page.tsx:55:intelligence.strategicPlan
+app\planner\page.tsx:64:<PlannerSummary
+app\planner\page.tsx:66:plan={progressionPlan}
+app\planner\page.tsx:74:<PlannerTimeline
+app\planner\page.tsx:75:plan={progressionPlan}
+app\services\atlas-capability.service.ts:4:ATLAS_PLAN_ORDER,
+app\services\atlas-capability.service.ts:13:AtlasPlan,
+app\services\atlas-capability.service.ts:25:function planIncludesCapability(
+app\services\atlas-capability.service.ts:26:plan: AtlasPlan,
+app\services\atlas-capability.service.ts:27:requiredPlan: AtlasPlan
+app\services\atlas-capability.service.ts:29:return ATLAS_PLAN_ORDER[plan] >= ATLAS_PLAN_ORDER[requiredPlan];
+app\services\atlas-capability.service.ts:44:export function getAtlasCapabilitiesForPlan(
+app\services\atlas-capability.service.ts:45:plan: AtlasPlan
+app\services\atlas-capability.service.ts:50:return planIncludesCapability(plan, definition.minimumPlan);
+app\services\atlas-capability.service.ts:69:plan: context.plan,
+app\services\atlas-capability.service.ts:70:requiredPlan: definition.minimumPlan,
+app\services\atlas-capability.service.ts:83:plan: context.plan,
+app\services\atlas-capability.service.ts:84:requiredPlan: definition.minimumPlan,
+app\services\atlas-capability.service.ts:91:planIncludesCapability(
+app\services\atlas-capability.service.ts:92:context.plan,
+app\services\atlas-capability.service.ts:93:definition.minimumPlan
+app\services\atlas-capability.service.ts:100:plan: context.plan,
+app\services\atlas-capability.service.ts:101:requiredPlan: definition.minimumPlan,
+app\services\atlas-capability.service.ts:103:reason: "included-in-plan",
+app\services\atlas-capability.service.ts:113:plan: context.plan,
+app\services\atlas-capability.service.ts:114:requiredPlan: definition.minimumPlan,
+app\services\atlas-decision-pipeline.service.ts:28:| "planner"
+app\services\dashboard.service.ts:4:ProgressionPlan,
+app\services\dashboard.service.ts:9:import { getProgressionPlan } from "./progression.service";
+app\services\dashboard.service.ts:20:progression: ProgressionPlan;
+app\services\dashboard.service.ts:25:stage: ProgressionPlan["stage"];
+app\services\dashboard.service.ts:33:const progression = getProgressionPlan(profile);
+app\services\dashboard.service.ts:47:id: "review-planner",
+app\services\dashboard.service.ts:48:title: "Review your planner",
+app\services\empire.service.ts:11:import { getProgressionPlan } from "./progression.service";
+app\services\empire.service.ts:37:const progression = getProgressionPlan(profile);
+app\services\player-intelligence.service.ts:3:import { getProgressionPlan } from "./progression.service";
+app\services\player-intelligence.service.ts:23:const progression = getProgressionPlan(profile);
+app\services\progression.service.ts:4:ProgressionPlan,
+app\services\progression.service.ts:17:export function getProgressionPlan(
+app\services\progression.service.ts:19:): ProgressionPlan {
+app\services\search.service.ts:33:id: "page:planner",
+app\services\search.service.ts:34:slug: "planner",
+app\services\search.service.ts:36:label: "Mission Planner",
+app\services\search.service.ts:38:href: "/planner",
+app\services\search.service.ts:39:tags: ["planner", "roadmap", "progression", "mission"],
+
+===== search =====
+app\components\search\AtlasSearchDialog.tsx:6:import AtlasSearchInput from "./AtlasSearchInput";
+app\components\search\AtlasSearchDialog.tsx:7:import AtlasSearchResults from "./AtlasSearchResults";
+app\components\search\AtlasSearchDialog.tsx:8:import { useAtlasSearch } from "@/app/hooks/useAtlasSearch";
+app\components\search\AtlasSearchDialog.tsx:10:type AtlasSearchDialogProps = {
+app\components\search\AtlasSearchDialog.tsx:15:export default function AtlasSearchDialog({
+app\components\search\AtlasSearchDialog.tsx:18:}: AtlasSearchDialogProps) {
+app\components\search\AtlasSearchDialog.tsx:20:const { query, setQuery, results, clearSearch } = useAtlasSearch();
+app\components\search\AtlasSearchDialog.tsx:24:clearSearch();
+app\components\search\AtlasSearchDialog.tsx:77:aria-label="Close search"
+app\components\search\AtlasSearchDialog.tsx:84:<AtlasSearchInput query={query} onChange={setQuery} />
+app\components\search\AtlasSearchDialog.tsx:87:<AtlasSearchResults
+app\components\search\AtlasSearchDialog.tsx:96:<span>Atlas Search</span>
+app\components\search\AtlasSearchInput.tsx:1:type AtlasSearchInputProps = {
+app\components\search\AtlasSearchInput.tsx:6:export default function AtlasSearchInput({
+app\components\search\AtlasSearchInput.tsx:9:}: AtlasSearchInputProps) {
+app\components\search\AtlasSearchInput.tsx:16:placeholder="Search Atlas..."
+app\components\search\AtlasSearchPanel.tsx:5:import { searchAtlas } from "@/app/services";
+app\components\search\AtlasSearchPanel.tsx:7:export default function AtlasSearchPanel() {
+app\components\search\AtlasSearchPanel.tsx:11:return searchAtlas(query).slice(0, 5);
+app\components\search\AtlasSearchPanel.tsx:14:const isSearching = query.trim().length > 0;
+app\components\search\AtlasSearchPanel.tsx:21:placeholder="Search vehicles, missions, weapons..."
+app\components\search\AtlasSearchPanel.tsx:25:{!isSearching && (
+app\components\search\AtlasSearchPanel.tsx:27:Start typing to search Atlas...
+app\components\search\AtlasSearchPanel.tsx:31:{isSearching && results.length === 0 && (
+app\components\search\AtlasSearchResult.tsx:2:import type { SearchResult } from "@/app/services";
+app\components\search\AtlasSearchResult.tsx:4:type AtlasSearchResultProps = {
+app\components\search\AtlasSearchResult.tsx:5:result: SearchResult;
+app\components\search\AtlasSearchResult.tsx:11:SearchResult["type"],
+app\components\search\AtlasSearchResult.tsx:39:export default function AtlasSearchResult({
+app\components\search\AtlasSearchResult.tsx:43:}: AtlasSearchResultProps) {
+app\components\search\AtlasSearchResults.tsx:1:import type { SearchResult } from "@/app/services";
+app\components\search\AtlasSearchResults.tsx:2:import AtlasSearchResult from "./AtlasSearchResult";
+app\components\search\AtlasSearchResults.tsx:4:type AtlasSearchResultsProps = {
+app\components\search\AtlasSearchResults.tsx:6:results: SearchResult[];
+app\components\search\AtlasSearchResults.tsx:11:export default function AtlasSearchResults({
+app\components\search\AtlasSearchResults.tsx:16:}: AtlasSearchResultsProps) {
+app\components\search\AtlasSearchResults.tsx:21:Atlas Search
+app\components\search\AtlasSearchResults.tsx:25:Search anything.
+app\components\search\AtlasSearchResults.tsx:35:Try searching for...
+app\components\search\AtlasSearchResults.tsx:80:Try searching for a vehicle, business, mission, weapon, or Atlas page.
+app\components\search\AtlasSearchResults.tsx:89:<AtlasSearchResult
+app\hooks\useAtlasSearch.ts:4:import { searchAtlas } from "@/app/services";
+app\hooks\useAtlasSearch.ts:6:export function useAtlasSearch() {
+app\hooks\useAtlasSearch.ts:10:return searchAtlas(query).slice(0, 8);
+app\hooks\useAtlasSearch.ts:13:function clearSearch() {
+app\hooks\useAtlasSearch.ts:21:clearSearch,
+app\hooks\useExplorerSearch.ts:5:export function useExplorerSearch() {
+app\hooks\useExplorerSearch.ts:6:const [searchQuery, setSearchQuery] = useState("");
+app\hooks\useExplorerSearch.ts:8:function updateSearchQuery(value: string) {
+app\hooks\useExplorerSearch.ts:9:setSearchQuery(value);
+app\hooks\useExplorerSearch.ts:12:function clearSearchQuery() {
+app\hooks\useExplorerSearch.ts:13:setSearchQuery("");
+app\hooks\useExplorerSearch.ts:17:searchQuery,
+app\hooks\useExplorerSearch.ts:18:updateSearchQuery,
+app\hooks\useExplorerSearch.ts:19:clearSearchQuery,
+app\services\index.ts:20:export * from "./search.service";
+app\services\search.service.ts:3:export type SearchResult = {
+app\services\search.service.ts:13:const pageSearchResults: SearchResult[] = [
+app\services\search.service.ts:106:export function getSearchIndex(): SearchResult[] {
+app\services\search.service.ts:108:...pageSearchResults,
+app\services\search.service.ts:152:function scoreResult(item: SearchResult, query: string): number {
+app\services\search.service.ts:174:export function searchAtlas(query: string): SearchResult[] {
+app\services\search.service.ts:181:return getSearchIndex()
+
+===== getVehicleRecommendations =====
+app\services\recommendation.service.ts:234:export function getVehicleRecommendations(
+
+===== getAdvisorRecommendation =====
+app\components\advisor\AtlasAdvisor.tsx:1:import { getAdvisorRecommendation } from "@/app/services";
+app\components\advisor\AtlasAdvisor.tsx:10:const recommendation = getAdvisorRecommendation(profile);
+app\services\advisor.service.ts:14:export function getAdvisorRecommendation(
+app\services\dashboard.service.ts:7:import { getAdvisorRecommendation } from "./advisor.service";
+app\services\dashboard.service.ts:34:const recommendation = getAdvisorRecommendation(profile);
+app\services\empire.service.ts:9:import { getAdvisorRecommendation } from "./advisor.service";
+app\services\empire.service.ts:38:const recommendation = getAdvisorRecommendation(profile);
+
+===== buildAtlas =====
+app\planner\page.tsx:19:buildAtlasBrain,
+app\planner\page.tsx:33:buildAtlasBrain({
+app\services\atlas-brain-decision-pipeline.service.ts:2:buildAtlasDecisionContext,
+app\services\atlas-brain-decision-pipeline.service.ts:3:buildAtlasRecommendationCandidates,
+app\services\atlas-brain-decision-pipeline.service.ts:201:buildAtlasRecommendationCandidates({
+app\services\atlas-brain-decision-pipeline.service.ts:230:buildAtlasDecisionContext({
+app\services\atlas-decision-orchestrator.service.ts:2:buildAtlasDecision,
+app\services\atlas-decision-orchestrator.service.ts:998:return buildAtlasDecision(
+app\services\atlas-decision-pipeline.service.ts:2:buildAtlasAdaptiveRecommendations,
+app\services\atlas-decision-pipeline.service.ts:3:buildAtlasPersistentBehaviorProfile,
+app\services\atlas-decision-pipeline.service.ts:4:buildAtlasStrategyEvolution,
+app\services\atlas-decision-pipeline.service.ts:478:return buildAtlasPersistentBehaviorProfile({
+app\services\atlas-decision-pipeline.service.ts:496:return buildAtlasStrategyEvolution({
+app\services\atlas-decision-pipeline.service.ts:528:return buildAtlasAdaptiveRecommendations({
+
+===== runAtlas =====
+app\hooks\useAtlasBrainPipeline.ts:22:runAtlasBrainDecisionPipeline,
+app\hooks\useAtlasBrainPipeline.ts:282:await runAtlasBrainDecisionPipeline({
+app\services\atlas-brain-decision-pipeline.service.ts:17:runAtlasDecisionPipeline,
+app\services\atlas-brain-decision-pipeline.service.ts:184:export async function runAtlasBrainDecisionPipeline(
+app\services\atlas-brain-decision-pipeline.service.ts:257:await runAtlasDecisionPipeline({
+app\services\atlas-decision-orchestrator.service.ts:753:export async function runAtlasDecisionOrchestration<
+app\services\atlas-decision-orchestrator.service.ts:1124:return runAtlasDecisionOrchestration(
+app\services\atlas-decision-pipeline.service.ts:15:runAtlasDecisionOrchestration,
+app\services\atlas-decision-pipeline.service.ts:412:export async function runAtlasDecisionPipeline(
+app\services\atlas-decision-pipeline.service.ts:440:await runAtlasDecisionOrchestration<
+
+===== useAtlas =====
+app\components\search\AtlasSearchDialog.tsx:8:import { useAtlasSearch } from "@/app/hooks/useAtlasSearch";
+app\components\search\AtlasSearchDialog.tsx:20:const { query, setQuery, results, clearSearch } = useAtlasSearch();
+app\hooks\index.ts:1:export { default as useAtlasCapability } from "./useAtlasCapability";
+app\hooks\useAtlasBrainPipeline.ts:39:export type UseAtlasBrainPipelineInput = {
+app\hooks\useAtlasBrainPipeline.ts:81:export type UseAtlasBrainPipelineResult = {
+app\hooks\useAtlasBrainPipeline.ts:169:export function useAtlasBrainPipeline({
+app\hooks\useAtlasBrainPipeline.ts:180:}: UseAtlasBrainPipelineInput): UseAtlasBrainPipelineResult {
+app\hooks\useAtlasCapability.ts:15:export default function useAtlasCapability(
+app\hooks\useAtlasCopilotResponseLifecycle.ts:9:useAtlasBrainPipeline,
+app\hooks\useAtlasCopilotResponseLifecycle.ts:10:} from "@/app/hooks/useAtlasBrainPipeline";
+app\hooks\useAtlasCopilotResponseLifecycle.ts:18:} from "@/app/hooks/useAtlasCopilotSession";
+app\hooks\useAtlasCopilotResponseLifecycle.ts:44:typeof useAtlasBrainPipeline
+app\hooks\useAtlasCopilotResponseLifecycle.ts:67:export type UseAtlasCopilotResponseLifecycleInput = {
+app\hooks\useAtlasCopilotResponseLifecycle.ts:89:export type UseAtlasCopilotResponseLifecycleResult = {
+app\hooks\useAtlasCopilotResponseLifecycle.ts:105:export function useAtlasCopilotResponseLifecycle({
+app\hooks\useAtlasCopilotResponseLifecycle.ts:111:}: UseAtlasCopilotResponseLifecycleInput):
+app\hooks\useAtlasCopilotResponseLifecycle.ts:112:UseAtlasCopilotResponseLifecycleResult {
+app\hooks\useAtlasCopilotResponseLifecycle.ts:272:export default useAtlasCopilotResponseLifecycle;
+app\hooks\useAtlasCopilotSession.ts:36:export type UseAtlasCopilotSessionResult = {
+app\hooks\useAtlasCopilotSession.ts:110:export function useAtlasCopilotSession():
+app\hooks\useAtlasCopilotSession.ts:111:UseAtlasCopilotSessionResult {
+app\hooks\useAtlasCopilotSession.ts:255:export default useAtlasCopilotSession;
+app\hooks\useAtlasEvents.ts:25:export function useAtlasEvents(
+app\hooks\useAtlasIntelligence.ts:6:useAtlasIntelligenceStore,
+app\hooks\useAtlasIntelligence.ts:10:export function useAtlasIntelligence() {
+app\hooks\useAtlasIntelligence.ts:12:useAtlasIntelligenceStore(
+app\hooks\useAtlasIntelligence.ts:17:useAtlasIntelligenceStore(
+app\hooks\useAtlasIntelligence.ts:22:useAtlasIntelligenceStore(
+app\hooks\useAtlasIntelligence.ts:27:useAtlasIntelligenceStore(
+app\hooks\useAtlasIntelligence.ts:32:useAtlasIntelligenceStore(
+app\hooks\useAtlasIntelligence.ts:37:useAtlasIntelligenceStore(
+app\hooks\useAtlasIntelligence.ts:43:useAtlasIntelligenceStore(
+app\hooks\useAtlasIntelligence.ts:48:useAtlasIntelligenceStore(
+app\hooks\useAtlasIntelligence.ts:53:useAtlasIntelligenceStore(
+app\hooks\useAtlasIntelligence.ts:58:useAtlasIntelligenceStore(
+app\hooks\useAtlasIntelligence.ts:63:useAtlasIntelligenceStore(
+app\hooks\useAtlasIntelligence.ts:68:useAtlasIntelligenceStore(
+app\hooks\useAtlasSearch.ts:6:export function useAtlasSearch() {
+
+===== TARGET FILE INVENTORY =====
+app\advisor\page.tsx
+app\components\advisor\AtlasAdvisor.tsx
+app\components\advisor\index.ts
+app\components\advisor\RecommendationCard.tsx
+app\components\planner\AtlasPlannerStrategy.tsx
+app\components\planner\index.ts
+app\components\planner\PlannerHeader.tsx
+app\components\planner\PlannerStep.tsx
+app\components\planner\PlannerSummary.tsx
+app\components\planner\PlannerTimeline.tsx
+app\components\search\AtlasSearchDialog.tsx
+app\components\search\AtlasSearchInput.tsx
+app\components\search\AtlasSearchPanel.tsx
+app\components\search\AtlasSearchResult.tsx
+app\components\search\AtlasSearchResults.tsx
+app\hooks\index.ts
+app\hooks\useAchievements.ts
+app\hooks\useActivity.ts
+app\hooks\useAdvisor.ts
+app\hooks\useAtlasBrainPipeline.ts
+app\hooks\useAtlasCapability.ts
+app\hooks\useAtlasCopilotResponseLifecycle.ts
+app\hooks\useAtlasCopilotSession.ts
+app\hooks\useAtlasEvents.ts
+app\hooks\useAtlasIntelligence.ts
+app\hooks\useAtlasSearch.ts
+app\hooks\useDashboard.ts
+app\hooks\useEmpire.ts
+app\hooks\useExplorerCamera.ts
+app\hooks\useExplorerFilters.ts
+app\hooks\useExplorerSearch.ts
+app\hooks\useExplorerViewport.ts
+app\hooks\useFavorites.ts
+app\hooks\useGarage.ts
+app\hooks\usePlanner.ts
+app\hooks\usePlayerProfile.ts
+app\hooks\useRecentlyViewed.ts
+app\planner\page.tsx
+app\services\advisor.service.ts
+app\services\atlas-brain-decision-pipeline.service.ts
+app\services\atlas-capability.service.ts
+app\services\atlas-decision.service.ts
+app\services\atlas-decision-orchestrator.service.ts
+app\services\atlas-decision-pipeline.service.ts
+app\services\atlas-intelligence.service.ts
+app\services\atlas-score.service.ts
+app\services\badge.service.ts
+app\services\business.service.ts
+app\services\business-ranking.service.ts
+app\services\business-ranking-adapter.service.ts
+app\services\collection.service.ts
+app\services\dashboard.service.ts
+app\services\empire.service.ts
+app\services\explorer.service.ts
+app\services\garage-builder.service.ts
+app\services\index.ts
+app\services\manufacturer.service.ts
+app\services\map.service.ts
+app\services\mission.service.ts
+app\services\player-intelligence.service.ts
+app\services\profile.service.ts
+app\services\progression.service.ts
+app\services\ranking.service.ts
+app\services\ranking-adapter.service.ts
+app\services\recommendation.service.ts
+app\services\relationship.service.ts
+app\services\scoring.service.ts
+app\services\search.service.ts
+app\services\vehicle-data\availability.ts
+app\services\vehicle-data\display.ts
+app\services\vehicle-data\index.ts

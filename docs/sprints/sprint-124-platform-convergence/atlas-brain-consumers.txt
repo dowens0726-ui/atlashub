@@ -1,0 +1,24 @@
+﻿app\components\copilot\AtlasCopilotController.tsx:14:useAtlasBrainPipeline,
+app\components\copilot\AtlasCopilotController.tsx:15:} from "@/app/hooks/useAtlasBrainPipeline";
+app\components\copilot\AtlasCopilotController.tsx:231:typeof useAtlasBrainPipeline
+app\components\copilot\AtlasCopilotController.tsx:311:typeof useAtlasBrainPipeline
+app\components\copilot\AtlasCopilotController.tsx:588:useAtlasBrainPipeline({
+app\components\dashboard\CommandCenterHero.tsx:28:UseAtlasBrainPipelineResult,
+app\components\dashboard\CommandCenterHero.tsx:29:} from "@/app/hooks/useAtlasBrainPipeline";
+app\components\dashboard\CommandCenterHero.tsx:41:UseAtlasBrainPipelineResult;
+app\components\dashboard\CommandCenterHero.tsx:124:UseAtlasBrainPipelineResult
+app\components\dashboard\CommandCenterHero.tsx:153:UseAtlasBrainPipelineResult
+app\components\dashboard\CommandCenterHero.tsx:180:UseAtlasBrainPipelineResult
+app\components\dashboard\DashboardClient.tsx:50:useAtlasBrainPipeline,
+app\components\dashboard\DashboardClient.tsx:51:} from "@/app/hooks/useAtlasBrainPipeline";
+app\components\dashboard\DashboardClient.tsx:172:useAtlasBrainPipeline({
+app\hooks\useAtlasBrainPipeline.ts:22:runAtlasBrainDecisionPipeline,
+app\hooks\useAtlasBrainPipeline.ts:39:export type UseAtlasBrainPipelineInput = {
+app\hooks\useAtlasBrainPipeline.ts:81:export type UseAtlasBrainPipelineResult = {
+app\hooks\useAtlasBrainPipeline.ts:169:export function useAtlasBrainPipeline({
+app\hooks\useAtlasBrainPipeline.ts:180:}: UseAtlasBrainPipelineInput): UseAtlasBrainPipelineResult {
+app\hooks\useAtlasBrainPipeline.ts:282:await runAtlasBrainDecisionPipeline({
+app\hooks\useAtlasCopilotResponseLifecycle.ts:9:useAtlasBrainPipeline,
+app\hooks\useAtlasCopilotResponseLifecycle.ts:10:} from "@/app/hooks/useAtlasBrainPipeline";
+app\hooks\useAtlasCopilotResponseLifecycle.ts:44:typeof useAtlasBrainPipeline
+app\services\atlas-brain-decision-pipeline.service.ts:184:export async function runAtlasBrainDecisionPipeline(

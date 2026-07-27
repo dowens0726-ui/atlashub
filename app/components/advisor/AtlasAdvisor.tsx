@@ -1,13 +1,26 @@
-import { getAdvisorRecommendation } from "@/app/services";
-import type { PlayerProfile } from "@/app/types";
+﻿import {
+  getAdvisorRecommendation,
+} from "@/app/services";
+
+import type {
+  PlayerProfile,
+} from "@/app/types";
+
 import RecommendationCard from "./RecommendationCard";
+
 
 type AtlasAdvisorProps = {
   profile: PlayerProfile;
 };
 
-export default function AtlasAdvisor({ profile }: AtlasAdvisorProps) {
-  const recommendation = getAdvisorRecommendation(profile);
+
+export default function AtlasAdvisor({
+  profile,
+}: AtlasAdvisorProps) {
+  const recommendation =
+    getAdvisorRecommendation(
+      profile
+    );
 
   return (
     <section className="mt-12">
@@ -26,7 +39,11 @@ export default function AtlasAdvisor({ profile }: AtlasAdvisorProps) {
 
       <div className="mt-6">
         {recommendation ? (
-          <RecommendationCard recommendation={recommendation} />
+          <RecommendationCard
+            recommendation={
+              recommendation
+            }
+          />
         ) : (
           <div className="rounded-3xl border border-zinc-800 bg-zinc-900 p-6 text-zinc-400">
             No recommendation available yet.
