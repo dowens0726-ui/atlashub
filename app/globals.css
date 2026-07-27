@@ -6391,3 +6391,918 @@ a {
 /* ============================================================
    END ATLAS LIVING WORLD ACTIVITY
    ============================================================ */
+/* ============================================================
+   ATLAS EXECUTIVE VIEWPORT CAMERA — SPRINT 123.1.1
+   ============================================================ */
+
+.atlas-executive-viewport {
+  --atlas-camera-x: 0;
+  --atlas-camera-y: 0;
+  --atlas-camera-tilt-x: 0deg;
+  --atlas-camera-tilt-y: 0deg;
+
+  position: relative;
+  perspective: 1400px;
+  perspective-origin:
+    calc(
+      50% +
+      var(--atlas-camera-x) *
+      3%
+    )
+    calc(
+      50% +
+      var(--atlas-camera-y) *
+      2%
+    );
+}
+
+.atlas-executive-viewport > .atlas-hero-scene {
+  transform:
+    rotateX(
+      var(--atlas-camera-tilt-x)
+    )
+    rotateY(
+      var(--atlas-camera-tilt-y)
+    )
+    translateZ(0);
+  transform-style: preserve-3d;
+  transition:
+    box-shadow 320ms ease,
+    border-color 320ms ease;
+}
+
+.atlas-camera-layer {
+  position: absolute;
+  inset: -3%;
+  transform-style: preserve-3d;
+  will-change: transform;
+  pointer-events: none;
+}
+
+.atlas-camera-layer--sky {
+  z-index: -5;
+  transform:
+    translate3d(
+      calc(
+        var(--atlas-camera-x) *
+        -7px
+      ),
+      calc(
+        var(--atlas-camera-y) *
+        -5px
+      ),
+      -70px
+    )
+    scale(1.075);
+  animation:
+    atlas-executive-camera-breathe-sky
+    18s
+    ease-in-out
+    infinite;
+}
+
+.atlas-camera-layer--city {
+  z-index: -3;
+  transform:
+    translate3d(
+      calc(
+        var(--atlas-camera-x) *
+        -15px
+      ),
+      calc(
+        var(--atlas-camera-y) *
+        -9px
+      ),
+      -18px
+    )
+    scale(1.035);
+  animation:
+    atlas-executive-camera-breathe-city
+    14s
+    ease-in-out
+    infinite;
+}
+
+.atlas-camera-layer--systems {
+  z-index: -1;
+  transform:
+    translate3d(
+      calc(
+        var(--atlas-camera-x) *
+        -23px
+      ),
+      calc(
+        var(--atlas-camera-y) *
+        -14px
+      ),
+      20px
+    )
+    scale(1.025);
+  animation:
+    atlas-executive-camera-breathe-systems
+    11s
+    ease-in-out
+    infinite;
+}
+
+.atlas-camera-layer--optics {
+  z-index: 4;
+  inset: 0;
+  transform:
+    translate3d(
+      calc(
+        var(--atlas-camera-x) *
+        9px
+      ),
+      calc(
+        var(--atlas-camera-y) *
+        6px
+      ),
+      48px
+    );
+}
+
+.atlas-executive-viewport__reflection {
+  position: absolute;
+  top: -26%;
+  bottom: -26%;
+  width: 18%;
+  opacity: 0.055;
+  filter: blur(14px);
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.atlas-executive-viewport__reflection--primary {
+  left: 8%;
+  background:
+    linear-gradient(
+      105deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.08) 34%,
+      rgba(255, 255, 255, 0.62) 49%,
+      rgba(103, 232, 249, 0.13) 56%,
+      transparent 72%
+    );
+  transform:
+    translate3d(
+      calc(
+        var(--atlas-camera-x) *
+        34px
+      ),
+      calc(
+        var(--atlas-camera-y) *
+        12px
+      ),
+      0
+    )
+    rotate(8deg);
+}
+
+.atlas-executive-viewport__reflection--secondary {
+  right: 12%;
+  width: 10%;
+  opacity: 0.035;
+  background:
+    linear-gradient(
+      101deg,
+      transparent 0%,
+      rgba(196, 181, 253, 0.08) 36%,
+      rgba(255, 255, 255, 0.48) 52%,
+      transparent 72%
+    );
+  transform:
+    translate3d(
+      calc(
+        var(--atlas-camera-x) *
+        22px
+      ),
+      calc(
+        var(--atlas-camera-y) *
+        9px
+      ),
+      0
+    )
+    rotate(5deg);
+}
+
+@keyframes atlas-executive-camera-breathe-sky {
+  0%,
+  100% {
+    margin-top: -1px;
+  }
+
+  50% {
+    margin-top: 3px;
+  }
+}
+
+@keyframes atlas-executive-camera-breathe-city {
+  0%,
+  100% {
+    margin-top: 0;
+  }
+
+  50% {
+    margin-top: -4px;
+  }
+}
+
+@keyframes atlas-executive-camera-breathe-systems {
+  0%,
+  100% {
+    margin-top: 1px;
+  }
+
+  50% {
+    margin-top: -2px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .atlas-executive-viewport {
+    perspective: none;
+  }
+
+  .atlas-executive-viewport > .atlas-hero-scene {
+    transform: none;
+  }
+
+  .atlas-camera-layer {
+    inset: -1%;
+  }
+
+  .atlas-camera-layer--sky,
+  .atlas-camera-layer--city,
+  .atlas-camera-layer--systems,
+  .atlas-camera-layer--optics {
+    transform: none;
+  }
+
+  .atlas-executive-viewport__reflection {
+    opacity: 0.025;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .atlas-executive-viewport > .atlas-hero-scene,
+  .atlas-camera-layer--sky,
+  .atlas-camera-layer--city,
+  .atlas-camera-layer--systems {
+    animation: none;
+    transition: none;
+    transform: none;
+  }
+
+  .atlas-executive-viewport__reflection {
+    transform: none;
+  }
+}
+
+/* ============================================================
+   END ATLAS EXECUTIVE VIEWPORT CAMERA
+   ============================================================ */
+
+/* ============================================================
+   ATLAS EXECUTIVE DECK WAKE EFFECT — SPRINT 124.1.1
+   ============================================================ */
+
+@keyframes atlas-executive-deck-border-wake {
+  0% {
+    transform:
+      translate3d(
+        -140%,
+        0,
+        0
+      )
+      skewX(-18deg);
+    opacity:
+      0;
+  }
+
+  12% {
+    opacity:
+      0.5;
+  }
+
+  48% {
+    opacity:
+      0.18;
+  }
+
+  100% {
+    transform:
+      translate3d(
+        620%,
+        0,
+        0
+      )
+      skewX(-18deg);
+    opacity:
+      0;
+  }
+}
+
+
+@keyframes atlas-executive-deck-idle-breathe {
+  0%,
+  100% {
+    opacity:
+      0.5;
+    transform:
+      scale(0.99);
+  }
+
+  50% {
+    opacity:
+      0.82;
+    transform:
+      scale(1.015);
+  }
+}
+
+
+.atlas-executive-deck-surface {
+  --atlas-deck-pointer-x:
+    50%;
+
+  --atlas-deck-pointer-y:
+    35%;
+
+  --atlas-deck-shift-x:
+    0;
+
+  --atlas-deck-shift-y:
+    0;
+
+  position:
+    relative;
+
+  z-index:
+    5;
+
+  isolation:
+    isolate;
+
+  overflow:
+    hidden;
+
+  border:
+    1px solid
+    rgb(
+      255 255 255 /
+      0.065
+    );
+
+  border-radius:
+    1.65rem;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgb(
+        3 10 24 /
+        0.64
+      ),
+      rgb(
+        3 7 18 /
+        0.42
+      ) 44%,
+      rgb(
+        7 8 24 /
+        0.58
+      )
+    );
+
+  box-shadow:
+    0 30px 95px -54px
+      rgb(
+        34 211 238 /
+        0.42
+      ),
+    inset 0 1px 0
+      rgb(
+        255 255 255 /
+        0.045
+      );
+
+  backdrop-filter:
+    blur(18px);
+
+  transform:
+    translate3d(
+      calc(
+        var(--atlas-deck-shift-x) *
+        2px
+      ),
+      calc(
+        var(--atlas-deck-shift-y) *
+        1px
+      ),
+      0
+    );
+
+  transition:
+    transform 360ms
+      cubic-bezier(
+        0.2,
+        0.8,
+        0.2,
+        1
+      ),
+    border-color 320ms ease,
+    box-shadow 360ms ease,
+    background 360ms ease;
+}
+
+
+.atlas-executive-deck-surface::before {
+  position:
+    absolute;
+
+  z-index:
+    0;
+
+  inset:
+    -1px;
+
+  border-radius:
+    inherit;
+
+  content:
+    "";
+
+  pointer-events:
+    none;
+
+  background:
+    linear-gradient(
+      115deg,
+      rgb(
+        103 232 249 /
+        0.13
+      ),
+      transparent 24%,
+      transparent 62%,
+      rgb(
+        196 181 253 /
+        0.1
+      )
+    );
+
+  opacity:
+    0.34;
+
+  transition:
+    opacity 320ms ease;
+}
+
+
+.atlas-executive-deck-surface::after {
+  position:
+    absolute;
+
+  z-index:
+    0;
+
+  inset:
+    0;
+
+  border-radius:
+    inherit;
+
+  content:
+    "";
+
+  pointer-events:
+    none;
+
+  background-image:
+    linear-gradient(
+      rgb(
+        255 255 255 /
+        0.018
+      )
+      1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgb(
+        255 255 255 /
+        0.018
+      )
+      1px,
+      transparent 1px
+    );
+
+  background-size:
+    38px 38px;
+
+  mask-image:
+    radial-gradient(
+      circle at
+      var(--atlas-deck-pointer-x)
+      var(--atlas-deck-pointer-y),
+      black,
+      transparent 60%
+    );
+
+  opacity:
+    0.28;
+
+  transition:
+    opacity 320ms ease;
+}
+
+
+.atlas-executive-deck-surface:hover {
+  border-color:
+    rgb(
+      103 232 249 /
+      0.18
+    );
+
+  box-shadow:
+    0 38px 120px -52px
+      rgb(
+        34 211 238 /
+        0.54
+      ),
+    0 18px 70px -52px
+      rgb(
+        139 92 246 /
+        0.48
+      ),
+    inset 0 1px 0
+      rgb(
+        255 255 255 /
+        0.075
+      );
+
+  transform:
+    translate3d(
+      calc(
+        var(--atlas-deck-shift-x) *
+        3px
+      ),
+      calc(
+        -3px +
+        var(--atlas-deck-shift-y) *
+        2px
+      ),
+      0
+    );
+}
+
+
+.atlas-executive-deck-surface:hover::before {
+  opacity:
+    0.78;
+}
+
+
+.atlas-executive-deck-surface:hover::after {
+  opacity:
+    0.52;
+}
+
+
+.atlas-executive-deck-surface__content {
+  position:
+    relative;
+
+  z-index:
+    4;
+
+  min-width:
+    0;
+}
+
+
+.atlas-executive-deck-surface__aura {
+  position:
+    absolute;
+
+  z-index:
+    1;
+
+  inset:
+    -18%;
+
+  pointer-events:
+    none;
+
+  background:
+    radial-gradient(
+      circle at
+      var(--atlas-deck-pointer-x)
+      var(--atlas-deck-pointer-y),
+      rgb(
+        34 211 238 /
+        0.14
+      ),
+      transparent 26%
+    ),
+    radial-gradient(
+      circle at 82% 22%,
+      rgb(
+        139 92 246 /
+        0.08
+      ),
+      transparent 34%
+    );
+
+  opacity:
+    0.48;
+
+  filter:
+    blur(28px);
+
+  animation:
+    atlas-executive-deck-idle-breathe
+    8s
+    ease-in-out
+    infinite;
+
+  transition:
+    opacity 320ms ease;
+}
+
+
+.atlas-executive-deck-surface:hover
+.atlas-executive-deck-surface__aura {
+  opacity:
+    0.9;
+}
+
+
+.atlas-executive-deck-surface__cursor-light {
+  position:
+    absolute;
+
+  z-index:
+    2;
+
+  top:
+    var(--atlas-deck-pointer-y);
+
+  left:
+    var(--atlas-deck-pointer-x);
+
+  width:
+    28rem;
+
+  height:
+    28rem;
+
+  border-radius:
+    999px;
+
+  pointer-events:
+    none;
+
+  background:
+    radial-gradient(
+      circle,
+      rgb(
+        103 232 249 /
+        0.105
+      ),
+      rgb(
+        103 232 249 /
+        0.035
+      )
+      36%,
+      transparent 70%
+    );
+
+  filter:
+    blur(6px);
+
+  opacity:
+    0;
+
+  transform:
+    translate(
+      -50%,
+      -50%
+    );
+
+  transition:
+    opacity 280ms ease;
+}
+
+
+.atlas-executive-deck-surface:hover
+.atlas-executive-deck-surface__cursor-light {
+  opacity:
+    1;
+}
+
+
+.atlas-executive-deck-surface__border-wake {
+  position:
+    absolute;
+
+  z-index:
+    3;
+
+  top:
+    -2px;
+
+  bottom:
+    -2px;
+
+  left:
+    -12%;
+
+  width:
+    18%;
+
+  pointer-events:
+    none;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgb(
+        103 232 249 /
+        0.4
+      ),
+      rgb(
+        255 255 255 /
+        0.3
+      ),
+      transparent
+    );
+
+  filter:
+    blur(4px);
+
+  opacity:
+    0;
+}
+
+
+.atlas-executive-deck-surface:hover
+.atlas-executive-deck-surface__border-wake {
+  animation:
+    atlas-executive-deck-border-wake
+    2.4s
+    cubic-bezier(
+      0.2,
+      0.75,
+      0.25,
+      1
+    )
+    1;
+}
+
+
+.atlas-executive-deck-surface__reflection {
+  position:
+    absolute;
+
+  z-index:
+    2;
+
+  top:
+    -30%;
+
+  bottom:
+    -30%;
+
+  left:
+    12%;
+
+  width:
+    15%;
+
+  pointer-events:
+    none;
+
+  background:
+    linear-gradient(
+      104deg,
+      transparent,
+      rgb(
+        255 255 255 /
+        0.04
+      )
+      32%,
+      rgb(
+        255 255 255 /
+        0.18
+      )
+      49%,
+      rgb(
+        103 232 249 /
+        0.05
+      )
+      58%,
+      transparent 72%
+    );
+
+  filter:
+    blur(12px);
+
+  opacity:
+    0.17;
+
+  transform:
+    translate3d(
+      calc(
+        var(--atlas-deck-shift-x) *
+        36px
+      ),
+      calc(
+        var(--atlas-deck-shift-y) *
+        16px
+      ),
+      0
+    )
+    rotate(8deg);
+
+  transition:
+    opacity 320ms ease,
+    transform 220ms ease-out;
+}
+
+
+.atlas-executive-deck-surface:hover
+.atlas-executive-deck-surface__reflection {
+  opacity:
+    0.4;
+}
+
+
+/*
+  Inner dashboard panels remain visually stable.
+  Interactive controls keep their own stronger hover states.
+*/
+
+.atlas-executive-deck-surface
+:is(
+  button,
+  a,
+  [role="button"]
+) {
+  position:
+    relative;
+
+  z-index:
+    6;
+}
+
+
+@media (max-width: 1023px) {
+  .atlas-executive-deck-surface {
+    border-radius:
+      1.35rem;
+
+    transform:
+      none;
+  }
+
+  .atlas-executive-deck-surface:hover {
+    transform:
+      none;
+  }
+
+  .atlas-executive-deck-surface__cursor-light,
+  .atlas-executive-deck-surface__reflection {
+    display:
+      none;
+  }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .atlas-executive-deck-surface,
+  .atlas-executive-deck-surface:hover {
+    transform:
+      none;
+
+    transition:
+      border-color 160ms ease,
+      box-shadow 160ms ease;
+  }
+
+  .atlas-executive-deck-surface__aura,
+  .atlas-executive-deck-surface__border-wake {
+    animation:
+      none;
+  }
+
+  .atlas-executive-deck-surface__cursor-light,
+  .atlas-executive-deck-surface__reflection {
+    display:
+      none;
+  }
+}
+
+/* ============================================================
+   END ATLAS EXECUTIVE DECK WAKE EFFECT
+   ============================================================ */

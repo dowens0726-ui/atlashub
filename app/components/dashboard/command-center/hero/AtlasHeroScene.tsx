@@ -1,4 +1,4 @@
-import type {
+﻿import type {
   CSSProperties,
   ReactNode,
 } from "react";
@@ -12,6 +12,10 @@ import type {
 } from "@/app/world";
 
 import AtlasFloatingHud from "./AtlasFloatingHud";
+
+import {
+  AtlasExecutiveViewport,
+} from "./viewport";
 
 import {
   AtlasAircraftLayer,
@@ -130,128 +134,142 @@ export default function AtlasHeroScene({
     );
 
   return (
-    <section
-      className="atlas-hero-scene relative isolate overflow-hidden rounded-[2rem] border border-cyan-400/15 bg-[#020612] shadow-[0_34px_120px_-58px_rgba(34,211,238,0.5)]"
-      data-atlas-time-of-day={resolvedWorldState.timeOfDay}
-      data-atlas-weather={resolvedWorldState.weather}
-      data-atlas-city-activity={resolvedWorldState.cityActivity}
-      data-atlas-road-traffic={resolvedWorldState.traffic.road}
-      data-atlas-harbor-traffic={resolvedWorldState.traffic.harbor}
-      data-atlas-air-traffic={resolvedWorldState.traffic.air}
-      style={sceneStyles}
-    >
-      <div
-        aria-hidden="true"
-        className="atlas-hero-scene__environment pointer-events-none absolute inset-0"
+    <AtlasExecutiveViewport>
+      <section
+        className="atlas-hero-scene relative isolate overflow-hidden rounded-[2rem] border border-cyan-400/15 bg-[#020612] shadow-[0_34px_120px_-58px_rgba(34,211,238,0.5)]"
+        data-atlas-time-of-day={resolvedWorldState.timeOfDay}
+        data-atlas-weather={resolvedWorldState.weather}
+        data-atlas-city-activity={resolvedWorldState.cityActivity}
+        data-atlas-road-traffic={resolvedWorldState.traffic.road}
+        data-atlas-harbor-traffic={resolvedWorldState.traffic.harbor}
+        data-atlas-air-traffic={resolvedWorldState.traffic.air}
+        style={sceneStyles}
       >
-        <AtlasSkyLayer
-          worldState={resolvedWorldState}
-        />
-
-        <AtlasAtmosphereLayer
-          worldState={resolvedWorldState}
-        />
-
-        <AtlasAircraftLayer
-          worldState={resolvedWorldState}
-        />
-
-        <AtlasSkylineLayer
-          worldState={resolvedWorldState}
-        />
-
-        <AtlasHarborLayer
-          worldState={resolvedWorldState}
-        />
-
-        <AtlasTrafficLayer
-          worldState={resolvedWorldState}
-        />
-
-        <AtlasGridLayer />
-
-        <AtlasRadarLayer />
-
-        <AtlasLightingLayer
-          worldState={resolvedWorldState}
-        />
-
-        <AtlasParticleLayer
-          worldState={resolvedWorldState}
-        />
-
         <div
-          className="atlas-hero-scene__grid absolute inset-0"
-          style={{
-            opacity:
-              Math.max(
-                0.18,
-                resolvedWorldState.lighting.systemGlowIntensity /
-                  250
-              ),
-          }}
-        />
+          aria-hidden="true"
+          className="atlas-hero-scene__environment pointer-events-none absolute inset-0"
+        >
+          <div className="atlas-camera-layer atlas-camera-layer--sky">
+            <AtlasSkyLayer
+              worldState={resolvedWorldState}
+            />
 
-        <div className="atlas-hero-scene__horizon absolute inset-x-0 top-[46%]" />
+            <AtlasAtmosphereLayer
+              worldState={resolvedWorldState}
+            />
 
-        <div
-          className="atlas-hero-scene__scan absolute inset-0"
-          style={{
-            opacity:
-              Math.max(
-                0.22,
-                resolvedWorldState.atmosphere.ambientMotion /
-                  180
-              ),
-          }}
-        />
+            <AtlasAircraftLayer
+              worldState={resolvedWorldState}
+            />
+          </div>
 
-        <div className="atlas-hero-scene__vignette absolute inset-0" />
+          <div className="atlas-camera-layer atlas-camera-layer--city">
+            <AtlasSkylineLayer
+              worldState={resolvedWorldState}
+            />
 
-        <div
-          className="atlas-hero-scene__top-light absolute inset-x-12 top-0 h-px"
-          style={{
-            opacity:
-              Math.max(
-                0.28,
-                resolvedWorldState.lighting.systemGlowIntensity /
-                  100
-              ),
-          }}
-        />
-      </div>
+            <AtlasHarborLayer
+              worldState={resolvedWorldState}
+            />
 
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-[1] bg-[linear-gradient(90deg,rgba(2,6,18,0.48),transparent_18%,transparent_82%,rgba(2,6,18,0.48))]"
-      />
+            <AtlasTrafficLayer
+              worldState={resolvedWorldState}
+            />
+          </div>
 
-      <div className="atlas-hero-scene__desktop-layout relative z-10">
-        <AtlasFloatingHud
-          signals={hudSignals}
-          placement="left"
-        />
+          <div className="atlas-camera-layer atlas-camera-layer--systems">
+            <AtlasGridLayer />
 
-        <div className="atlas-hero-scene__content min-w-0">
-          {children}
+            <AtlasRadarLayer />
+
+            <AtlasLightingLayer
+              worldState={resolvedWorldState}
+            />
+
+            <AtlasParticleLayer
+              worldState={resolvedWorldState}
+            />
+
+            <div
+              className="atlas-hero-scene__grid absolute inset-0"
+              style={{
+                opacity:
+                  Math.max(
+                    0.18,
+                    resolvedWorldState.lighting.systemGlowIntensity /
+                      250
+                  ),
+              }}
+            />
+
+            <div className="atlas-hero-scene__horizon absolute inset-x-0 top-[46%]" />
+
+            <div
+              className="atlas-hero-scene__scan absolute inset-0"
+              style={{
+                opacity:
+                  Math.max(
+                    0.22,
+                    resolvedWorldState.atmosphere.ambientMotion /
+                      180
+                  ),
+              }}
+            />
+          </div>
+
+          <div className="atlas-camera-layer atlas-camera-layer--optics">
+            <div className="atlas-hero-scene__vignette absolute inset-0" />
+
+            <div className="atlas-executive-viewport__reflection atlas-executive-viewport__reflection--primary" />
+
+            <div className="atlas-executive-viewport__reflection atlas-executive-viewport__reflection--secondary" />
+
+            <div
+              className="atlas-hero-scene__top-light absolute inset-x-12 top-0 h-px"
+              style={{
+                opacity:
+                  Math.max(
+                    0.28,
+                    resolvedWorldState.lighting.systemGlowIntensity /
+                      100
+                  ),
+              }}
+            />
+          </div>
         </div>
 
-        <AtlasFloatingHud
-          signals={hudSignals}
-          placement="right"
-        />
-      </div>
-
-      <div className="atlas-hero-scene__compact-layout relative z-10">
-        <AtlasFloatingHud
-          signals={hudSignals}
-          placement="compact"
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-[1] bg-[linear-gradient(90deg,rgba(2,6,18,0.48),transparent_18%,transparent_82%,rgba(2,6,18,0.48))]"
         />
 
-        <div className="atlas-hero-scene__content min-w-0">
-          {children}
+        <div className="atlas-hero-scene__desktop-layout relative z-10">
+          <AtlasFloatingHud
+            signals={hudSignals}
+            placement="left"
+          />
+
+          <div className="atlas-hero-scene__content min-w-0">
+            {children}
+          </div>
+
+          <AtlasFloatingHud
+            signals={hudSignals}
+            placement="right"
+          />
         </div>
-      </div>
-    </section>
+
+        <div className="atlas-hero-scene__compact-layout relative z-10">
+          <AtlasFloatingHud
+            signals={hudSignals}
+            placement="compact"
+          />
+
+          <div className="atlas-hero-scene__content min-w-0">
+            {children}
+          </div>
+        </div>
+      </section>
+    </AtlasExecutiveViewport>
   );
 }

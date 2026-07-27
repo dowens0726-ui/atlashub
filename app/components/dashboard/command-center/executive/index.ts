@@ -1,3 +1,7 @@
+﻿export {
+  default as AtlasExecutiveDeckSurface,
+} from "./AtlasExecutiveDeckSurface";
+
 export {
   default as ExecutiveCommandDeck,
 } from "./ExecutiveCommandDeck";

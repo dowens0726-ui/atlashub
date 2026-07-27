@@ -1,4 +1,10 @@
-﻿import NeuralCoreNode from "./NeuralCoreNode";
+﻿import Link from "next/link";
+
+import {
+  resolveAtlasStrategicAction,
+} from "@/app/actions";
+
+import NeuralCoreNode from "./NeuralCoreNode";
 
 import type {
   NeuralCoreNodeTone,
@@ -331,6 +337,18 @@ export default function AtlasNeuralCommandCore({
     getVectorToneClasses(
       strategicVector.tone
     );
+
+  const strategicAction =
+    resolveAtlasStrategicAction({
+      empireScore:
+        normalizedEmpireScore,
+
+      cash,
+
+      shouldActNow,
+
+      pipelineStatus,
+    });
 
   const capitalLabel =
     cash >=
@@ -692,9 +710,14 @@ export default function AtlasNeuralCommandCore({
         </div>
       </div>
 
-      <div
+      <Link
+        href={strategicAction.href}
+        aria-label={`${strategicVector.label}: ${strategicAction.label}`}
         className={[
-          "atlas-strategic-vector relative mt-2 overflow-hidden rounded-2xl border p-4",
+          "atlas-strategic-vector group relative mt-2 block overflow-hidden rounded-2xl border p-4",
+          "cursor-pointer transition-all duration-300",
+          "hover:-translate-y-0.5 hover:border-current/35 hover:shadow-[0_18px_45px_-24px_currentColor]",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950",
           vectorToneClasses,
         ].join(" ")}
       >
@@ -704,7 +727,7 @@ export default function AtlasNeuralCommandCore({
         />
 
         <div className="relative flex items-start gap-4">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-current/15 bg-black/20">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-current/15 bg-black/20 transition-transform duration-300 group-hover:translate-x-1">
             <span
               aria-hidden="true"
               className="atlas-strategic-vector__arrow text-lg"
@@ -713,7 +736,7 @@ export default function AtlasNeuralCommandCore({
             </span>
           </div>
 
-          <div className="min-w-0">
+          <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-2">
               <p className="text-[0.52rem] font-black uppercase tracking-[0.22em] opacity-75">
                 Strategic Vector
@@ -731,9 +754,21 @@ export default function AtlasNeuralCommandCore({
             <p className="mt-1 text-xs leading-5 text-zinc-400">
               {strategicVector.summary}
             </p>
+
+            <p className="mt-3 text-[0.5rem] font-black uppercase tracking-[0.18em] opacity-70 transition-opacity duration-300 group-hover:opacity-100">
+              {strategicAction.label}
+            </p>
           </div>
+
+          <span
+            aria-hidden="true"
+            className="mt-1 text-sm opacity-45 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100"
+          >
+            ↗
+          </span>
         </div>
-      </div>
+      </Link>
     </div>
   );
 }
+
