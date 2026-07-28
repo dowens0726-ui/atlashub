@@ -1,20 +1,34 @@
-﻿import type { ReactNode } from "react";
+﻿import type {
+  ReactNode,
+} from "react";
 
-import { AtlasShellWorld } from "@/app/components/world";
+import {
+  AtlasShellWorld,
+} from "@/app/components/world";
 
 import AtlasSidebar from "./AtlasSidebar";
 import AtlasTopBar from "./AtlasTopBar";
 
+
 type AtlasAppShellProps = {
-  children: ReactNode;
+  children:
+    ReactNode;
+
+  world?:
+    "legacy" |
+    "none";
 };
+
 
 export default function AtlasAppShell({
   children,
+  world = "legacy",
 }: AtlasAppShellProps) {
   return (
     <div className="atlas-app-shell relative isolate flex min-h-screen overflow-x-hidden text-white">
-      <AtlasShellWorld />
+      {world === "legacy" ? (
+        <AtlasShellWorld />
+      ) : null}
 
       <div className="relative z-20 sticky top-0 hidden h-screen shrink-0 lg:block">
         <AtlasSidebar />

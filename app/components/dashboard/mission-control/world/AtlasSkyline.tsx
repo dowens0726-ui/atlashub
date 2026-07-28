@@ -1,73 +1,133 @@
-﻿const skylineTowers = [
-  "atlas-world-skyline__tower--01",
-  "atlas-world-skyline__tower--02",
-  "atlas-world-skyline__tower--03",
-  "atlas-world-skyline__tower--04",
-  "atlas-world-skyline__tower--05",
-  "atlas-world-skyline__tower--06",
-  "atlas-world-skyline__tower--07",
-  "atlas-world-skyline__tower--08",
-  "atlas-world-skyline__tower--09",
-  "atlas-world-skyline__tower--10",
-  "atlas-world-skyline__tower--11",
-  "atlas-world-skyline__tower--12",
-] as const;
+﻿import type {
+  CSSProperties,
+} from "react";
+
+import {
+  atlasCityBuildings,
+  type AtlasCityBuilding,
+} from "./atlas-city.definition";
 
 
-const cityBeacons = [
-  "atlas-world-beacon--01",
-  "atlas-world-beacon--02",
-  "atlas-world-beacon--03",
-  "atlas-world-beacon--04",
-  "atlas-world-beacon--05",
-] as const;
+type AtlasBuildingStyle =
+  CSSProperties & {
+    "--atlas-coastal-building-x":
+      string;
+
+    "--atlas-coastal-building-width":
+      string;
+
+    "--atlas-coastal-building-height":
+      string;
+
+    "--atlas-coastal-building-delay":
+      string;
+
+    "--atlas-coastal-building-lean":
+      string;
+  };
+
+
+function buildBuildingStyle(
+  building:
+    AtlasCityBuilding,
+  index:
+    number
+): AtlasBuildingStyle {
+  return {
+    "--atlas-coastal-building-x":
+      `${building.x}%`,
+
+    "--atlas-coastal-building-width":
+      `${building.width}%`,
+
+    "--atlas-coastal-building-height":
+      `${building.height}%`,
+
+    "--atlas-coastal-building-delay":
+      `${index * -0.37}s`,
+
+    "--atlas-coastal-building-lean":
+      `${building.lean ?? 0}deg`,
+  };
+}
 
 
 export default function AtlasSkyline() {
   return (
     <div
       aria-hidden="true"
-      className="atlas-world-skyline"
+      className="atlas-coastal-city"
     >
-      <div className="atlas-world-skyline__district atlas-world-skyline__district--rear" />
+      <div className="atlas-coastal-city__district-glow atlas-coastal-city__district-glow--west" />
+      <div className="atlas-coastal-city__district-glow atlas-coastal-city__district-glow--core" />
+      <div className="atlas-coastal-city__district-glow atlas-coastal-city__district-glow--east" />
 
-      <div className="atlas-world-skyline__district atlas-world-skyline__district--front">
-        {skylineTowers.map(
+      <div className="atlas-coastal-city__rear-silhouette" />
+
+      <div className="atlas-coastal-city__buildings">
+        {atlasCityBuildings.map(
           (
-            tower,
+            building,
             index
           ) => (
             <span
-              key={tower}
-              className={
-                `atlas-world-skyline__tower ${tower}`
+              className={`
+                atlas-coastal-building
+                atlas-coastal-building--${building.depth}
+                atlas-coastal-building--roof-${building.roof}
+                atlas-coastal-building--windows-${building.windows}
+                atlas-coastal-building--tone-${building.tone}
+              `}
+              data-city-district={
+                building.district
+              }
+              key={
+                building.id
+              }
+              style={
+                buildBuildingStyle(
+                  building,
+                  index
+                )
+              }
+            >
+              <span className="atlas-coastal-building__roof" />
+              <span className="atlas-coastal-building__face">
+                <span className="atlas-coastal-building__windows" />
+                <span className="atlas-coastal-building__edge" />
+              </span>
+            </span>
+          )
+        )}
+      </div>
+
+      <div className="atlas-coastal-city__street-grid" />
+
+      <div className="atlas-coastal-city__beacons">
+        {Array.from({
+          length:
+            7,
+        }).map(
+          (
+            _,
+            index
+          ) => (
+            <span
+              className={`
+                atlas-coastal-city__beacon
+                atlas-coastal-city__beacon--${index + 1}
+              `}
+              key={
+                index
               }
               style={{
                 animationDelay:
-                  `${index * -0.45}s`,
+                  `${index * -0.64}s`,
               }}
             />
           )
         )}
       </div>
-
-      {cityBeacons.map(
-        (
-          beacon,
-          index
-        ) => (
-          <span
-            key={beacon}
-            className={
-              `atlas-world-beacon ${beacon}`
-            }
-            style={{
-              animationDelay:
-                `${index * -0.8}s`,
-            }}
-          />
-        )
-      )}
     </div>
   );
 }

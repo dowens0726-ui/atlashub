@@ -1,9 +1,12 @@
 ﻿import AtlasAtmosphere from "./AtlasAtmosphere";
+import AtlasCoastline from "./AtlasCoastline";
 import AtlasEffects from "./AtlasEffects";
+import AtlasLandmarks from "./AtlasLandmarks";
 import AtlasLighting from "./AtlasLighting";
 import AtlasOcean from "./AtlasOcean";
 import AtlasSky from "./AtlasSky";
 import AtlasSkyline from "./AtlasSkyline";
+import AtlasTerrain from "./AtlasTerrain";
 
 import {
   defaultAtlasWorldConfiguration,
@@ -30,7 +33,7 @@ export default function AtlasWorldRenderer({
   return (
     <div
       aria-hidden="true"
-      className="atlas-world-renderer"
+      className="atlas-world-renderer atlas-coastal-world"
       data-world-district={
         configuration.district ??
         undefined
@@ -74,7 +77,13 @@ export default function AtlasWorldRenderer({
         }
       />
 
+      <AtlasTerrain />
+
       <AtlasSkyline />
+
+      <AtlasLandmarks />
+
+      <AtlasCoastline />
 
       <AtlasOcean />
 

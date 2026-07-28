@@ -1,3 +1,7 @@
+﻿export {
+  default as AtlasCoastalHeroWorld,
+} from "./AtlasCoastalHeroWorld";
+
 export { default as AtlasAircraftLayer } from "./AtlasAircraftLayer";
 export { default as AtlasAtmosphereLayer } from "./AtlasAtmosphereLayer";
 export { default as AtlasGridLayer } from "./AtlasGridLayer";

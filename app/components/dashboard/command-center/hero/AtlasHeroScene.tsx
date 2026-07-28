@@ -18,16 +18,10 @@ import {
 } from "./viewport";
 
 import {
-  AtlasAircraftLayer,
-  AtlasAtmosphereLayer,
+  AtlasCoastalHeroWorld,
   AtlasGridLayer,
-  AtlasHarborLayer,
-  AtlasLightingLayer,
   AtlasParticleLayer,
   AtlasRadarLayer,
-  AtlasSkyLayer,
-  AtlasSkylineLayer,
-  AtlasTrafficLayer,
 } from "./world";
 
 import type {
@@ -124,7 +118,8 @@ export default function AtlasHeroScene({
       empireScore: 50,
       confidence: 65,
       availableCash: 0,
-      progressionStage: "Developing",
+      progressionStage:
+        "Developing",
       shouldActNow: false,
     });
 
@@ -137,57 +132,50 @@ export default function AtlasHeroScene({
     <AtlasExecutiveViewport>
       <section
         className="atlas-hero-scene relative isolate overflow-hidden rounded-[2rem] border border-cyan-400/15 bg-[#020612] shadow-[0_34px_120px_-58px_rgba(34,211,238,0.5)]"
-        data-atlas-time-of-day={resolvedWorldState.timeOfDay}
-        data-atlas-weather={resolvedWorldState.weather}
-        data-atlas-city-activity={resolvedWorldState.cityActivity}
-        data-atlas-road-traffic={resolvedWorldState.traffic.road}
-        data-atlas-harbor-traffic={resolvedWorldState.traffic.harbor}
-        data-atlas-air-traffic={resolvedWorldState.traffic.air}
-        style={sceneStyles}
+        data-atlas-time-of-day={
+          resolvedWorldState.timeOfDay
+        }
+        data-atlas-weather={
+          resolvedWorldState.weather
+        }
+        data-atlas-city-activity={
+          resolvedWorldState.cityActivity
+        }
+        data-atlas-road-traffic={
+          resolvedWorldState.traffic.road
+        }
+        data-atlas-harbor-traffic={
+          resolvedWorldState.traffic.harbor
+        }
+        data-atlas-air-traffic={
+          resolvedWorldState.traffic.air
+        }
+        style={
+          sceneStyles
+        }
       >
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-[5] overflow-hidden"
+        >
+          <AtlasCoastalHeroWorld />
+        </div>
+
         <div
           aria-hidden="true"
           className="atlas-hero-scene__environment pointer-events-none absolute inset-0"
         >
-          <div className="atlas-camera-layer atlas-camera-layer--sky">
-            <AtlasSkyLayer
-              worldState={resolvedWorldState}
-            />
-
-            <AtlasAtmosphereLayer
-              worldState={resolvedWorldState}
-            />
-
-            <AtlasAircraftLayer
-              worldState={resolvedWorldState}
-            />
-          </div>
-
-          <div className="atlas-camera-layer atlas-camera-layer--city">
-            <AtlasSkylineLayer
-              worldState={resolvedWorldState}
-            />
-
-            <AtlasHarborLayer
-              worldState={resolvedWorldState}
-            />
-
-            <AtlasTrafficLayer
-              worldState={resolvedWorldState}
-            />
-          </div>
+          <div className="atlas-camera-layer atlas-camera-layer--city" />
 
           <div className="atlas-camera-layer atlas-camera-layer--systems">
             <AtlasGridLayer />
 
             <AtlasRadarLayer />
 
-            <AtlasLightingLayer
-              worldState={resolvedWorldState}
-            />
-
             <AtlasParticleLayer
-              worldState={resolvedWorldState}
+              worldState={
+                resolvedWorldState
+              }
             />
 
             <div
@@ -195,23 +183,27 @@ export default function AtlasHeroScene({
               style={{
                 opacity:
                   Math.max(
-                    0.18,
-                    resolvedWorldState.lighting.systemGlowIntensity /
-                      250
+                    0.12,
+                    resolvedWorldState
+                      .lighting
+                      .systemGlowIntensity /
+                      320
                   ),
               }}
             />
 
-            <div className="atlas-hero-scene__horizon absolute inset-x-0 top-[46%]" />
+            <div className="atlas-hero-scene__horizon absolute inset-x-0 top-[58%]" />
 
             <div
               className="atlas-hero-scene__scan absolute inset-0"
               style={{
                 opacity:
                   Math.max(
-                    0.22,
-                    resolvedWorldState.atmosphere.ambientMotion /
-                      180
+                    0.16,
+                    resolvedWorldState
+                      .atmosphere
+                      .ambientMotion /
+                      240
                   ),
               }}
             />
@@ -229,9 +221,11 @@ export default function AtlasHeroScene({
               style={{
                 opacity:
                   Math.max(
-                    0.28,
-                    resolvedWorldState.lighting.systemGlowIntensity /
-                      100
+                    0.22,
+                    resolvedWorldState
+                      .lighting
+                      .systemGlowIntensity /
+                      130
                   ),
               }}
             />
@@ -240,12 +234,14 @@ export default function AtlasHeroScene({
 
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 z-[1] bg-[linear-gradient(90deg,rgba(2,6,18,0.48),transparent_18%,transparent_82%,rgba(2,6,18,0.48))]"
+          className="pointer-events-none absolute inset-0 z-[3] bg-[linear-gradient(90deg,rgba(2,6,18,0.42),transparent_16%,transparent_84%,rgba(2,6,18,0.42))]"
         />
 
         <div className="atlas-hero-scene__desktop-layout relative z-10">
           <AtlasFloatingHud
-            signals={hudSignals}
+            signals={
+              hudSignals
+            }
             placement="left"
           />
 
@@ -254,14 +250,18 @@ export default function AtlasHeroScene({
           </div>
 
           <AtlasFloatingHud
-            signals={hudSignals}
+            signals={
+              hudSignals
+            }
             placement="right"
           />
         </div>
 
         <div className="atlas-hero-scene__compact-layout relative z-10">
           <AtlasFloatingHud
-            signals={hudSignals}
+            signals={
+              hudSignals
+            }
             placement="compact"
           />
 
@@ -273,3 +273,4 @@ export default function AtlasHeroScene({
     </AtlasExecutiveViewport>
   );
 }
+
