@@ -7,9 +7,6 @@ import {
   useState,
 } from "react";
 
-import {
-  ActivityFeed,
-} from "@/app/components/activity";
 
 import {
   AchievementList,
@@ -24,6 +21,7 @@ import {
   EmpireInsights,
 } from "@/app/components/dashboard";
 
+import AtlasLiveOperationsFeed from "@/app/components/dashboard/operations/AtlasLiveOperationsFeed";
 import AtlasOperationsSidebar from "@/app/components/dashboard/operations/AtlasOperationsSidebar";
 
 import type {
@@ -787,7 +785,10 @@ export default function DashboardClient() {
         }
 
         activity={
-          <ActivityFeed />
+          <AtlasLiveOperationsFeed
+            eventBus={eventBus}
+            maxEvents={6}
+          />
         }
 
         achievements={
@@ -797,6 +798,7 @@ export default function DashboardClient() {
     </MissionControlEnvironment>
   );
 }
+
 
 
 
