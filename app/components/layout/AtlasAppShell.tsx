@@ -10,19 +10,41 @@ import AtlasSidebar from "./AtlasSidebar";
 import AtlasTopBar from "./AtlasTopBar";
 
 
+export type AtlasAppShellVariant =
+  | "standard"
+  | "executive";
+
+
 type AtlasAppShellProps = {
   children:
     ReactNode;
 
   world?:
-    "legacy" |
-    "none";
+    | "legacy"
+    | "none";
+
+  variant?:
+    AtlasAppShellVariant;
 };
+
+
+const contentVariantClasses:
+  Record<
+    AtlasAppShellVariant,
+    string
+  > = {
+    standard:
+      "mx-auto max-w-[1600px] p-4 sm:p-6 lg:p-8",
+
+    executive:
+      "max-w-none px-3 py-4 sm:px-4 sm:py-5 lg:px-5 lg:py-6 xl:px-6 2xl:px-8",
+  };
 
 
 export default function AtlasAppShell({
   children,
   world = "legacy",
+  variant = "standard",
 }: AtlasAppShellProps) {
   return (
     <div className="atlas-app-shell relative isolate flex min-h-screen overflow-x-hidden text-white">
@@ -43,7 +65,17 @@ export default function AtlasAppShell({
             className="atlas-app-shell__main-glow pointer-events-none absolute inset-0"
           />
 
-          <div className="relative mx-auto w-full max-w-[1600px] p-4 sm:p-6 lg:p-8">
+          <div
+            data-atlas-shell-variant={
+              variant
+            }
+            className={[
+              "relative w-full",
+              contentVariantClasses[
+                variant
+              ],
+            ].join(" ")}
+          >
             {children}
           </div>
         </main>
