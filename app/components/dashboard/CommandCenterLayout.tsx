@@ -50,7 +50,7 @@ export default function CommandCenterLayout({
 }: CommandCenterLayoutProps) {
   return (
     <AtlasCommandCenter>
-      <div className="grid min-w-0 gap-6 xl:grid-cols-[18rem_minmax(0,1fr)] 2xl:grid-cols-[19rem_minmax(0,1fr)]">
+      <div className="grid min-w-0 gap-6 xl:grid-cols-[17rem_minmax(0,1fr)] 2xl:grid-cols-[18rem_minmax(0,1fr)] 3xl:grid-cols-[19rem_minmax(0,1fr)]">
         <div className="min-w-0 xl:sticky xl:top-6 xl:self-start">
           {operations}
         </div>
@@ -138,7 +138,7 @@ export default function CommandCenterLayout({
                 </div>
               </header>
 
-              <div className="grid min-w-0 gap-5 2xl:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
+              <div className="grid min-w-0 gap-5 2xl:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] 3xl:grid-cols-[minmax(0,0.78fr)_minmax(0,1.22fr)]">
                 <AtlasCommandSection
                   variant="default"
                   eyebrow="Empire Monitor"
@@ -215,4 +215,5 @@ export default function CommandCenterLayout({
     </AtlasCommandCenter>
   );
 }
+
 
